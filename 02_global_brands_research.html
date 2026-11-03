@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Глобальне дослідження 7 стратегічних брендів Tactical & Outdoor</title>
+  <style>
+    :root {
+      --primary: #1e3a8a;
+      --primary-light: #3b82f6;
+      --secondary: #059669;
+      --accent: #d97706;
+      --dark: #0f172a;
+      --gray-50: #f8fafc;
+      --gray-100: #f1f5f9;
+      --gray-200: #e2e8f0;
+      --gray-700: #334155;
+      --gray-800: #1e293b;
+      --text: #0f172a;
+      --card-bg: #ffffff;
+      --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+      --radius: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      color: var(--text);
+      background-color: var(--gray-50);
+      line-height: 1.6;
+      padding: 40px 20px;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      background: var(--card-bg);
+      padding: 50px;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--gray-200);
+    }
+
+    header {
+      border-bottom: 2px solid var(--gray-200);
+      padding-bottom: 30px;
+      margin-bottom: 40px;
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 12px;
+    }
+    .badge-purple { background: #f3e8ff; color: #6b21a8; }
+    .badge-blue { background: #dbeafe; color: #1e40af; }
+    .badge-green { background: #dcfce7; color: #166534; }
+
+    h1 {
+      font-size: 2.2rem;
+      color: var(--dark);
+      margin-bottom: 15px;
+      line-height: 1.25;
+    }
+
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+      padding: 15px 20px;
+      background: var(--gray-100);
+      border-radius: 8px;
+      font-size: 0.95rem;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+      color: var(--primary);
+      margin-top: 40px;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--gray-200);
+      padding-bottom: 10px;
+    }
+
+    h3 {
+      font-size: 1.25rem;
+      color: var(--gray-800);
+      margin-top: 25px;
+      margin-bottom: 10px;
+    }
+
+    .brand-card {
+      border: 1px solid var(--gray-200);
+      border-radius: 10px;
+      padding: 24px;
+      margin-bottom: 24px;
+      background: #ffffff;
+      transition: box-shadow 0.2s ease;
+    }
+    .brand-card:hover {
+      box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+    }
+
+    .brand-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-bottom: 15px;
+      border-bottom: 1px dashed var(--gray-200);
+      padding-bottom: 12px;
+    }
+    .brand-title {
+      font-size: 1.35rem;
+      font-weight: 700;
+      color: var(--dark);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .brand-tag {
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 3px 10px;
+      border-radius: 6px;
+    }
+    .tag-entry { background: #e0f2fe; color: #0369a1; }
+    .tag-mid { background: #fef3c7; color: #92400e; }
+    .tag-high { background: #fee2e2; color: #991b1b; }
+
+    .brand-props {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 15px;
+      background: var(--gray-50);
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+
+    .layer-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      gap: 10px;
+      margin: 25px 0;
+    }
+    .layer-box {
+      background: var(--gray-100);
+      padding: 14px 10px;
+      text-align: center;
+      border-radius: 8px;
+      border-top: 4px solid var(--primary);
+    }
+    .layer-level { font-weight: 700; font-size: 1.1rem; color: var(--primary); }
+    .layer-name { font-size: 0.8rem; color: var(--gray-700); margin-top: 4px; }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin: 25px 0;
+      font-size: 0.95rem;
+    }
+    th, td {
+      padding: 14px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--gray-200);
+    }
+    th {
+      background: var(--gray-100);
+      color: var(--dark);
+      font-weight: 600;
+    }
+    tr:hover { background-color: #f8fafc; }
+
+    .pyramid-card {
+      background: linear-gradient(135deg, #f0fdf4 0%, #eff6ff 100%);
+      border: 1px solid #bbf7d0;
+      border-radius: 10px;
+      padding: 25px;
+      margin: 25px 0;
+    }
+
+    footer {
+      margin-top: 50px;
+      padding-top: 20px;
+      border-top: 1px solid var(--gray-200);
+      font-size: 0.85rem;
+      color: var(--gray-700);
+      text-align: center;
+    }
+
+    @media (max-width: 768px) {
+      .container { padding: 25px; }
+      h1 { font-size: 1.7rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <span class="badge badge-purple">Академічний аналіз ринку</span>
+      <span class="badge badge-blue">7 стратегічних брендів</span>
+      <h1>Глобальне маркетингове дослідження брендів тактичного та екстремального outdoor-одягу</h1>
+      <p style="color: var(--gray-700); font-size: 1.05rem;">Порівняльний аналіз цінових ніш, матеріалознавчої бази (PTFE/PU мембрани, G-LOFT, Polartec, Cordura) та відповідності субарктичним умовам Ісландії.</p>
+      
+      <div class="meta-grid">
+        <div><strong>Методологія:</strong> ECWCS Gen III / PCU, Модель 5 сил Портера</div>
+        <div><strong>Охоплення:</strong> 7 брендів (Україна, ЄС, Британія)</div>
+        <div><strong>Сектори:</strong> Туризм, ICE-SAR, Гірські гіди, Mil/LE</div>
+        <div><strong>Рік:</strong> 2026</div>
+      </div>
+    </header>
+
+    <h2>1. Пошаровий концепт ECWCS Gen III / PCU</h2>
+    <p>Сучасна методологія екстремального outdoor базується на військовій системі пошарового одягу ECWCS / PCU, яка адаптована під альпіністські завдання:</p>
+    
+    <div class="layer-grid">
+      <div class="layer-box">
+        <div class="layer-level">L1</div>
+        <div class="layer-name">Next-to-Skin (Вологовідвід)</div>
+      </div>
+      <div class="layer-box">
+        <div class="layer-level">L2</div>
+        <div class="layer-name">Grid Fleece (Мікротермо)</div>
+      </div>
+      <div class="layer-box">
+        <div class="layer-level">L3</div>
+        <div class="layer-name">Thermal High-Loft</div>
+      </div>
+      <div class="layer-box">
+        <div class="layer-level">L4</div>
+        <div class="layer-name">Windshirt (Вітрозахист)</div>
+      </div>
+      <div class="layer-box">
+        <div class="layer-level">L5</div>
+        <div class="layer-name">Softshell (Робочий шар)</div>
+      </div>
+      <div class="layer-box">
+        <div class="layer-level">L6</div>
+        <div class="layer-name">Hardshell (Шторм 3L)</div>
+      </div>
+      <div class="layer-box">
+        <div class="layer-level">L7</div>
+        <div class="layer-name">Extreme Cold (-40°C)</div>
+      </div>
+    </div>
+
+    <h2>2. Профільний аналіз 7 ключових брендів</h2>
+
+    <!-- Brand 1 -->
+    <div class="brand-card">
+      <div class="brand-header">
+        <div class="brand-title">🇺🇦 1. M-Tac (Militarist Tactical)</div>
+        <span class="brand-tag tag-entry">Entry / Mid-Range (€20 – €200)</span>
+      </div>
+      <div class="brand-props">
+        <div><strong>Архетип:</strong> Mass-Market Heavy-Duty Workhorse</div>
+        <div><strong>Технології:</strong> NYCO Extreme, Cordura, Windblock</div>
+        <div><strong>Маржинальність:</strong> 55% – 62% (Націнка 2.4x – 2.6x)</div>
+      </div>
+      <p><strong>Специфіка:</strong> Головний робочий одяг високої міцності. Тканина NYCO Extreme (Brookwood, USA) забезпечує високу стійкість до стирання. Ідеально підходить для волонтерів ICE-SAR, водіїв позашляховиків, техніків та туристів як доступний та довговічний щоденний одяг.</p>
+    </div>
+
+    <!-- Brand 2 -->
+    <div class="brand-card">
+      <div class="brand-header">
+        <div class="brand-title">🇺🇦 2. Fahrenheit</div>
+        <span class="brand-tag tag-mid">Mid+ / Premium Functional (€45 – €280)</span>
+      </div>
+      <div class="brand-props">
+        <div><strong>Архетип:</strong> Technical Layering Specialist (L1–L3)</div>
+        <div><strong>Технології:</strong> Polartec®, Gelanots® 20k/20k, PrimaLoft®</div>
+        <div><strong>Маржинальність:</strong> 50% – 55% (Націнка 2.2x – 2.4x)</div>
+      </div>
+      <p><strong>Специфіка:</strong> Офіційний ліцензіат Polartec LLC. Безпорова японська мембрана Gelanots не забивається морською сіллю, що робить її ідеальною для прибережного клімату Ісландії. Бездоганний базовий та середній шар для гірських гідів AIMG та полярних експедицій.</p>
+    </div>
+
+    <!-- Brand 3 -->
+    <div class="brand-card">
+      <div class="brand-header">
+        <div class="brand-title">🇵🇱 3. Helikon-Tex</div>
+        <span class="brand-tag tag-mid">Mid-Range (€35 – €180)</span>
+      </div>
+      <div class="brand-props">
+        <div><strong>Архетип:</strong> Outdoor Tactical / Bushcraft Democratizer</div>
+        <div><strong>Технології:</strong> DuraCanvas®, VersaStretch®, StormStretch®</div>
+        <div><strong>Маржинальність:</strong> 52% – 58% (Націнка 2.3x – 2.5x)</div>
+      </div>
+      <p><strong>Специфіка:</strong> Хіт серед європейських туристів завдяки лінійці штанів UTP/OTP. Тканина DuraCanvas адаптована до вощіння бджолиним воском та стійка до іскор від вогнища, що затребувано у кемпінгу та піших походах помірної складності.</p>
+    </div>
+
+    <!-- Brand 4 -->
+    <div class="brand-card">
+      <div class="brand-header">
+        <div class="brand-title">🇬🇷 4. Pentagon Tactical</div>
+        <span class="brand-tag tag-mid">Mid-Range (€40 – €220)</span>
+      </div>
+      <div class="brand-props">
+        <div><strong>Архетип:</strong> Tactical Sportswear & Low-Profile Utility</div>
+        <div><strong>Технології:</strong> Storm|Tex™ (10 000 мм), Quick-Free™, Teflon®</div>
+        <div><strong>Маржинальність:</strong> 50% – 56% (Націнка 2.2x – 2.4x)</div>
+      </div>
+      <p><strong>Специфіка:</strong> Концепція тактичного одягу зі спортивним цивільним виглядом (Low-Profile). Популярний серед гідів у міському середовищі Рейк'явіка та патрульних служб завдяки блискавкам швидкого доступу.</p>
+    </div>
+
+    <!-- Brand 5 -->
+    <div class="brand-card">
+      <div class="brand-header">
+        <div class="brand-title">🇦🇹 5. Carinthia</div>
+        <span class="brand-tag tag-high">High-End / Elite Military (€180 – €950)</span>
+      </div>
+      <div class="brand-props">
+        <div><strong>Архетип:</strong> Sub-Zero Climate Leader & G-LOFT Specialist</div>
+        <div><strong>Технології:</strong> G-LOFT®, Gore Windstopper®, Cordura®</div>
+        <div><strong>Маржинальність:</strong> 48% – 54% (Високий середній чек)</div>
+      </div>
+      <p><strong>Специфіка:</strong> Золотий стандарт полярного утеплення армій НАТО. Синтетичне волокно G-LOFT має трубчасту структуру і не втрачає термоізоляційних властивостей у мокрому стані. Забезпечує статичне тепло до -40°C для рятувальників ICE-SAR та льодовикових станцій.</p>
+    </div>
+
+    <!-- Brand 6 -->
+    <div class="brand-card">
+      <div class="brand-header">
+        <div class="brand-title">🇸🇮 6. UF PRO</div>
+        <span class="brand-tag tag-high">Premium / High-End (€190 – €680)</span>
+      </div>
+      <div class="brand-props">
+        <div><strong>Архетип:</strong> Biomechanical Engineering & Storm Protection</div>
+        <div><strong>Технології:</strong> Monsoon GORE-TEX, air/pac® 3D, Schoeller®</div>
+        <div><strong>Маржинальність:</strong> 48% – 52% (Прямий конкурент Arc'teryx LEAF)</div>
+      </div>
+      <p><strong>Специфіка:</strong> Найкраща біомеханіка рухів на ринку. Модулі air/pac на плечах запобігають утворенню термомістків під важкими наплічниками. Прямий вибір для технічного альпінізму, льодолазіння та елітних поліцейських підрозділів (Víkingasveitin).</p>
+    </div>
+
+    <!-- Brand 7 -->
+    <div class="brand-card">
+      <div class="brand-header">
+        <div class="brand-title">🇬🇧 7. Keela Tactical / Outdoors</div>
+        <span class="brand-tag tag-mid">Mid+ / Rescue Standard (€90 – €350)</span>
+      </div>
+      <div class="brand-props">
+        <div><strong>Архетип:</strong> Maritime-Arctic Rescue & Anti-Condensation</div>
+        <div><strong>Технології:</strong> System Dual Protection (SDP 2L), EN 343 4/4</div>
+        <div><strong>Маржинальність:</strong> 52% – 56% (Офіційні контракти UK Rescue)</div>
+      </div>
+      <p><strong>Специфіка:</strong> Офіційний постачальник гірських рятувальних служб Шотландії (Mountain Rescue UK). Запатентована технологія подвійної мембрани SDP усуває конденсат всередині куртки при штормовому дощі та температурі +2°C, що ідеально відповідає погоді Ісландії.</p>
+    </div>
+
+    <h2>3. Зведена порівняльна таблиця</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>Бренд</th>
+          <th>Країна</th>
+          <th>Ніша</th>
+          <th>Ключова технологія</th>
+          <th>Водозахист / Тепло</th>
+          <th>Цільовий сегмент</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><strong>M-Tac</strong></td>
+          <td>🇺🇦 Україна</td>
+          <td>Entry / Mid</td>
+          <td>NYCO Extreme, Cordura</td>
+          <td>10 000 мм / Середнє</td>
+          <td>Польовий робочий outdoor, водії джипів</td>
+        </tr>
+        <tr>
+          <td><strong>Fahrenheit</strong></td>
+          <td>🇺🇦 Україна</td>
+          <td>Mid+</td>
+          <td>Polartec, Gelanots 20k/20k</td>
+          <td>20 000 мм / Високе</td>
+          <td>Базові шари L1–L3, гірські гіди</td>
+        </tr>
+        <tr>
+          <td><strong>Helikon-Tex</strong></td>
+          <td>🇵🇱 Польща</td>
+          <td>Mid-Range</td>
+          <td>DuraCanvas, VersaStretch</td>
+          <td>DWR / Помірне</td>
+          <td>Бушкрафт, кемпінг, трекінг</td>
+        </tr>
+        <tr>
+          <td><strong>Pentagon</strong></td>
+          <td>🇬🇷 Греція</td>
+          <td>Mid-Range</td>
+          <td>Storm|Tex, Quick-Free</td>
+          <td>10 000 мм / Помірне</td>
+          <td>Low-Profile тактика, міські гіди</td>
+        </tr>
+        <tr>
+          <td><strong>Carinthia</strong></td>
+          <td>🇦🇹 Австрія</td>
+          <td>High-End</td>
+          <td>G-LOFT®, Gore Windstopper</td>
+          <td>15 000 мм / Екстремальне</td>
+          <td>Арктика, полярні бази, ICE-SAR</td>
+        </tr>
+        <tr>
+          <td><strong>UF PRO</strong></td>
+          <td>🇸🇮 Словенія</td>
+          <td>High-End</td>
+          <td>Monsoon GORE-TEX, air/pac</td>
+          <td>20 000+ мм / Високе</td>
+          <td>Технічний альпінізм, спецназ</td>
+        </tr>
+        <tr>
+          <td><strong>Keela</strong></td>
+          <td>🇬🇧 Британія</td>
+          <td>Mid+</td>
+          <td>System Dual Protection (SDP)</td>
+          <td>20 000 мм / Подвійний дренаж</td>
+          <td>Гірські рятувальники, океанічні шторми</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="pyramid-card">
+      <h3 style="margin-top:0;">Стратегічна модель "Піраміди асортименту" для магазину</h3>
+      <p>Для мінімізації фінансових ризиків та максимізації оборотності капіталу в Рейк'явіку рекомендована така структура закупівлі:</p>
+      <ul>
+        <li><strong>50% — Базовий обсяг (Cash Cows):</strong> M-Tac та Helikon-Tex (щоденний роздрібний потік доступних зносостійких штанів та флісів).</li>
+        <li><strong>30% — Технологічне ядро:</strong> Fahrenheit та Keela (вирішення проблем сирості та холоду для гідів та волонтерів).</li>
+        <li><strong>20% — Флагманський ешелон:</strong> Carinthia та UF PRO (візитна картка магазину, елітні контракти та статус професійного хабу).</li>
+      </ul>
+    </div>
+
+    <footer>
+      Документ підготовлено для проєкту: <strong>Nordic Tactical & Heavy-Duty Outdoor Hub</strong>.<br>
+      Файл збережено в: <code>Commercial Projects / Iceland_Tactical_Outdoor</code>
+    </footer>
+  </div>
+
+</body>
+</html>

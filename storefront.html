@@ -1,0 +1,1788 @@
+<!DOCTYPE html>
+<html lang="is">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>NORDIC HEAVY-DUTY | Reykjavík Flagship Equipment Hub • Skeifan 10</title>
+  <style>
+    /* ==========================================================================
+       ELITE NORDIC LUXURY & ARCHITECTURAL TECHWEAR PALETTE
+       Restrained, serious, stealth luxury (No gamer neon)
+       ========================================================================== */
+    :root {
+      --bg-base: #07090d;
+      --surface-1: #0d1017;
+      --surface-2: #131722;
+      --surface-3: #1a202e;
+      --border-subtle: rgba(255, 255, 255, 0.07);
+      --border-medium: rgba(255, 255, 255, 0.14);
+      --border-hover: rgba(212, 175, 55, 0.45);
+      
+      --text-white: #f8fafc;
+      --text-silver: #cbd5e1;
+      --text-muted: #7e8b9e;
+      
+      /* Refined Accents: Bronze Gold, Ice Slate, Muted Moss */
+      --accent-gold: #c5a059;
+      --accent-gold-light: #e5c98d;
+      --accent-ice: #94a3b8;
+      --accent-moss: #2e7d5a;
+      --accent-amber: #b45309;
+      
+      --radius-sm: 4px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-white);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.55;
+      font-size: 15px;
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    /* Top Subdued Announcement Ribbon */
+    .top-ribbon {
+      background: #0a0d13;
+      border-bottom: 1px solid var(--border-subtle);
+      padding: 9px 24px;
+      font-size: 0.78rem;
+      letter-spacing: 0.04em;
+      color: var(--text-silver);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .ribbon-pill {
+      background: rgba(197, 160, 89, 0.12);
+      border: 1px solid rgba(197, 160, 89, 0.3);
+      color: var(--accent-gold-light);
+      padding: 2px 8px;
+      border-radius: var(--radius-sm);
+      font-weight: 700;
+      font-size: 0.7rem;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* Main Header Bar */
+    header.main-header {
+      background: rgba(13, 16, 23, 0.95);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border-subtle);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 16px 32px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand-cluster {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .brand-mark {
+      width: 38px;
+      height: 38px;
+      background: #141824;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-sm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      color: var(--accent-gold);
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5);
+    }
+    .brand-title {
+      font-size: 1.12rem;
+      font-weight: 900;
+      letter-spacing: 0.08em;
+      color: #fff;
+      text-transform: uppercase;
+    }
+    .brand-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    .header-controls {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    /* Action Buttons */
+    .btn-stock-sim {
+      background: var(--surface-2);
+      border: 1px solid var(--border-medium);
+      color: var(--text-silver);
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+    }
+    .btn-stock-sim:hover {
+      background: var(--surface-3);
+      border-color: var(--accent-gold);
+      color: #fff;
+    }
+    .btn-stock-pill {
+      background: var(--accent-gold);
+      color: #07090d;
+      padding: 2px 6px;
+      border-radius: 3px;
+      font-size: 0.7rem;
+      font-weight: 900;
+    }
+
+    .currency-select {
+      background: var(--surface-2);
+      border: 1px solid var(--border-medium);
+      color: var(--text-white);
+      padding: 8px 12px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .btn-cart {
+      background: var(--surface-2);
+      border: 1px solid var(--border-medium);
+      color: #fff;
+      padding: 8px 16px;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 800;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: all 0.15s;
+    }
+    .btn-cart:hover {
+      border-color: #fff;
+    }
+    .cart-counter {
+      background: #fff;
+      color: #07090d;
+      padding: 1px 6px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 900;
+    }
+
+    /* Top Right Hamburger / Menu Toggle */
+    .btn-menu-burger {
+      background: var(--surface-2);
+      border: 1px solid var(--border-medium);
+      color: #fff;
+      width: 42px;
+      height: 40px;
+      border-radius: var(--radius-sm);
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .btn-menu-burger:hover {
+      border-color: var(--accent-gold);
+      background: var(--surface-3);
+    }
+    .burger-dash {
+      width: 20px;
+      height: 2px;
+      background: #fff;
+      border-radius: 1px;
+      transition: all 0.2s;
+    }
+    .btn-menu-burger:hover .burger-dash {
+      background: var(--accent-gold);
+    }
+
+    /* Slide-out Navigation Drawer */
+    .drawer-scrim {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      z-index: 300;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .drawer-scrim.open { opacity: 1; pointer-events: auto; }
+
+    .nav-drawer {
+      position: fixed;
+      top: 0; right: -420px;
+      width: 400px;
+      max-width: 90vw;
+      height: 100vh;
+      background: #0a0d14;
+      border-left: 1px solid var(--border-medium);
+      z-index: 310;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.7);
+      transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+      overflow-y: auto;
+    }
+    .nav-drawer.open { right: 0; }
+
+    .drawer-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #07090e;
+    }
+    .drawer-close {
+      background: #141824;
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      transition: all 0.15s;
+    }
+    .drawer-close:hover { color: #fff; border-color: #fff; }
+
+    .drawer-body { padding: 24px; flex-grow: 1; }
+    .drawer-lbl {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-gold);
+      margin-bottom: 12px;
+    }
+    .drawer-list { list-style: none; margin-bottom: 30px; }
+    .drawer-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 14px;
+      border-radius: var(--radius-sm);
+      color: var(--text-silver);
+      font-size: 0.9rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+      margin-bottom: 4px;
+      border: 1px solid transparent;
+    }
+    .drawer-item:hover {
+      background: #141724;
+      border-color: var(--border-subtle);
+      color: #fff;
+      padding-left: 18px;
+    }
+    .drawer-badge {
+      font-size: 0.7rem;
+      font-weight: 800;
+      padding: 2px 8px;
+      border-radius: 2px;
+      background: #181d2c;
+      color: var(--text-muted);
+    }
+
+    /* Hero Headline Section */
+    .hero-zone {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 60px 32px 30px 32px;
+    }
+    .hero-pre {
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.15em;
+      color: var(--accent-gold);
+      margin-bottom: 12px;
+    }
+    .hero-zone h1 {
+      font-size: 2.8rem;
+      font-weight: 900;
+      letter-spacing: -0.02em;
+      line-height: 1.15;
+      color: #fff;
+      max-width: 900px;
+    }
+    .hero-zone p {
+      font-size: 1.05rem;
+      color: var(--text-silver);
+      max-width: 780px;
+      margin: 16px 0 30px 0;
+      line-height: 1.6;
+    }
+
+    /* Hero Key Metrics Ribbon */
+    .metrics-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      margin-top: 24px;
+    }
+    @media (max-width: 900px) {
+      .metrics-row { grid-template-columns: repeat(2, 1fr); }
+      .hero-zone h1 { font-size: 2rem; }
+    }
+    @media (max-width: 550px) {
+      .metrics-row { grid-template-columns: 1fr; }
+    }
+
+    .metric-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 16px 20px;
+    }
+    .metric-val {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #fff;
+      letter-spacing: -0.01em;
+    }
+    .metric-lbl {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 4px;
+    }
+
+    /* ==========================================================================
+       3-COLUMN LARGE VISUAL DEPARTMENT DIRECTORIES
+       Restrained, architectural, editorial photography
+       ========================================================================== */
+    .departments-section {
+      max-width: 1400px;
+      margin: 40px auto 20px auto;
+      padding: 0 32px;
+    }
+    .dep-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 24px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .dep-heading {
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      text-transform: uppercase;
+      color: #fff;
+    }
+    .dep-subheading {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    .departments-grid-3col {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 1080px) {
+      .departments-grid-3col { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 700px) {
+      .departments-grid-3col { grid-template-columns: 1fr; }
+    }
+
+    .dep-tile {
+      position: relative;
+      border-radius: var(--radius-md);
+      overflow: hidden;
+      min-height: 320px;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 28px;
+      cursor: pointer;
+      border: 1px solid var(--border-subtle);
+      transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+      background-size: cover;
+      background-position: center;
+    }
+    .dep-tile::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: linear-gradient(180deg, rgba(7, 9, 13, 0.25) 0%, rgba(7, 9, 13, 0.85) 60%, #07090d 100%);
+      transition: all 0.3s ease;
+      z-index: 1;
+    }
+    .dep-tile:hover {
+      transform: translateY(-4px);
+      border-color: var(--accent-gold);
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.6);
+    }
+    .dep-tile:hover::before {
+      background: linear-gradient(180deg, rgba(7, 9, 13, 0.15) 0%, rgba(7, 9, 13, 0.8) 50%, #07090d 100%);
+    }
+
+    .dep-tile-inner {
+      position: relative;
+      z-index: 2;
+    }
+    .dep-tag {
+      display: inline-block;
+      padding: 4px 10px;
+      border-radius: var(--radius-sm);
+      font-size: 0.68rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-bottom: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      color: #fff;
+    }
+    .tag-gold {
+      background: rgba(197, 160, 89, 0.15);
+      border-color: rgba(197, 160, 89, 0.4);
+      color: var(--accent-gold-light);
+    }
+
+    .dep-title {
+      font-size: 1.45rem;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      color: #fff;
+      line-height: 1.25;
+      margin-bottom: 8px;
+    }
+    .dep-desc {
+      font-size: 0.84rem;
+      color: var(--text-silver);
+      line-height: 1.5;
+      margin-bottom: 16px;
+    }
+    .dep-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+    .dep-stat {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .dep-btn-view {
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.18);
+      color: #fff;
+      padding: 6px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      transition: all 0.15s ease;
+    }
+    .dep-tile:hover .dep-btn-view {
+      background: #fff;
+      color: #07090d;
+      border-color: #fff;
+    }
+
+    /* ==========================================================================
+       CATALOG CONTROLS & PRODUCT GRID
+       ========================================================================== */
+    .catalog-section {
+      max-width: 1400px;
+      margin: 40px auto;
+      padding: 0 32px;
+    }
+
+    .filter-deck {
+      background: var(--surface-1);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 16px 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 30px;
+    }
+    .filter-color-group {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .swatch-item {
+      width: 24px; height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid transparent;
+      transition: all 0.15s;
+    }
+    .swatch-item:hover, .swatch-item.active {
+      transform: scale(1.15);
+      border-color: #fff;
+    }
+
+    .product-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 24px;
+    }
+    @media (max-width: 1150px) {
+      .product-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+    @media (max-width: 800px) {
+      .product-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 500px) {
+      .product-grid { grid-template-columns: 1fr; }
+    }
+
+    .prod-card {
+      background: var(--surface-1);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.25s ease;
+    }
+    .prod-card:hover {
+      border-color: var(--border-medium);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+    }
+    .prod-media {
+      height: 230px;
+      position: relative;
+      background: #11141c;
+      overflow: hidden;
+    }
+    .prod-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+    .prod-card:hover .prod-img {
+      transform: scale(1.04);
+    }
+    .prod-tag-badge {
+      position: absolute;
+      top: 12px; left: 12px;
+      background: rgba(7, 9, 13, 0.85);
+      backdrop-filter: blur(4px);
+      border: 1px solid var(--border-subtle);
+      color: #fff;
+      font-size: 0.68rem;
+      font-weight: 800;
+      letter-spacing: 0.05em;
+      padding: 3px 8px;
+      border-radius: var(--radius-sm);
+      text-transform: uppercase;
+    }
+
+    .prod-details {
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .prod-brand {
+      font-size: 0.72rem;
+      font-weight: 800;
+      letter-spacing: 0.08em;
+      color: var(--accent-gold);
+      text-transform: uppercase;
+    }
+    .prod-name {
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 6px 0 8px 0;
+      line-height: 1.3;
+    }
+    .prod-specs {
+      font-size: 0.82rem;
+      color: var(--text-silver);
+      margin-bottom: 16px;
+      flex-grow: 1;
+      line-height: 1.5;
+    }
+
+    .prod-pricing-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-subtle);
+    }
+    .prod-price {
+      font-size: 1.25rem;
+      font-weight: 900;
+      color: #fff;
+    }
+    .prod-price-sub {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+    .btn-add-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border-medium);
+      color: #fff;
+      padding: 8px 14px;
+      border-radius: var(--radius-sm);
+      font-size: 0.78rem;
+      font-weight: 800;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .btn-add-item:hover {
+      background: #fff;
+      color: #07090d;
+      border-color: #fff;
+    }
+
+    /* Modal Styling */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100vw; height: 100vh;
+      background: rgba(0, 0, 0, 0.82);
+      backdrop-filter: blur(8px);
+      z-index: 400;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.open { display: flex; }
+
+    .modal-frame {
+      background: #0d1017;
+      border: 1px solid var(--border-medium);
+      border-radius: var(--radius-md);
+      max-width: 960px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 32px;
+      position: relative;
+      box-shadow: 0 25px 50px rgba(0, 0, 0, 0.8);
+    }
+    .modal-close-btn {
+      position: absolute;
+      top: 20px; right: 20px;
+      background: var(--surface-2);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-muted);
+      width: 36px; height: 36px;
+      border-radius: var(--radius-sm);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Cart Drawer */
+    .cart-drawer {
+      position: fixed;
+      top: 0; right: -460px;
+      width: 440px;
+      max-width: 90vw;
+      height: 100vh;
+      background: #0d1017;
+      border-left: 1px solid var(--border-medium);
+      z-index: 350;
+      display: flex;
+      flex-direction: column;
+      box-shadow: -15px 0 40px rgba(0, 0, 0, 0.8);
+      transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .cart-drawer.open { right: 0; }
+    .cart-header {
+      padding: 24px;
+      border-bottom: 1px solid var(--border-subtle);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .cart-body {
+      padding: 24px;
+      flex-grow: 1;
+      overflow-y: auto;
+    }
+    .cart-footer {
+      padding: 24px;
+      border-top: 1px solid var(--border-subtle);
+      background: #090b10;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Subdued Announcement Ribbon -->
+  <div class="top-ribbon">
+    <div>
+      <span class="ribbon-pill">Dropp.is Samdægurs</span>
+      Frí heimsending um allt land fyrir pantanir yfir 15.000 ISK • Skeifan 10 Hub
+    </div>
+    <div>
+      <span style="color:var(--accent-gold); font-weight:700;">ICE-SAR / Landsbjörg 15% Afsláttur</span> • 100% Solid Series (Enginn Felubúningur)
+    </div>
+  </div>
+
+  <!-- Main Navigation Header -->
+  <header class="main-header">
+    <div class="brand-cluster" onclick="filterDepartment('all')">
+      <div class="brand-mark">▲</div>
+      <div>
+        <div class="brand-title">NORDIC HEAVY-DUTY</div>
+        <div class="brand-sub">Reykjavík Flagship Hub • 100% Solid Series</div>
+      </div>
+    </div>
+
+    <div class="header-controls">
+      <!-- Live Stock Simulator Button -->
+      <button class="btn-stock-sim" onclick="openInventoryModal()">
+        <span>Lagergreining / Stock Simulation</span>
+        <span class="btn-stock-pill">2.939 stk.</span>
+      </button>
+
+      <!-- Currency Switcher -->
+      <select class="currency-select" id="currSelector" onchange="changeCurrency()">
+        <option value="ISK" selected>ISK (kr.)</option>
+        <option value="EUR">EUR (€)</option>
+      </select>
+
+      <!-- Cart Button -->
+      <button class="btn-cart" onclick="toggleCart()">
+        <span>Karfa</span>
+        <span class="cart-counter" id="cartCount">0</span>
+      </button>
+
+      <!-- Top Right Hamburger Menu Button (☰) -->
+      <button class="btn-menu-burger" onclick="toggleNavDrawer()" title="Valmynd / Menu">
+        <div class="burger-dash"></div>
+        <div class="burger-dash"></div>
+        <div class="burger-dash"></div>
+      </button>
+    </div>
+  </header>
+
+  <!-- Slide-out Navigation Drawer -->
+  <div class="drawer-scrim" id="drawerOverlay" onclick="toggleNavDrawer()"></div>
+  <aside class="nav-drawer" id="navDrawer">
+    <div class="drawer-header">
+      <div class="brand-cluster">
+        <div class="brand-mark">▲</div>
+        <div>
+          <div class="brand-title" style="font-size:1rem;">NORDIC HEAVY-DUTY</div>
+          <div class="brand-sub">Reykjavík Flagship Hub</div>
+        </div>
+      </div>
+      <button class="drawer-close" onclick="toggleNavDrawer()">✕</button>
+    </div>
+
+    <div class="drawer-body">
+      <div class="drawer-lbl">Vöruflokkar / Departments</div>
+      <ul class="drawer-list">
+        <li class="drawer-item" onclick="drawerFilter('all')">
+          <span>Allar Vörur (All Products)</span>
+          <span class="drawer-badge">2.939 stk.</span>
+        </li>
+        <li class="drawer-item" onclick="drawerFilter('ripstop')">
+          <span>🌋 Lava-Proof Ripstop Series</span>
+          <span class="drawer-badge" style="color:var(--accent-gold);">Anti-Basalt</span>
+        </li>
+        <li class="drawer-item" onclick="drawerFilter('hardshell')">
+          <span>🌧️ Skeljajakkar (Gelanots 20k/20k)</span>
+          <span class="drawer-badge">136 stk.</span>
+        </li>
+        <li class="drawer-item" onclick="drawerFilter('pants')">
+          <span>👖 Buxur (Heavy-Duty NYCO)</span>
+          <span class="drawer-badge">402 stk.</span>
+        </li>
+        <li class="drawer-item" onclick="drawerFilter('belts_caps')">
+          <span>🪢 Belti & Húfur (AustriAlpin Cobra®)</span>
+          <span class="drawer-badge">160 stk.</span>
+        </li>
+        <li class="drawer-item" onclick="drawerFilter('japan_tech')">
+          <span>🇯🇵 Japan Techwear & Takibi Fire-Proof</span>
+          <span class="drawer-badge">27 stk.</span>
+        </li>
+        <li class="drawer-item" onclick="drawerFilter('impulse_edc')">
+          <span>⚡ Impulse & EDC Cash Generators</span>
+          <span class="drawer-badge">1.550 stk.</span>
+        </li>
+        <li class="drawer-item" onclick="drawerFilter('insulation')">
+          <span>❄️ Kuldaúlpur (Sub-Zero G-LOFT)</span>
+          <span class="drawer-badge">39 stk.</span>
+        </li>
+        <li class="drawer-item" onclick="drawerFilter('packs')">
+          <span>🎒 Bakpokar (Cordura 700D / Dyneema)</span>
+          <span class="drawer-badge">40 stk.</span>
+        </li>
+      </ul>
+
+      <div class="drawer-lbl">Upplýsingar & Tenglar / Info</div>
+      <ul class="drawer-list">
+        <li class="drawer-item" onclick="openInventoryModal(); toggleNavDrawer();">
+          <span>📊 Lagerstjórnun (Stock Simulation)</span>
+          <span class="drawer-badge">€69.5k FOB</span>
+        </li>
+        <li class="drawer-item" onclick="alert('Landsbjörg / ICE-SAR: 15% afsláttur gildir við kassa með björgunarsveitaskírteini.'); toggleNavDrawer();">
+          <span>🇮🇸 ICE-SAR 15% Afsláttur</span>
+          <span class="drawer-badge">Landsbjörg</span>
+        </li>
+        <li class="drawer-item" onclick="alert('Dropp.is: Frí heimsending um allt land fyrir pantanir yfir 15.000 ISK.'); toggleNavDrawer();">
+          <span>🚚 Dropp.is Heimsending & Póstbox</span>
+          <span class="drawer-badge">Samdægurs</span>
+        </li>
+        <li class="drawer-item" onclick="alert('Skeifan 10, 108 Reykjavík • Opið virka daga 10:00 - 18:00.'); toggleNavDrawer();">
+          <span>📍 Skeifan 10 Hub (130 m²)</span>
+          <span class="drawer-badge">Reykjavík</span>
+        </li>
+        <li class="drawer-item">
+          <a href="00_master_encyclopedia_and_market_research.html" target="_blank" style="color:var(--accent-gold); text-decoration:none; display:flex; justify-content:space-between; width:100%;">
+            <span>📈 Master Investor Dashboard ↗</span>
+            <span class="drawer-badge">8 Tabs</span>
+          </a>
+        </li>
+        <li class="drawer-item">
+          <a href="presentation.html" target="_blank" style="color:var(--text-silver); text-decoration:none; display:flex; justify-content:space-between; width:100%;">
+            <span>📊 Pitch Deck Kynning (Slide Deck) ↗</span>
+            <span class="drawer-badge">8 Slides</span>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </aside>
+
+  <!-- Hero Section -->
+  <section class="hero-zone">
+    <div class="hero-pre">The Global Nexus of Anti-Fragile Gear • Skeifan 10 Reykjavík</div>
+    <h1>Built for Subarctic Realities.<br>Refined for Modern Everyday Life.</h1>
+    <p>Professional Cordura®, NYCO Extreme, Polartec® and Gelanots® equipment in stealth monochromatic tones: Solid Black, Ranger Green, Coyote Brown, Wolf Grey, and Dark Navy. Zero camouflage. Maximum mechanical durability.</p>
+
+    <div class="metrics-row">
+      <div class="metric-card">
+        <div class="metric-val">2.939 stk.</div>
+        <div class="metric-lbl">Heildarlager á Íslandi</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">€69.532</div>
+        <div class="metric-lbl">Stofnfjárfesting Lager FOB</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">27.425.000 kr.</div>
+        <div class="metric-lbl">Söluverðmæti með VSK</div>
+      </div>
+      <div class="metric-card">
+        <div class="metric-val">63.5%</div>
+        <div class="metric-lbl">Meðalframlegð (Gross Margin)</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 3-Column Large Visual Department Directories Showcase -->
+  <section class="departments-section">
+    <div class="dep-bar">
+      <div>
+        <div class="dep-heading">Vöruflokkar / Department Directories</div>
+        <div class="dep-subheading">9 sérhæfðir vöruflokkar prófaðir fyrir íslenskt hraun, saltrok og norðankulda</div>
+      </div>
+      <button class="btn-stock-sim" style="padding:6px 14px; font-size:0.75rem;" onclick="filterDepartment('all', null)">
+        Sýna Allar Vörur (2.939 stk.)
+      </button>
+    </div>
+
+    <!-- 3 BLOCKS PER ROW -->
+    <div class="departments-grid-3col">
+
+      <!-- 1. Lava-Proof Ripstop Series -->
+      <div class="dep-tile" style="background-image: url('https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=800&q=80');" onclick="filterDepartment('ripstop', this)">
+        <div class="dep-tile-inner">
+          <span class="dep-tag tag-gold">🌋 Lava-Proof Ripstop Series</span>
+          <div class="dep-title">Hraun & Basalt Armor</div>
+          <div class="dep-desc">M-Tac Sturm NYCO Extreme og Pentagon Dias. 4x hærri rifþol en Gore-Tex Pro. Rífst ekki á beittum hraunbrúnum.</div>
+          <div class="dep-meta">
+            <span class="dep-stat">195 stk. • Frá 14.900 kr.</span>
+            <span class="dep-btn-view">Skoða ➔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 2. Skeljajakkar Hardshell L6 -->
+      <div class="dep-tile" style="background-image: url('https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=800&q=80');" onclick="filterDepartment('hardshell', this)">
+        <div class="dep-tile-inner">
+          <span class="dep-tag">🌧️ Skeljajakkar (L6 Hardshell)</span>
+          <div class="dep-title">Gelanots® & Storm Shells</div>
+          <div class="dep-desc">Toyota Gelanots® 20k/20k og Keela SDP. Lokalaus sameindatækni stíflast ekki af sjávarsalti. 100% vatnshelt í hafroki.</div>
+          <div class="dep-meta">
+            <span class="dep-stat">136 stk. • Frá 29.900 kr.</span>
+            <span class="dep-btn-view">Skoða ➔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3. Heavy-Duty Pants -->
+      <div class="dep-tile" style="background-image: url('https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=800&q=80');" onclick="filterDepartment('pants', this)">
+        <div class="dep-tile-inner">
+          <span class="dep-tag">👖 Buxur (Heavy-Duty Workhorse)</span>
+          <div class="dep-title">M-Tac & Helikon Tactical</div>
+          <div class="dep-desc">Aggressor Gen.II Flex og OTP VersaStretch. Teflon DWR, teygjanlegt mitti, hnébætur. Aðalveltan okkar á hverjum degi.</div>
+          <div class="dep-meta">
+            <span class="dep-stat">402 stk. • Frá 11.900 kr.</span>
+            <span class="dep-btn-view">Skoða ➔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 4. AustriAlpin Cobra Belts & Caps -->
+      <div class="dep-tile" style="background-image: url('https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=800&q=80');" onclick="filterDepartment('belts_caps', this)">
+        <div class="dep-tile-inner">
+          <span class="dep-tag tag-gold">🪢 Belti & Húfur (AustriAlpin Cobra®)</span>
+          <div class="dep-title">Cobra Click & Ripstop Caps</div>
+          <div class="dep-desc">Austurrískar COBRA® 18kN álklemmur (opnast með einum smelli í vetrarvettlingum) + teflon-húðaðar derhúfur án topphnapps.</div>
+          <div class="dep-meta">
+            <span class="dep-stat">160 stk. • Frá 3.900 kr.</span>
+            <span class="dep-btn-view">Skoða ➔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 5. Japan Techwear & Fire-Proof -->
+      <div class="dep-tile" style="background-image: url('https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=800&q=80');" onclick="filterDepartment('japan_tech', this)">
+        <div class="dep-tile-inner">
+          <span class="dep-tag">🇯🇵 Japan Techwear & Fire-Proof</span>
+          <div class="dep-title">Nanga Takibi & Montbell</div>
+          <div class="dep-desc">Eldtraust Takibi aramid dúnúlpur sem bráðna ekki af hraunneistum og varðeldum. Montbell 134g ofurléttir regnjakkar.</div>
+          <div class="dep-meta">
+            <span class="dep-stat">27 stk. • Frá 34.900 kr.</span>
+            <span class="dep-btn-view">Skoða ➔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 6. Impulse & EDC Cash Generators -->
+      <div class="dep-tile" style="background-image: url('https://images.unsplash.com/photo-1582966772680-860e372bb558?auto=format&fit=crop&w=800&q=80');" onclick="filterDepartment('impulse_edc', this)">
+        <div class="dep-tile-inner">
+          <span class="dep-tag tag-gold">⚡ Impulse & EDC Cash Machine</span>
+          <div class="dep-title">Nitecore, Keith Ti, DexShell</div>
+          <div class="dep-desc">Vatnsheldir DexShell sokkar, Nitecore NU33 rauð ljós fyrir Norðurljós, Keith lækningatítan og Ocoopa hleðsluhitapokar.</div>
+          <div class="dep-meta">
+            <span class="dep-stat">1.550 stk. • Frá 450 kr.</span>
+            <span class="dep-btn-view">Skoða ➔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 7. Sub-Zero Insulation L7 -->
+      <div class="dep-tile" style="background-image: url('https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=800&q=80');" onclick="filterDepartment('insulation', this)">
+        <div class="dep-tile-inner">
+          <span class="dep-tag">❄️ Kuldaúlpur (L7 Sub-Zero)</span>
+          <div class="dep-title">Carinthia G-LOFT® & HIG 4.0</div>
+          <div class="dep-desc">Austurrísk hernaðar-einangrun Carinthia HIG 4.0. Heldur hita niður í -20°C jafnvel þótt hún vökni alveg í bleytu.</div>
+          <div class="dep-meta">
+            <span class="dep-stat">39 stk. • Frá 48.000 kr.</span>
+            <span class="dep-btn-view">Skoða ➔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 8. Softshell & Flíspeysur L3-L5 -->
+      <div class="dep-tile" style="background-image: url('https://images.unsplash.com/photo-1551854838-212c50b4c184?auto=format&fit=crop&w=800&q=80');" onclick="filterDepartment('softshell', this)">
+        <div class="dep-tile-inner">
+          <span class="dep-tag">🛡️ Softshell & Flís (L3-L5)</span>
+          <div class="dep-title">Pentagon Artaxes & Patriot</div>
+          <div class="dep-desc">100% vindhelt Storm-Tex efni með flísfóðri. Helikon Patriot 390g þungflís og Fahrenheit Polartec Power Stretch.</div>
+          <div class="dep-meta">
+            <span class="dep-stat">377 stk. • Frá 18.200 kr.</span>
+            <span class="dep-btn-view">Skoða ➔</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- 9. Bakpokar & Heavy Duty Packs -->
+      <div class="dep-tile" style="background-image: url('https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=800&q=80');" onclick="filterDepartment('packs', this)">
+        <div class="dep-tile-inner">
+          <span class="dep-tag">🎒 Bakpokar & EDC Packs</span>
+          <div class="dep-title">Tasmanian Tiger & Dyneema</div>
+          <div class="dep-desc">Cordura 700D leysiskornir hernaðarbakpokar og And Wander vatnsheldir Dyneema tindapokar með 3M endurskini.</div>
+          <div class="dep-meta">
+            <span class="dep-stat">40 stk. • Frá 33.500 kr.</span>
+            <span class="dep-btn-view">Skoða ➔</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Catalog Controls Bar -->
+  <main class="catalog-section" id="catalogSection">
+    <div class="filter-deck">
+      <div>
+        <span style="font-weight:800; font-size:0.85rem; color:#fff; text-transform:uppercase; letter-spacing:0.06em;">
+          Sía eftir lit / Monochromatic Palette:
+        </span>
+      </div>
+
+      <div class="filter-color-group">
+        <div class="swatch-item" style="background:#0a0d13;" title="Solid Black (40% lagers)" onclick="filterColor('black', this)"></div>
+        <div class="swatch-item" style="background:#3d4a36;" title="Ranger Green / Olive (25% lagers)" onclick="filterColor('olive', this)"></div>
+        <div class="swatch-item" style="background:#7c5832;" title="Coyote Brown (15% lagers)" onclick="filterColor('coyote', this)"></div>
+        <div class="swatch-item" style="background:#525e6f;" title="Wolf Grey / Steel (12% lagers)" onclick="filterColor('grey', this)"></div>
+        <div class="swatch-item" style="background:#192744;" title="Dark Navy (8% lagers)" onclick="filterColor('navy', this)"></div>
+        <button class="btn-stock-sim" style="padding:4px 10px; font-size:0.75rem;" onclick="filterColor('all', null)">Endurstilla / All</button>
+      </div>
+    </div>
+
+    <!-- Product Grid Header -->
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
+      <h2 style="font-size:1.4rem; font-weight:900; color:#fff;" id="currentDirectoryTitle">Allar Vörur / All Products</h2>
+      <span style="font-size:0.82rem; color:var(--text-muted);" id="catalogCounter">Showing products</span>
+    </div>
+
+    <div class="product-grid" id="productGrid">
+      <!-- Injected by JavaScript -->
+    </div>
+  </main>
+
+  <!-- Live Stock Simulation Modal (€69.5k Inventory & 2,939 Units) -->
+  <div class="modal-overlay" id="inventoryModal">
+    <div class="modal-frame">
+      <button class="modal-close-btn" onclick="closeInventoryModal()">✕</button>
+      <div style="font-size:0.75rem; font-weight:800; color:var(--accent-gold); letter-spacing:0.1em; text-transform:uppercase;">
+        Skeifan 10 Hub • Warehouse Inventory Model
+      </div>
+      <h2 style="font-size:1.6rem; font-weight:900; color:#fff; margin:6px 0 16px 0;">
+        Raunveruleg Lagergreining (2.939 stk. / €69.532 FOB)
+      </h2>
+      <p style="color:var(--text-silver); font-size:0.88rem; margin-bottom:24px; line-height:1.6;">
+        Heildaryfirlit yfir birgðir við opnun verslunar í Skeifan 10: 1.389 stk. í fatnaði (Úkraína, ESB, Japan) ásamt 1.550 stk. af hámargnaðar EDC vörum beint frá framleiðendum í Kína.
+      </p>
+
+      <div class="metrics-row" style="margin-bottom:24px;">
+        <div class="metric-card">
+          <div class="metric-val" style="color:var(--accent-gold);">2.939 stk.</div>
+          <div class="metric-lbl">Heildarmagn á lager</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val">€69.532</div>
+          <div class="metric-lbl">Innkaupsverð FOB (10.4M kr.)</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" style="color:#fff;">27.425.000 kr.</div>
+          <div class="metric-lbl">Söluverðmæti með VSK</div>
+        </div>
+        <div class="metric-card">
+          <div class="metric-val" style="color:var(--accent-gold);">63.5%</div>
+          <div class="metric-lbl">Meðalframlegð (Margin)</div>
+        </div>
+      </div>
+
+      <div style="overflow-x:auto;">
+        <table style="width:100%; border-collapse:collapse; text-align:left; font-size:0.85rem;">
+          <thead>
+            <tr style="border-bottom:1px solid var(--border-medium); color:var(--text-muted); font-size:0.75rem; text-transform:uppercase;">
+              <th style="padding:10px 12px;">Flokkur / Department</th>
+              <th style="padding:10px 12px;">Magn</th>
+              <th style="padding:10px 12px;">Innkaup FOB</th>
+              <th style="padding:10px 12px;">Söluverðmæti</th>
+              <th style="padding:10px 12px;">Lykiltegundir</th>
+            </tr>
+          </thead>
+          <tbody style="color:var(--text-silver);">
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+              <td style="padding:10px 12px;"><strong style="color:#fff;">1. Skeljajakkar (L6 Hardshell)</strong></td>
+              <td style="padding:10px 12px;">136 stk.</td>
+              <td style="padding:10px 12px;">€14.270</td>
+              <td style="padding:10px 12px;">4.840.500 kr.</td>
+              <td style="padding:10px 12px;">UF PRO Monsoon, Keela Munro, Gelanots L6</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+              <td style="padding:10px 12px;"><strong style="color:#fff;">2. Buxur (Heavy-Duty NYCO)</strong></td>
+              <td style="padding:10px 12px;">402 stk.</td>
+              <td style="padding:10px 12px;">€16.167</td>
+              <td style="padding:10px 12px;">5.628.000 kr.</td>
+              <td style="padding:10px 12px;">M-Tac Aggressor Gen.II (160), Conquistador, OTP</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+              <td style="padding:10px 12px;"><strong style="color:#fff;">3. Softshell Jakkar (L4-L5)</strong></td>
+              <td style="padding:10px 12px;">182 stk.</td>
+              <td style="padding:10px 12px;">€9.070</td>
+              <td style="padding:10px 12px;">2.925.000 kr.</td>
+              <td style="padding:10px 12px;">Pentagon Artaxes, M-Tac Commander, Trooper</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+              <td style="padding:10px 12px;"><strong style="color:#fff;">4. Nærföt (L1 Merino / Polartec)</strong></td>
+              <td style="padding:10px 12px;">220 од.</td>
+              <td style="padding:10px 12px;">€7.760</td>
+              <td style="padding:10px 12px;">2.646.000 kr.</td>
+              <td style="padding:10px 12px;">Fahrenheit Power Dry, 100% Merino, Montbell</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+              <td style="padding:10px 12px;"><strong style="color:#fff;">5. Flíspeysur (L2-L3)</strong></td>
+              <td style="padding:10px 12px;">195 stk.</td>
+              <td style="padding:10px 12px;">€6.350</td>
+              <td style="padding:10px 12px;">2.248.500 kr.</td>
+              <td style="padding:10px 12px;">Helikon Patriot 390g, Fahrenheit Power Stretch</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+              <td style="padding:10px 12px;"><strong style="color:#fff;">6. Kuldaúlpur (L7 Sub-Zero)</strong></td>
+              <td style="padding:10px 12px;">39 stk.</td>
+              <td style="padding:10px 12px;">€5.860</td>
+              <td style="padding:10px 12px;">2.355.000 kr.</td>
+              <td style="padding:10px 12px;">Carinthia HIG 4.0, MIG 4.0, Nanga Takibi Down</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+              <td style="padding:10px 12px;"><strong style="color:#fff;">7. Bakpokar (Heavy Duty Packs)</strong></td>
+              <td style="padding:10px 12px;">40 stk.</td>
+              <td style="padding:10px 12px;">€3.250</td>
+              <td style="padding:10px 12px;">1.125.000 kr.</td>
+              <td style="padding:10px 12px;">Tasmanian Tiger 700D, Direct Action, Dyneema</td>
+            </tr>
+            <tr style="border-bottom:1px solid var(--border-subtle);">
+              <td style="padding:10px 12px;"><strong style="color:#fff;">8. Fylgihlutir & Sokkar</strong></td>
+              <td style="padding:10px 12px;">175 stk.</td>
+              <td style="padding:10px 12px;">€1.955</td>
+              <td style="padding:10px 12px;">1.407.000 kr.</td>
+              <td style="padding:10px 12px;">Keela Legghlífar, Fahrenheit Merino Sokkar</td>
+            </tr>
+            <tr style="background:rgba(197, 160, 89, 0.08); border-top:1px solid var(--accent-gold);">
+              <td style="padding:10px 12px;"><strong style="color:var(--accent-gold-light);">9. Impulse & EDC Kassi (China Direct)</strong></td>
+              <td style="padding:10px 12px;"><strong style="color:#fff;">1.550 stk.</strong></td>
+              <td style="padding:10px 12px;"><strong style="color:#fff;">€4.850</strong></td>
+              <td style="padding:10px 12px;"><strong style="color:var(--accent-gold);">4.250.000 kr.</strong></td>
+              <td style="padding:10px 12px;">Nitecore NU33 (40), Keith Ti (50), DexShell (80), Nextool (30), Ocoopa (35), Patches (400)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Cart Drawer -->
+  <aside class="cart-drawer" id="cartDrawer">
+    <div class="cart-header">
+      <div style="font-weight:900; font-size:1.1rem; color:#fff; text-transform:uppercase; letter-spacing:0.04em;">
+        Karfan þín / Cart
+      </div>
+      <button class="drawer-close" onclick="toggleCart()">✕</button>
+    </div>
+    <div class="cart-body" id="cartItemsContainer">
+      <!-- Items dynamically populated -->
+    </div>
+    <div class="cart-footer">
+      <div style="display:flex; justify-content:space-between; font-size:0.85rem; color:var(--text-silver); margin-bottom:8px;">
+        <span>Dropp Sendingarkostnaður:</span>
+        <span id="droppCostLabel">Frí heimsending (yfir 15k kr.)</span>
+      </div>
+      <div style="display:flex; justify-content:space-between; font-size:1.25rem; font-weight:900; color:#fff; margin-bottom:16px;">
+        <span>Samtals með VSK:</span>
+        <span id="cartTotalLabel">0 kr.</span>
+      </div>
+      <button class="btn-stock-sim" style="width:100%; justify-content:center; padding:12px; font-size:0.88rem; background:var(--accent-gold); color:#07090d; border-color:var(--accent-gold);" onclick="checkoutSimulation()">
+        Ganga frá greiðslu / Checkout (Dropp.is) ➔
+      </button>
+    </div>
+  </aside>
+
+  <!-- ==========================================================================
+       JAVASCRIPT CATALOG DATA & CONTROLLERS
+       ========================================================================== -->
+  <script>
+    const EXCHANGE_RATE = 158.0; // 1 EUR = 158 ISK
+    let currentCurrency = 'ISK';
+    let currentDepartment = 'all';
+    let currentColor = 'all';
+    let cart = [];
+
+    // Comprehensive catalog products
+    const products = [
+      // --- ⚡ IMPULSE & EDC CHECKOUT (CHINA DIRECT & TOP TIER) ---
+      {
+        id: 'nitecore-nu33-headlamp',
+        brand: 'Nitecore 🇨🇳',
+        category: 'impulse_edc',
+        name: 'NU33 Tri-Beam 700lm USB-C Headlamp',
+        specs: 'Triple light source: white distance beam, high-CRI camp flood, and true Red Light for Aurora Borealis observation. IP66 waterproof.',
+        priceEUR: 50,
+        stockUnits: 40,
+        colors: [
+          { name: 'Tactical Black', code: '#0a0d13', type: 'black' },
+          { name: 'Slate Grey', code: '#525e6f', type: 'grey' }
+        ],
+        sizes: ['Universal Headband'],
+        img: 'https://images.unsplash.com/photo-1508873696983-2df5293cb325?auto=format&fit=crop&w=600&q=80',
+        tag: 'Aurora Red Light • 82% Margin'
+      },
+      {
+        id: 'keith-titanium-mug-300',
+        brand: 'Keith Titanium 🇨🇳',
+        category: 'impulse_edc',
+        name: 'Ti Double-Wall Insulated Mug 300ml',
+        specs: 'Pure Grade 1 medical titanium. Double-wall vacuum insulation. 100% immune to geothermal sulfur and Atlantic sea salt corrosion.',
+        priceEUR: 41,
+        stockUnits: 50,
+        colors: [
+          { name: 'Natural Matte Titanium', code: '#94a3b8', type: 'grey' }
+        ],
+        sizes: ['300 ml / 10 oz'],
+        img: 'https://images.unsplash.com/photo-1514432324607-a09d9b4aefdd?auto=format&fit=crop&w=600&q=80',
+        tag: 'Pure Ti • 85% Margin'
+      },
+      {
+        id: 'dexshell-hytherm-pro-cn',
+        brand: 'DexShell (Shanghai) 🇨🇳',
+        category: 'impulse_edc',
+        name: 'Hytherm Pro Waterproof Merino Socks',
+        specs: '100% waterproof Porelle® membrane with Merino wool inner terry loop. Direct Shanghai factory sourcing. Keeps feet dry crossing glacial rivers.',
+        priceEUR: 38,
+        stockUnits: 80,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Olive Drab', code: '#3d4a36', type: 'olive' }
+        ],
+        sizes: ['S (36-38)', 'M (39-42)', 'L (43-46)', 'XL (47-49)'],
+        img: 'https://images.unsplash.com/photo-1582966772680-860e372bb558?auto=format&fit=crop&w=600&q=80',
+        tag: '100% Waterproof • 82% Margin'
+      },
+      {
+        id: 'naturehike-sil-drybag-10',
+        brand: 'Naturehike 🇨🇳',
+        category: 'impulse_edc',
+        name: '20D Sil-Nylon Ultralight Dry Bag 10L',
+        specs: 'Siliconized 20D Ripstop nylon (35 grams). 10,000mm hydrostatic head. Essential protection against Skógafoss and Seljalandsfoss waterfall spray.',
+        priceEUR: 17,
+        stockUnits: 75,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Ranger Olive', code: '#3d4a36', type: 'olive' }
+        ],
+        sizes: ['10 Liters (35g)'],
+        img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80',
+        tag: '35g Ultralight • 87% Margin'
+      },
+      {
+        id: 'nextool-flagship-pro',
+        brand: 'Nextool (Xiaomi Eco) 🇨🇳',
+        category: 'impulse_edc',
+        name: 'Flagship Pro 16-in-1 Heavy Multi-Tool',
+        specs: '50Cr15MoV high-hardness steel. Unique full-size heavy-duty scissors combined with needle-nose wire-cutting pliers. Field repair ready.',
+        priceEUR: 63,
+        stockUnits: 30,
+        colors: [
+          { name: 'Black Stonewashed', code: '#1a202c', type: 'black' }
+        ],
+        sizes: ['Closed 110mm'],
+        img: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=600&q=80',
+        tag: 'Heavy Duty 16-in-1 • 83% Margin'
+      },
+      {
+        id: 'ocoopa-union5s-warmer',
+        brand: 'Ocoopa 🇨🇳',
+        category: 'impulse_edc',
+        name: 'Union 5s Hand Warmer & Powerbank',
+        specs: 'Heats in 3 seconds up to 55°C. 5,000mAh battery provides 8 hours warmth and rescues frozen iPhones from sub-zero battery drain.',
+        priceEUR: 39,
+        stockUnits: 35,
+        colors: [
+          { name: 'Stealth Grey', code: '#525e6f', type: 'grey' }
+        ],
+        sizes: ['Pocket Size'],
+        img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80',
+        tag: '55°C Heat + Powerbank • 85% Margin'
+      },
+      {
+        id: 'nordic-vegvisir-patch',
+        brand: 'Nordic Hub Custom 🇮🇸',
+        category: 'impulse_edc',
+        name: 'Subdued Vegvísir PVC Morale Patch',
+        specs: 'Ancient Icelandic wayfinder runic compass. High-density 3D PVC with hook-Velcro backing. Subdued stealth colorways for caps and packs.',
+        priceEUR: 10,
+        stockUnits: 400,
+        colors: [
+          { name: 'Stealth Black / Grey', code: '#374151', type: 'grey' },
+          { name: 'Ranger Olive', code: '#3d4a36', type: 'olive' },
+          { name: 'Coyote Tan', code: '#7c5832', type: 'coyote' }
+        ],
+        sizes: ['80 x 50 mm'],
+        img: 'https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80',
+        tag: '91% Margin • Souvenir Hit'
+      },
+
+      // --- 🌋 LAVA-PROOF RIPSTOP & HARDSHELL ---
+      {
+        id: 'mtac-sturm-nyco',
+        brand: 'M-Tac 🇺🇦',
+        category: 'ripstop',
+        name: 'Sturm NYCO Extreme Smock Jacket',
+        specs: 'US Brookwood NYCO Extreme 57/43 fabric. Teflon DWR finish. 4x higher tear resistance than Gore-Tex against sharp volcanic basalt.',
+        priceEUR: 145,
+        stockUnits: 35,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Ranger Green', code: '#3d4a36', type: 'olive' },
+          { name: 'Coyote Brown', code: '#7c5832', type: 'coyote' }
+        ],
+        sizes: ['S', 'M', 'L', 'XL', '2XL Tall'],
+        img: 'https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=600&q=80',
+        tag: 'Basalt Armor'
+      },
+      {
+        id: 'pentagon-dias-smock',
+        brand: 'Pentagon Tactical 🇬🇷',
+        category: 'ripstop',
+        name: 'Dias Heavy-Duty Smock Parka',
+        specs: 'Heavyweight poly-cotton Ripstop with Ydor-Tec TPU membrane (10,000mm / 5,000g). Wind-proof storm hood with wired peak.',
+        priceEUR: 185,
+        stockUnits: 25,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Wolf Grey', code: '#525e6f', type: 'grey' }
+        ],
+        sizes: ['M', 'L', 'XL', '2XL'],
+        img: 'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=600&q=80',
+        tag: 'Heavy Smock'
+      },
+      {
+        id: 'fahrenheit-gelanots-l6',
+        brand: 'Fahrenheit 🇺🇦',
+        category: 'hardshell',
+        name: 'Gelanots® 20k/20k Storm L6 Parka',
+        specs: 'Toyota Tsusho non-porous hydrophilic PUR membrane. Atlantic sea-salt spray immune. Articulated hood fits over climbing helmets.',
+        priceEUR: 240,
+        stockUnits: 25,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Dark Navy', code: '#192744', type: 'navy' }
+        ],
+        sizes: ['S', 'M', 'L', 'XL', '2XL'],
+        img: 'https://images.unsplash.com/photo-1604076913837-52ab5629fba9?auto=format&fit=crop&w=600&q=80',
+        tag: 'Gelanots 20k'
+      },
+      {
+        id: 'ufpro-monsoon-xt',
+        brand: 'UF PRO 🇸🇮',
+        category: 'hardshell',
+        name: 'Monsoon XT Gen.2 Tactical Jacket',
+        specs: 'Integrated air/pac® shoulder cushions distribute heavy pack weight and eliminate thermal bridges. Gore-Tex 3L laminate.',
+        priceEUR: 520,
+        stockUnits: 12,
+        colors: [
+          { name: 'Brown Grey', code: '#525e6f', type: 'grey' },
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' }
+        ],
+        sizes: ['M', 'L', 'XL'],
+        img: 'https://images.unsplash.com/photo-1542272604-780c96856592?auto=format&fit=crop&w=600&q=80',
+        tag: 'Air/Pac Cushion'
+      },
+
+      // --- 👖 HEAVY-DUTY PANTS ---
+      {
+        id: 'mtac-aggressor-gen2',
+        brand: 'M-Tac 🇺🇦',
+        category: 'pants',
+        name: 'Aggressor Gen.II Flex Heavy Pants',
+        specs: 'Rip-Stop 64/32/4 with Teflon DWR. Elastic tunnel waistband self-adjusts during climbing. Cordura knee-reinforcement.',
+        priceEUR: 75,
+        stockUnits: 160,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Ranger Green', code: '#3d4a36', type: 'olive' },
+          { name: 'Coyote Brown', code: '#7c5832', type: 'coyote' },
+          { name: 'Dark Navy', code: '#192744', type: 'navy' }
+        ],
+        sizes: ['30/32', '32/32', '34/34', '36/34', '38/36 Tall'],
+        img: 'https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=600&q=80',
+        tag: '#1 Best Seller'
+      },
+      {
+        id: 'helikon-otp-pants',
+        brand: 'Helikon-Tex 🇵🇱',
+        category: 'pants',
+        name: 'Outdoor Tactical Pants® (OTP)',
+        specs: '4-way VersaStretch® nylon-spandex with DuPont Teflon coating. Articulated knees with low-profile internal pad compartments.',
+        priceEUR: 88,
+        stockUnits: 65,
+        colors: [
+          { name: 'Taiga Green', code: '#3d4a36', type: 'olive' },
+          { name: 'Shadow Grey', code: '#525e6f', type: 'grey' },
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' }
+        ],
+        sizes: ['S/Reg', 'M/Reg', 'L/Long', 'XL/Long'],
+        img: 'https://images.unsplash.com/photo-1551854838-212c50b4c184?auto=format&fit=crop&w=600&q=80',
+        tag: 'VersaStretch'
+      },
+
+      // --- 🪢 COBRA BELTS & CAPS ---
+      {
+        id: 'pentagon-kula-cobra',
+        brand: 'Pentagon Tactical 🇬🇷',
+        category: 'belts_caps',
+        name: 'Kula 38 AustriAlpin Cobra® Belt',
+        specs: 'Genuine Austrian AustriAlpin COBRA® 18kN aluminum buckle. One-click quick release in thick winter gloves. Dual-layer scuba webbing.',
+        priceEUR: 65,
+        stockUnits: 30,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Ranger Olive', code: '#3d4a36', type: 'olive' },
+          { name: 'Coyote Tan', code: '#7c5832', type: 'coyote' }
+        ],
+        sizes: ['M (80-90cm)', 'L (90-100cm)', 'XL (100-110cm)'],
+        img: 'https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=600&q=80',
+        tag: 'AustriAlpin 18kN'
+      },
+      {
+        id: 'pentagon-cap-20',
+        brand: 'Pentagon Tactical 🇬🇷',
+        category: 'belts_caps',
+        name: 'Tactical 2.0 BB Cap Teflon Ripstop',
+        specs: '65/35 Ripstop with Teflon Shield+ coating. Water beads off in wet snow. No top metal button (eliminates headset pressure points).',
+        priceEUR: 25,
+        stockUnits: 60,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Wolf Grey', code: '#525e6f', type: 'grey' }
+        ],
+        sizes: ['Adjustable Strap'],
+        img: 'https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=600&q=80',
+        tag: 'Teflon Ripstop'
+      },
+
+      // --- 🇯🇵 JAPAN TECHWEAR ---
+      {
+        id: 'nanga-takibi-down',
+        brand: 'Nanga 🇯🇵',
+        category: 'japan_tech',
+        name: 'Takibi Fire-Resistant Down Parka',
+        specs: 'Japanese aramid flame-retardant shell (impervious to volcanic sparks and embers). 760FP UDD moisture-repellent down.',
+        priceEUR: 620,
+        stockUnits: 4,
+        colors: [
+          { name: 'Charcoal Black', code: '#1a202c', type: 'black' },
+          { name: 'Coyote Gold', code: '#7c5832', type: 'coyote' }
+        ],
+        sizes: ['M', 'L', 'XL'],
+        img: 'https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=600&q=80',
+        tag: 'Takibi Fire-Proof'
+      },
+      {
+        id: 'montbell-versalite-134g',
+        brand: 'Montbell 🇯🇵',
+        category: 'japan_tech',
+        name: 'Versalite Gore-Tex Ultralight (134g)',
+        specs: 'Ballistic Airlight 10D nylon. Weighs only 134 grams. Full taped seams. The ultimate lightweight stormshell for the Laugavegur trail.',
+        priceEUR: 220,
+        stockUnits: 12,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Wolf Slate', code: '#525e6f', type: 'grey' }
+        ],
+        sizes: ['S', 'M', 'L', 'XL'],
+        img: 'https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=600&q=80',
+        tag: '134g Ultralight'
+      },
+
+      // --- ❄️ SUB-ZERO L7 & SOFTSHELL ---
+      {
+        id: 'carinthia-hig-40',
+        brand: 'Carinthia 🇦🇹',
+        category: 'insulation',
+        name: 'HIG 4.0 Sub-Zero Arctic Jacket',
+        specs: 'Austrian military G-LOFT® synthetic insulation (145g/m²). Retains 85% heat even when fully saturated. Windstopper membrane.',
+        priceEUR: 385,
+        stockUnits: 10,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Olive Green', code: '#3d4a36', type: 'olive' }
+        ],
+        sizes: ['M', 'L', 'XL', '2XL'],
+        img: 'https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80',
+        tag: 'G-LOFT -20°C'
+      },
+      {
+        id: 'pentagon-artaxes-softshell',
+        brand: 'Pentagon Tactical 🇬🇷',
+        category: 'softshell',
+        name: 'Artaxes Windblock Softshell Jacket',
+        specs: 'Storm-Tex® breathable membrane (8,000mm / 5,000g). Grid-fleece thermal backing. 100% wind-blocking for Icelandic gales.',
+        priceEUR: 135,
+        stockUnits: 45,
+        colors: [
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' },
+          { name: 'Ranger Green', code: '#3d4a36', type: 'olive' },
+          { name: 'Wolf Grey', code: '#525e6f', type: 'grey' }
+        ],
+        sizes: ['S', 'M', 'L', 'XL', '2XL'],
+        img: 'https://images.unsplash.com/photo-1551854838-212c50b4c184?auto=format&fit=crop&w=600&q=80',
+        tag: 'Wind-Proof'
+      },
+
+      // --- 🎒 HEAVY DUTY PACKS ---
+      {
+        id: 'tasmanian-tiger-mission-mk2',
+        brand: 'Tasmanian Tiger 🇩🇪',
+        category: 'packs',
+        name: 'Mission Pack MKII 37L Laser-Cut',
+        specs: 'German Cordura 700D with laser-cut MOLLE. Padded back carry system with aluminum frame stay. Rain cover included.',
+        priceEUR: 210,
+        stockUnits: 12,
+        colors: [
+          { name: 'Titan Grey', code: '#525e6f', type: 'grey' },
+          { name: 'Solid Black', code: '#0a0d13', type: 'black' }
+        ],
+        sizes: ['37 Liters'],
+        img: 'https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80',
+        tag: 'Cordura 700D'
+      }
+    ];
+
+    // Initialize UI
+    document.addEventListener('DOMContentLoaded', () => {
+      renderProducts();
+    });
+
+    function toggleNavDrawer() {
+      const drawer = document.getElementById('navDrawer');
+      const overlay = document.getElementById('drawerOverlay');
+      if (drawer && overlay) {
+        drawer.classList.toggle('open');
+        overlay.classList.toggle('open');
+      }
+    }
+
+    function drawerFilter(dept) {
+      filterDepartment(dept, null);
+      toggleNavDrawer();
+    }
+
+    function filterDepartment(dept, tileEl) {
+      currentDepartment = dept;
+      
+      const titles = {
+        'all': 'Allar Vörur / All Products (2.939 stk. á lager)',
+        'ripstop': '🌋 Lava-Proof Ripstop Series (Hraun & Basalt Armor)',
+        'hardshell': '🌧️ Skeljajakkar / Hardshell (L6 Gelanots 20k/20k)',
+        'pants': '👖 Buxur / Heavy-Duty NYCO & Cordura Pants',
+        'belts_caps': '🪢 Belti & Húfur (AustriAlpin Cobra® & Ripstop Caps)',
+        'japan_tech': '🇯🇵 Japan Techwear & Fire-Proof Takibi Aramid',
+        'impulse_edc': '⚡ Impulse & EDC Cash Generators (Nitecore, Keith Ti, DexShell)',
+        'insulation': '❄️ Kuldaúlpur / Sub-Zero L7 (Carinthia G-LOFT®)',
+        'softshell': '🛡️ Softshell & Flíspeysur (L3-L5 Wind-Proof)',
+        'packs': '🎒 Bakpokar / Heavy-Duty Cordura & Dyneema Packs'
+      };
+
+      document.getElementById('currentDirectoryTitle').innerText = titles[dept] || 'Vörulisti';
+      renderProducts();
+
+      // Smooth scroll to catalog section
+      const catalogSection = document.getElementById('catalogSection');
+      if (catalogSection) {
+        catalogSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+
+    function filterColor(col, elem) {
+      currentColor = col;
+      document.querySelectorAll('.swatch-item').forEach(s => s.classList.remove('active'));
+      if (elem) elem.classList.add('active');
+      renderProducts();
+    }
+
+    function changeCurrency() {
+      currentCurrency = document.getElementById('currSelector').value;
+      renderProducts();
+      updateCartDrawer();
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('productGrid');
+      grid.innerHTML = '';
+
+      const filtered = products.filter(p => {
+        const catMatch = (currentDepartment === 'all' || p.category === currentDepartment);
+        const colMatch = (currentColor === 'all' || p.colors.some(c => c.type === currentColor));
+        return catMatch && colMatch;
+      });
+
+      document.getElementById('catalogCounter').innerText = `Sýnir ${filtered.length} vörur af ${products.length}`;
+
+      filtered.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'prod-card';
+
+        const priceFormatted = currentCurrency === 'ISK'
+          ? (Math.round(p.priceEUR * EXCHANGE_RATE)).toLocaleString('is-IS') + ' kr.'
+          : '€' + p.priceEUR;
+
+        card.innerHTML = `
+          <div class="prod-media">
+            <img class="prod-img" src="${p.img}" alt="${p.name}">
+            <span class="prod-tag-badge">${p.tag}</span>
+          </div>
+          <div class="prod-details">
+            <div class="prod-brand">${p.brand}</div>
+            <div class="prod-name">${p.name}</div>
+            <div class="prod-specs">${p.specs}</div>
+            <div class="prod-pricing-row">
+              <div>
+                <div class="prod-price">${priceFormatted}</div>
+                <div class="prod-price-sub">VSK innifalinn • Á lager: ${p.stockUnits} stk.</div>
+              </div>
+              <button class="btn-add-item" onclick="addToCart('${p.id}')">Bæta í körfu +</button>
+            </div>
+          </div>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    function addToCart(prodId) {
+      const prod = products.find(p => p.id === prodId);
+      if (!prod) return;
+
+      const existing = cart.find(item => item.id === prodId);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        cart.push({ ...prod, qty: 1 });
+      }
+
+      updateCartDrawer();
+      toggleCart(true); // Open drawer
+    }
+
+    function toggleCart(forceOpen) {
+      const cartDrawer = document.getElementById('cartDrawer');
+      if (forceOpen === true) {
+        cartDrawer.classList.add('open');
+      } else if (forceOpen === false) {
+        cartDrawer.classList.remove('open');
+      } else {
+        cartDrawer.classList.toggle('open');
+      }
+    }
+
+    function updateCartDrawer() {
+      const container = document.getElementById('cartItemsContainer');
+      const countLabel = document.getElementById('cartCount');
+      const totalLabel = document.getElementById('cartTotalLabel');
+      const droppLabel = document.getElementById('droppCostLabel');
+
+      const totalItems = cart.reduce((sum, i) => sum + i.qty, 0);
+      countLabel.innerText = totalItems;
+
+      if (cart.length === 0) {
+        container.innerHTML = `
+          <div style="text-align:center; padding:50px 20px; color:var(--text-muted);">
+            <div style="font-size:2rem; margin-bottom:10px;">🛒</div>
+            <div>Karfan þín er tóm / Cart is empty</div>
+          </div>
+        `;
+        totalLabel.innerText = currentCurrency === 'ISK' ? '0 kr.' : '€0';
+        return;
+      }
+
+      let subtotalEUR = 0;
+      container.innerHTML = '';
+
+      cart.forEach((item, idx) => {
+        subtotalEUR += (item.priceEUR * item.qty);
+        const itemPrice = currentCurrency === 'ISK'
+          ? (Math.round(item.priceEUR * EXCHANGE_RATE)).toLocaleString('is-IS') + ' kr.'
+          : '€' + item.priceEUR;
+
+        const row = document.createElement('div');
+        row.style = 'display:flex; justify-content:space-between; align-items:center; padding:12px 0; border-bottom:1px solid var(--border-subtle);';
+        row.innerHTML = `
+          <div>
+            <div style="font-weight:800; font-size:0.88rem; color:#fff;">${item.name}</div>
+            <div style="font-size:0.75rem; color:var(--accent-gold);">${item.brand} • ${itemPrice} x ${item.qty}</div>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <button style="background:var(--surface-2); border:1px solid var(--border-subtle); color:#fff; width:26px; height:26px; border-radius:3px; cursor:pointer;" onclick="changeQty(${idx}, -1)">-</button>
+            <span style="font-size:0.85rem; font-weight:700; min-width:18px; text-align:center;">${item.qty}</span>
+            <button style="background:var(--surface-2); border:1px solid var(--border-subtle); color:#fff; width:26px; height:26px; border-radius:3px; cursor:pointer;" onclick="changeQty(${idx}, 1)">+</button>
+          </div>
+        `;
+        container.appendChild(row);
+      });
+
+      const subtotalISK = subtotalEUR * EXCHANGE_RATE;
+      const isFreeShipping = subtotalISK >= 15000;
+      droppLabel.innerText = isFreeShipping ? '🟢 Frí heimsending (yfir 15.000 kr.)' : '1.290 kr. (Dropp afhending)';
+
+      const finalISK = isFreeShipping ? subtotalISK : (subtotalISK + 1290);
+      const finalEUR = isFreeShipping ? subtotalEUR : (subtotalEUR + (1290 / EXCHANGE_RATE));
+
+      totalLabel.innerText = currentCurrency === 'ISK'
+        ? (Math.round(finalISK)).toLocaleString('is-IS') + ' kr.'
+        : '€' + finalEUR.toFixed(2);
+    }
+
+    function changeQty(index, delta) {
+      if (!cart[index]) return;
+      cart[index].qty += delta;
+      if (cart[index].qty <= 0) {
+        cart.splice(index, 1);
+      }
+      updateCartDrawer();
+    }
+
+    function checkoutSimulation() {
+      alert('Dropp.is Samdægurs: Greiðslusíða tengd við Borgun / Rapyd Ísland. Pöntunin fer í vinnslu á lager í Skeifan 10!');
+    }
+
+    function openInventoryModal() {
+      document.getElementById('inventoryModal').classList.add('open');
+    }
+    function closeInventoryModal() {
+      document.getElementById('inventoryModal').classList.remove('open');
+    }
+  </script>
+
+</body>
+</html>

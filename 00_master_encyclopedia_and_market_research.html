@@ -1,0 +1,1819 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Nordic Heavy-Duty Hub: Інвестиційний Меморандум, Стратегія та Бізнес-Модель (Рейк'явік)</title>
+  <style>
+    :root {
+      --bg: #07090d;
+      --surface: #0d1017;
+      --surface-card: #131722;
+      --surface-hover: #181d2a;
+      --border: rgba(255, 255, 255, 0.08);
+      --border-light: rgba(255, 255, 255, 0.15);
+      --text: #f8fafc;
+      --text-silver: #cbd5e1;
+      --text-muted: #7e8b9e;
+      --primary: #c5a059;
+      --primary-glow: rgba(197, 160, 89, 0.12);
+      --secondary: #2e7d5a;
+      --secondary-glow: rgba(46, 125, 90, 0.12);
+      --warning: #b45309;
+      --danger: #991b1b;
+      --japan: #8b5cf6;
+      --radius: 8px;
+      --radius-sm: 4px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      line-height: 1.55;
+      font-size: 15px;
+      overflow-x: hidden;
+      width: 100%;
+    }
+
+    /* Fixed Top App Bar */
+    .top-header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(13, 16, 23, 0.96);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      width: 100%;
+    }
+
+    .top-header-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 12px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    .brand-box {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-logo {
+      width: 40px;
+      height: 40px;
+      background: #141824;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.3rem;
+      box-shadow: inset 0 0 10px rgba(0,0,0,0.5); border: 1px solid var(--border-light);
+    }
+
+    .brand-info h1 {
+      font-size: 1.1rem;
+      font-weight: 800;
+      letter-spacing: -0.01em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .brand-info p {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+
+    .header-links {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .link-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 7px 14px;
+      border-radius: 9999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+    }
+
+    .link-pill-store {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .link-pill-store:hover {
+      background: var(--primary);
+      color: #090d16;
+    }
+
+    .link-pill-pres {
+      background: rgba(16, 185, 129, 0.12);
+      border-color: var(--secondary);
+      color: var(--secondary);
+    }
+    .link-pill-pres:hover {
+      background: var(--secondary);
+      color: #090d16;
+    }
+
+    /* Key Investor Metrics Ticker */
+    .investor-ticker {
+      background: #090c12;
+      border-bottom: 1px solid var(--border);
+      padding: 10px 24px;
+      width: 100%;
+    }
+
+    .ticker-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+      font-size: 0.82rem;
+    }
+
+    .ticker-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ticker-lbl { color: var(--text-muted); text-transform: uppercase; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.05em; }
+    .ticker-val { font-weight: 900; color: #fff; }
+    .ticker-val.highlight { color: var(--primary); }
+    .ticker-val.green { color: var(--secondary); }
+    .ticker-val.gold { color: var(--warning); }
+
+    /* Tabs Navigation Bar */
+    .tabs-nav-bar {
+      background: #0b0e15;
+      border-bottom: 1px solid var(--border);
+      width: 100%;
+      overflow-x: auto;
+      scrollbar-width: none;
+      position: sticky;
+      top: 65px;
+      z-index: 90;
+    }
+    .tabs-nav-bar::-webkit-scrollbar { display: none; }
+
+    .tabs-nav-inner {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 0 20px;
+      display: flex;
+      align-items: stretch;
+      gap: 4px;
+      min-width: max-content;
+    }
+
+    .tab-btn {
+      background: none;
+      border: none;
+      outline: none;
+      color: var(--text-muted);
+      font-size: 0.88rem;
+      font-weight: 700;
+      padding: 14px 18px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      color: var(--text);
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    .tab-btn.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+      background: rgba(56, 189, 248, 0.06);
+    }
+
+    /* Main Container */
+    .main-wrap {
+      max-width: 1440px;
+      margin: 0 auto;
+      padding: 28px 24px 100px 24px;
+      width: 100%;
+    }
+
+    /* Tab Panels */
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.22s ease-in-out;
+    }
+    .tab-pane.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Cards & Layout */
+    .card {
+      background: var(--surface-card);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      margin-bottom: 24px;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
+    }
+
+    .card-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: #fff;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .grid-4 {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+
+    @media (max-width: 1120px) {
+      .grid-3, .grid-4 { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 720px) {
+      .grid-2, .grid-3, .grid-4 { grid-template-columns: 1fr; }
+      .top-header-inner { flex-direction: column; align-items: flex-start; }
+      .ticker-inner { justify-content: flex-start; gap: 12px; }
+    }
+
+    /* Stat Boxes */
+    .stat-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+    .stat-box::before {
+      content: "";
+      position: absolute;
+      top: 0; left: 0; right: 0; height: 3px;
+      background: var(--primary);
+    }
+    .stat-box.success::before { background: var(--secondary); }
+    .stat-box.warning::before { background: var(--warning); }
+    .stat-box.japan::before { background: var(--japan); }
+
+    .stat-val {
+      font-size: 1.85rem;
+      font-weight: 900;
+      color: #fff;
+      line-height: 1.2;
+    }
+    .stat-lbl {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 6px;
+      font-weight: 700;
+    }
+    .stat-sub {
+      font-size: 0.78rem;
+      color: var(--primary);
+      margin-top: 4px;
+    }
+
+    /* Visual Charts & Meters */
+    .meter-wrap {
+      margin: 14px 0;
+    }
+    .meter-head {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.82rem;
+      margin-bottom: 6px;
+    }
+    .meter-bar {
+      height: 8px;
+      background: var(--surface);
+      border-radius: 999px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .meter-fill {
+      height: 100%;
+      border-radius: 999px;
+      background: linear-gradient(90deg, #0284c7, var(--primary));
+    }
+    .meter-fill.success {
+      background: linear-gradient(90deg, #059669, var(--secondary));
+    }
+    .meter-fill.warning {
+      background: linear-gradient(90deg, #d97706, var(--warning));
+    }
+    .meter-fill.japan {
+      background: linear-gradient(90deg, #db2777, var(--japan));
+    }
+
+    /* Responsive Tables */
+    .table-wrap {
+      width: 100%;
+      overflow-x: auto;
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      margin: 14px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+      min-width: 650px;
+    }
+
+    th {
+      background: #0f121a;
+      color: var(--primary);
+      padding: 12px 14px;
+      font-weight: 700;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+
+    td {
+      padding: 12px 14px;
+      border-bottom: 1px solid var(--border);
+      color: #cbd5e1;
+    }
+
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255, 255, 255, 0.02); }
+
+    /* Tags & Badges */
+    .badge {
+      display: inline-block;
+      padding: 3px 8px;
+      border-radius: 6px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+    .badge-primary { background: rgba(56, 189, 248, 0.15); color: var(--primary); border: 1px solid rgba(56, 189, 248, 0.3); }
+    .badge-success { background: rgba(16, 185, 129, 0.15); color: var(--secondary); border: 1px solid rgba(16, 185, 129, 0.3); }
+    .badge-warning { background: rgba(245, 158, 11, 0.15); color: var(--warning); border: 1px solid rgba(245, 158, 11, 0.3); }
+    .badge-japan { background: rgba(236, 72, 153, 0.15); color: var(--japan); border: 1px solid rgba(236, 72, 153, 0.3); }
+
+    /* Product Grid Card in Catalog */
+    .item-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.2s ease;
+    }
+    .item-card:hover {
+      border-color: var(--primary);
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+    }
+    .item-img {
+      height: 190px;
+      width: 100%;
+      object-fit: cover;
+      background: #111827;
+    }
+    .item-body {
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+    }
+    .item-brand {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .item-name {
+      font-size: 0.98rem;
+      font-weight: 800;
+      color: #fff;
+      margin: 4px 0 8px 0;
+    }
+    .item-desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 12px;
+      flex-grow: 1;
+    }
+    .item-prices {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .price-ret {
+      font-size: 1.15rem;
+      font-weight: 900;
+      color: #fff;
+    }
+    .price-isk {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+    }
+    .margin-tag {
+      font-size: 0.75rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+
+    /* Scenario Card */
+    .scenario-card {
+      background: var(--surface);
+      border: 2px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+    }
+    .scenario-card.active-target {
+      border-color: var(--primary);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.6);
+    }
+    .scenario-badge {
+      position: absolute;
+      top: -12px;
+      left: 20px;
+      padding: 3px 12px;
+      border-radius: 999px;
+      font-size: 0.72rem;
+      font-weight: 800;
+      text-transform: uppercase;
+    }
+
+    /* Filter Controls */
+    .filter-bar {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      align-items: center;
+    }
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+    .filter-btn:hover, .filter-btn.active {
+      background: var(--primary);
+      color: #090d16;
+      border-color: var(--primary);
+    }
+
+    /* Callout Alert */
+    .callout {
+      background: rgba(56, 189, 248, 0.08);
+      border-left: 4px solid var(--primary);
+      padding: 14px 18px;
+      border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+      margin: 16px 0;
+      font-size: 0.9rem;
+    }
+    .callout.warning {
+      background: rgba(245, 158, 11, 0.08);
+      border-left-color: var(--warning);
+    }
+    .callout.success {
+      background: rgba(16, 185, 129, 0.08);
+      border-left-color: var(--secondary);
+    }
+
+    /* Roadmap Steps */
+    .roadmap-step {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .step-num {
+      width: 36px;
+      height: 36px;
+      background: var(--primary);
+      color: #090d16;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      flex-shrink: 0;
+    }
+    .step-body {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+      flex-grow: 1;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Sticky Header -->
+  <header class="top-header">
+    <div class="top-header-inner">
+      <div class="brand-box">
+        <div class="brand-logo">▲</div>
+        <div class="brand-info">
+          <h1>NORDIC HEAVY-DUTY HUB <span class="badge badge-primary">Reykjavík • Skeifan 10</span></h1>
+          <p>The Global Nexus of Anti-Fragile Gear • Інвестиційний Портал та Бізнес-План</p>
+        </div>
+      </div>
+      <div class="header-links">
+        <a href="storefront.html" target="_blank" class="link-pill link-pill-store">🛒 Онлайн-Магазин (Storefront) ↗</a>
+        <a href="presentation.html" target="_blank" class="link-pill link-pill-pres">📊 Pitch Deck (8 Слайдів) ↗</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Investor Metrics Bar (Key Figures for Pitching) -->
+  <div class="investor-ticker">
+    <div class="ticker-inner">
+      <div class="ticker-item"><span class="ticker-lbl">Стартовий CAPEX:</span> <span class="ticker-val highlight">€145,000</span></div>
+      <div class="ticker-item"><span class="ticker-lbl">Щомісячний OPEX:</span> <span class="ticker-val">2.33M kr. (€15,550)</span></div>
+      <div class="ticker-item"><span class="ticker-lbl">Точка беззбитковості:</span> <span class="ticker-val green">5.25M kr./міс (~€35k)</span></div>
+      <div class="ticker-item"><span class="ticker-lbl">Цільовий виторг (Рік 1):</span> <span class="ticker-val highlight">102M kr. (€680,000)</span></div>
+      <div class="ticker-item"><span class="ticker-lbl">Чистий прибуток EBITDA:</span> <span class="ticker-val green">+31.2M kr. (€207,000)</span></div>
+      <div class="ticker-item"><span class="ticker-lbl">Окупність:</span> <span class="ticker-val gold">12–14 місяців</span></div>
+      <div class="ticker-item"><span class="ticker-lbl">ROI 1-й рік:</span> <span class="ticker-val green">+142%</span></div>
+    </div>
+  </div>
+
+  <!-- Modern Navigation Tabs (8 Dedicated Sections) -->
+  <nav class="tabs-nav-bar">
+    <div class="tabs-nav-inner">
+      <button class="tab-btn active" onclick="switchTab('tab-pitch', this)">💼 1. Інвестиційний Меморандум</button>
+      <button class="tab-btn" onclick="switchTab('tab-macro', this)">🏛️ 2. Ринок Ісландії & Skeifan 10</button>
+      <button class="tab-btn" onclick="switchTab('tab-materials', this)">🪨 3. Матеріалознавство & Ripstop</button>
+      <button class="tab-btn" onclick="switchTab('tab-japan-global', this)">🇯🇵 4. Японія & 42 Бренди Світу</button>
+      <button class="tab-btn" onclick="switchTab('tab-catalog', this)">🧥 5. Асортимент, Каталог & Склад</button>
+      <button class="tab-btn" onclick="switchTab('tab-impulse', this)" style="color:#f59e0b;"><span style="color:#f59e0b;">⚡</span> 6. Імпульсний EDC & Каса (70-91%)</button>
+      <button class="tab-btn" onclick="switchTab('tab-scenarios', this)">📈 7. Фінансові Сценарії та ROI</button>
+      <button class="tab-btn" onclick="switchTab('tab-roadmap', this)">🎯 8. Маркетинг & Roadmap (6 міс)</button>
+    </div>
+  </nav>
+
+  <!-- Main Content Wrap (Fit-to-Screen / Zero Overflow) -->
+  <main class="main-wrap">
+
+    <!-- ==================== TAB 1: EXECUTIVE PITCH & INVESTOR MEMORANDUM ==================== -->
+    <section id="tab-pitch" class="tab-pane active">
+      <div class="card" style="border-top:3px solid var(--primary);">
+        <div class="card-title">💼 Інвестиційний Меморандум (Executive Summary & Term Sheet)</div>
+        <p style="font-size:1.05rem; color:#cbd5e1; margin-bottom:18px;">
+          Проєкт відкриття мультибрендового хабу важкого експедиційного, тактичного та армованого одягу й спорядження <strong>"Nordic Heavy-Duty Equipment Hub"</strong> у торговельному епіцентрі Рейк'явіка (Skeifan 10).
+        </p>
+
+        <div class="grid-4" style="margin-bottom:24px;">
+          <div class="stat-box">
+            <div class="stat-val" style="color:var(--primary);">€145,000</div>
+            <div class="stat-lbl">Необхідні інвестиції (CAPEX)</div>
+            <div class="stat-sub">Товар, ремонт, IT, резерв 2 міс</div>
+          </div>
+          <div class="stat-box success">
+            <div class="stat-val" style="color:var(--secondary);">12–14 міс.</div>
+            <div class="stat-lbl">Період повної окупності</div>
+            <div class="stat-sub">За базовим реалістичним планом</div>
+          </div>
+          <div class="stat-box warning">
+            <div class="stat-val" style="color:var(--warning);">5.25M kr.</div>
+            <div class="stat-lbl">Break-Even Point / міс</div>
+            <div class="stat-sub">Всього 8 покупців на день</div>
+          </div>
+          <div class="stat-box success">
+            <div class="stat-val" style="color:var(--secondary);">+142%</div>
+            <div class="stat-lbl">Річний ROI інвестора</div>
+            <div class="stat-sub">EBITDA €207,000 на 1-й рік</div>
+          </div>
+        </div>
+
+        <div class="grid-2">
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px;">
+            <h4 style="color:#fff; margin-bottom:12px; font-size:1rem;">📌 Структура використання інвестицій (€145,000):</h4>
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr><th>Стаття витрат</th><th>Сума (€)</th><th>Сума (ISK)</th><th>Частка</th></tr>
+                </thead>
+                <tbody>
+                  <tr><td><strong>1. Початковий товарний склад (FOB)</strong></td><td>€64,682</td><td>9,702,300 kr.</td><td>44.6%</td></tr>
+                  <tr><td><strong>2. Імпульсний касовий пул (Прямий Китай: Nitecore, Keith, DexShell)</strong></td><td>€4,850</td><td>727,500 kr.</td><td>3.3%</td></tr>
+                  <tr><td><strong>3. Ремонт, меблі та брендинг Skeifan 10</strong></td><td>€35,000</td><td>5,250,000 kr.</td><td>24.1%</td></tr>
+                  <tr><td><strong>4. IT-інфраструктура, POS, сайт, складський софт</strong></td><td>€10,000</td><td>1,500,000 kr.</td><td>6.9%</td></tr>
+                  <tr><td><strong>5. Операційний резервний фонд (Збільшено завдяки економії на Китаї)</strong></td><td>€30,468</td><td>4,570,200 kr.</td><td>21.0%</td></tr>
+                  <tr style="font-weight:800; background:rgba(56,189,248,0.06);">
+                    <td>РАЗОМ СТАРТОВИЙ КАПІТАЛ</td><td>€145,000</td><td>21,750,000 kr.</td><td>100.0%</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+
+          <div style="background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm); padding:20px;">
+            <h4 style="color:#fff; margin-bottom:12px; font-size:1rem;">🎯 4 Непереможні Конкурентні Переваги (Moat):</h4>
+            <div style="font-size:0.88rem; color:#cbd5e1; line-height:1.7;">
+              <p style="margin-bottom:10px;">
+                <strong style="color:var(--primary);">1. Ціновий дизрупшн проти 66°North:</strong> Монополіст 66°North продає куртки за €700–€950 та штани за €300. Ми пропонуємо армований одяг вищої міцності (NYCO Extreme, Gelanots) за <strong>€95–€240</strong>, забираючи платоспроможну аудиторію.
+              </p>
+              <p style="margin-bottom:10px;">
+                <strong style="color:var(--secondary);">2. 0% Мито Skatturinn (Tollur):</strong> Завдяки угодам EFTA-Ukraine FTA та EEA одяг імпортується з нульовим митом, даючи нам чисту маржинальність <strong>58–71%</strong>.
+              </p>
+              <p style="margin-bottom:10px;">
+                <strong style="color:var(--warning);">3. Спеціалізація на базальті (Lava-Proof):</strong> Вирішення головного болю туристів і гідів — делікатні тонкі куртки розриваються об гостру лаву. Наш армований Ripstop має в 4 рази вищий опір на роздирання.
+              </p>
+              <p>
+                <strong style="color:var(--japan);">4. B2B Інституційне ядро:</strong> Стабільний цілорічний грошовий потік від волонтерів ICE-SAR (19 000 рятувальників), водіїв Arctic Trucks 4x4 та робітників геотермальних станцій.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 2: ICELAND MACRO & REAL ESTATE ==================== -->
+    <section id="tab-macro" class="tab-pane">
+      <div class="grid-4" style="margin-bottom:24px;">
+        <div class="stat-box success">
+          <div class="stat-val">0%</div>
+          <div class="stat-lbl">Мито Skatturinn (Tollur)</div>
+          <div class="stat-sub">HS 61, 62, 64 (EFTA-UA & EEA)</div>
+        </div>
+        <div class="stat-box warning">
+          <div class="stat-val">24%</div>
+          <div class="stat-lbl">ПДВ Ісландії (VSK)</div>
+          <div class="stat-sub">Розрахунок на CIF базу</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val">Skeifan 10</div>
+          <div class="stat-lbl">Флагманська локація</div>
+          <div class="stat-sub">130 м² + 50+ місць 4x4 паркінгу</div>
+        </div>
+        <div class="stat-box success">
+          <div class="stat-val">5.25M kr.</div>
+          <div class="stat-lbl">Точка беззбитковості / міс</div>
+          <div class="stat-sub">~€35,000 (всього 8 покупок/день)</div>
+        </div>
+      </div>
+
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🏛️ Митна регуляція, Юридична форма та Логістика</div>
+          <p>Ісландія є частиною Європейського економічного простору (EEA) та Європейської асоціації вільної торгівлі (EFTA).</p>
+          
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Параметр</th><th>Регуляторна норма</th><th>Стратегічне значення</th></tr>
+              </thead>
+              <tbody>
+                <tr><td><strong>Юридична форма</strong></td><td>Einkahlutafélag (ehf.)</td><td>ТОВ в Ісландії; мінімальний капітал 500,000 ISK (~€3,300)</td></tr>
+                <tr><td><strong>Митний тариф</strong></td><td>HS 61, 62, 64 = <strong>0%</strong></td><td>0% мито на одяг з України (FTA) та країн ЄС (EEA)</td></tr>
+                <tr><td><strong>Податок на додану вартість</strong></td><td>Standard VSK = <strong>24%</strong></td><td>Сплачується при митному очищенні; повністю відшкодовується</td></tr>
+                <tr><td><strong>Морський фрахт</strong></td><td>Samskip / Eimskip (Роттердам ➔ Сундахебн)</td><td>7–10 днів морського переходу; €280–€340 / європалета</td></tr>
+                <tr><td><strong>Авіа-експрес</strong></td><td>Icelandair Cargo (Франкфурт ➔ Кефлавік)</td><td>24–48 год для термінового дозамовлення розмірів L/XL</td></tr>
+                <tr><td><strong>Локальна кур'єрська мережа</strong></td><td>Dropp.is (70+ автоматів)</td><td>Доставка по Рейк'явіку за 2–4 години; безкоштовно від 15k kr.</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">📍 Аудит комерційної нерухомості: Чому Skeifan 10?</div>
+          <p>Порівняльний аналіз трьох головних кластерів Рейк'явіка:</p>
+
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Локація</th><th>Оренда / м²</th><th>Паркінг 4x4</th><th>Характер клієнтського потоку</th></tr>
+              </thead>
+              <tbody>
+                <tr style="background:rgba(56,189,248,0.06);">
+                  <td><strong>Skeifan 10 (Обрано)</strong></td>
+                  <td><strong>3,000 ISK</strong> (€20)</td>
+                  <td>🟢 <strong>50+ авто</strong> (Free)</td>
+                  <td>Цільовий: будівельники, джипери, рятувальники, туризм</td>
+                </tr>
+                <tr><td>Laugavegur (Даунтаун)</td><td>8,500 ISK (€57)</td><td>🔴 Відсутній / Платний</td><td>Пішохідні туристи, сувеніри, фаст-фешн (високий ризик)</td></tr>
+                <tr><td>Grandi (Гавань)</td><td>4,200 ISK (€28)</td><td>🟡 10–15 авто</td><td>Гастрономія, музеї, хіпстери, сильна сезонність</td></tr>
+              </tbody>
+            </table>
+          </div>
+
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-top:10px;">
+            Skeifan 10 розташований в епіцентрі найбільшого аутдор-кластера поруч із <em>Bauhaus, Ellingsen, Útilíf, Fjallakofinn</em>. 95% ісландців пересуваються на авто — наявність безкоштовного паркінгу для ліфтованих пікапів забезпечує 80% успіху фізичного шоуруму.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 3: MATERIALS SCIENCE & RIPSTOP ==================== -->
+    <section id="tab-materials" class="tab-pane">
+      <div class="card">
+        <div class="card-title">🌋 Матеріалознавство: Чому Ripstop перемагає делікатний Gore-Tex на Лаві</div>
+        <p>Ісландський ґрунт вкритий застиглим пористим вулканічним базальтом (Hraun), гострим як бите скло. Тонкі тришарові мембрани (Gore-Tex Pro 20D–40D вартістю €700+) мають високу гідростатичну стійкість, але <strong>миттєво розпорюються від тертя об базальт</strong>.</p>
+
+        <div class="grid-3" style="margin:20px 0;">
+          <div class="stat-box warning">
+            <div class="stat-val" style="color:var(--warning);">€125 – €185</div>
+            <div class="stat-lbl">Ціна армованого Ripstop / NYCO</div>
+            <div class="stat-sub">M-Tac Sturm, Pentagon Dias, Helikon</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">10 000 мм</div>
+            <div class="stat-lbl">Водостійкість з Teflon DWR</div>
+            <div class="stat-sub">Достатньо для 95% дощів Ісландії</div>
+          </div>
+          <div class="stat-box success">
+            <div class="stat-val">4x Міцність</div>
+            <div class="stat-lbl">Опір на розрив об гостре каміння</div>
+            <div class="stat-sub">Армована решітка блокує поріз</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Тканина / Технологія</th><th>Склад та вага</th><th>Стійкість до базальту</th><th>Водозахист / Дихання</th><th>Ціновий рівень</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(16,185,129,0.06);">
+                <td><strong>NYCO Extreme (Brookwood USA)</strong></td>
+                <td>57% Нейлон 6.6 / 43% Бавовна (210 г/м²)</td>
+                <td>🟢 <strong>Екстремальна (10/10)</strong></td>
+                <td>DWR Teflon водовідштовхувальний / 100% повітропроникність</td>
+                <td><strong>€95 – €145</strong> (14,900 – 22,900 kr.)</td>
+              </tr>
+              <tr style="background:rgba(56,189,248,0.06);">
+                <td><strong>Gelanots® (Toyota Tsusho Japan)</strong></td>
+                <td>Безпорова монолітна PUR мембрана</td>
+                <td>🟢 <strong>Висока (9/10)</strong> (не боїться солі)</td>
+                <td>20 000 мм / 20 000 г/м² / 24 год</td>
+                <td><strong>€190 – €260</strong> (29,900 – 41,000 kr.)</td>
+              </tr>
+              <tr>
+                <td><strong>DuraCanvas® (Helikon-Tex)</strong></td>
+                <td>65% Поліестер / 33% Бавовна / 2% Спандекс</td>
+                <td>🟢 <strong>Відмінна (9/10)</strong> (вощення)</td>
+                <td>Вітрозахисний / Водовідштовхувальний</td>
+                <td><strong>€85 – €120</strong> (13,500 – 18,900 kr.)</td>
+              </tr>
+              <tr style="background:rgba(239,68,68,0.06);">
+                <td>Класичний Gore-Tex Pro 40D (66°North)</td>
+                <td>100% Мікропористий ePTFE нейлон</td>
+                <td>🔴 <strong>Крихка (3/10)</strong> (легко ріжеться лавою)</td>
+                <td>28 000 мм / 25 000 г/м²</td>
+                <td><strong>€650 – €950</strong> (102,000 – 150,000 kr.)</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 4: JAPAN DEEP-DIVE & 42 BRANDS ==================== -->
+    <section id="tab-japan-global" class="tab-pane">
+      <div class="card" style="border-top:3px solid var(--japan);">
+        <div class="card-title"><span style="color:var(--japan);">🇯🇵 ФЕНОМЕН ЯПОНІЇ:</span> Світове матеріалознавство майбутнього</div>
+        <p>Японія є глобальною лабораторією передових полімерів. Впровадження японських брендів у портфель хабу закриває критичні кліматичні потреби Ісландії:</p>
+
+        <div class="grid-3" style="margin:20px 0;">
+          <div class="stat-box japan">
+            <div class="stat-val" style="color:var(--japan);">Takibi Aramid</div>
+            <div class="stat-lbl">Nanga & Snow Peak</div>
+            <div class="stat-sub">100% захист від лавових іскор та вогню</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-val">134 грами</div>
+            <div class="stat-lbl">Montbell Versalite</div>
+            <div class="stat-sub">Найлегша штормівка Gore-Tex у світі</div>
+          </div>
+          <div class="stat-box success">
+            <div class="stat-val">Seamless</div>
+            <div class="stat-lbl">Descente Allterrain</div>
+            <div class="stat-sub">Ультразвукове зварювання без голкових швів</div>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Бренд (Японія)</th><th>Патентована технологія</th><th>Чому це незамінно в Ісландії</th><th>Ціновий рівень</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>🇯🇵 Nanga</strong></td>
+                <td><strong>Takibi Fabric</strong> (вогнетривкий арамід) + 760FP UDD пух</td>
+                <td>Не горить від лави, попелу та кемпінгових багать; гідрофобний пух UDD не мокне</td>
+                <td><span class="badge badge-warning">Преміум (€450–€750)</span></td>
+              </tr>
+              <tr>
+                <td><strong>🇯🇵 Montbell</strong></td>
+                <td><strong>Ballistic Airlight</strong> (10D нейлон) + Dry-Tec 20k/15k</td>
+                <td>Еталон для трекерів стежки Laugavegur: мінімальна вага рюкзака при 100% захисті від вітру</td>
+                <td><span class="badge badge-primary">Mid+ (€140–€320)</span></td>
+              </tr>
+              <tr>
+                <td><strong>🇯🇵 Snow Peak</strong></td>
+                <td>Волокна <strong>Teijin Conex</strong> + утеплювач Octa® зіркового перерізу</td>
+                <td>Культовий монохромний японський дизайн для фотографів, архітекторів та поціновувачів естетики</td>
+                <td><span class="badge badge-warning">Люкс (€350–€850)</span></td>
+              </tr>
+              <tr>
+                <td><strong>🇯🇵 Goldwin</strong></td>
+                <td>Gore-Tex Pro 3L 70D + лазерні клапани дихання</td>
+                <td>Стелс-дизайн без зовнішніх логотипів, прямий конкурент преміальним курткам 66°North Jökla</td>
+                <td><span class="badge badge-warning">High-End (€500–€1,100)</span></td>
+              </tr>
+              <tr>
+                <td><strong>🇯🇵 Descente Allterrain</strong></td>
+                <td><strong>Mizusawa Down</strong> + Supersonic термосклеювання</td>
+                <td>Повна герметичність пуховика від горизонтального шквального дощу через відсутність ниткових швів</td>
+                <td><span class="badge badge-warning">Люкс (€750–€1,300)</span></td>
+              </tr>
+              <tr>
+                <td><strong>🇯🇵 And Wander</strong></td>
+                <td><strong>Dyneema Composite Fabric</strong> + світловідбивні шви 3M</td>
+                <td>Шви сяють у світлі фар на 300 метрів — критично для безпеки пішоходів у темну полярну ніч</td>
+                <td><span class="badge badge-japan">Techwear (€280–€650)</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- 42 Brands Global Table -->
+      <div class="card">
+        <div class="card-title">🌍 Глобальна Матриця: 42 Світові Бренди у 4 Центрах Сили</div>
+        <p>Стратегічний баланс між українською незламністю, японським матеріалознавством та європейсько-американською ергономікою:</p>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterBrandTable('all', this)">🌍 Всі (42 бренди)</button>
+          <button class="filter-btn" onclick="filterBrandTable('ua', this)">🇺🇦 Україна (9)</button>
+          <button class="filter-btn" onclick="filterBrandTable('jp', this)">🇯🇵 Японія (7)</button>
+          <button class="filter-btn" onclick="filterBrandTable('eu', this)">🇪🇺 Європа & Скандинавія (15)</button>
+          <button class="filter-btn" onclick="filterBrandTable('us', this)">🇺🇸 Північна Америка (11)</button>
+        </div>
+
+        <div class="table-wrap">
+          <table id="brandsTable">
+            <thead>
+              <tr><th>Виробник</th><th>Країна</th><th>Ціновий рівень</th><th>Ключова технологія / Матеріал</th><th>Маркетингова роль для Ісландії</th><th>Оцінка</th></tr>
+            </thead>
+            <tbody>
+              <!-- UA Brands -->
+              <tr data-region="ua"><td><strong>Fahrenheit</strong></td><td>🇺🇦 Україна</td><td>Mid+ (€100–€250)</td><td>Gelanots® 20k/20k, Polartec® Power Stretch</td><td>Технологічне ядро L1-L3 (не боїться солі)</td><td><span class="badge badge-success">10/10</span></td></tr>
+              <tr data-region="ua"><td><strong>M-Tac</strong></td><td>🇺🇦 Україна</td><td>Середній (€45–€180)</td><td>NYCO Extreme, Teflon® Rip-Stop, Cordura®</td><td>Головний генератор виторгу та штани від скель</td><td><span class="badge badge-success">10/10</span></td></tr>
+              <tr data-region="ua"><td><strong>UTactic</strong></td><td>🇺🇦 Україна</td><td>Mid+ (€80–€240)</td><td>Cordura® 500D, Polartec® Grid, шви Coats</td><td>Анатомічні бойові сорочки та штурмові куртки</td><td><span class="badge badge-primary">8/10</span></td></tr>
+              <tr data-region="ua"><td><strong>Camotec</strong></td><td>🇺🇦 Україна</td><td>Budget+ (€30–€120)</td><td>Мембрани StormWall, вологозахисний софтшел</td><td>Доступний одяг для будівельників та фермерів</td><td><span class="badge badge-primary">8/10</span></td></tr>
+              <tr data-region="ua"><td><strong>Velmet</strong></td><td>🇺🇦 Україна</td><td>Mid (€40–€160)</td><td>Cordura Diamond, Hypalon, фурнітура 2M</td><td>Модульні міцні підсумки та рюкзаки</td><td><span class="badge badge-primary">8/10</span></td></tr>
+              <tr data-region="ua"><td><strong>Ukrarmor</strong></td><td>🇺🇦 Україна</td><td>Mid (€50–€200)</td><td>Cordura 1000D, демпферні системи</td><td>Захисне спорядження та EDC аксесуари</td><td><span class="badge badge-primary">7/10</span></td></tr>
+              <tr data-region="ua"><td><strong>P1G-Tac</strong></td><td>🇺🇦 Україна</td><td>Mid (€40–€150)</td><td>Тканина Profit-On Ripstop, польовий крій</td><td>Класичні зносостійкі польові куртки</td><td><span class="badge badge-primary">7/10</span></td></tr>
+              <tr data-region="ua"><td><strong>Chameleon</strong></td><td>🇺🇦 Україна</td><td>Mid- (€25–€90)</td><td>Мембранний фліс, Softshell вітрозахисний</td><td>Базовий повсякденний міський гардероб</td><td><span class="badge badge-primary">7/10</span></td></tr>
+              <tr data-region="ua"><td><strong>A.T.A.K.A.</strong></td><td>🇺🇦 Україна</td><td>Mid (€35–€140)</td><td>Вовняні шари, посилені тактичні стропи</td><td>Кастомні міцні елементи екіпірування</td><td><span class="badge badge-primary">7/10</span></td></tr>
+
+              <!-- JP Brands -->
+              <tr data-region="jp"><td><strong>Montbell</strong></td><td>🇯🇵 Японія</td><td>Mid+ (€140–€380)</td><td>Ballistic Airlight 10D, мембрана Dry-Tec</td><td>Легкохідне спорядження до 250 г для трекінгу</td><td><span class="badge badge-japan">10/10</span></td></tr>
+              <tr data-region="jp"><td><strong>Nanga</strong></td><td>🇯🇵 Японія</td><td>Преміум (€350–€750)</td><td>Takibi Aramid вогнестійкий, пух UDD</td><td>Куртки стійкі до іскор лави та вогню</td><td><span class="badge badge-japan">10/10</span></td></tr>
+              <tr data-region="jp"><td><strong>Snow Peak</strong></td><td>🇯🇵 Японія</td><td>Люкс (€250–€850)</td><td>Teijin Conex aramid, утеплювач Octa®</td><td>Преміальний японський мінімалізм для еліти</td><td><span class="badge badge-japan">9/10</span></td></tr>
+              <tr data-region="jp"><td><strong>Goldwin</strong></td><td>🇯🇵 Японія</td><td>High-End (€450–€1,100)</td><td>Gore-Tex Pro 3L, Pertex Shield Air</td><td>Бездоганний альпійський стелс без логотипів</td><td><span class="badge badge-japan">9/10</span></td></tr>
+              <tr data-region="jp"><td><strong>Descente Allterrain</strong></td><td>🇯🇵 Японія</td><td>Люкс (€700–€1,300)</td><td>Mizusawa Down, термічна зварка швів</td><td>100% герметичність пуху від горизонтальних шквалів</td><td><span class="badge badge-japan">9/10</span></td></tr>
+              <tr data-region="jp"><td><strong>And Wander</strong></td><td>🇯🇵 Японія</td><td>Преміум (€250–€700)</td><td>Dyneema Composite, 3M Reflective шви</td><td>Сяючі в темряві контури в полярну ніч</td><td><span class="badge badge-japan">9/10</span></td></tr>
+              <tr data-region="jp"><td><strong>Daiwa Pier39</strong></td><td>🇯🇵 Японія</td><td>High (€200–€550)</td><td>Gore-Tex Infinium, морський захист</td><td>Стійкість до океанічних соляних штормів</td><td><span class="badge badge-japan">8/10</span></td></tr>
+
+              <!-- EU Brands -->
+              <tr data-region="eu"><td><strong>Pentagon Tactical</strong></td><td>🇬🇷 Греція</td><td>Mid (€35–€160)</td><td>Teflon Ripstop, пряжки AustriAlpin Cobra®</td><td>Ремені Cobra та куртки серії Dias Ripstop</td><td><span class="badge badge-success">10/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Helikon-Tex</strong></td><td>🇵🇱 Польща</td><td>Mid (€40–€180)</td><td>DuraCanvas®, StormStretch®, штани OTP</td><td>Культові брюки Outdoor Tactical та фліс Patriot</td><td><span class="badge badge-success">10/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Carinthia</strong></td><td>🇦🇹 Австрія</td><td>Преміум (€250–€550)</td><td>G-LOFT® утеплювач, Gore-Tex Windstopper</td><td>Зігріває навіть у вологому стані (HIG/MIG 4.0)</td><td><span class="badge badge-success">10/10</span></td></tr>
+              <tr data-region="eu"><td><strong>UF PRO</strong></td><td>🇸🇮 Словенія</td><td>High-End (€200–€600)</td><td>3D Air/Pac® демпфери, Schoeller® stretch</td><td>Анатомічний шедевр для важких рюкзаків</td><td><span class="badge badge-success">10/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Tilak MiG</strong></td><td>🇨🇿 Чехія</td><td>High-End (€350–€750)</td><td>Gore-Tex Pro 3L 70D, ручна чеська збірка</td><td>Еталон штормовок військового спецназу</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Norrøna (Recon)</strong></td><td>🇳🇴 Норвегія</td><td>Преміум (€500–€900)</td><td>Gore-Tex Pro Hunting, посилений поліамід</td><td>Арктична невбивна класика Норвегії</td><td><span class="badge badge-success">10/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Klättermusen</strong></td><td>🇸🇪 Швеція</td><td>Преміум (€300–€800)</td><td>Cutan®, Katla Cotton, захисні накладки</td><td>Шведський екологічний захист від тертя лави</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Fjällräven</strong></td><td>🇸🇪 Швеція</td><td>Mid+ (€120–€350)</td><td>G-1000® (поліестер/бавовна), віск</td><td>Традиційний захист від вітру та каміння</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Lundhags</strong></td><td>🇸🇪 Швеція</td><td>Mid+ (€180–€450)</td><td>LPC тканина, черевики Certech без мембрани</td><td>Вічне взуття для мокрого бруду та боліт</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Keela Outdoors</strong></td><td>🇬🇧 Шотландія</td><td>Mid+ (€150–€320)</td><td>System Dual Protection (SDP подвійна мембрана)</td><td>Повна відсутність конденсату в холодному дощі</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="eu"><td><strong>ThruDark</strong></td><td>🇬🇧 Велика Британія</td><td>Ультра-преміум (€450–€1,200)</td><td>Dyneema®, eVent®, Polartec Power Air</td><td>Екіпірування загартоване спецназом SBS</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Direct Action</strong></td><td>🇵🇱 Польща</td><td>Mid+ (€70–€220)</td><td>Cordura 500D Laser-Cut, надійна фурнітура</td><td>Кращі тактичні рюкзаки Ghost та Dragon Egg</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Tasmanian Tiger</strong></td><td>🇩🇪 Німеччина</td><td>Mid+ (€60–€300)</td><td>Cordura 700D, медичні модулі TT First Aid</td><td>Німецькі медичні та експедиційні рюкзаки</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Arktis</strong></td><td>🇬🇧 Велика Британія</td><td>Mid+ (€90–€250)</td><td>50/50 Ripstop DWR, windproof membrane</td><td>Британські смоки проти арктичних вітрів</td><td><span class="badge badge-primary">8/10</span></td></tr>
+              <tr data-region="eu"><td><strong>Clawgear</strong></td><td>🇦🇹 Австрія</td><td>Mid (€50–€180)</td><td>ATS Ripstop, анатомічний крій</td><td>Легкі професійні тактичні штани та сорочки</td><td><span class="badge badge-primary">8/10</span></td></tr>
+
+              <!-- US/CA Brands -->
+              <tr data-region="us"><td><strong>Arc'teryx LEAF</strong></td><td>🇨🇦 Канада</td><td>Ультра-преміум (€500–€1,100)</td><td>Gore-Tex BD450 3L, Tweave Durastretch</td><td>Світовий еталон тактичного крою (лімітований)</td><td><span class="badge badge-success">10/10</span></td></tr>
+              <tr data-region="us"><td><strong>Crye Precision</strong></td><td>🇺🇸 США</td><td>Преміум (€220–€600)</td><td>Mil-Spec NYCO 50/50, наколінники AirFlex</td><td>Оригінальні бойові штани G3/G4 для профі</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="us"><td><strong>Beyond Clothing</strong></td><td>🇺🇸 США</td><td>Преміум (€250–€750)</td><td>Системи Axios / Kyros PCU, PrimaLoft</td><td>Спеціалізація на полярних експедиціях США</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="us"><td><strong>KUIU</strong></td><td>🇺🇸 США</td><td>Преміум (€200–€650)</td><td>Toray Dermizax NX (40 000 г/м² дихання)</td><td>Найвища паропроникність у світі серед мембран</td><td><span class="badge badge-success">10/10</span></td></tr>
+              <tr data-region="us"><td><strong>Sitka Gear</strong></td><td>🇺🇸 США</td><td>Преміум (€220–€700)</td><td>Gore-Tex Pro, Windstopper, Primaloft Aerogel</td><td>Захист від замерзання на статичному вітрі</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="us"><td><strong>Stone Glacier</strong></td><td>🇺🇸 США</td><td>Преміум (€300–€750)</td><td>Титанові рами Krux, надлегкий беккантрі</td><td>Рюкзаки для екстремальних вантажів 60+ кг</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="us"><td><strong>5.11 Tactical</strong></td><td>🇺🇸 США</td><td>Середній (€40–€220)</td><td>Flex-Tac®, Taclite Ripstop, Teflon finish</td><td>Популярні штани Stryke та міські рюкзаки Rush</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="us"><td><strong>Triple Aught Design</strong></td><td>🇺🇸 США</td><td>High-End (€200–€600)</td><td>Polartec® Wind Pro, Ventile, Cordura</td><td>Культові куртки Stealth Hoodie для EDC Techwear</td><td><span class="badge badge-primary">9/10</span></td></tr>
+              <tr data-region="us"><td><strong>FirstSpear</strong></td><td>🇺🇸 США</td><td>High-End (€150–€550)</td><td>Замки Tubes® Fast-Release, 330D Cordura</td><td>Швидке скидання спорядження однією рукою</td><td><span class="badge badge-primary">8/10</span></td></tr>
+              <tr data-region="us"><td><strong>Outdoor Research (Tac)</strong></td><td>🇺🇸 США</td><td>Mid+ (€50–€350)</td><td>Gore-Tex Allied, фліс Grid, вогнестійкі шари</td><td>Еталонні експедиційні рукавиці та бахіли</td><td><span class="badge badge-primary">8/10</span></td></tr>
+              <tr data-region="us"><td><strong>Mystery Ranch</strong></td><td>🇺🇸 США</td><td>Преміум (€180–€600)</td><td>3-ZIP доступ, регульована підвіска Futura</td><td>Найзручніші експедиційні рюкзаки для важкої ноші</td><td><span class="badge badge-primary">9/10</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 5: CURATED CATALOG & SKU MATRIX ==================== -->
+    <section id="tab-catalog" class="tab-pane">
+      <div class="card">
+        <div class="card-title">🧥 Рекомендований Каталог: 100% Монохромний Цивільний Асортимент</div>
+        <p>16 ключових моделей у кольорах <em>Solid Black, Ranger Green, Coyote Brown, Wolf Grey, Dark Navy</em> без жодного камуфляжу:</p>
+
+        <div class="filter-bar">
+          <button class="filter-btn active" onclick="filterCatalog('all', this)">Всі товари (16 зразків)</button>
+          <button class="filter-btn" onclick="filterCatalog('ripstop', this)">🌋 Lava-Proof Ripstop</button>
+          <button class="filter-btn" onclick="filterCatalog('japan', this)">🇯🇵 Japan Techwear</button>
+          <button class="filter-btn" onclick="filterCatalog('belts', this)">🪢 Ремені & Бейсболки</button>
+          <button class="filter-btn" onclick="filterCatalog('hardshell', this)">🌧️ Штормівки (L6)</button>
+          <button class="filter-btn" onclick="filterCatalog('pants', this)">👖 Штани Heavy-Duty</button>
+        </div>
+
+        <div class="grid-4" id="catalogGrid">
+          <!-- 1. Pentagon Kula Cobra Belt -->
+          <div class="item-card" data-cat="belts">
+            <img class="item-img" src="https://images.unsplash.com/photo-1624378439575-d8705ad7ae80?auto=format&fit=crop&w=600&q=80" alt="Pentagon Cobra Belt">
+            <div class="item-body">
+              <div class="item-brand">Pentagon Tactical 🇬🇷</div>
+              <div class="item-name">Kula 38 AustriAlpin Cobra® Belt</div>
+              <div class="item-desc">Оригінальна алюмінієва пряжка COBRA® 18kN швидкого скидання. Двошарова жорстка нейлонова стропа. Кольори: Black, Coyote, Olive.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€65 <span style="font-size:0.8rem; font-weight:400;">(9,900 kr.)</span></div>
+                  <div class="price-isk">Опт: €22 | Склад: 30 шт.</div>
+                </div>
+                <div class="margin-tag">66% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 2. M-Tac Sturm NYCO Jacket -->
+          <div class="item-card" data-cat="ripstop">
+            <img class="item-img" src="https://images.unsplash.com/photo-1544923246-77307dd654cb?auto=format&fit=crop&w=600&q=80" alt="M-Tac Sturm">
+            <div class="item-body">
+              <div class="item-brand">M-Tac 🇺🇦</div>
+              <div class="item-name">Sturm NYCO Extreme Smock</div>
+              <div class="item-desc">Американська тканина NYCO Extreme з тефлоновим бар'єром. Не боїться базальтових скель. Повністю монохромний Black & Ranger Green.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€145 <span style="font-size:0.8rem; font-weight:400;">(22,900 kr.)</span></div>
+                  <div class="price-isk">Опт: €58 | Склад: 35 шт.</div>
+                </div>
+                <div class="margin-tag">60% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Nanga Takibi Down Parka -->
+          <div class="item-card" data-cat="japan">
+            <img class="item-img" src="https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=600&q=80" alt="Nanga Takibi">
+            <div class="item-body">
+              <div class="item-brand">Nanga 🇯🇵</div>
+              <div class="item-name">Takibi Fire-Resistant Down Parka</div>
+              <div class="item-desc">Вогнетривкий японський арамід проти лавових іскор та гарячого попелу. Водовідштовхувальний пух 760FP UDD. Charcoal Black.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€620 <span style="font-size:0.8rem; font-weight:400;">(98,500 kr.)</span></div>
+                  <div class="price-isk">Опт: €310 | Склад: 4 шт.</div>
+                </div>
+                <div class="margin-tag">50% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 4. Montbell Versalite Jacket -->
+          <div class="item-card" data-cat="japan hardshell">
+            <img class="item-img" src="https://images.unsplash.com/photo-1516257984-b1b4d707412e?auto=format&fit=crop&w=600&q=80" alt="Montbell Versalite">
+            <div class="item-body">
+              <div class="item-brand">Montbell 🇯🇵</div>
+              <div class="item-name">Versalite Gore-Tex Ultralight (134g)</div>
+              <div class="item-desc">Надлегкий Ballistic Airlight 10D нейлон. Повністю проклеєні шви, мінімальний об'єм у рюкзаку для трекінгу. Slate Grey & Black.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€220 <span style="font-size:0.8rem; font-weight:400;">(34,900 kr.)</span></div>
+                  <div class="price-isk">Опт: €110 | Склад: 12 шт.</div>
+                </div>
+                <div class="margin-tag">50% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 5. Pentagon Tactical 2.0 Ripstop Cap -->
+          <div class="item-card" data-cat="belts">
+            <img class="item-img" src="https://images.unsplash.com/photo-1588850561407-ed78c282e89b?auto=format&fit=crop&w=600&q=80" alt="Pentagon Cap">
+            <div class="item-body">
+              <div class="item-brand">Pentagon Tactical 🇬🇷</div>
+              <div class="item-name">Tactical 2.0 BB Cap Teflon Ripstop</div>
+              <div class="item-desc">Вологозахисне тефлонове просочення, без металевої кнопки (підходить під навушники). Вентиляція та Coolmax стрічка від поту.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€25 <span style="font-size:0.8rem; font-weight:400;">(3,900 kr.)</span></div>
+                  <div class="price-isk">Опт: €7.5 | Склад: 60 шт.</div>
+                </div>
+                <div class="margin-tag">70% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 6. M-Tac Aggressor Gen II Flex Pants -->
+          <div class="item-card" data-cat="pants ripstop">
+            <img class="item-img" src="https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=600&q=80" alt="M-Tac Aggressor">
+            <div class="item-body">
+              <div class="item-brand">M-Tac 🇺🇦</div>
+              <div class="item-name">Aggressor Gen.II Flex Heavy Pants</div>
+              <div class="item-desc">Тканина Rip-Stop (64% бавовна / 32% поліестер / 4% спандекс) з Teflon DWR. Еластичний пояс тунельного типу. Світовий бестселер.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€75 <span style="font-size:0.8rem; font-weight:400;">(11,900 kr.)</span></div>
+                  <div class="price-isk">Опт: €28 | Склад: 160 шт.</div>
+                </div>
+                <div class="margin-tag">63% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 7. Fahrenheit Gelanots L6 Storm Parka -->
+          <div class="item-card" data-cat="hardshell">
+            <img class="item-img" src="https://images.unsplash.com/photo-1604076913837-52ab5629fba9?auto=format&fit=crop&w=600&q=80" alt="Fahrenheit Gelanots">
+            <div class="item-body">
+              <div class="item-brand">Fahrenheit 🇺🇦</div>
+              <div class="item-name">Gelanots® 20k/20k Storm L6 Parka</div>
+              <div class="item-desc">Японська безпорова мембрана Toyota Tsusho. Сіль океану не забиває пори. Анатомічний штормовий капюшон під каску. Solid Black & Navy.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€240 <span style="font-size:0.8rem; font-weight:400;">(37,900 kr.)</span></div>
+                  <div class="price-isk">Опт: €95 | Склад: 25 шт.</div>
+                </div>
+                <div class="margin-tag">60% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 8. And Wander Dyneema 30L Pack -->
+          <div class="item-card" data-cat="japan">
+            <img class="item-img" src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80" alt="And Wander Dyneema">
+            <div class="item-body">
+              <div class="item-brand">And Wander 🇯🇵</div>
+              <div class="item-name">Dyneema 30L Waterproof Summit Pack</div>
+              <div class="item-desc">Композит Dyneema (у 15 разів міцніший за сталь). Світловідбивні шви 3M для повної безпеки в темний період року. Made in Japan.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€340 <span style="font-size:0.8rem; font-weight:400;">(54,000 kr.)</span></div>
+                  <div class="price-isk">Опт: €170 | Склад: 6 шт.</div>
+                </div>
+                <div class="margin-tag">50% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 9. Carinthia HIG 4.0 Sub-Zero Jacket -->
+          <div class="item-card" data-cat="hardshell">
+            <img class="item-img" src="https://images.unsplash.com/photo-1578632767115-351597cf2477?auto=format&fit=crop&w=600&q=80" alt="Carinthia HIG 4.0">
+            <div class="item-body">
+              <div class="item-brand">Carinthia 🇦🇹</div>
+              <div class="item-name">HIG 4.0 Sub-Zero Extreme Jacket</div>
+              <div class="item-desc">Утеплювач G-LOFT® (зігріває навіть при 100% вологості). Вітрозахисна мембрана Gore Windstopper. Температурний комфорт до -20°C. Solid Black & Olive.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€385 <span style="font-size:0.8rem; font-weight:400;">(61,000 kr.)</span></div>
+                  <div class="price-isk">Опт: €175 | Склад: 10 шт.</div>
+                </div>
+                <div class="margin-tag">55% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 10. UF PRO Monsoon XT Gen.2 -->
+          <div class="item-card" data-cat="hardshell">
+            <img class="item-img" src="https://images.unsplash.com/photo-1542272604-780c96856592?auto=format&fit=crop&w=600&q=80" alt="UF PRO Monsoon">
+            <div class="item-body">
+              <div class="item-brand">UF PRO 🇸🇮</div>
+              <div class="item-name">Monsoon XT Gen.2 Tactical Hardshell</div>
+              <div class="item-desc">Демпферні вставки air/pac® на плечах (рівномірний розподіл ваги рюкзака без передавлювання кровотоку). Капюшон Hood/Harness®. Brown Grey & Black.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€520 <span style="font-size:0.8rem; font-weight:400;">(82,500 kr.)</span></div>
+                  <div class="price-isk">Опт: €245 | Склад: 12 шт.</div>
+                </div>
+                <div class="margin-tag">53% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 11. Helikon-Tex OTP DuraCanvas Pants -->
+          <div class="item-card" data-cat="pants ripstop">
+            <img class="item-img" src="https://images.unsplash.com/photo-1551854838-212c50b4c184?auto=format&fit=crop&w=600&q=80" alt="Helikon OTP">
+            <div class="item-body">
+              <div class="item-brand">Helikon-Tex 🇵🇱</div>
+              <div class="item-name">Outdoor Tactical Pants® (OTP) VersaStretch</div>
+              <div class="item-desc">4-сторонній стрейч із тефлоновим бар'єром. Анатомічний крій колін із відсіками під м'які вставки. Дихаючі та еластичні для трекінгу. Taiga Green & Shadow Grey.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€88 <span style="font-size:0.8rem; font-weight:400;">(13,900 kr.)</span></div>
+                  <div class="price-isk">Опт: €35 | Склад: 65 шт.</div>
+                </div>
+                <div class="margin-tag">60% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 12. Snow Peak Octa Breathable Pullover -->
+          <div class="item-card" data-cat="japan">
+            <img class="item-img" src="https://images.unsplash.com/photo-1512436991641-6745cdb1723f?auto=format&fit=crop&w=600&q=80" alt="Snow Peak Octa">
+            <div class="item-body">
+              <div class="item-brand">Snow Peak 🇯🇵</div>
+              <div class="item-name">Flexible Insulated Octa® Pullover</div>
+              <div class="item-desc">Японське порожнисте волокно Teijin Octa® у 2 рази легше за поліестер. Миттєве випаровування вологи. Стриманий урбаністичний японський монохром.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€240 <span style="font-size:0.8rem; font-weight:400;">(38,000 kr.)</span></div>
+                  <div class="price-isk">Опт: €115 | Склад: 8 шт.</div>
+                </div>
+                <div class="margin-tag">52% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 13. Goldwin Gore-Tex Pro 3L Stealth Parka -->
+          <div class="item-card" data-cat="japan hardshell">
+            <img class="item-img" src="https://images.unsplash.com/photo-1548883354-7622d03aca27?auto=format&fit=crop&w=600&q=80" alt="Goldwin Parka">
+            <div class="item-body">
+              <div class="item-brand">Goldwin 🇯🇵</div>
+              <div class="item-name">Gore-Tex Pro 3L Stealth Alpine Parka</div>
+              <div class="item-desc">Чистий японський альпійський дизайн без зовнішніх логотипів. Магнітні кишені, лазерна перфорація коміра для вільного дихання на штормі. Stealth Black.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€680 <span style="font-size:0.8rem; font-weight:400;">(108,000 kr.)</span></div>
+                  <div class="price-isk">Опт: €330 | Склад: 5 шт.</div>
+                </div>
+                <div class="margin-tag">51% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 14. Keela Munro Waterproof Storm Jacket -->
+          <div class="item-card" data-cat="hardshell">
+            <img class="item-img" src="https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=600&q=80" alt="Keela Munro">
+            <div class="item-body">
+              <div class="item-brand">Keela Outdoors 🇬🇧</div>
+              <div class="item-name">Munro System Dual Protection (SDP) Jacket</div>
+              <div class="item-desc">Подвійна шотландська мембрана SDP повністю усуває конденсат зсередини куртки при температурах біля 0°C. Офіційний вибір рятувальників Великої Британії.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€295 <span style="font-size:0.8rem; font-weight:400;">(46,900 kr.)</span></div>
+                  <div class="price-isk">Опт: €120 | Склад: 24 шт.</div>
+                </div>
+                <div class="margin-tag">59% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 15. Tasmanian Tiger Mission Pack MKII -->
+          <div class="item-card" data-cat="packs">
+            <img class="item-img" src="https://images.unsplash.com/photo-1553062407-98eeb64c6a62?auto=format&fit=crop&w=600&q=80" alt="Tasmanian Tiger Pack">
+            <div class="item-body">
+              <div class="item-brand">Tasmanian Tiger 🇩🇪</div>
+              <div class="item-name">Mission Pack MKII 37L Laser-Cut</div>
+              <div class="item-desc">Німецький Cordura 700D з лазерними прорізами MOLLE. Ергономічна спинка Padded Back System, інтегрований дощовий чохол. Titan Grey & Black.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€210 <span style="font-size:0.8rem; font-weight:400;">(33,500 kr.)</span></div>
+                  <div class="price-isk">Опт: €95 | Склад: 12 шт.</div>
+                </div>
+                <div class="margin-tag">55% Маржа</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 16. Fahrenheit Power Stretch Pro Fleece -->
+          <div class="item-card" data-cat="pants">
+            <img class="item-img" src="https://images.unsplash.com/photo-1517445312882-bc9910d016b7?auto=format&fit=crop&w=600&q=80" alt="Fahrenheit Fleece">
+            <div class="item-body">
+              <div class="item-brand">Fahrenheit 🇺🇦</div>
+              <div class="item-name">Polartec® Power Stretch Pro Thermal Hoodie</div>
+              <div class="item-desc">Оригінальний Polartec® із нейлоновим зовнішнім шаром (стійкий до тертя). Внутрішній ворс відводить 100% вологи. Ідеальний L2-L3 шар для льодовиків.</div>
+              <div class="item-prices">
+                <div>
+                  <div class="price-ret">€115 <span style="font-size:0.8rem; font-weight:400;">(18,200 kr.)</span></div>
+                  <div class="price-isk">Опт: €45 | Склад: 35 шт.</div>
+                </div>
+                <div class="margin-tag">61% Маржа</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Strategic Matrix Table -->
+        <div style="margin-top:35px;">
+          <h3 style="color:#fff; font-size:1.15rem; margin-bottom:12px;">📋 Стратегічна матриця асортименту: На чому акцентуємо увагу і чому</h3>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>Категорія</th><th>Бренд-лідер</th><th>Ключові моделі</th><th>На чому акцентуємо увагу покупця</th><th>Чому саме цей бренд?</th><th>Логістика & Маржа</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>Штани Heavy-Duty (40% замовлень)</strong></td>
+                  <td><strong>M-Tac 🇺🇦 / Helikon 🇵🇱</strong></td>
+                  <td>M-Tac Aggressor Gen.II, Conquistador, Helikon OTP</td>
+                  <td>Стійкість до базальту, еластичний пояс тунельного типу, тефлоновий бар'єр</td>
+                  <td>Невбивні «робочі конячки» за 11,900–14,900 kr. проти 45,000 kr. у 66°North</td>
+                  <td>Морський контейнер Samskip; маржа <strong>60–63%</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Штормові куртки L6 (Hardshell)</strong></td>
+                  <td><strong>Fahrenheit 🇺🇦 / Keela 🇬🇧 / UF PRO 🇸🇮</strong></td>
+                  <td>Fahrenheit Gelanots L6, Keela Munro SDP, UF PRO Monsoon</td>
+                  <td>Безпорова мембрана не забивається сіллю; подвійна мембрана усуває конденсат</td>
+                  <td>Gelanots (Toyota Tsusho) витримує солоні шторми краще за мікропористий Gore-Tex</td>
+                  <td>Авіа/морська логістика; маржа <strong>53–60%</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Захист від лави (Lava-Proof Ripstop)</strong></td>
+                  <td><strong>Pentagon 🇬🇷 / M-Tac 🇺🇦</strong></td>
+                  <td>Pentagon Dias Ripstop, M-Tac Sturm NYCO Extreme</td>
+                  <td>У 4 рази вища стійкість до роздирання об каміння; ціна €145 не викликає страху пошкодити</td>
+                  <td>Відповідь на біль туристів, які рвуть куртки за €700 на першому ж виїзді на лаву</td>
+                  <td>Ексклюзивне позиціонування «Anti-Fragile»; маржа <strong>60–65%</strong></td>
+                </tr>
+                <tr>
+                  <td><strong>Вогнестійкий Techwear & Пух</strong></td>
+                  <td><strong>Nanga 🇯🇵 / Snow Peak 🇯🇵</strong></td>
+                  <td>Nanga Takibi Down, Aurora-Tex Down, Snow Peak Octa</td>
+                  <td>Вогнетривкий японський арамід проти іскор лави та багать; гідрофобний пух UDD</td>
+                  <td>Ексклюзивний вітринний магніт для заможних туристів, експатів та гідів</td>
+                  <td>Селективна дистриб'юція; стабільна націнка <strong>50–52%</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 6: HIGH-MARGIN IMPULSE & EDC CHECKOUT ==================== -->
+    <section id="tab-impulse" class="tab-pane">
+      <div class="grid-4" style="margin-bottom:24px;">
+        <div class="stat-box warning">
+          <div class="stat-val" style="color:var(--warning);">70.8%</div>
+          <div class="stat-lbl">Середня валова маржа</div>
+          <div class="stat-sub">Товари імпульсивного попиту</div>
+        </div>
+        <div class="stat-box success">
+          <div class="stat-val">€7,458</div>
+          <div class="stat-lbl">Стартовий бюджет пулу</div>
+          <div class="stat-sub">1,455 одиниць біля каси</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-val">4.04M kr.</div>
+          <div class="stat-lbl">Очікуваний виторг (з VSK)</div>
+          <div class="stat-sub">€25,582 виручки з партії</div>
+        </div>
+        <div class="stat-box warning">
+          <div class="stat-val">+35% AOV</div>
+          <div class="stat-lbl">Приріст середнього чека</div>
+          <div class="stat-sub">Крос-сел біля касової зони</div>
+        </div>
+      </div>
+
+      <div class="card" style="border-top:3px solid var(--warning);">
+        <div class="card-title"><span style="color:var(--warning);">⚡ КАСОВА "МАШИНА ПРИБУТКУ":</span> 12 Категорій Імпульсного Попиту для Рейк'явіка</div>
+        <p>Коли клієнт уже купує куртку чи штани за €100–€300, додавання корисних дрібниць за €5–€35 сприймається психологічно легко, а магазину приносить <strong>до 70–91% чистої маржі</strong>:</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Категорія товару</th><th>Бренди</th><th>Гострий біль клієнта в Ісландії</th><th>Опт (FOB)</th><th>Роздріб (ISK / EUR)</th><th>Маржа %</th></tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(245,158,11,0.06);">
+                <td><strong>1. Водонепроникні шкарпетки</strong></td>
+                <td><strong>DexShell, Sealskinz, Fahrenheit</strong></td>
+                <td>Перетин річок у брід, промокання ніг біля водоспадів. Мембрана Porelle + Merino wool</td>
+                <td>€12.50</td>
+                <td><strong>5,900 kr.</strong> (€37.50)</td>
+                <td><span class="badge badge-warning">67% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>2. Рукавиці з відкидним пальцем</strong></td>
+                <td><strong>Mechanix Wear, Pentagon, M-Tac</strong></td>
+                <td>Керування дронами та зйомка на телефон на морозі. Вітрозахисний фліс Windblock</td>
+                <td>€11.00</td>
+                <td><strong>4,800 kr.</strong> (€30.50)</td>
+                <td><span class="badge badge-success">64% Маржа</span></td>
+              </tr>
+              <tr style="background:rgba(56,189,248,0.06);">
+                <td><strong>3. Термобафи & балаклави</strong></td>
+                <td><strong>Fahrenheit, Buff Merino, Helikon</strong></td>
+                <td>Ураганний вітер 30 м/с зриває капюшон; захист обличчя від обмороження (Polartec)</td>
+                <td>€5.50</td>
+                <td><strong>3,200 kr.</strong> (€20.00)</td>
+                <td><span class="badge badge-primary">73% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>4. Налобні ліхтарі (USB + Red Light)</strong></td>
+                <td><strong>Petzl, Nitecore, Olight</strong></td>
+                <td>20 годин темряви взимку; червоне світло для спостереження за Північним сяйвом</td>
+                <td>€18.00</td>
+                <td><strong>7,900 kr.</strong> (€50.00)</td>
+                <td><span class="badge badge-success">64% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>5. Маячки безпеки 360°</strong></td>
+                <td><strong>Guardian Angel, Glo-Toob, Nite Ize</strong></td>
+                <td>Повна відсутність ліхтарів на перевалах; видимість людини на дорозі до 3 км у хуртовину</td>
+                <td>€10.00</td>
+                <td><strong>4,500 kr.</strong> (€28.50)</td>
+                <td><span class="badge badge-success">65% Маржа</span></td>
+              </tr>
+              <tr style="background:rgba(16,185,129,0.06);">
+                <td><strong>6. Гермомішки (Dry Bags 5L/10L)</strong></td>
+                <td><strong>Sea to Summit, M-Tac, F/CE.</strong></td>
+                <td>Водяний пил водоспадів Скоґафосс та Сельяландсфосс заливає техніку та документи</td>
+                <td>€5.50</td>
+                <td><strong>2,700 kr.</strong> (€17.00)</td>
+                <td><span class="badge badge-success">68% Маржа</span></td>
+              </tr>
+              <tr style="background:rgba(245,158,11,0.06);">
+                <td><strong>7. Хімічні & USB повербанк-грілки</strong></td>
+                <td><strong>Only Hot (Італія), Zippo HeatBank</strong></td>
+                <td>Очікування Аврори при -10°C; телефон сідає за 10 хв; зігрівання пальців рук і ніг</td>
+                <td>€0.70 / €12.00</td>
+                <td><strong>450 kr. / 6,200 kr.</strong></td>
+                <td><span class="badge badge-warning">75% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>8. Морські карабіни S-Biner Marine</strong></td>
+                <td><strong>Nite Ize, ITW Nexus GrimLoc</strong></td>
+                <td>Швидке пристібання рукавиць до пояса, щоб їх не здуло штормом у прірву</td>
+                <td>€1.80</td>
+                <td><strong>1,200 kr.</strong> (€7.60)</td>
+                <td><span class="badge badge-warning">76% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>9. Вакуумні термокружки 470ml</strong></td>
+                <td><strong>Stanley PMI, Klean Kanteen, Nalgene</strong></td>
+                <td>Довгі переїзди по Ring Road у негоду; гаряча кава 18 годин у дорозі</td>
+                <td>€14.00</td>
+                <td><strong>6,500 kr.</strong> (€41.00)</td>
+                <td><span class="badge badge-success">66% Маржа</span></td>
+              </tr>
+              <tr style="background:rgba(56,189,248,0.06);">
+                <td><strong>10. Tenacious Tape ремкомплекти</strong></td>
+                <td><strong>Gear Aid (USA)</strong></td>
+                <td>Миттєвий ремонт порізів тканини об гостру лаву за 100 км від міст (клеїться на мокре)</td>
+                <td>€3.20</td>
+                <td><strong>1,800 kr.</strong> (€11.50)</td>
+                <td><span class="badge badge-primary">72% Маржа</span></td>
+              </tr>
+              <tr style="background:rgba(236,72,153,0.06);">
+                <td><strong>11. Кастомні Velcro-патчі (Viking / Basalt)</strong></td>
+                <td><strong>Nordic Hub Custom / M-Tac</strong></td>
+                <td>Культовий сувенір: Vegvisir (рунічний компас), Subdued Flag, "Lava-Proof Survivor"</td>
+                <td>€0.90</td>
+                <td><strong>1,600 kr.</strong> (€10.00)</td>
+                <td><span class="badge badge-japan" style="background:#ec4899; color:#fff;">91% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>12. EDC Мультитули та кишенькові ножі</strong></td>
+                <td><strong>Leatherman, M-Tac Type 3, Ruike</strong></td>
+                <td>Ремонт спорядження в польових умовах, монтаж ланцюгів на колеса, відкривання банок</td>
+                <td>€22.00</td>
+                <td><strong>9,900 kr.</strong> (€63.00)</td>
+                <td><span class="badge badge-success">65% Маржа</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    
+      <!-- CHINA SOURCING STRATEGY & WAREHOUSE INVENTORY EXPENSES -->
+      <div class="card" style="border-top:3px solid #ef4444; margin-top:24px;">
+        <div class="card-title"><span style="color:#ef4444;">🇨🇳 ПРЯМИЙ ФАБРИЧНИЙ ІМПОРТ З КИТАЮ:</span> Світові Топ-Бренди замість Посередників у ЄС (Маржа 78–89%)</div>
+        <p>Заміна європейських перекупників на прямі контракти з перевіреними світовими гігантами Китаю (<strong>Nitecore, Fenix, Keith Titanium, Naturehike, Nextool, DexShell</strong>) зменшує витрати на закупівлю імпульсного пулу з <strong>€7,458 до €4,850 (-35%)</strong> та піднімає чистий прибуток каси до <strong>83.2%</strong>.</p>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Бренд (Китай)</th>
+                <th>Світовий статус та репутація</th>
+                <th>Ключова продукція для каси</th>
+                <th>Опт із заводу (CN)</th>
+                <th>Ціна через дистриб'ютора в ЄС</th>
+                <th>Роздріб у Рейк'явіку</th>
+                <th>Маржа %</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr style="background:rgba(239,68,68,0.06);">
+                <td><strong>Nitecore (Sysmax)</strong></td>
+                <td>Світовий бренд №1 тактичного освітлення (IPX8, офіційний постачальник поліції ЄС/США)</td>
+                <td>Налобники NU25/NU33 з червоним світлом для Аврори; карбонові морозостійкі повербанки NB10000</td>
+                <td><strong>$9.50</strong> (€8.80)</td>
+                <td>€18.00 (Petzl)</td>
+                <td><strong>7,900 kr.</strong> (€50.00)</td>
+                <td><span class="badge badge-success">82% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>Keith Titanium</strong></td>
+                <td>Найбільший у світі OEM-виробник медичного титану (виготовляє для топ-брендів США)</td>
+                <td>Титанові подвійні вакуумні термокружки, титанові ложко-вилки Sporks (титан не боїться солі та сірки)</td>
+                <td><strong>$6.20</strong> (€5.80)</td>
+                <td>€14.00 (Stanley)</td>
+                <td><strong>6,500 kr.</strong> (€41.00)</td>
+                <td><span class="badge badge-success">85% Маржа</span></td>
+              </tr>
+              <tr style="background:rgba(16,185,129,0.06);">
+                <td><strong>DexShell (Шанхай)</strong></td>
+                <td>Завод у Шанхаї, що ліцензує британську мембрану Porelle® (100% водонепроникність)</td>
+                <td>Мембранні шкарпетки з шерстю мериноса (ноги сухі при переході річок у брід)</td>
+                <td><strong>$7.20</strong> (€6.80)</td>
+                <td>€12.50 (через ЄС)</td>
+                <td><strong>5,900 kr.</strong> (€37.50)</td>
+                <td><span class="badge badge-success">82% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>Naturehike</strong></td>
+                <td>Глобальний бестселер легкохідного кемпінгу (експорт у 68 країн світу)</td>
+                <td>Кремнієві гермомішки Sil-Nylon 10L (35 грамів); самонадувні термоподушки</td>
+                <td><strong>$2.30</strong> (€2.10)</td>
+                <td>€5.50 (Sea to Summit)</td>
+                <td><strong>2,700 kr.</strong> (€17.00)</td>
+                <td><span class="badge badge-success">87% Маржа</span></td>
+              </tr>
+              <tr style="background:rgba(245,158,11,0.06);">
+                <td><strong>Nextool (Xiaomi Eco)</strong></td>
+                <td>Інженерний лідер важких мультитулів із гартованої нержавіючої сталі 50Cr15MoV</td>
+                <td>Мультитул Flagship Pro 16-in-1 із повнорозмірними ножицями та потужними пасатижами</td>
+                <td><strong>$11.20</strong> (€10.50)</td>
+                <td>€22.00 (Leatherman)</td>
+                <td><strong>9,900 kr.</strong> (€63.00)</td>
+                <td><span class="badge badge-success">83% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>Ocoopa</strong></td>
+                <td>Бренд №1 у США та Канаді з електронних акумуляторних USB-грілок для рук</td>
+                <td>Грілки Union 5s (нагрів за 3 сек до 55°C + аварійний повербанк для iPhone)</td>
+                <td><strong>$6.20</strong> (€5.80)</td>
+                <td>€12.00 (Zippo)</td>
+                <td><strong>6,200 kr.</strong> (€39.00)</td>
+                <td><span class="badge badge-success">85% Маржа</span></td>
+              </tr>
+              <tr>
+                <td><strong>Camnal / Xinda</strong></td>
+                <td>Міжнародна сертифікація альпінізму CE 1019, EN 12275, UIAA (авіаційний дюралюміній 7075)</td>
+                <td>Карабіни скелелазні 25kN із муфтою (швидка фіксація рукавиць і спорядження)</td>
+                <td><strong>$0.90</strong> (€0.85)</td>
+                <td>€1.80 (Nite Ize)</td>
+                <td><strong>1,200 kr.</strong> (€7.60)</td>
+                <td><span class="badge badge-success">89% Маржа</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <!-- WAREHOUSE EXPENSE & INVENTORY BALANCE CALCULATION -->
+        <div style="margin-top:24px; padding:18px; background:var(--surface); border:1px solid var(--border); border-radius:var(--radius-sm);">
+          <h4 style="color:#fff; font-size:1rem; margin-bottom:10px;">📦 Зведений розрахунок витрат на склад та товарний запас:</h4>
+          <p style="font-size:0.85rem; color:var(--text-muted); margin-bottom:12px;">
+            Поєднання основного одягу з прямим імпортом китайських EDC брендів дає магазину небачену стійкість і підвищує загальний роздрібний потенціал першої поставки:
+          </p>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Складський блок</th>
+                  <th>Одиниць (stk.)</th>
+                  <th>Собівартість закупівлі (FOB)</th>
+                  <th>Логістика та мито (0%)</th>
+                  <th>Landed Cost (з VSK)</th>
+                  <th>Роздрібний потенціал виторгу</th>
+                  <th>Середня маржа</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><strong>1. Основний одяг (M-Tac, Fahrenheit, Pentagon, Carinthia)</strong></td>
+                  <td>1,389 од.</td>
+                  <td>€64,682</td>
+                  <td>€1,850 (Samskip)</td>
+                  <td>€82,499</td>
+                  <td><strong>23,175,000 kr.</strong> (€154,500)</td>
+                  <td><strong>58.0%</strong></td>
+                </tr>
+                <tr style="background:rgba(239,68,68,0.06);">
+                  <td><strong>2. Імпульсний касовий пул (Прямий Китай: Nitecore, Keith, DexShell)</strong></td>
+                  <td>1,550 од.</td>
+                  <td><strong>€4,850</strong></td>
+                  <td>€550 (Морський збір)</td>
+                  <td>€6,696</td>
+                  <td><strong>4,250,000 kr.</strong> (€28,330)</td>
+                  <td><strong style="color:var(--secondary);">83.2%</strong></td>
+                </tr>
+                <tr style="font-weight:800; background:rgba(56,189,248,0.08);">
+                  <td>РАЗОМ ЗАГАЛЬНИЙ СКЛАД НА СТАРТІ</td>
+                  <td>2,939 од.</td>
+                  <td>€69,532</td>
+                  <td>€2,400</td>
+                  <td>€89,195</td>
+                  <td><strong>27,425,000 kr. (€182,830)</strong></td>
+                  <td><strong style="color:var(--primary);">63.5%</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div style="font-size:0.82rem; color:var(--secondary); margin-top:10px;">
+            ✓ <strong>Управління залишками (ROP):</strong> Завдяки компактним розмірам китайського пулу (1 палета) повторне замовлення формується при залишку 35% партії. Термін контейнерної доставки морським шляхом (Нінбо/Шанхай ➔ Роттердам ➔ Рейк'явік) становить 28–32 дні, що гарантує безперервну наявність наймаржинальніших позицій біля каси.
+          </div>
+        </div>
+      </div>
+
+
+    <!-- ==================== TAB 7: FINANCIAL SCENARIOS & ROI ==================== -->
+    <section id="tab-scenarios" class="tab-pane">
+      <div class="card">
+        <div class="card-title">📈 Фінансовий Прогноз: Дослідження 3 Сценаріїв Розвитку Магазину</div>
+        <p>Фіксований щомісячний OPEX хабу в Skeifan 10 становить: <strong>2,332,500 ISK (~€15,550/міс)</strong>. Початковий CAPEX: <strong>€145,000</strong>.</p>
+
+        <div class="grid-3" style="margin:24px 0;">
+          <!-- SCENARIO A -->
+          <div class="scenario-card">
+            <span class="scenario-badge" style="background:#475569; color:#fff;">Сценарій A • Консервативний</span>
+            <h3 style="color:#94a3b8; margin:10px 0 6px 0; font-size:1.15rem;">Низький сезон (Зима)</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:14px;">Суто органічний трафік у Skeifan 10 без масштабних B2B контрактів. 4–5 транзакцій на день.</p>
+            
+            <div style="margin:10px 0; padding:12px; background:var(--bg); border-radius:8px;">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Щомісячний товарообіг:</div>
+              <div style="font-size:1.4rem; font-weight:900; color:#fff;">4,800,000 kr. <span style="font-size:0.8rem; font-weight:400; color:var(--text-muted);">(€32,000)</span></div>
+            </div>
+
+            <div class="meter-wrap">
+              <div class="meter-head"><span>Покриття OPEX:</span> <span>91%</span></div>
+              <div class="meter-bar"><div class="meter-fill warning" style="width:91%;"></div></div>
+            </div>
+
+            <ul style="font-size:0.82rem; color:#cbd5e1; list-style:none; margin:10px 0; line-height:1.7;">
+              <li>• Валовий прибуток (58%): <strong>2,784,000 kr.</strong></li>
+              <li>• Чистий прибуток / міс: <strong style="color:var(--danger);">-148,500 kr.</strong></li>
+              <li>• Вихід на беззбитковість: <strong>на 4-й місяць</strong></li>
+              <li>• Окупність CAPEX: <strong>26–30 місяців</strong></li>
+            </ul>
+          </div>
+
+          <!-- SCENARIO B (TARGET) -->
+          <div class="scenario-card active-target">
+            <span class="scenario-badge badge-primary">Сценарій B • Реалістичний (Цільовий)</span>
+            <h3 style="color:var(--primary); margin:10px 0 6px 0; font-size:1.25rem;">Омніканал + Дрібний B2B</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:14px;">Магазин Skeifan 10 + доставка Dropp.is + регулярні закупівлі гідів AIMG та джиперів. 9–11 покупок/день.</p>
+            
+            <div style="margin:10px 0; padding:12px; background:var(--bg); border-radius:8px;">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Щомісячний товарообіг:</div>
+              <div style="font-size:1.6rem; font-weight:900; color:var(--primary);">8,500,000 kr. <span style="font-size:0.85rem; font-weight:400; color:var(--text-muted);">(€56,600)</span></div>
+            </div>
+
+            <div class="meter-wrap">
+              <div class="meter-head"><span>Покриття OPEX:</span> <span>161%</span></div>
+              <div class="meter-bar"><div class="meter-fill" style="width:100%;"></div></div>
+            </div>
+
+            <ul style="font-size:0.82rem; color:#cbd5e1; list-style:none; margin:10px 0; line-height:1.7;">
+              <li>• Валовий прибуток (58%): <strong>4,930,000 kr.</strong></li>
+              <li>• Чистий щомісячний прибуток (EBITDA): <strong style="color:var(--secondary);">+2,597,500 kr. (€17,300)</strong></li>
+              <li>• Вихід на беззбитковість: <strong>на 2-й місяць</strong></li>
+              <li>• Окупність інвестицій (€145k): <strong>12–14 місяців</strong></li>
+            </ul>
+          </div>
+
+          <!-- SCENARIO C -->
+          <div class="scenario-card">
+            <span class="scenario-badge badge-success">Сценарій C • Оптимістичний</span>
+            <h3 style="color:var(--secondary); margin:10px 0 6px 0; font-size:1.15rem;">ICE-SAR Контракт + Туризм</h3>
+            <p style="font-size:0.82rem; color:var(--text-muted); margin-bottom:14px;">Перемога в тендерах Landsbjörg/Ríkiskaup + літній пік 2.3 млн туристів + геотермальні буровики. 18–25 покупок/день.</p>
+            
+            <div style="margin:10px 0; padding:12px; background:var(--bg); border-radius:8px;">
+              <div style="font-size:0.75rem; color:var(--text-muted);">Щомісячний товарообіг:</div>
+              <div style="font-size:1.4rem; font-weight:900; color:var(--secondary);">14,200,000 kr. <span style="font-size:0.8rem; font-weight:400; color:var(--text-muted);">(€94,600)</span></div>
+            </div>
+
+            <div class="meter-wrap">
+              <div class="meter-head"><span>Покриття OPEX:</span> <span>269%</span></div>
+              <div class="meter-bar"><div class="meter-fill success" style="width:100%;"></div></div>
+            </div>
+
+            <ul style="font-size:0.82rem; color:#cbd5e1; list-style:none; margin:10px 0; line-height:1.7;">
+              <li>• Валовий прибуток (58%): <strong>8,236,000 kr.</strong></li>
+              <li>• Чистий щомісячний прибуток (EBITDA): <strong style="color:var(--secondary);">+5,903,500 kr. (€39,300)</strong></li>
+              <li>• Вихід на беззбитковість: <strong>з 1-го місяця</strong></li>
+              <li>• Окупність інвестицій (€145k): <strong>6–7 місяців</strong></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr><th>Метрика / Показник</th><th>Сценарій A (Песимістичний)</th><th>Сценарій B (Реалістичний Цільовий)</th><th>Сценарій C (Оптимістичний)</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Середній чек (AOV)</strong></td><td>24,000 ISK (€160)</td><td><strong>29,000 ISK (€193)</strong></td><td>36,000 ISK (€240)</td></tr>
+              <tr><td><strong>Кількість замовлень / день</strong></td><td>6 замовлень</td><td><strong>10 замовлень</strong></td><td>14 замовлень + B2B партії</td></tr>
+              <tr><td><strong>Річний валовий виторг</strong></td><td>57.6M ISK (€384k)</td><td><strong>102.0M ISK (€680k)</strong></td><td>170.4M ISK (€1,136k)</td></tr>
+              <tr><td><strong>Чистий річний прибуток (EBITDA)</strong></td><td>-1.78M ISK (або 0)</td><td><strong style="color:var(--secondary);">+31.17M ISK (€207k)</strong></td><td><strong style="color:var(--secondary);">+70.84M ISK (€472k)</strong></td></tr>
+              <tr><td><strong>Рентабельність інвестицій (ROI 1-й рік)</strong></td><td>Негативний / 0%</td><td><strong style="color:var(--primary);">142% ROI</strong></td><td><strong style="color:var(--secondary);">325% ROI</strong></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==================== TAB 8: MARKETING & ROADMAP ==================== -->
+    <section id="tab-roadmap" class="tab-pane">
+      <div class="grid-2">
+        <div class="card">
+          <div class="card-title">🛡️ B2B Воронка та Digital Geo-Targeting</div>
+          <p>Двоконтурна система залучення покупців (Інституційні клієнти + Туристичний потік):</p>
+          
+          <div style="margin:16px 0;">
+            <div style="background:var(--surface); padding:14px; border-radius:8px; border:1px solid var(--border); margin-bottom:12px;">
+              <strong style="color:var(--primary);">1. Програма ICE-SAR Pro-Shield:</strong>
+              <p style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">15% корпоративна знижка волонтерам рятувальної служби Landsbjörg за посвідченням. Офіційний статус «Approved Rescue Gear» формує найвищу довіру в ісландців.</p>
+            </div>
+
+            <div style="background:var(--surface); padding:14px; border-radius:8px; border:1px solid var(--border); margin-bottom:12px;">
+              <strong style="color:var(--warning);">2. Контракти з Arctic Trucks & Midgard:</strong>
+              <p style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Постачання комбінезонів та штанів M-Tac NYCO Extreme для механіків та гідів суперджипів. Стійкість до бруду, мастил та гострого льоду.</p>
+            </div>
+
+            <div style="background:var(--surface); padding:14px; border-radius:8px; border:1px solid var(--border);">
+              <strong style="color:var(--japan);">3. Google Search KEF Airport Funnel:</strong>
+              <p style="font-size:0.85rem; color:var(--text-muted); margin-top:4px;">Таргетинг на туристів у радіусі аеропорту Кефлавік за запитами <em>"warm jacket reykjavik", "iceland waterproof pants"</em> із закликом заїхати в Skeifan 10 на шляху до Ring Road.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-title">🚀 Дорожня Карта Запуску (Roadmap: 6 Місяців)</div>
+          <p>Покроковий графік реалізації від підписання інвестиційного договору до стабільного прибутку:</p>
+
+          <div style="margin-top:16px;">
+            <div class="roadmap-step">
+              <div class="step-num">1</div>
+              <div class="step-body">
+                <strong style="color:#fff;">Місяць 1: Юридичне оформлення та контрактація</strong>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Реєстрація компанії <em>ehf.</em> у Skatturinn, підписання оренди Skeifan 10 (3,000 ISK/м²), укладання прямих дистриб'юторських угод із M-Tac, Fahrenheit, Pentagon, Helikon, Nanga, Montbell.</p>
+              </div>
+            </div>
+
+            <div class="roadmap-step">
+              <div class="step-num">2</div>
+              <div class="step-body">
+                <strong style="color:#fff;">Місяць 2: Закупівля та Ремонт Шоуруму</strong>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Оплата початкового складу (€64,682) та імпульсного пулу (€7,458). Відвантаження морського контейнера Samskip із Роттердама. Будівельні роботи у Skeifan 10 (стіна патчів, зона кави, примірочні).</p>
+              </div>
+            </div>
+
+            <div class="roadmap-step">
+              <div class="step-num">3</div>
+              <div class="step-body">
+                <strong style="color:#fff;">Місяць 3: Митне очищення та IT-інтеграція</strong>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Прибуття контейнера в порт Сундахебн (0% мито, сплата 24% VSK). Налаштування POS-терміналів, інтеграція кур'єрської служби Dropp.is, навчання 2 продавців-консультантів.</p>
+              </div>
+            </div>
+
+            <div class="roadmap-step">
+              <div class="step-num" style="background:var(--secondary);">4</div>
+              <div class="step-body">
+                <strong style="color:var(--secondary);">Місяць 4: Офіційне Відкриття (Grand Opening)</strong>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Запуск B2C реклами в Instagram/Meta, презентація для асоціації рятувальників ICE-SAR, відкриття стенду тестування лави "Basalt Scratch Test", початок щоденних продажів.</p>
+              </div>
+            </div>
+
+            <div class="roadmap-step">
+              <div class="step-num" style="background:var(--secondary);">5-6</div>
+              <div class="step-body">
+                <strong style="color:var(--secondary);">Місяці 5–6: Досягнення беззбитковості та масштабування</strong>
+                <p style="font-size:0.82rem; color:var(--text-muted); margin-top:4px;">Вихід на товарообіг 5.25 млн ISK/міс (Break-even). Запуск регулярного авіа-поповнення дефіцитних розмірів L/XL через Icelandair Cargo. Вихід на чистий щомісячний прибуток <strong>2.6 млн ISK (~€17,300/міс)</strong>.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <script>
+    // Tab switching logic
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-pane').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+      
+      const target = document.getElementById(tabId);
+      if (target) target.classList.add('active');
+      if (btn) btn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Brand table filter by region
+    function filterBrandTable(region, btn) {
+      document.querySelectorAll('.filter-bar .filter-btn').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const rows = document.querySelectorAll('#brandsTable tbody tr');
+      rows.forEach(r => {
+        if (region === 'all' || r.getAttribute('data-region') === region) {
+          r.style.display = '';
+        } else {
+          r.style.display = 'none';
+        }
+      });
+    }
+
+    // Catalog filtering
+    function filterCatalog(cat, btn) {
+      const parent = btn.parentElement;
+      parent.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const cards = document.querySelectorAll('#catalogGrid .item-card');
+      cards.forEach(card => {
+        const itemCat = card.getAttribute('data-cat') || '';
+        if (cat === 'all' || itemCat.includes(cat)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+
+</body>
+</html>

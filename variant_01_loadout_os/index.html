@@ -1,0 +1,1545 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IS-TACTICAL // LOADOUT OS v4.2 [REYKJAVÍK SECTOR]</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Share Tech Mono, JetBrains Mono, Rajdhani -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;0,800;1,400&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#0A0A0A',
+            panel: '#111316',
+            crate: '#16191E',
+            slateHud: '#262B33',
+            amberTac: '#FF9800',
+            amberDim: 'rgba(255, 152, 0, 0.14)',
+            amberGlow: 'rgba(255, 152, 0, 0.45)',
+          },
+          fontFamily: {
+            mono: ['"JetBrains Mono"', 'monospace'],
+            hud: ['"Share Tech Mono"', 'monospace'],
+            display: ['"Rajdhani"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg-black: #0A0A0A;
+      --amber: #FF9800;
+      --amber-soft: rgba(255, 152, 0, 0.18);
+      --slate-border: #262A32;
+      --slate-muted: #64748B;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      background-color: #0A0A0A;
+      color: #E2E8F0;
+      font-family: 'JetBrains Mono', monospace;
+      overflow-x: hidden;
+    }
+
+    /* Subdued Scanline & Tactical Grid Overlay */
+    .scanline-overlay {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 90;
+      background:
+        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.32) 50%),
+        radial-gradient(circle at 50% 50%, rgba(255, 152, 0, 0.02), rgba(0, 0, 0, 0.45));
+      background-size: 100% 3px, 100% 100%;
+      opacity: 0.65;
+    }
+
+    .bg-tactical-grid {
+      background-size: 32px 32px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.025) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.025) 1px, transparent 1px);
+    }
+
+    /* Corner Brackets for HUD Panels & Crates */
+    .hud-box {
+      position: relative;
+      background: #101216;
+      border: 1px solid #242933;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hud-box::before,
+    .hud-box::after {
+      content: '';
+      position: absolute;
+      width: 8px;
+      height: 8px;
+      pointer-events: none;
+      transition: border-color 0.2s ease;
+    }
+    .hud-box::before {
+      top: -1px;
+      left: -1px;
+      border-top: 2px solid #FF9800;
+      border-left: 2px solid #FF9800;
+    }
+    .hud-box::after {
+      bottom: -1px;
+      right: -1px;
+      border-bottom: 2px solid #FF9800;
+      border-right: 2px solid #FF9800;
+    }
+
+    /* Military Gear Crate Card */
+    .gear-crate {
+      position: relative;
+      background: linear-gradient(180deg, #14171D 0%, #0E1014 100%);
+      border: 1px solid #262B34;
+      clip-path: polygon(0 0, calc(100% - 12px) 0, 100% 12px, 100% 100%, 12px 100%, 0 calc(100% - 12px));
+      transition: all 0.15s ease;
+    }
+    .gear-crate:hover {
+      border-color: rgba(255, 152, 0, 0.65);
+      transform: translateX(3px);
+      box-shadow: -3px 0 0 #FF9800, 0 8px 24px rgba(0, 0, 0, 0.65);
+    }
+    .gear-crate.equipped {
+      background: linear-gradient(90deg, rgba(255, 152, 0, 0.13) 0%, #13161C 45%, #0F1217 100%);
+      border-color: #FF9800;
+      box-shadow: inset 3px 0 0 #FF9800, 0 0 18px rgba(255, 152, 0, 0.12);
+    }
+
+    /* Mechanical Tactile CTA Button */
+    .btn-deploy {
+      position: relative;
+      background: #FF9800;
+      color: #0A0A0A;
+      font-family: 'Rajdhani', sans-serif;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      clip-path: polygon(10px 0, 100% 0, 100% calc(100% - 10px), calc(100% - 10px) 100%, 0 100%, 0 10px);
+      box-shadow: 0 4px 0 #B26A00, 0 0 25px rgba(255, 152, 0, 0.35);
+      transition: transform 0.08s ease, box-shadow 0.08s ease, background-color 0.15s ease;
+    }
+    .btn-deploy:hover {
+      background: #FFA726;
+      box-shadow: 0 4px 0 #B26A00, 0 0 35px rgba(255, 152, 0, 0.65);
+    }
+    .btn-deploy:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #B26A00, 0 0 15px rgba(255, 152, 0, 0.4);
+    }
+
+    /* Hazard Stripes Bar */
+    .hazard-strip {
+      background: repeating-linear-gradient(
+        -45deg,
+        #FF9800,
+        #FF9800 8px,
+        #0A0A0A 8px,
+        #0A0A0A 16px
+      );
+    }
+
+    /* Silhouette Interactive Zones */
+    .silhouette-zone {
+      cursor: pointer;
+      transition: all 0.22s ease;
+      fill: rgba(30, 36, 46, 0.45);
+      stroke: #475569;
+      stroke-width: 1.5;
+    }
+    .silhouette-zone:hover {
+      fill: rgba(255, 152, 0, 0.22);
+      stroke: #FF9800;
+      stroke-width: 2.2;
+      filter: drop-shadow(0 0 8px rgba(255, 152, 0, 0.5));
+    }
+    .silhouette-zone.zone-equipped {
+      fill: rgba(255, 152, 0, 0.28);
+      stroke: #FF9800;
+      stroke-width: 2;
+      filter: drop-shadow(0 0 10px rgba(255, 152, 0, 0.45));
+    }
+    .silhouette-zone.zone-selected {
+      stroke: #FFF;
+      stroke-dasharray: 4 2;
+      animation: pulseStroke 1.5s infinite;
+    }
+
+    @keyframes pulseStroke {
+      0%, 100% { stroke-opacity: 1; }
+      50% { stroke-opacity: 0.4; }
+    }
+
+    /* Vertical Scanner Laser on Wireframe */
+    @keyframes scanLaser {
+      0% { top: 4%; opacity: 0.2; }
+      50% { opacity: 0.75; }
+      100% { top: 94%; opacity: 0.2; }
+    }
+    .laser-line {
+      position: absolute;
+      left: 8%;
+      right: 8%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, #FF9800 50%, transparent 100%);
+      box-shadow: 0 0 8px #FF9800;
+      animation: scanLaser 4.5s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0A0A0A;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2D3542;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF9800;
+    }
+
+    /* Click Flash Effect */
+    @keyframes hudFlash {
+      0% { box-shadow: 0 0 0 0 rgba(255, 152, 0, 0.7); }
+      100% { box-shadow: 0 0 0 14px rgba(255, 152, 0, 0); }
+    }
+    .flash-trigger {
+      animation: hudFlash 0.35s ease-out;
+    }
+  </style>
+</head>
+<body class="bg-obsidian bg-tactical-grid min-h-screen flex flex-col justify-between relative selection:bg-amberTac selection:text-obsidian">
+
+  <!-- Subdued CRT Scanline Overlay -->
+  <div id="scanlineLayer" class="scanline-overlay"></div>
+
+  <!-- Floating Data-Attribute Fabric Spec Tooltip -->
+  <div id="specTooltip" class="fixed pointer-events-none z-[200] hidden max-w-xs bg-[#0D0F13]/95 border border-amberTac p-3 shadow-2xl backdrop-blur-md">
+    <div class="flex items-center justify-between border-b border-slate-800 pb-1 mb-1.5">
+      <span id="tooltipTitle" class="text-[11px] font-bold text-amberTac tracking-wider uppercase font-hud">SPEC // CORDURA 500D</span>
+      <span class="text-[9px] bg-amberTac/20 text-amberTac px-1.5 py-0.5">MIL-STD</span>
+    </div>
+    <p id="tooltipBody" class="text-[11px] text-slate-300 leading-relaxed font-mono"></p>
+    <div class="mt-2 pt-1 border-t border-slate-800/80 flex justify-between text-[9px] text-slate-400">
+      <span>LAB TESTED: REYKJAVÍK</span>
+      <span id="tooltipMetric" class="text-amberTac font-bold">ABRASION: HIGH</span>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       TOP TACTICAL OS COMMAND BAR
+       ===================================================================== -->
+  <header class="border-b border-slateHud bg-[#0D0F13]/90 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-[1600px] mx-auto px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-amberTac text-obsidian flex items-center justify-center font-display font-bold text-xl tracking-tighter shadow-[0_0_15px_rgba(255,152,0,0.4)]">
+          IS
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-display font-bold text-lg md:text-xl tracking-wider text-white uppercase leading-none">
+              IS-TACTICAL <span class="text-amberTac">// LOADOUT OS</span>
+            </h1>
+            <span class="text-[10px] font-mono bg-amberTac/15 border border-amberTac/50 text-amberTac px-1.5 py-0.5">
+              SYS.v4.2
+            </span>
+          </div>
+          <p class="text-[10px] text-slate-400 tracking-widest uppercase mt-0.5">
+            SUBARCTIC OPERATIVE EQUIPMENT CONFIGURATOR • 64°08'N 21°56'W
+          </p>
+        </div>
+      </div>
+
+      <!-- Environmental Preset Loadouts & System Toggles -->
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="hidden xl:flex items-center gap-1.5 bg-[#14171D] border border-slateHud px-2.5 py-1 text-[11px]">
+          <span class="text-slate-400 uppercase mr-1">PRESET KITS:</span>
+          <button onclick="applyPreset('storm')" class="px-2 py-0.5 bg-slate-800/80 hover:bg-amberTac hover:text-obsidian text-slate-200 transition text-[10px] uppercase font-semibold">
+            [01] Gale Storm
+          </button>
+          <button onclick="applyPreset('glacier')" class="px-2 py-0.5 bg-slate-800/80 hover:bg-amberTac hover:text-obsidian text-slate-200 transition text-[10px] uppercase font-semibold">
+            [02] -20°C Glacier Full
+          </button>
+          <button onclick="applyPreset('recon')" class="px-2 py-0.5 bg-slate-800/80 hover:bg-amberTac hover:text-obsidian text-slate-200 transition text-[10px] uppercase font-semibold">
+            [03] Light Recon
+          </button>
+          <button onclick="clearLoadout()" class="px-2 py-0.5 bg-red-950/50 border border-red-800/50 hover:bg-red-600 hover:text-white text-red-300 transition text-[10px] uppercase font-semibold">
+            [CLR] Strip All
+          </button>
+        </div>
+
+        <!-- Audio Feedback Toggle -->
+        <button id="audioToggleBtn" onclick="toggleAudio()" class="px-2.5 py-1.5 bg-[#14171D] border border-slateHud hover:border-amberTac text-[11px] text-slate-300 flex items-center gap-1.5 transition" title="Toggle Mechanical HUD Audio">
+          <span id="audioDot" class="w-2 h-2 rounded-full bg-amberTac animate-pulse"></span>
+          <span id="audioLabel">SFX: ON</span>
+        </button>
+
+        <!-- Scanline Toggle -->
+        <button onclick="toggleScanlines()" class="px-2.5 py-1.5 bg-[#14171D] border border-slateHud hover:border-amberTac text-[11px] text-slate-300 transition" title="Toggle CRT Scanline Filter">
+          CRT: <span id="crtLabel" class="text-amberTac">ON</span>
+        </button>
+
+        <!-- Live Equipped Counter Badge -->
+        <div class="px-3 py-1.5 bg-amberTac/10 border border-amberTac/40 text-[11px] flex items-center gap-2">
+          <span class="text-slate-400">ACTIVE MODULES:</span>
+          <span id="headerEquippedCount" class="text-amberTac font-bold">0 / 7</span>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       MAIN 3-COLUMN TACTICAL HUD WORKSPACE
+       ===================================================================== -->
+  <main class="max-w-[1600px] w-full mx-auto px-4 py-5 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-5 items-start">
+
+    <!-- ===================================================================
+         LEFT COLUMN (4 COLS): TACTICAL ITEM DRAWER (MILITARY GEAR CRATES)
+         =================================================================== -->
+    <section class="lg:col-span-4 hud-box p-4 flex flex-col h-full max-h-[840px]">
+      <!-- Drawer Header -->
+      <div class="flex items-center justify-between border-b border-slateHud pb-3 mb-3">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="w-2 h-2 bg-amberTac"></span>
+            <h2 class="font-display font-bold text-base tracking-wider uppercase text-white">
+              TACTICAL ARMORY CRATES
+            </h2>
+          </div>
+          <p class="text-[11px] text-slate-400 mt-0.5">
+            CLICK CRATE TO EQUIP / UNEQUIP ON OPERATIVERIG
+          </p>
+        </div>
+        <span id="drawerCountBadge" class="text-[11px] font-mono bg-slate-800 text-amberTac px-2 py-0.5 border border-slate-700">
+          12 CRATES
+        </span>
+      </div>
+
+      <!-- Layering Stage Filter Tabs -->
+      <div class="mb-3">
+        <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1.5 flex justify-between">
+          <span>FILTER BY LAYERING STAGE:</span>
+          <span id="activeZoneFilterLabel" class="text-amberTac hidden cursor-pointer hover:underline" onclick="setZoneFilter('ALL')">[CLEAR ZONE FILTER ✕]</span>
+        </div>
+        <div class="grid grid-cols-4 gap-1.5" id="layerFilterBar">
+          <button onclick="setLayerFilter('ALL')" data-layer="ALL" class="layer-btn bg-amberTac text-obsidian font-bold text-[10px] py-1.5 px-2 uppercase tracking-wider border border-amberTac transition">
+            ALL [12]
+          </button>
+          <button onclick="setLayerFilter('Base Layer')" data-layer="Base Layer" class="layer-btn bg-[#161920] text-slate-300 hover:border-amberTac/60 text-[10px] py-1.5 px-2 uppercase tracking-wider border border-slateHud transition">
+            BASE L1
+          </button>
+          <button onclick="setLayerFilter('Mid Layer')" data-layer="Mid Layer" class="layer-btn bg-[#161920] text-slate-300 hover:border-amberTac/60 text-[10px] py-1.5 px-2 uppercase tracking-wider border border-slateHud transition">
+            MID L2/3
+          </button>
+          <button onclick="setLayerFilter('Heavy Outerwear')" data-layer="Heavy Outerwear" class="layer-btn bg-[#161920] text-slate-300 hover:border-amberTac/60 text-[10px] py-1.5 px-2 uppercase tracking-wider border border-slateHud transition">
+            OUTER L5/6
+          </button>
+        </div>
+      </div>
+
+      <!-- Scrollable Military Crates List -->
+      <div id="crateListContainer" class="space-y-2.5 overflow-y-auto pr-1 flex-1">
+        <!-- Dynamically populated by JS -->
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         CENTER COLUMN (4 COLS): OPERATIVE / LAYERING SLOT WIREFRAME
+         =================================================================== -->
+    <section class="lg:col-span-4 hud-box p-4 flex flex-col items-center justify-between relative min-h-[720px]">
+      <!-- Top Wireframe Status Header -->
+      <div class="w-full flex items-center justify-between border-b border-slateHud pb-2.5 z-10">
+        <div>
+          <div class="flex items-center gap-2">
+            <span class="text-amberTac font-hud text-xs">[RIG-09]</span>
+            <h2 class="font-display font-bold text-base tracking-wider uppercase text-white">
+              OPERATIVE LAYERING WIREFRAME
+            </h2>
+          </div>
+          <p class="text-[10px] text-slate-400">
+            CLICK ANATOMICAL SECTORS TO FILTER • TOGGLE SLOTS BELOW
+          </p>
+        </div>
+        <div class="text-right">
+          <div class="text-[10px] text-slate-400">BIOSCAN STATUS</div>
+          <div id="operativeStatusTag" class="text-[11px] font-bold text-amberTac">NOMINAL // READY</div>
+        </div>
+      </div>
+
+      <!-- Upper Torso Multi-Layer Stack Indicator Pills (Base / Mid / Outer) -->
+      <div class="w-full grid grid-cols-3 gap-1.5 my-2.5 z-10">
+        <div id="slotPill-TORSO_BASE" onclick="setLayerFilter('Base Layer')" class="cursor-pointer bg-[#14171D] border border-slateHud p-1.5 text-center hover:border-amberTac transition">
+          <div class="text-[9px] text-slate-400 uppercase">TORSO [L1 BASE]</div>
+          <div class="text-[10px] font-bold text-slate-300 truncate mt-0.5" id="slotName-TORSO_BASE">EMPTY SLOT</div>
+        </div>
+        <div id="slotPill-TORSO_MID" onclick="setLayerFilter('Mid Layer')" class="cursor-pointer bg-[#14171D] border border-slateHud p-1.5 text-center hover:border-amberTac transition">
+          <div class="text-[9px] text-slate-400 uppercase">TORSO [L2/3 MID]</div>
+          <div class="text-[10px] font-bold text-slate-300 truncate mt-0.5" id="slotName-TORSO_MID">EMPTY SLOT</div>
+        </div>
+        <div id="slotPill-TORSO_OUTER" onclick="setLayerFilter('Heavy Outerwear')" class="cursor-pointer bg-[#14171D] border border-slateHud p-1.5 text-center hover:border-amberTac transition">
+          <div class="text-[9px] text-slate-400 uppercase">TORSO [L5/6 SHELL]</div>
+          <div class="text-[10px] font-bold text-slate-300 truncate mt-0.5" id="slotName-TORSO_OUTER">EMPTY SLOT</div>
+        </div>
+      </div>
+
+      <!-- Central Interactive SVG Silhouette + HUD Callouts -->
+      <div class="relative w-full flex-1 flex items-center justify-center py-2 my-1 overflow-hidden">
+        <!-- Animated Laser Scanline -->
+        <div class="laser-line"></div>
+
+        <!-- Radar Concentric Rings Background -->
+        <div class="absolute w-72 h-72 rounded-full border border-slate-800/60 pointer-events-none"></div>
+        <div class="absolute w-52 h-52 rounded-full border border-dashed border-amberTac/20 pointer-events-none"></div>
+
+        <!-- Corner HUD Coordinates -->
+        <div class="absolute top-2 left-2 text-[9px] text-slate-500 font-hud leading-tight pointer-events-none">
+          AZIMUTH: 042.8°<br/>
+          PRESSURE: 984 hPa<br/>
+          SECTOR: SKEIFAN-10
+        </div>
+        <div class="absolute top-2 right-2 text-[9px] text-slate-500 font-hud text-right leading-tight pointer-events-none">
+          BODY CORE: 37.0°C<br/>
+          HUMIDITY: 88% RH<br/>
+          MODE: SUBARCTIC
+        </div>
+
+        <!-- Interactive SVG Mannequin Wireframe -->
+        <svg id="operativeSvg" viewBox="0 0 320 500" class="w-full max-w-[300px] h-[440px] z-10 overflow-visible">
+          <defs>
+            <pattern id="techHatch" width="6" height="6" patternTransform="rotate(45 0 0)" patternUnits="userSpaceOnUse">
+              <line x1="0" y1="0" x2="0" y2="6" stroke="rgba(255,152,0,0.18)" stroke-width="1" />
+            </pattern>
+          </defs>
+
+          <!-- Center Calibration Axis -->
+          <line x1="160" y1="10" x2="160" y2="490" stroke="#1E242D" stroke-width="1" stroke-dasharray="3 3" />
+          <line x1="40" y1="230" x2="280" y2="230" stroke="#1E242D" stroke-width="1" stroke-dasharray="3 3" />
+
+          <!-- ==================== 1. HEAD ZONE ==================== -->
+          <g id="zone-HEAD" class="silhouette-zone" onclick="selectBodyZone('HEAD')">
+            <!-- Helmet / Balaclava / Cranial Contour -->
+            <path d="M140,26 L180,26 L188,42 L185,68 L173,82 L147,82 L135,68 L132,42 Z" />
+            <!-- Tactical Visor Slit -->
+            <rect x="139" y="46" width="42" height="10" fill="rgba(255,152,0,0.35)" stroke="#FF9800" stroke-width="1" />
+            <!-- Neck Guard -->
+            <path d="M147,82 L173,82 L177,95 L143,95 Z" />
+          </g>
+
+          <!-- ==================== 2. UPPER TORSO ZONE (Base/Mid/Outer) ==================== -->
+          <g id="zone-UPPER_TORSO" class="silhouette-zone" onclick="selectBodyZone('UPPER_TORSO')">
+            <!-- Main Chest & Shoulder Armor Rig -->
+            <path d="M112,98 L208,98 L228,122 L214,225 L194,242 L126,242 L106,225 L92,122 Z" />
+            <!-- Left Sleeve -->
+            <path d="M92,122 L112,115 L102,228 L80,234 L74,175 Z" />
+            <!-- Right Sleeve -->
+            <path d="M228,122 L208,115 L218,228 L240,234 L246,175 Z" />
+            <!-- Inner Layering Core Indicator Lines (Base & Mid visual feedback) -->
+            <rect id="svgTorsoMidRing" x="122" y="114" width="76" height="108" rx="4" fill="none" stroke="#475569" stroke-width="1" stroke-dasharray="4 2" />
+            <rect id="svgTorsoBaseCore" x="134" y="128" width="52" height="80" rx="2" fill="url(#techHatch)" stroke="#475569" stroke-width="1" />
+            <!-- Chest Telemetry Crosshair -->
+            <circle cx="160" cy="160" r="10" fill="none" stroke="#FF9800" stroke-width="0.9" stroke-opacity="0.6" />
+            <line x1="150" y1="160" x2="170" y2="160" stroke="#FF9800" stroke-width="0.9" stroke-opacity="0.6" />
+          </g>
+
+          <!-- ==================== 3. HANDS ZONE ==================== -->
+          <g id="zone-HANDS" class="silhouette-zone" onclick="selectBodyZone('HANDS')">
+            <!-- Left Gauntlet / Glove -->
+            <path d="M74,238 L98,234 L94,274 L76,282 L68,266 Z" />
+            <!-- Right Gauntlet / Glove -->
+            <path d="M246,238 L222,234 L226,274 L244,282 L252,266 Z" />
+          </g>
+
+          <!-- ==================== 4. LOWER TORSO ZONE (Cargo / Ripstop Pants) ==================== -->
+          <g id="zone-LOWER_TORSO" class="silhouette-zone" onclick="selectBodyZone('LOWER_TORSO')">
+            <!-- Tactical Belt Waistband -->
+            <rect x="122" y="244" width="76" height="16" stroke="#FF9800" stroke-width="1.2" />
+            <!-- Pelvis & Cargo Trousers -->
+            <path d="M120,262 L200,262 L210,335 L204,418 L172,418 L163,315 L157,315 L148,418 L116,418 L110,335 Z" />
+            <!-- Left & Right 500D Cargo Thigh Pockets -->
+            <rect x="108" y="305" width="18" height="38" fill="rgba(255,152,0,0.18)" stroke="#FF9800" stroke-width="1" />
+            <rect x="194" y="305" width="18" height="38" fill="rgba(255,152,0,0.18)" stroke="#FF9800" stroke-width="1" />
+            <!-- Articulated Knee Pads -->
+            <rect x="118" y="352" width="26" height="22" rx="2" fill="rgba(15,23,42,0.7)" stroke="#64748B" stroke-width="1" />
+            <rect x="176" y="352" width="26" height="22" rx="2" fill="rgba(15,23,42,0.7)" stroke="#64748B" stroke-width="1" />
+          </g>
+
+          <!-- ==================== 5. FEET ZONE ==================== -->
+          <g id="zone-FEET" class="silhouette-zone" onclick="selectBodyZone('FEET')">
+            <!-- Left Assault Boot -->
+            <path d="M115,424 L147,424 L149,472 L103,478 L101,460 L113,450 Z" />
+            <!-- Right Assault Boot -->
+            <path d="M173,424 L205,424 L207,450 L219,460 L217,478 L171,472 Z" />
+          </g>
+
+          <!-- HUD Callout Lines & Labels on SVG -->
+          <g class="pointer-events-none font-hud text-[10px]" fill="#94A3B8">
+            <!-- Head Callout -->
+            <line x1="188" y1="48" x2="245" y2="35" stroke="#FF9800" stroke-width="0.8" />
+            <text x="248" y="38" fill="#FF9800">[01] HEAD</text>
+
+            <!-- Upper Torso Callout -->
+            <line x1="226" y1="155" x2="255" y2="145" stroke="#FF9800" stroke-width="0.8" />
+            <text x="258" y="148" fill="#FF9800">[02] TORSO</text>
+
+            <!-- Hands Callout -->
+            <line x1="68" y1="260" x2="32" y2="250" stroke="#FF9800" stroke-width="0.8" />
+            <text x="4" y="246" fill="#FF9800">[03] HANDS</text>
+
+            <!-- Lower Torso Callout -->
+            <line x1="212" y1="325" x2="252" y2="325" stroke="#FF9800" stroke-width="0.8" />
+            <text x="255" y="328" fill="#FF9800">[04] LOWER</text>
+
+            <!-- Feet Callout -->
+            <line x1="218" y1="465" x2="252" y2="465" stroke="#FF9800" stroke-width="0.8" />
+            <text x="255" y="468" fill="#FF9800">[05] FEET</text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- Interactive Body Zone Status Strip (Bottom of Center Column) -->
+      <div class="w-full border-t border-slateHud pt-3 z-10">
+        <div class="text-[10px] text-slate-400 uppercase tracking-wider mb-1.5 flex justify-between">
+          <span>CLICK BODY SECTOR TO INSPECT / FILTER:</span>
+          <span id="selectedSectorHint" class="text-amberTac font-bold">SECTOR: ALL ZONES</span>
+        </div>
+        <div class="grid grid-cols-5 gap-1.5 text-center">
+          <button onclick="selectBodyZone('HEAD')" id="zoneBtn-HEAD" class="zone-pill py-1.5 px-1 bg-[#14171D] border border-slateHud hover:border-amberTac text-[10px] transition">
+            <div class="text-slate-400 text-[9px]">HEAD</div>
+            <div id="zoneState-HEAD" class="font-bold text-slate-300 truncate">STBY</div>
+          </button>
+          <button onclick="selectBodyZone('UPPER_TORSO')" id="zoneBtn-UPPER_TORSO" class="zone-pill py-1.5 px-1 bg-[#14171D] border border-slateHud hover:border-amberTac text-[10px] transition">
+            <div class="text-slate-400 text-[9px]">TORSO</div>
+            <div id="zoneState-UPPER_TORSO" class="font-bold text-slate-300 truncate">0/3 LYR</div>
+          </button>
+          <button onclick="selectBodyZone('HANDS')" id="zoneBtn-HANDS" class="zone-pill py-1.5 px-1 bg-[#14171D] border border-slateHud hover:border-amberTac text-[10px] transition">
+            <div class="text-slate-400 text-[9px]">HANDS</div>
+            <div id="zoneState-HANDS" class="font-bold text-slate-300 truncate">STBY</div>
+          </button>
+          <button onclick="selectBodyZone('LOWER_TORSO')" id="zoneBtn-LOWER_TORSO" class="zone-pill py-1.5 px-1 bg-[#14171D] border border-slateHud hover:border-amberTac text-[10px] transition">
+            <div class="text-slate-400 text-[9px]">LOWER</div>
+            <div id="zoneState-LOWER_TORSO" class="font-bold text-slate-300 truncate">STBY</div>
+          </button>
+          <button onclick="selectBodyZone('FEET')" id="zoneBtn-FEET" class="zone-pill py-1.5 px-1 bg-[#14171D] border border-slateHud hover:border-amberTac text-[10px] transition">
+            <div class="text-slate-400 text-[9px]">FEET</div>
+            <div id="zoneState-FEET" class="font-bold text-slate-300 truncate">STBY</div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         RIGHT COLUMN (4 COLS): REAL-TIME SURVIVAL HUD TELEMETRY & DEPLOY CTA
+         =================================================================== -->
+    <section class="lg:col-span-4 flex flex-col gap-4">
+      <!-- Telemetry Main Box -->
+      <div class="hud-box p-4">
+        <div class="flex items-center justify-between border-b border-slateHud pb-3 mb-4">
+          <div>
+            <div class="flex items-center gap-2">
+              <span class="w-2 h-2 bg-amberTac animate-ping"></span>
+              <h2 class="font-display font-bold text-base tracking-wider uppercase text-white">
+                SURVIVAL HUD TELEMETRY
+              </h2>
+            </div>
+            <p class="text-[11px] text-slate-400 mt-0.5">
+              REAL-TIME ENVIRONMENTAL RATING RECALCULATION
+            </p>
+          </div>
+          <span class="text-[10px] font-hud bg-amberTac/15 text-amberTac border border-amberTac/40 px-2 py-0.5">
+            LIVE FEED
+          </span>
+        </div>
+
+        <!-- 4 Dynamic Telemetry Meters -->
+        <div class="space-y-4">
+
+          <!-- 1. WIND RESISTANCE (0 to 35 m/s) -->
+          <div class="bg-[#14171D] border border-slateHud p-3">
+            <div class="flex justify-between items-baseline mb-1">
+              <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                01 // WIND RESISTANCE
+              </span>
+              <div class="text-right">
+                <span id="statWindVal" class="text-lg font-bold text-amberTac font-mono">0</span>
+                <span class="text-xs text-slate-400"> / 35 m/s</span>
+              </div>
+            </div>
+            <!-- Segmented Progress Bar -->
+            <div class="w-full h-2.5 bg-obsidian border border-slate-800 overflow-hidden relative">
+              <div id="barWind" class="h-full bg-gradient-to-r from-amber-600 to-amberTac transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center mt-1.5 text-[10px]">
+              <span class="text-slate-400">CLASSIFICATION:</span>
+              <span id="descWind" class="text-slate-300 font-semibold">EXPOSED (0 BEAUFORT)</span>
+            </div>
+          </div>
+
+          <!-- 2. WATERPROOF RATING (0 to 28,000 mm) -->
+          <div class="bg-[#14171D] border border-slateHud p-3">
+            <div class="flex justify-between items-baseline mb-1">
+              <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                02 // WATERPROOF RATING
+              </span>
+              <div class="text-right">
+                <span id="statWaterVal" class="text-lg font-bold text-amberTac font-mono">0</span>
+                <span class="text-xs text-slate-400"> / 28,000 mm</span>
+              </div>
+            </div>
+            <div class="w-full h-2.5 bg-obsidian border border-slate-800 overflow-hidden relative">
+              <div id="barWater" class="h-full bg-gradient-to-r from-amber-600 to-amberTac transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center mt-1.5 text-[10px]">
+              <span class="text-slate-400">HYDROSTATIC HEAD:</span>
+              <span id="descWater" class="text-slate-300 font-semibold">NO MEMBRANE SEAL</span>
+            </div>
+          </div>
+
+          <!-- 3. THERMAL RANGE (-20°C to +10°C) -->
+          <div class="bg-[#14171D] border border-slateHud p-3">
+            <div class="flex justify-between items-baseline mb-1">
+              <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                03 // THERMAL OPERATING FLOOR
+              </span>
+              <div class="text-right">
+                <span id="statThermalVal" class="text-lg font-bold text-amberTac font-mono">+10°C</span>
+                <span class="text-xs text-slate-400"> [FLOOR: -20°C]</span>
+              </div>
+            </div>
+            <!-- Scale from +10°C (left) down to -20°C (right 100%) -->
+            <div class="w-full h-2.5 bg-obsidian border border-slate-800 overflow-hidden relative">
+              <div id="barThermal" class="h-full bg-gradient-to-r from-amber-600 to-amberTac transition-all duration-300" style="width: 5%"></div>
+            </div>
+            <div class="flex justify-between items-center mt-1.5 text-[10px] text-slate-400">
+              <span>+10°C MILD</span>
+              <span id="descThermal" class="text-amberTac font-bold">COMFORT: +10°C</span>
+              <span>-20°C ARCTIC</span>
+            </div>
+          </div>
+
+          <!-- 4. TOTAL PACK WEIGHT (g) -->
+          <div class="bg-[#14171D] border border-slateHud p-3">
+            <div class="flex justify-between items-baseline mb-1">
+              <span class="text-[11px] font-bold text-slate-300 uppercase tracking-wider">
+                04 // TOTAL RIG MASS
+              </span>
+              <div class="text-right">
+                <span id="statWeightVal" class="text-lg font-bold text-white font-mono">0</span>
+                <span class="text-xs text-slate-400"> g (<span id="statWeightKg">0.00</span> kg)</span>
+              </div>
+            </div>
+            <div class="w-full h-2.5 bg-obsidian border border-slate-800 overflow-hidden relative">
+              <div id="barWeight" class="h-full bg-slate-400 transition-all duration-300" style="width: 0%"></div>
+            </div>
+            <div class="flex justify-between items-center mt-1.5 text-[10px]">
+              <span class="text-slate-400">MOBILITY INDEX:</span>
+              <span id="descMobility" class="text-emerald-400 font-semibold">100% AGILITY (ULTRALIGHT)</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Active Loadout Slot Matrix Summary -->
+        <div class="mt-4 pt-3 border-t border-slateHud">
+          <div class="flex justify-between items-center text-[10px] text-slate-400 uppercase mb-2">
+            <span>EQUIPPED HARDWARE MANIFEST</span>
+            <span id="synergyBonusLabel" class="text-amberTac">SYNERGY: STANDBY</span>
+          </div>
+          <div id="miniEquippedList" class="space-y-1 max-h-36 overflow-y-auto pr-1 text-[11px]">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- DEPLOY KIT MECHANICAL CTA PANEL -->
+      <div class="hud-box p-4 bg-[#12151B]">
+        <div class="hazard-strip h-1.5 w-full mb-3 opacity-80"></div>
+        <div class="flex items-baseline justify-between mb-3">
+          <div>
+            <div class="text-[10px] text-slate-400 uppercase tracking-widest">REQUISITION TOTAL (INCL. 24% VSK)</div>
+            <div id="totalPriceISK" class="text-2xl font-bold text-white font-mono tracking-tight">
+              0 ISK
+            </div>
+          </div>
+          <div class="text-right">
+            <div class="text-[10px] text-slate-400 uppercase">EST. EUR EQUIV</div>
+            <div id="totalPriceEUR" class="text-sm font-mono text-amberTac font-bold">€0</div>
+          </div>
+        </div>
+
+        <button onclick="openDeployModal()" class="btn-deploy w-full py-3.5 px-5 text-lg uppercase flex items-center justify-between group">
+          <span class="flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+            </svg>
+            DEPLOY KIT // EXECUTE
+          </span>
+          <span class="text-xs font-mono bg-obsidian/20 px-2 py-0.5 group-hover:translate-x-1 transition">
+            [ENTER ↵]
+          </span>
+        </button>
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================================
+       TACTICAL CHECKOUT MANIFEST MODAL ("DEPLOY KIT")
+       ===================================================================== -->
+  <div id="deployModal" class="fixed inset-0 z-[150] bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="hud-box max-w-2xl w-full bg-[#0E1014] border border-amberTac p-6 shadow-[0_0_50px_rgba(255,152,0,0.25)] relative max-h-[90vh] flex flex-col">
+      <div class="hazard-strip h-2 w-full mb-4"></div>
+
+      <!-- Modal Header -->
+      <div class="flex items-start justify-between border-b border-slateHud pb-3 mb-4">
+        <div>
+          <div class="text-[10px] font-hud text-amberTac tracking-widest uppercase">
+            REYKJAVÍK TACTICAL DISPATCH // MANIFEST #IS-8841
+          </div>
+          <h3 class="font-display font-bold text-2xl text-white uppercase tracking-wider">
+            OPERATIVE LOADOUT DEPLOYMENT MANIFEST
+          </h3>
+        </div>
+        <button onclick="closeDeployModal()" class="px-2.5 py-1 bg-slate-800 hover:bg-amberTac hover:text-obsidian text-slate-300 text-xs font-bold transition">
+          [ESC // CLOSE]
+        </button>
+      </div>
+
+      <!-- Telemetry Verification Summary inside Modal -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-4">
+        <div class="bg-[#14181F] border border-slateHud p-2.5">
+          <div class="text-[9px] text-slate-400 uppercase">WIND SHIELD</div>
+          <div id="modalWind" class="text-sm font-bold text-amberTac mt-0.5">0 m/s</div>
+        </div>
+        <div class="bg-[#14181F] border border-slateHud p-2.5">
+          <div class="text-[9px] text-slate-400 uppercase">HYDROSTATIC</div>
+          <div id="modalWater" class="text-sm font-bold text-amberTac mt-0.5">0 mm</div>
+        </div>
+        <div class="bg-[#14181F] border border-slateHud p-2.5">
+          <div class="text-[9px] text-slate-400 uppercase">THERMAL FLOOR</div>
+          <div id="modalThermal" class="text-sm font-bold text-amberTac mt-0.5">+10°C</div>
+        </div>
+        <div class="bg-[#14181F] border border-slateHud p-2.5">
+          <div class="text-[9px] text-slate-400 uppercase">TOTAL MASS</div>
+          <div id="modalWeight" class="text-sm font-bold text-white mt-0.5">0 g</div>
+        </div>
+      </div>
+
+      <!-- Selected Crates Table -->
+      <div class="flex-1 overflow-y-auto border border-slateHud bg-[#0B0D10] p-3 mb-4">
+        <table class="w-full text-left border-collapse text-xs">
+          <thead>
+            <tr class="border-b border-slate-800 text-[10px] text-slate-400 uppercase">
+              <th class="pb-2">SLOT / LAYER</th>
+              <th class="pb-2">GEAR DESIGNATION</th>
+              <th class="pb-2">TECH SPEC</th>
+              <th class="pb-2 text-right">MASS</th>
+              <th class="pb-2 text-right">COST (ISK)</th>
+            </tr>
+          </thead>
+          <tbody id="manifestTableBody" class="divide-y divide-slate-800/70 text-[11px]">
+            <!-- Populated by JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Total & Dispatch Confirmation -->
+      <div class="border-t border-slateHud pt-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div>
+          <div class="text-[10px] text-slate-400 uppercase">TOTAL AUTHORIZED REQUISITION (ISK)</div>
+          <div id="modalTotalISK" class="text-2xl font-bold text-amberTac font-mono">0 ISK</div>
+          <div id="modalReadinessWarning" class="text-[10px] text-emerald-400 mt-0.5">
+            ● ALL SUBARCTIC SURVIVAL THRESHOLDS VERIFIED
+          </div>
+        </div>
+        <div class="flex items-center gap-2 w-full sm:w-auto">
+          <button onclick="closeDeployModal()" class="px-4 py-3 bg-slate-800 hover:bg-slate-700 text-xs text-slate-200 uppercase font-bold">
+            MODIFY RIG
+          </button>
+          <button onclick="confirmDispatchOrder()" class="btn-deploy flex-1 sm:flex-initial px-6 py-3 text-sm uppercase">
+            CONFIRM & TRANSMIT ORDER ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT ENGINE: STATE, TELEMETRY, AUDIO & INTERACTIONS
+       ===================================================================== -->
+  <script>
+    // Fabric Tech Tooltip Database
+    const FABRIC_SPECS = {
+      'Cordura 500D': {
+        title: 'CORDURA® 500D MIL-SPEC NYLON',
+        desc: 'High-tenacity air-jet textured nylon 6,6 filament yarn. Engineered to resist sharp volcanic basalt abrasion and tear propagation.',
+        metric: 'TENSILE: 2,450 N'
+      },
+      'Ripstop 210T': {
+        title: 'RIPSTOP 210T CROSSHATCH WEAVE',
+        desc: 'Reinforced double-thread interlocking grid every 5mm. Stops punctures from spreading under extreme mechanical tension.',
+        metric: 'TEAR LOCK: ACTIVE'
+      },
+      'DWR StormShield': {
+        title: 'HYDROPHOBIC C6 DWR + SOFT-LAMINATE',
+        desc: 'Durable Water Repellent fluoropolymer surface treatment causes glacial sleet and horizontal rain to bead with zero fabric saturation.',
+        metric: 'CONTACT ANGLE: 142°'
+      },
+      'ePTFE 28K': {
+        title: '3-LAYER ePTFE 28,000MM MEMBRANE',
+        desc: '1.4 billion micropores per cm². Blocks liquid water at hurricane wind pressures while venting internal sweat vapor (RET < 5).',
+        metric: 'HYDROHEAD: 28,000MM'
+      },
+      'Polartec Grid': {
+        title: '320GSM THERMAL GRID FLEECE',
+        desc: 'Patented geometric loft channels trap warm air pockets next to skin while reducing garment mass by 38% and boosting compressibility.',
+        metric: 'CLO VALUE: 2.15'
+      },
+      'Merino Carbon': {
+        title: '200GSM MERINO + CARBON FIBER L1',
+        desc: '17.5-micron subarctic wool blended with conductive carbon threads for rapid moisture wicking and antimicrobial thermal regulation.',
+        metric: 'WET HEAT RETENTION: 88%'
+      },
+      'Kevlar Windstopper': {
+        title: 'DUPONT KEVLAR® + GORE WINDSTOPPER',
+        desc: 'Cut-resistant para-aramid palm reinforcement paired with a 100% windproof membrane for rope handling in sub-zero gales.',
+        metric: 'CUT LEVEL: ANSI A4'
+      }
+    };
+
+    // Complete Tactical Gear Catalog
+    // Note: Upper Torso supports 3 distinct layering sub-slots: TORSO_BASE, TORSO_MID, TORSO_OUTER
+    const GEAR_CATALOG = [
+      {
+        id: 'vindur-softshell-mk2',
+        code: 'CRT-01',
+        name: 'Vindur Softshell Jacket Mk.II',
+        zone: 'UPPER_TORSO',
+        slotKey: 'TORSO_OUTER',
+        layerStage: 'Heavy Outerwear',
+        fabricKey: 'DWR StormShield',
+        wind: 16,
+        water: 10000,
+        thermalDelta: -7,
+        weight: 640,
+        priceISK: 34900,
+        desc: 'Articulated storm softshell with underarm pit-zips and laminated windproof membrane.'
+      },
+      {
+        id: 'surtur-hardshell-28k',
+        code: 'CRT-02',
+        name: 'Surtur 3L Pro Hardshell 28K',
+        zone: 'UPPER_TORSO',
+        slotKey: 'TORSO_OUTER',
+        layerStage: 'Heavy Outerwear',
+        fabricKey: 'ePTFE 28K',
+        wind: 22,
+        water: 28000,
+        thermalDelta: -9,
+        weight: 520,
+        priceISK: 58900,
+        desc: 'Expedition-grade 3-layer storm armor built for horizontal North Atlantic hurricane sleet.'
+      },
+      {
+        id: 'glacier-thermal-fleece',
+        code: 'CRT-03',
+        name: 'Glacier Thermal Grid Fleece',
+        zone: 'UPPER_TORSO',
+        slotKey: 'TORSO_MID',
+        layerStage: 'Mid Layer',
+        fabricKey: 'Polartec Grid',
+        wind: 4,
+        water: 1200,
+        thermalDelta: -8,
+        weight: 380,
+        priceISK: 21500,
+        desc: 'High-loft geometric thermal grid mid-layer with thumb-loops and scuba neck baffle.'
+      },
+      {
+        id: 'askja-merino-base',
+        code: 'CRT-04',
+        name: 'Askja Merino-Carbon Base Crew',
+        zone: 'UPPER_TORSO',
+        slotKey: 'TORSO_BASE',
+        layerStage: 'Base Layer',
+        fabricKey: 'Merino Carbon',
+        wind: 2,
+        water: 0,
+        thermalDelta: -5,
+        weight: 210,
+        priceISK: 14900,
+        desc: 'Next-to-skin thermal regulator with flatlock seams and rapid vapor transport.'
+      },
+      {
+        id: 'hekla-ripstop-500d',
+        code: 'CRT-05',
+        name: 'Hekla Ripstop Cargo 500D',
+        zone: 'LOWER_TORSO',
+        slotKey: 'LOWER_MAIN',
+        layerStage: 'Heavy Outerwear',
+        fabricKey: 'Cordura 500D',
+        wind: 9,
+        water: 8000,
+        thermalDelta: -5,
+        weight: 690,
+        priceISK: 26900,
+        desc: 'lava-proof 500D Cordura knee & cuff panels over 4-way stretch Ripstop chassis.'
+      },
+      {
+        id: 'krafla-thermal-leggings',
+        code: 'CRT-06',
+        name: 'Krafla Sub-Zero Base Tights',
+        zone: 'LOWER_TORSO',
+        slotKey: 'LOWER_BASE',
+        layerStage: 'Base Layer',
+        fabricKey: 'Merino Carbon',
+        wind: 1,
+        water: 0,
+        thermalDelta: -4,
+        weight: 185,
+        priceISK: 12900,
+        desc: 'Anatomical lower-body thermal foundation for prolonged glacier traverses.'
+      },
+      {
+        id: 'katla-storm-hood',
+        code: 'CRT-07',
+        name: 'Katla Recon Balaclava & Cap',
+        zone: 'HEAD',
+        slotKey: 'HEAD_MAIN',
+        layerStage: 'Mid Layer',
+        fabricKey: 'Ripstop 210T',
+        wind: 4,
+        water: 5000,
+        thermalDelta: -3,
+        weight: 125,
+        priceISK: 8900,
+        desc: 'Hinged wind-block face chassis paired with a no-button Teflon Ripstop operator cap.'
+      },
+      {
+        id: 'thorsmork-insulated-dome',
+        code: 'CRT-08',
+        name: 'Þórsmörk Primaloft Storm Hood',
+        zone: 'HEAD',
+        slotKey: 'HEAD_MAIN',
+        layerStage: 'Heavy Outerwear',
+        fabricKey: 'DWR StormShield',
+        wind: 6,
+        water: 12000,
+        thermalDelta: -5,
+        weight: 160,
+        priceISK: 13500,
+        desc: 'Helmet-compatible insulated cranial shell with wired storm visor.'
+      },
+      {
+        id: 'fenrir-kevlar-gloves',
+        code: 'CRT-09',
+        name: 'Fenrir Kevlar Windstopper Gloves',
+        zone: 'HANDS',
+        slotKey: 'HANDS_MAIN',
+        layerStage: 'Heavy Outerwear',
+        fabricKey: 'Kevlar Windstopper',
+        wind: 4,
+        water: 9000,
+        thermalDelta: -3,
+        weight: 195,
+        priceISK: 16900,
+        desc: 'Articulated trigger-finger dexterity with Kevlar rope-abseil palm armor.'
+      },
+      {
+        id: 'laki-sensor-liners',
+        code: 'CRT-10',
+        name: 'Laki Conductive Liner Gloves',
+        zone: 'HANDS',
+        slotKey: 'HANDS_BASE',
+        layerStage: 'Base Layer',
+        fabricKey: 'Merino Carbon',
+        wind: 1,
+        water: 0,
+        thermalDelta: -2,
+        weight: 65,
+        priceISK: 6500,
+        desc: 'Touchscreen-ready HUD operator liners worn solo or under heavy shells.'
+      },
+      {
+        id: 'vatna-assault-boots',
+        code: 'CRT-11',
+        name: 'Vatna GTX Basalt Assault Boots',
+        zone: 'FEET',
+        slotKey: 'FEET_MAIN',
+        layerStage: 'Heavy Outerwear',
+        fabricKey: 'Cordura 500D',
+        wind: 4,
+        water: 15000,
+        thermalDelta: -4,
+        weight: 1120,
+        priceISK: 44900,
+        desc: 'Vibram® Arctic Grip sole with 500D Cordura ankle shaft and waterproof membrane.'
+      },
+      {
+        id: 'geysir-hydro-socks',
+        code: 'CRT-12',
+        name: 'Geysir Hydro-Seal Knee Socks',
+        zone: 'FEET',
+        slotKey: 'FEET_BASE',
+        layerStage: 'Mid Layer',
+        fabricKey: 'Merino Carbon',
+        wind: 1,
+        water: 6000,
+        thermalDelta: -2,
+        weight: 110,
+        priceISK: 7900,
+        desc: 'Three-layer waterproof membrane sock with terry-loop merino interior.'
+      }
+    ];
+
+    // State Management
+    let equippedSlots = {}; // slotKey -> item object
+    let currentLayerFilter = 'ALL';
+    let currentZoneFilter = 'ALL';
+    let sfxEnabled = true;
+    let crtEnabled = true;
+    let audioCtx = null;
+
+    // Web Audio API Synthesized Tactical HUD Click & Telemetry Sounds
+    function playHudSound(type = 'click') {
+      if (!sfxEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+
+        const now = audioCtx.currentTime;
+        if (type === 'equip') {
+          osc.type = 'sawtooth';
+          osc.frequency.setValueAtTime(520, now);
+          osc.frequency.exponentialRampToValueAtTime(880, now + 0.065);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.085);
+        } else if (type === 'unequip') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(420, now);
+          osc.frequency.exponentialRampToValueAtTime(210, now + 0.06);
+          gain.gain.setValueAtTime(0.07, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+          osc.start(now);
+          osc.stop(now + 0.075);
+        } else if (type === 'deploy') {
+          osc.type = 'square';
+          osc.frequency.setValueAtTime(440, now);
+          osc.frequency.setValueAtTime(660, now + 0.06);
+          osc.frequency.setValueAtTime(880, now + 0.12);
+          gain.gain.setValueAtTime(0.09, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(700, now);
+          gain.gain.setValueAtTime(0.04, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.03);
+          osc.start(now);
+          osc.stop(now + 0.035);
+        }
+      } catch (e) {
+        // Ignore audio restrictions before user gesture
+      }
+    }
+
+    function toggleAudio() {
+      sfxEnabled = !sfxEnabled;
+      document.getElementById('audioLabel').textContent = sfxEnabled ? 'SFX: ON' : 'SFX: MUTE';
+      document.getElementById('audioDot').className = sfxEnabled
+        ? 'w-2 h-2 rounded-full bg-amberTac animate-pulse'
+        : 'w-2 h-2 rounded-full bg-slate-600';
+      if (sfxEnabled) playHudSound('click');
+    }
+
+    function toggleScanlines() {
+      crtEnabled = !crtEnabled;
+      document.getElementById('scanlineLayer').style.display = crtEnabled ? 'block' : 'none';
+      document.getElementById('crtLabel').textContent = crtEnabled ? 'ON' : 'OFF';
+      playHudSound('click');
+    }
+
+    // Toggle Item Equip / Unequip
+    function toggleCrateItem(itemId) {
+      const item = GEAR_CATALOG.find(g => g.id === itemId);
+      if (!item) return;
+
+      const currentInSlot = equippedSlots[item.slotKey];
+      if (currentInSlot && currentInSlot.id === item.id) {
+        delete equippedSlots[item.slotKey];
+        playHudSound('unequip');
+      } else {
+        equippedSlots[item.slotKey] = item;
+        playHudSound('equip');
+      }
+
+      renderAll();
+    }
+
+    // Filter by Layering Stage (Left Drawer)
+    function setLayerFilter(stage) {
+      currentLayerFilter = stage;
+      playHudSound('click');
+      document.querySelectorAll('.layer-btn').forEach(btn => {
+        if (btn.getAttribute('data-layer') === stage) {
+          btn.className = 'layer-btn bg-amberTac text-obsidian font-bold text-[10px] py-1.5 px-2 uppercase tracking-wider border border-amberTac transition';
+        } else {
+          btn.className = 'layer-btn bg-[#161920] text-slate-300 hover:border-amberTac/60 text-[10px] py-1.5 px-2 uppercase tracking-wider border border-slateHud transition';
+        }
+      });
+      renderCrates();
+    }
+
+    // Select Body Zone from Wireframe Silhouette
+    function selectBodyZone(zone) {
+      playHudSound('click');
+      if (currentZoneFilter === zone) {
+        currentZoneFilter = 'ALL';
+      } else {
+        currentZoneFilter = zone;
+      }
+      updateZoneSelectionUI();
+      renderCrates();
+    }
+
+    function setZoneFilter(zone) {
+      currentZoneFilter = zone;
+      playHudSound('click');
+      updateZoneSelectionUI();
+      renderCrates();
+    }
+
+    function updateZoneSelectionUI() {
+      const zones = ['HEAD', 'UPPER_TORSO', 'HANDS', 'LOWER_TORSO', 'FEET'];
+      zones.forEach(z => {
+        const svgEl = document.getElementById(`zone-${z}`);
+        const btnEl = document.getElementById(`zoneBtn-${z}`);
+        if (svgEl) {
+          svgEl.classList.toggle('zone-selected', currentZoneFilter === z);
+        }
+        if (btnEl) {
+          btnEl.classList.toggle('border-amberTac', currentZoneFilter === z);
+          btnEl.classList.toggle('bg-amberTac/15', currentZoneFilter === z);
+        }
+      });
+
+      const hint = document.getElementById('selectedSectorHint');
+      const clearBtn = document.getElementById('activeZoneFilterLabel');
+      if (currentZoneFilter === 'ALL') {
+        hint.textContent = 'SECTOR: ALL ZONES';
+        clearBtn.classList.add('hidden');
+      } else {
+        hint.textContent = `FILTERED: ${currentZoneFilter.replace('_', ' ')}`;
+        clearBtn.classList.remove('hidden');
+      }
+    }
+
+    // Render Left Column Crates
+    function renderCrates() {
+      const container = document.getElementById('crateListContainer');
+      const filtered = GEAR_CATALOG.filter(item => {
+        const matchLayer = currentLayerFilter === 'ALL' || item.layerStage === currentLayerFilter;
+        const matchZone = currentZoneFilter === 'ALL' || item.zone === currentZoneFilter;
+        return matchLayer && matchZone;
+      });
+
+      document.getElementById('drawerCountBadge').textContent = `${filtered.length} CRATES`;
+
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="p-6 text-center border border-dashed border-slate-800 text-slate-400 text-xs">
+            NO CRATES IN THIS SECTOR/STAGE COMBINATION.<br/>
+            <button onclick="setZoneFilter('ALL'); setLayerFilter('ALL');" class="mt-2 text-amberTac underline">RESET FILTERS</button>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = filtered.map(item => {
+        const isEquipped = equippedSlots[item.slotKey]?.id === item.id;
+        return `
+          <div onclick="toggleCrateItem('${item.id}')" class="gear-crate p-3 cursor-pointer ${isEquipped ? 'equipped' : ''}">
+            <div class="flex items-center justify-between text-[10px] mb-1">
+              <div class="flex items-center gap-1.5">
+                <span class="font-hud px-1.5 py-0.5 ${isEquipped ? 'bg-amberTac text-obsidian font-bold' : 'bg-slate-800 text-amberTac'}">
+                  ${item.code}
+                </span>
+                <span class="text-slate-400 uppercase">${item.zone.replace('_', ' ')} // ${item.layerStage}</span>
+              </div>
+              <span class="font-mono font-bold ${isEquipped ? 'text-amberTac' : 'text-slate-400'}">
+                ${isEquipped ? '[EQUIPPED ●]' : '[LOAD +]'}
+              </span>
+            </div>
+
+            <div class="flex justify-between items-start gap-2">
+              <h3 class="font-display font-bold text-sm md:text-base text-white tracking-wide leading-snug">
+                ${item.name}
+              </h3>
+              <span class="font-mono text-xs font-bold text-amberTac whitespace-nowrap">
+                ${item.priceISK.toLocaleString('de-DE')} ISK
+              </span>
+            </div>
+
+            <p class="text-[11px] text-slate-400 mt-1 leading-relaxed">
+              ${item.desc}
+            </p>
+
+            <!-- Spec Bar & Interactive Data-Attribute Tooltip Trigger -->
+            <div class="mt-2.5 pt-2 border-t border-slate-800/80 flex flex-wrap items-center justify-between gap-2 text-[10px]">
+              <span
+                data-spec="${item.fabricKey}"
+                onmouseenter="showSpecTooltip(event, '${item.fabricKey}')"
+                onmousemove="moveSpecTooltip(event)"
+                onmouseleave="hideSpecTooltip()"
+                onclick="event.stopPropagation()"
+                class="px-2 py-0.5 bg-[#1B2028] border border-amberTac/40 text-amberTac font-hud cursor-help hover:bg-amberTac hover:text-obsidian transition"
+              >
+                ❖ ${item.fabricKey} [INFO]
+              </span>
+
+              <div class="flex items-center gap-2 text-slate-300 font-mono">
+                <span title="Wind Resistance">+${item.wind}m/s</span>
+                <span class="text-slate-600">|</span>
+                <span title="Thermal Rating">${item.thermalDelta}°C</span>
+                <span class="text-slate-600">|</span>
+                <span class="text-slate-400">${item.weight}g</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Update Silhouette & Right Column Telemetry
+    function updateTelemetryAndSilhouette() {
+      const equippedItems = Object.values(equippedSlots);
+
+      // Calculate aggregates
+      let rawWind = 0;
+      let maxWater = 0;
+      let sumWaterBonus = 0;
+      let thermalDeltaSum = 0;
+      let totalWeight = 0;
+      let totalISK = 0;
+
+      equippedItems.forEach(item => {
+        rawWind += item.wind;
+        if (item.water > maxWater) maxWater = item.water;
+        sumWaterBonus += Math.round(item.water * 0.12);
+        thermalDeltaSum += item.thermalDelta;
+        totalWeight += item.weight;
+        totalISK += item.priceISK;
+      });
+
+      // Layering Synergy Bonus: if Base + Mid + Outer Torso are all equipped
+      const hasTorsoSynergy = Boolean(
+        equippedSlots['TORSO_BASE'] &&
+        equippedSlots['TORSO_MID'] &&
+        equippedSlots['TORSO_OUTER']
+      );
+
+      if (hasTorsoSynergy) {
+        rawWind += 4;
+        thermalDeltaSum -= 3; // extra -3°C survival floor
+      }
+
+      const finalWind = Math.min(35, rawWind);
+      const finalWater = Math.min(28000, maxWater > 0 ? Math.min(28000, maxWater + Math.min(4000, sumWaterBonus - Math.round(maxWater * 0.12))) : 0);
+      const finalThermal = Math.max(-20, 10 + thermalDeltaSum); // starts at +10°C down to -20°C
+
+      // 1. Update Wind UI
+      document.getElementById('statWindVal').textContent = finalWind;
+      document.getElementById('barWind').style.width = `${(finalWind / 35) * 100}%`;
+      let windDesc = 'EXPOSED (0 BEAUFORT)';
+      if (finalWind >= 32) windDesc = 'HURRICANE FORCE 12 RATED';
+      else if (finalWind >= 24) windDesc = 'SEVERE ICELANDIC GALE (FORCE 10)';
+      else if (finalWind >= 14) windDesc = 'HIGHLAND WIND SHIELD (FORCE 7)';
+      else if (finalWind > 0) windDesc = 'LIGHT BREEZE PROTECTION';
+      document.getElementById('descWind').textContent = windDesc;
+
+      // 2. Update Waterproof UI
+      document.getElementById('statWaterVal').textContent = finalWater.toLocaleString('en-US');
+      document.getElementById('barWater').style.width = `${(finalWater / 28000) * 100}%`;
+      let waterDesc = 'NO MEMBRANE SEAL';
+      if (finalWater >= 25000) waterDesc = 'EXTREME EXPEDITION SEAL (28K ePTFE)';
+      else if (finalWater >= 12000) waterDesc = 'HEAVY STORMPROOF SHELL';
+      else if (finalWater >= 5000) waterDesc = 'DWR SLEET & RAIN RESISTANT';
+      else if (finalWater > 0) waterDesc = 'LIGHT MIST REPELLENT';
+      document.getElementById('descWater').textContent = waterDesc;
+
+      // 3. Update Thermal UI (+10°C to -20°C => 30 degree span)
+      const thermalStr = finalThermal > 0 ? `+${finalThermal}°C` : `${finalThermal}°C`;
+      document.getElementById('statThermalVal').textContent = thermalStr;
+      const thermalPct = Math.min(100, Math.max(5, ((10 - finalThermal) / 30) * 100));
+      document.getElementById('barThermal').style.width = `${thermalPct}%`;
+      document.getElementById('descThermal').textContent =
+        finalThermal <= -18 ? `ARCTIC RATED (${thermalStr})` :
+        finalThermal <= -8 ? `SUB-ZERO READY (${thermalStr})` :
+        `OPERATING FLOOR: ${thermalStr}`;
+
+      // 4. Update Weight UI (0 to 4000g scale)
+      document.getElementById('statWeightVal').textContent = totalWeight.toLocaleString('en-US');
+      document.getElementById('statWeightKg').textContent = (totalWeight / 1000).toFixed(2);
+      const weightPct = Math.min(100, (totalWeight / 3800) * 100);
+      document.getElementById('barWeight').style.width = `${weightPct}%`;
+      const mobility = Math.max(55, Math.round(100 - (totalWeight / 110)));
+      const mobEl = document.getElementById('descMobility');
+      mobEl.textContent = `${mobility}% AGILITY (${totalWeight < 1500 ? 'ULTRALIGHT' : totalWeight < 2600 ? 'COMBAT BALANCED' : 'HEAVY ARMOR'})`;
+
+      // Update Price Totals
+      document.getElementById('totalPriceISK').textContent = `${totalISK.toLocaleString('de-DE')} ISK`;
+      document.getElementById('totalPriceEUR').textContent = `€${Math.round(totalISK / 150).toLocaleString('en-US')}`;
+      document.getElementById('headerEquippedCount').textContent = `${equippedItems.length} ACTIVE`;
+
+      // Update Synergy Label
+      const synEl = document.getElementById('synergyBonusLabel');
+      if (hasTorsoSynergy) {
+        synEl.textContent = '★ 3-LAYER TORSO SYNERGY (+4m/s, -3°C)';
+        synEl.className = 'text-amberTac font-bold animate-pulse';
+      } else {
+        synEl.textContent = '3-LAYER TORSO BONUS: INACTIVE';
+        synEl.className = 'text-slate-500';
+      }
+
+      // Update Upper Torso 3-Layer Sub-Pills
+      ['TORSO_BASE', 'TORSO_MID', 'TORSO_OUTER'].forEach(slotKey => {
+        const pill = document.getElementById(`slotPill-${slotKey}`);
+        const nameEl = document.getElementById(`slotName-${slotKey}`);
+        const eq = equippedSlots[slotKey];
+        if (eq) {
+          pill.className = 'cursor-pointer bg-amberTac/15 border border-amberTac p-1.5 text-center transition';
+          nameEl.textContent = eq.name;
+          nameEl.className = 'text-[10px] font-bold text-amberTac truncate mt-0.5';
+        } else {
+          pill.className = 'cursor-pointer bg-[#14171D] border border-slateHud p-1.5 text-center hover:border-amberTac transition';
+          nameEl.textContent = 'EMPTY SLOT';
+          nameEl.className = 'text-[10px] font-bold text-slate-500 truncate mt-0.5';
+        }
+      });
+
+      // Update SVG Inner Torso Rings for Base & Mid visual feedback
+      document.getElementById('svgTorsoBaseCore').setAttribute(
+        'stroke',
+        equippedSlots['TORSO_BASE'] ? '#FF9800' : '#475569'
+      );
+      document.getElementById('svgTorsoMidRing').setAttribute(
+        'stroke',
+        equippedSlots['TORSO_MID'] ? '#FF9800' : '#475569'
+      );
+
+      // Update SVG Zones & Sector Bottom Bar
+      const zoneMapping = {
+        HEAD: ['HEAD_MAIN'],
+        UPPER_TORSO: ['TORSO_BASE', 'TORSO_MID', 'TORSO_OUTER'],
+        HANDS: ['HANDS_MAIN', 'HANDS_BASE'],
+        LOWER_TORSO: ['LOWER_MAIN', 'LOWER_BASE'],
+        FEET: ['FEET_MAIN', 'FEET_BASE']
+      };
+
+      Object.entries(zoneMapping).forEach(([zone, keys]) => {
+        const activeInZone = keys.map(k => equippedSlots[k]).filter(Boolean);
+        const svgZone = document.getElementById(`zone-${zone}`);
+        const stateText = document.getElementById(`zoneState-${zone}`);
+
+        if (svgZone) {
+          svgZone.classList.toggle('zone-equipped', activeInZone.length > 0);
+        }
+        if (stateText) {
+          if (zone === 'UPPER_TORSO') {
+            stateText.textContent = `${activeInZone.length}/3 LYR`;
+            stateText.className = activeInZone.length > 0 ? 'font-bold text-amberTac truncate' : 'font-bold text-slate-400 truncate';
+          } else {
+            stateText.textContent = activeInZone.length > 0 ? 'ARMED' : 'STBY';
+            stateText.className = activeInZone.length > 0 ? 'font-bold text-amberTac truncate' : 'font-bold text-slate-400 truncate';
+          }
+        }
+      });
+
+      // Operative Overall Status Tag
+      const statusTag = document.getElementById('operativeStatusTag');
+      if (equippedItems.length >= 5) {
+        statusTag.textContent = 'COMBAT & STORM READY';
+      } else if (equippedItems.length > 0) {
+        statusTag.textContent = 'PARTIAL RIG LOADED';
+      } else {
+        statusTag.textContent = 'UNARMORED // STANDBY';
+      }
+
+      // Update Mini Equipped List in Right Column
+      const miniList = document.getElementById('miniEquippedList');
+      if (equippedItems.length === 0) {
+        miniList.innerHTML = `<div class="text-slate-500 italic py-2">No crates locked into rig. Select items from left drawer.</div>`;
+      } else {
+        miniList.innerHTML = equippedItems.map(item => `
+          <div class="flex items-center justify-between bg-[#14171D] px-2 py-1 border-l-2 border-amberTac">
+            <div class="truncate pr-2">
+              <span class="text-amberTac font-hud mr-1">[${item.code}]</span>
+              <span class="text-slate-200">${item.name}</span>
+            </div>
+            <button onclick="toggleCrateItem('${item.id}')" class="text-[10px] text-slate-400 hover:text-red-400 font-mono">
+              [DROP ✕]
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Preset Kit Loaders
+    function applyPreset(presetName) {
+      equippedSlots = {};
+      if (presetName === 'storm') {
+        ['surtur-hardshell-28k', 'glacier-thermal-fleece', 'hekla-ripstop-500d', 'katla-storm-hood', 'fenrir-kevlar-gloves', 'vatna-assault-boots'].forEach(id => {
+          const item = GEAR_CATALOG.find(g => g.id === id);
+          if (item) equippedSlots[item.slotKey] = item;
+        });
+      } else if (presetName === 'glacier') {
+        ['surtur-hardshell-28k', 'glacier-thermal-fleece', 'askja-merino-base', 'hekla-ripstop-500d', 'krafla-thermal-leggings', 'thorsmork-insulated-dome', 'fenrir-kevlar-gloves', 'laki-sensor-liners', 'vatna-assault-boots', 'geysir-hydro-socks'].forEach(id => {
+          const item = GEAR_CATALOG.find(g => g.id === id);
+          if (item) equippedSlots[item.slotKey] = item;
+        });
+      } else if (presetName === 'recon') {
+        ['vindur-softshell-mk2', 'askja-merino-base', 'hekla-ripstop-500d', 'katla-storm-hood', 'laki-sensor-liners', 'vatna-assault-boots'].forEach(id => {
+          const item = GEAR_CATALOG.find(g => g.id === id);
+          if (item) equippedSlots[item.slotKey] = item;
+        });
+      }
+      playHudSound('deploy');
+      renderAll();
+    }
+
+    function clearLoadout() {
+      equippedSlots = {};
+      playHudSound('unequip');
+      renderAll();
+    }
+
+    // Floating Data-Attribute Tooltip Handlers
+    function showSpecTooltip(e, specKey) {
+      const data = FABRIC_SPECS[specKey];
+      if (!data) return;
+      const tip = document.getElementById('specTooltip');
+      document.getElementById('tooltipTitle').textContent = data.title;
+      document.getElementById('tooltipBody').textContent = data.desc;
+      document.getElementById('tooltipMetric').textContent = data.metric;
+      tip.classList.remove('hidden');
+      moveSpecTooltip(e);
+    }
+
+    function moveSpecTooltip(e) {
+      const tip = document.getElementById('specTooltip');
+      const x = Math.min(window.innerWidth - 320, e.clientX + 16);
+      const y = Math.min(window.innerHeight - 160, e.clientY + 16);
+      tip.style.left = `${x}px`;
+      tip.style.top = `${y}px`;
+    }
+
+    function hideSpecTooltip() {
+      document.getElementById('specTooltip').classList.add('hidden');
+    }
+
+    // Deploy Kit Checkout Manifest Modal
+    function openDeployModal() {
+      playHudSound('deploy');
+      const equippedItems = Object.values(equippedSlots);
+      const tbody = document.getElementById('manifestTableBody');
+
+      document.getElementById('modalWind').textContent = document.getElementById('statWindVal').textContent + ' m/s';
+      document.getElementById('modalWater').textContent = document.getElementById('statWaterVal').textContent + ' mm';
+      document.getElementById('modalThermal').textContent = document.getElementById('statThermalVal').textContent;
+      document.getElementById('modalWeight').textContent = document.getElementById('statWeightVal').textContent + ' g';
+      document.getElementById('modalTotalISK').textContent = document.getElementById('totalPriceISK').textContent;
+
+      if (equippedItems.length === 0) {
+        tbody.innerHTML = `
+          <tr>
+            <td colspan="5" class="py-6 text-center text-slate-400">
+              NO TACTICAL MODULES SELECTED. EQUIP CRATES BEFORE DEPLOYMENT.
+            </td>
+          </tr>
+        `;
+      } else {
+        tbody.innerHTML = equippedItems.map(item => `
+          <tr>
+            <td class="py-2 font-hud text-amberTac">${item.zone.replace('_', ' ')} [${item.layerStage}]</td>
+            <td class="py-2 font-bold text-white">${item.name}</td>
+            <td class="py-2 text-slate-400">${item.fabricKey}</td>
+            <td class="py-2 text-right font-mono text-slate-300">${item.weight}g</td>
+            <td class="py-2 text-right font-mono font-bold text-amberTac">${item.priceISK.toLocaleString('de-DE')} ISK</td>
+          </tr>
+        `).join('');
+      }
+
+      const warnEl = document.getElementById('modalReadinessWarning');
+      if (equippedItems.length < 4) {
+        warnEl.textContent = '▲ WARNING: INCOMPLETE SUBARCTIC COVERAGE — EXPOSURE RISK';
+        warnEl.className = 'text-[10px] text-amberTac mt-0.5';
+      } else {
+        warnEl.textContent = '● ALL SUBARCTIC SURVIVAL THRESHOLDS VERIFIED FOR DISPATCH';
+        warnEl.className = 'text-[10px] text-emerald-400 mt-0.5';
+      }
+
+      const modal = document.getElementById('deployModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeDeployModal() {
+      playHudSound('click');
+      const modal = document.getElementById('deployModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmDispatchOrder() {
+      playHudSound('deploy');
+      const count = Object.keys(equippedSlots).length;
+      const total = document.getElementById('totalPriceISK').textContent;
+      alert(`REQUISITION TRANSMITTED // SKEIFAN-10 REYKJAVÍK HUB\n\nModules Locked: ${count}\nTotal Authorized: ${total}\nStatus: DISPATCH QUEUED FOR DROPP.IS SAME-DAY DELIVERY.`);
+      closeDeployModal();
+    }
+
+    function renderAll() {
+      renderCrates();
+      updateTelemetryAndSilhouette();
+    }
+
+    // Initialize with a default tactical base loadout so the user immediately sees live telemetry & silhouette lighting
+    window.addEventListener('DOMContentLoaded', () => {
+      ['vindur-softshell-mk2', 'glacier-thermal-fleece', 'hekla-ripstop-500d', 'katla-storm-hood', 'vatna-assault-boots'].forEach(id => {
+        const item = GEAR_CATALOG.find(g => g.id === id);
+        if (item) equippedSlots[item.slotKey] = item;
+      });
+      renderAll();
+    });
+  </script>
+</body>
+</html>
