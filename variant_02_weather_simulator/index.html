@@ -1,0 +1,1333 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VEÐUR-LAB // ICELANDIC EXTREME WEATHER APPAREL SIMULATOR</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Space Grotesk + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700;800&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            basalt: '#090B0E',
+            concrete: '#101318',
+            panel: '#151920',
+            line: '#262C36',
+            volt: '#CCFF00',
+            voltDim: 'rgba(204, 255, 0, 0.14)',
+            hazard: '#FF3B30',
+            hazardDim: 'rgba(255, 59, 48, 0.14)',
+          },
+          fontFamily: {
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --volt: #CCFF00;
+      --hazard: #FF3B30;
+      --border: #262C36;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #090B0E;
+      color: #F1F5F9;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* Brutalist Exposed Grid Borders */
+    .brutal-border {
+      border: 1px solid #262C36;
+    }
+    .brutal-card {
+      background: #101318;
+      border: 1px solid #282F3A;
+      transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .brutal-card.verified {
+      border-color: rgba(204, 255, 0, 0.65);
+      box-shadow: 0 0 25px rgba(204, 255, 0, 0.06);
+    }
+    .brutal-card.verified:hover {
+      border-color: #CCFF00;
+      transform: translateY(-3px);
+      box-shadow: 4px 4px 0 #CCFF00;
+    }
+
+    /* Failed Stress-Test State */
+    .brutal-card.failed {
+      background: #0B0D10;
+      border-color: rgba(255, 59, 48, 0.45);
+      opacity: 0.52;
+      filter: grayscale(65%);
+    }
+    .brutal-card.failed:hover {
+      opacity: 0.85;
+      filter: grayscale(20%);
+      border-color: #FF3B30;
+    }
+
+    /* Custom Brutalist Range Sliders */
+    input[type="range"].volt-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      background: #090B0E;
+      border: 1px solid #333B48;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].volt-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 20px;
+      height: 24px;
+      background: #CCFF00;
+      border: 2px solid #090B0E;
+      box-shadow: 0 0 12px rgba(204, 255, 0, 0.65);
+      cursor: grab;
+      transition: transform 0.1s ease;
+    }
+    input[type="range"].volt-slider::-webkit-slider-thumb:active {
+      cursor: grabbing;
+      transform: scale(1.12);
+    }
+
+    /* Diagonal Caution Stripes for Failure Banner */
+    .fail-stripes {
+      background: repeating-linear-gradient(
+        -45deg,
+        rgba(255, 59, 48, 0.18),
+        rgba(255, 59, 48, 0.18) 8px,
+        rgba(15, 18, 24, 0.9) 8px,
+        rgba(15, 18, 24, 0.9) 16px
+      );
+    }
+
+    .volt-stripes {
+      background: repeating-linear-gradient(
+        -45deg,
+        #CCFF00,
+        #CCFF00 8px,
+        #090B0E 8px,
+        #090B0E 16px
+      );
+    }
+
+    @keyframes pulseVolt {
+      0%, 100% { opacity: 1; box-shadow: 0 0 10px rgba(204, 255, 0, 0.5); }
+      50% { opacity: 0.65; box-shadow: 0 0 2px rgba(204, 255, 0, 0.1); }
+    }
+    .badge-verified-pulse {
+      animation: pulseVolt 1.8s infinite ease-in-out;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #090B0E;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #28303D;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #CCFF00;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-volt selection:text-basalt">
+
+  <!-- =====================================================================
+       TOP BRUTALIST INDUSTRIAL UTILITY HEADER
+       ===================================================================== -->
+  <header class="border-b border-line bg-[#0B0E12]/95 sticky top-0 z-40 backdrop-blur-md">
+    <div class="max-w-[1600px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <!-- Brand Title & Coordinate Stamp -->
+      <div class="flex items-center gap-3">
+        <div class="bg-volt text-basalt font-mono font-extrabold text-sm px-2.5 py-1.5 tracking-tighter uppercase border border-volt">
+          VEÐUR//LAB
+        </div>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="font-bold text-lg md:text-xl tracking-tight uppercase text-white">
+              EXTREME WEATHER APPAREL SIMULATOR
+            </h1>
+            <span class="hidden sm:inline-block font-mono text-[10px] bg-white/5 border border-line px-2 py-0.5 text-slate-300">
+              CHAMBER #IS-02 // SKEIFAN
+            </span>
+          </div>
+          <p class="font-mono text-[10px] text-slate-400 uppercase tracking-widest">
+            STRESS-TEST OUTERWEAR AGAINST ICELANDIC HURRICANES, SLEET & BASALT ABRASION
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Status & Pack Drawer Trigger -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-2 bg-concrete border border-line px-3 py-1.5 font-mono text-xs">
+          <span class="text-slate-400">SURVIVING GEAR:</span>
+          <span id="headerPassCount" class="text-volt font-bold">10 / 10</span>
+        </div>
+
+        <button onclick="togglePackDrawer(true)" class="bg-volt hover:bg-[#d8ff33] text-basalt font-mono font-extrabold text-xs uppercase px-4 py-2.5 flex items-center gap-2 transition shadow-[3px_3px_0_#ffffff30]">
+          <span>STORM PACK</span>
+          <span id="packCounterBadge" class="bg-basalt text-volt px-2 py-0.5 text-[11px]">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       HERO SECTION: WEATHER CONTROL ENGINE + LIVE PARTICLE CANVAS
+       ===================================================================== -->
+  <section class="border-b border-line bg-concrete relative overflow-hidden">
+    <div class="max-w-[1600px] mx-auto grid grid-cols-1 lg:grid-cols-12">
+
+      <!-- LEFT 5 COLS: WEATHER CONTROL ENGINE SLIDERS -->
+      <div class="lg:col-span-5 p-5 md:p-6 border-b lg:border-b-0 lg:border-r border-line flex flex-col justify-between z-10 bg-[#0D1015]/95">
+        <div>
+          <div class="flex items-center justify-between border-b border-line pb-3 mb-4">
+            <div>
+              <span class="font-mono text-[10px] text-volt uppercase tracking-widest block">
+                // ENVIRONMENTAL INPUT PARAMETERS
+              </span>
+              <h2 class="text-xl font-bold uppercase tracking-tight text-white">
+                WEATHER CONTROL ENGINE
+              </h2>
+            </div>
+            <!-- Quick Weather Presets -->
+            <div class="flex gap-1 font-mono text-[10px]">
+              <button onclick="setWeatherPreset(20, 10, 15)" class="px-2 py-1 bg-panel border border-line hover:border-volt text-slate-300" title="Calm Reykjavík Day">
+                CALM
+              </button>
+              <button onclick="setWeatherPreset(72, 65, 55)" class="px-2 py-1 bg-panel border border-line hover:border-volt text-slate-300" title="Vík Horizontal Gale">
+                GALE
+              </button>
+              <button onclick="setWeatherPreset(115, 95, 92)" class="px-2 py-1 bg-hazard/20 border border-hazard/60 hover:bg-hazard hover:text-white text-hazard font-bold" title="Cataclysmic Vatnajökull Blizzard">
+                MAX STORM
+              </button>
+            </div>
+          </div>
+
+          <!-- SLIDER 1: WIND VELOCITY (0 to 120 km/h) -->
+          <div class="mb-5 bg-panel border border-line p-3.5">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <label for="windSlider" class="font-mono text-xs font-bold uppercase text-white block">
+                  01. WIND VELOCITY
+                </label>
+                <span id="beaufortBadge" class="font-mono text-[10px] text-volt uppercase">
+                  BEAUFORT 4 // MODERATE BREEZE
+                </span>
+              </div>
+              <div class="text-right font-mono">
+                <span id="windReadout" class="text-2xl font-extrabold text-volt">28</span>
+                <span class="text-xs text-slate-400">km/h</span>
+                <div id="windMsReadout" class="text-[10px] text-slate-500">(7.8 m/s)</div>
+              </div>
+            </div>
+            <input id="windSlider" type="range" min="0" max="120" value="28" class="volt-slider" oninput="updateSimulation()" />
+            <div class="flex justify-between font-mono text-[9px] text-slate-500 mt-1">
+              <span>0 KM/H (CALM)</span>
+              <span>60 KM/H (GALE)</span>
+              <span>120 KM/H (HURRICANE)</span>
+            </div>
+          </div>
+
+          <!-- SLIDER 2: PRECIPITATION (Dry -> Horizontal Rain -> Sleet/Blizzards) -->
+          <div class="mb-5 bg-panel border border-line p-3.5">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <label for="precipSlider" class="font-mono text-xs font-bold uppercase text-white block">
+                  02. PRECIPITATION INTENSITY
+                </label>
+                <span id="precipStageBadge" class="font-mono text-[10px] text-volt uppercase">
+                  COASTAL MIST & DRIZZLE
+                </span>
+              </div>
+              <div class="text-right font-mono">
+                <span id="hydroReqReadout" class="text-xl font-extrabold text-white">6,000</span>
+                <span class="text-xs text-slate-400">mm H₂O</span>
+                <div class="text-[10px] text-slate-500">REQ. HYDROSTATIC HEAD</div>
+              </div>
+            </div>
+            <input id="precipSlider" type="range" min="0" max="100" value="24" class="volt-slider" oninput="updateSimulation()" />
+            <div class="flex justify-between font-mono text-[9px] text-slate-500 mt-1">
+              <span>DRY</span>
+              <span>HORIZ. RAIN</span>
+              <span>SLEET</span>
+              <span>BLIZZARD (25K MM)</span>
+            </div>
+          </div>
+
+          <!-- SLIDER 3: TERRAIN FACTOR (Lava Field / Basalt Dust Abrasion) -->
+          <div class="bg-panel border border-line p-3.5">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <label for="terrainSlider" class="font-mono text-xs font-bold uppercase text-white block">
+                  03. TERRAIN & BASALT ABRASION
+                </label>
+                <span id="terrainStageBadge" class="font-mono text-[10px] text-volt uppercase">
+                  HIGHLAND GRAVEL & SCREE
+                </span>
+              </div>
+              <div class="text-right font-mono">
+                <span id="denierReqReadout" class="text-xl font-extrabold text-white">250D</span>
+                <span class="text-xs text-slate-400">MIN</span>
+                <div class="text-[10px] text-slate-500">ABRASION INDEX</div>
+              </div>
+            </div>
+            <input id="terrainSlider" type="range" min="0" max="100" value="30" class="volt-slider" oninput="updateSimulation()" />
+            <div class="flex justify-between font-mono text-[9px] text-slate-500 mt-1">
+              <span>TRAIL (100D)</span>
+              <span>SCORIA (350D)</span>
+              <span>LAVA FIELD (500D)</span>
+              <span>RAZOR BASALT (600D+)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Chamber Telemetry Note -->
+        <div class="mt-4 pt-3 border-t border-line flex items-center justify-between font-mono text-[11px]">
+          <span class="text-slate-400">SIMULATION ENGINE: <strong class="text-volt">ACTIVE 60FPS</strong></span>
+          <span id="chamberWarningText" class="text-slate-300">ALL SYSTEMS NOMINAL</span>
+        </div>
+      </div>
+
+      <!-- RIGHT 7 COLS: INTERACTIVE PARTICLE SIMULATION CANVAS -->
+      <div class="lg:col-span-7 relative min-h-[380px] lg:min-h-[480px] bg-[#07090C] flex flex-col justify-between overflow-hidden">
+        <!-- Live HTML5 Weather Canvas -->
+        <canvas id="weatherCanvas" class="absolute inset-0 w-full h-full pointer-events-none"></canvas>
+
+        <!-- Top Overlay Telemetry Readout -->
+        <div class="relative z-10 p-5 flex flex-wrap justify-between items-start gap-4 pointer-events-none">
+          <div class="bg-basalt/85 border border-line px-3.5 py-2.5 backdrop-blur-sm">
+            <div class="font-mono text-[10px] text-volt uppercase tracking-widest">
+              // ATMOSPHERIC CHAMBER TELEMETRY
+            </div>
+            <div id="canvasConditionHeadline" class="text-lg md:text-xl font-bold uppercase text-white mt-0.5">
+              MODERATE COASTAL WIND • LIGHT MIST
+            </div>
+            <div id="canvasSubTelemetry" class="font-mono text-[11px] text-slate-400 mt-0.5">
+              RAIN VECTOR ANGLE: 16° • WIND CHILL EST: +2°C • ASH DENSITY: LOW
+            </div>
+          </div>
+
+          <!-- Live Wind Vector Compass Box -->
+          <div class="bg-basalt/85 border border-line p-3 backdrop-blur-sm flex items-center gap-3 font-mono">
+            <div class="w-10 h-10 rounded-full border border-volt/50 flex items-center justify-center relative">
+              <div id="windVectorArrow" class="w-6 h-0.5 bg-volt relative transition-transform duration-150" style="transform: rotate(15deg);">
+                <div class="absolute right-0 -top-1 w-2 h-2 border-t-2 border-r-2 border-volt rotate-45"></div>
+              </div>
+            </div>
+            <div class="text-[10px]">
+              <div class="text-slate-400">DROP TRAJECTORY</div>
+              <div id="trajectoryAngleReadout" class="text-volt font-bold text-xs">16° TILT</div>
+              <div id="turbulenceReadout" class="text-slate-400">TURBULENCE: 23%</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Volcanic Horizon Silhouette & Live Stress-Test Tally Bar at Bottom of Canvas -->
+        <div class="relative z-10 mt-auto">
+          <!-- Jagged Basalt Terrain SVG Silhouette -->
+          <svg viewBox="0 0 1200 90" preserveAspectRatio="none" class="w-full h-14 block">
+            <polygon points="0,90 0,55 95,28 190,62 310,14 440,58 580,22 710,64 850,18 990,52 1110,25 1200,48 1200,90" fill="#101318" stroke="#262C36" stroke-width="2" />
+          </svg>
+
+          <div class="bg-concrete border-t border-line px-5 py-3 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
+            <div class="flex items-center gap-4">
+              <span class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-volt inline-block"></span>
+                <span class="text-slate-300">VERIFIED FOR STORM:</span>
+                <strong id="canvasVerifiedCount" class="text-volt">10 ITEMS</strong>
+              </span>
+              <span class="text-slate-600">|</span>
+              <span class="flex items-center gap-2">
+                <span class="w-2.5 h-2.5 bg-hazard inline-block"></span>
+                <span class="text-slate-300">MEMBRANE / TEAR FAILURE:</span>
+                <strong id="canvasFailedCount" class="text-hazard">0 ITEMS</strong>
+              </span>
+            </div>
+
+            <div class="flex items-center gap-2">
+              <label class="flex items-center gap-2 cursor-pointer text-[11px] text-slate-300">
+                <input type="checkbox" id="hideFailedToggle" onchange="renderGearGrid()" class="accent-[#CCFF00]" />
+                <span>HIDE FAILED UNITS</span>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       MAIN SECTION: THE "GEAR STRESS-TEST GRID"
+       ===================================================================== -->
+  <main class="max-w-[1600px] w-full mx-auto px-4 py-8 flex-1">
+    <!-- Section Title & Category Filter Bar -->
+    <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-line pb-4 mb-6 gap-4">
+      <div>
+        <div class="font-mono text-xs text-volt uppercase tracking-widest">
+          // REAL-TIME TOLERANCE EVALUATION MATRIX
+        </div>
+        <h2 class="text-2xl md:text-3xl font-bold uppercase tracking-tight text-white mt-0.5">
+          THE GEAR STRESS-TEST GRID
+        </h2>
+      </div>
+
+      <!-- Category Filter Buttons -->
+      <div class="flex flex-wrap gap-1.5 font-mono text-xs" id="categoryFilterBar">
+        <button onclick="setCategory('ALL')" data-cat="ALL" class="cat-btn bg-volt text-basalt font-bold px-3 py-1.5 uppercase border border-volt">
+          ALL UNITS [10]
+        </button>
+        <button onclick="setCategory('HARDSHELL & PARKA')" data-cat="HARDSHELL & PARKA" class="cat-btn bg-concrete text-slate-300 hover:border-volt px-3 py-1.5 uppercase border border-line">
+          SHELLS & PARKAS
+        </button>
+        <button onclick="setCategory('RIPSTOP PANTS')" data-cat="RIPSTOP PANTS" class="cat-btn bg-concrete text-slate-300 hover:border-volt px-3 py-1.5 uppercase border border-line">
+          RIPSTOP PANTS
+        </button>
+        <button onclick="setCategory('SOFTSHELL & FLEECE')" data-cat="SOFTSHELL & FLEECE" class="cat-btn bg-concrete text-slate-300 hover:border-volt px-3 py-1.5 uppercase border border-line">
+          SOFTSHELL & FLEECE
+        </button>
+      </div>
+    </div>
+
+    <!-- Product Stress-Test Grid -->
+    <div id="stressTestGrid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
+      <!-- Dynamically populated by JavaScript -->
+    </div>
+  </main>
+
+  <!-- =====================================================================
+       PRODUCT DETAILS DRAWER (MACRO TEXTURE, WEAVE & FIELD TEST NOTES)
+       ===================================================================== -->
+  <div id="detailsOverlay" onclick="closeDetailsDrawer()" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden"></div>
+  <aside id="detailsDrawer" class="fixed top-0 right-0 h-full w-full max-w-xl bg-[#0D1015] border-l border-volt z-50 translate-x-full transition-transform duration-300 flex flex-col">
+    <!-- Drawer Header -->
+    <div class="p-5 border-b border-line flex items-start justify-between bg-basalt">
+      <div>
+        <span id="drawerItemCode" class="font-mono text-[11px] bg-volt text-basalt font-extrabold px-2 py-0.5 uppercase">
+          SPEC // #IS-01
+        </span>
+        <h3 id="drawerItemName" class="text-2xl font-bold uppercase text-white mt-1.5">
+          PRODUCT NAME
+        </h3>
+        <p id="drawerItemCategory" class="font-mono text-xs text-slate-400 uppercase"></p>
+      </div>
+      <button onclick="closeDetailsDrawer()" class="font-mono text-xs bg-panel border border-line hover:border-volt text-slate-200 px-3 py-1.5 uppercase">
+        [CLOSE ✕]
+      </button>
+    </div>
+
+    <!-- Drawer Body -->
+    <div class="p-5 overflow-y-auto flex-1 space-y-6">
+      <!-- Live Chamber Stress Status Banner inside Drawer -->
+      <div id="drawerStatusBanner" class="p-3.5 border font-mono text-xs">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Macro Texture Weave Visualizer (Interactive SVG Microscope) -->
+      <div class="border border-line bg-basalt p-4">
+        <div class="flex justify-between items-center font-mono text-[11px] text-slate-400 pb-2 mb-3 border-b border-line">
+          <span class="text-volt font-bold uppercase">🔬 40x MACRO FABRIC WEAVE INSPECTION</span>
+          <span id="drawerWeaveCode">RIPSTOP 600D</span>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center">
+          <!-- Procedural SVG Macro Weave Preview -->
+          <div id="macroWeaveSvgBox" class="h-44 w-full border border-line bg-[#06080A] flex items-center justify-center relative overflow-hidden">
+            <!-- Injected by JS -->
+          </div>
+          <!-- Weave Technical Specs List -->
+          <div id="drawerWeaveMetrics" class="space-y-2 font-mono text-xs">
+            <!-- Injected by JS -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Tolerance Threshold Bars vs Current Chamber Sliders -->
+      <div class="border border-line bg-concrete p-4">
+        <div class="font-mono text-[11px] text-volt uppercase font-bold mb-3">
+          // CHAMBER THRESHOLD TELEMETRY COMPARISON
+        </div>
+        <div id="drawerThresholdComparison" class="space-y-3 font-mono text-xs">
+          <!-- Injected by JS -->
+        </div>
+      </div>
+
+      <!-- Exact Icelandic Field Test Notes -->
+      <div class="border border-line bg-panel p-4">
+        <div class="flex items-center justify-between font-mono text-[11px] border-b border-line pb-2 mb-2.5">
+          <span class="text-volt font-bold uppercase">📍 ICELANDIC FIELD TEST LOG</span>
+          <span id="drawerTestLocation" class="text-slate-400">LANDMANNALAUGAR</span>
+        </div>
+        <p id="drawerFieldNotes" class="text-sm text-slate-200 leading-relaxed font-sans"></p>
+      </div>
+    </div>
+
+    <!-- Drawer Footer CTA -->
+    <div class="p-5 border-t border-line bg-basalt flex items-center justify-between gap-4">
+      <div>
+        <div class="font-mono text-[10px] text-slate-400 uppercase">UNIT PRICE (INCL. VSK)</div>
+        <div id="drawerPriceISK" class="font-mono text-2xl font-extrabold text-white">0 ISK</div>
+      </div>
+      <button id="drawerAddBtn" onclick="" class="bg-volt hover:bg-[#d8ff33] text-basalt font-mono font-extrabold text-xs uppercase px-6 py-3.5 transition">
+        ADD TO STORM PACK +
+      </button>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       STORM PACK CHECKOUT DRAWER
+       ===================================================================== -->
+  <div id="packOverlay" onclick="togglePackDrawer(false)" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden"></div>
+  <aside id="packDrawer" class="fixed top-0 right-0 h-full w-full max-w-md bg-[#0D1015] border-l border-volt z-50 translate-x-full transition-transform duration-300 flex flex-col">
+    <div class="p-5 border-b border-line flex items-center justify-between bg-basalt">
+      <div>
+        <span class="font-mono text-[10px] text-volt uppercase">// EXPEDITION DISPATCH</span>
+        <h3 class="text-xl font-bold uppercase text-white">YOUR STORM PACK</h3>
+      </div>
+      <button onclick="togglePackDrawer(false)" class="font-mono text-xs bg-panel border border-line px-3 py-1.5 text-slate-300 hover:border-volt">
+        [CLOSE ✕]
+      </button>
+    </div>
+
+    <div id="packItemsContainer" class="p-5 flex-1 overflow-y-auto space-y-3">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="p-5 border-t border-line bg-basalt">
+      <div class="flex justify-between font-mono text-xs text-slate-400 mb-1">
+        <span>DROPP.IS ICELAND DELIVERY:</span>
+        <span class="text-volt">FREE (EXPEDITION TIER)</span>
+      </div>
+      <div class="flex justify-between items-baseline font-mono mb-4">
+        <span class="text-xs text-slate-300 uppercase">TOTAL (INCL. 24% VSK):</span>
+        <span id="packTotalISK" class="text-2xl font-extrabold text-volt">0 ISK</span>
+      </div>
+      <button onclick="checkoutStormPack()" class="w-full bg-volt hover:bg-[#d8ff33] text-basalt font-mono font-extrabold text-sm uppercase py-3.5 tracking-wider">
+        DISPATCH VERIFIED PACK ➔
+      </button>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       JAVASCRIPT ENGINE: PARTICLE PHYSICS, STRESS-TEST & DRAWER LOGIC
+       ===================================================================== -->
+  <script>
+    // Hardcoded Gear Catalog with Strict Tolerance Thresholds
+    const PRODUCTS = [
+      {
+        id: 'katla-600d-expedition-parka',
+        code: 'VL-01',
+        name: 'Katla 3L Pro Basalt Expedition Parka',
+        category: 'HARDSHELL & PARKA',
+        priceISK: 68900,
+        maxWindKmh: 120,      // Survives max 120 km/h hurricane
+        maxWaterMm: 28000,    // Survives max 25,000 mm blizzard
+        maxTerrainD: 650,     // 600D+ Kevlar/Cordura overlays
+        fabricTitle: '3L ePTFE 28K + 600D Cordura® Shoulders',
+        weaveType: 'cordura600',
+        specs: {
+          warpStrength: '2,800 N / 5cm',
+          breathability: 'RET < 4.5 (24,000 g/m²)',
+          dwrGrade: 'C6 Fluoropolymer + Seam Sealed',
+          massGsm: '310 g/m²'
+        },
+        location: 'EYJAFJALLAJÖKULL NORTH RIDGE (1,100m)',
+        fieldNotes: 'Tested during a 114 km/h horizontal sleet storm. Zero moisture ingress after 7 hours of continuous exposure. 600D ballistic shoulder and elbow reinforcements prevented any tearing when bracing against razor-sharp volcanic scoria.'
+      },
+      {
+        id: 'hekla-600d-ripstop-cargo',
+        code: 'VL-02',
+        name: 'Hekla Heavy Ripstop 600D Assault Trousers',
+        category: 'RIPSTOP PANTS',
+        priceISK: 32900,
+        maxWindKmh: 115,
+        maxWaterMm: 22000,
+        maxTerrainD: 600,
+        fabricTitle: 'Ripstop 600D Tear-Lock + Membrane Liner',
+        weaveType: 'ripstop600',
+        specs: {
+          warpStrength: '2,450 N / 5cm',
+          breathability: '18,000 g/m²/24h',
+          dwrGrade: 'Teflon® Shield+ Extreme',
+          massGsm: '285 g/m²'
+        },
+        location: 'FAGRADALSFJALL NEW LAVA FIELD',
+        fieldNotes: 'Engineered specifically for kneeling and scrambling across fresh glassy basalt crust. Double-interlocked 600D Ripstop grid arrested a 4cm crampon snag without propagating the tear.'
+      },
+      {
+        id: 'surtur-28k-storm-hardshell',
+        code: 'VL-03',
+        name: 'Surtur Hydro-Shield 28K Alpine Shell',
+        category: 'HARDSHELL & PARKA',
+        priceISK: 54900,
+        maxWindKmh: 120,
+        maxWaterMm: 28000,
+        maxTerrainD: 480, // Fails only at extreme >82% razor basalt abrasion
+        fabricTitle: 'Toyota Gelanots® 28,000mm 3-Layer Shell',
+        weaveType: 'membrane28k',
+        specs: {
+          warpStrength: '1,950 N / 5cm',
+          breathability: '26,000 g/m²/24h (Non-Porous)',
+          dwrGrade: 'Salt-Spray Immune Hydrophilic PUR',
+          massGsm: '215 g/m²'
+        },
+        location: 'REYNISFJARA BLACK SAND COAST',
+        fieldNotes: 'Completely impervious to 110 km/h Atlantic salt-spray and horizontal rain. Non-porous membrane cannot clog with sea salt crystals, though 480D face fabric requires caution on sharp glass-like lava edges.'
+      },
+      {
+        id: 'vindur-dwr-softshell-mk2',
+        code: 'VL-04',
+        name: 'Vindur DWR Softshell Jacket Mk.II',
+        category: 'SOFTSHELL & FLEECE',
+        priceISK: 34500,
+        maxWindKmh: 85,   // Prompt example: "Resists up to 85 km/h"
+        maxWaterMm: 10000,
+        maxTerrainD: 450,
+        fabricTitle: 'Storm-Tex® 4-Way Stretch Softshell + DWR',
+        weaveType: 'softshell',
+        specs: {
+          warpStrength: '1,680 N / 5cm',
+          breathability: '15,000 g/m²/24h',
+          dwrGrade: 'DuPont™ Teflon Hydrophobic',
+          massGsm: '260 g/m²'
+        },
+        location: 'ÞÓRSMÖRK VALLEY CROSSING',
+        fieldNotes: 'Ideal active outer layer for winds up to 85 km/h and light-to-moderate rain. Above 85 km/h or under sustained >10,000mm horizontal sleet, hydrostatic pressure forces water through un-taped softshell seams.'
+      },
+      {
+        id: 'krafla-20k-tactical-anorak',
+        code: 'VL-05',
+        name: 'Krafla 20K Waterproof Recon Smock',
+        category: 'HARDSHELL & PARKA',
+        priceISK: 46900,
+        maxWindKmh: 105,
+        maxWaterMm: 20000, // Prompt example: "Waterproof 20k mm"
+        maxTerrainD: 550,
+        fabricTitle: 'NYCO 500D Ripstop + 20,000mm TPU Laminate',
+        weaveType: 'ripstop600',
+        specs: {
+          warpStrength: '2,250 N / 5cm',
+          breathability: '16,500 g/m²/24h',
+          dwrGrade: 'Mil-Spec Oil & Water Repellent',
+          massGsm: '295 g/m²'
+        },
+        location: 'LANDMANNALAUGAR OBSIDIAN RIDGE',
+        fieldNotes: 'Pull-over anorak architecture eliminates main zipper failure points. Handles heavy horizontal rain (20,000mm) and sharp obsidian scree (550D), yielding only in full Category-12 glacier blizzards.'
+      },
+      {
+        id: 'askja-350d-flex-pants',
+        code: 'VL-06',
+        name: 'Askja VersaStretch 350D Trekking Pants',
+        category: 'RIPSTOP PANTS',
+        priceISK: 23900,
+        maxWindKmh: 70,
+        maxWaterMm: 7500,
+        maxTerrainD: 380,
+        fabricTitle: '350D Nylon-Spandex 4-Way Ripstop',
+        weaveType: 'softshell',
+        specs: {
+          warpStrength: '1,420 N / 5cm',
+          breathability: '22,000 g/m²/24h (Unlaminated)',
+          dwrGrade: 'C6 Mist Repellent',
+          massGsm: '220 g/m²'
+        },
+        location: 'LAUGAVEGUR TRAIL (SUMMER SECTOR)',
+        fieldNotes: 'Unmatched freedom of movement for rapid ascents in moderate wind (<70 km/h). Not rated for sustained horizontal rainstorms or razor-sharp volcanic lava fields above 380D.'
+      },
+      {
+        id: 'glacier-grid-fleece-l2',
+        code: 'VL-07',
+        name: 'Glacier Technical Thermal Grid Fleece',
+        category: 'SOFTSHELL & FLEECE',
+        priceISK: 21500,
+        maxWindKmh: 38,
+        maxWaterMm: 2500,
+        maxTerrainD: 240,
+        fabricTitle: 'Polartec® Power Grid™ 320gsm Technical Knit',
+        weaveType: 'gridfleece',
+        specs: {
+          warpStrength: '890 N / 5cm',
+          breathability: '38,000 g/m²/24h (Open Channel)',
+          dwrGrade: 'Hydrophobic Outer Yarn',
+          massGsm: '320 g/m²'
+        },
+        location: 'LANGJÖKULL BASECAMP',
+        fieldNotes: 'High-efficiency thermal mid-layer engineered for moisture vapor transport. When worn as a standalone outer layer, wind above 38 km/h strips convective warmth immediately—must be paired with a Hardshell in storms.'
+      },
+      {
+        id: 'vatna-650d-bib-salopettes',
+        code: 'VL-08',
+        name: 'Vatna 650D Ice-Wall Hardshell Bibs',
+        category: 'RIPSTOP PANTS',
+        priceISK: 59500,
+        maxWindKmh: 120,
+        maxWaterMm: 28000,
+        maxTerrainD: 650,
+        fabricTitle: '3L Pro 28K Membrane + 650D Ballistic Crampon Guards',
+        weaveType: 'cordura600',
+        specs: {
+          warpStrength: '3,100 N / 5cm',
+          breathability: '21,000 g/m²/24h',
+          dwrGrade: 'Expedition Grade + Aquaguard Zips',
+          massGsm: '340 g/m²'
+        },
+        location: 'HVANNADALSHNÚKUR SUMMIT (2,110m)',
+        fieldNotes: 'Built to survive the absolute maximum limits of the Veður-Lab chamber: 120 km/h winds, 28,000mm wet blizzard pressure, and direct 650D abrasion against basalt and steel crampon points.'
+      },
+      {
+        id: 'grindavik-windblock-hoodie',
+        code: 'VL-09',
+        name: 'Grindavík Ceramic-Print Softshell Hoodie',
+        category: 'SOFTSHELL & FLEECE',
+        priceISK: 38900,
+        maxWindKmh: 95,
+        maxWaterMm: 14000,
+        maxTerrainD: 540,
+        fabricTitle: 'Ceramic-Matrix Abrasion Print + Windblock Membrane',
+        weaveType: 'ripstop600',
+        specs: {
+          warpStrength: '2,100 N / 5cm',
+          breathability: '14,000 g/m²/24h',
+          dwrGrade: 'Hydro-Bead DWR Coating',
+          massGsm: '275 g/m²'
+        },
+        location: 'REYKJANES PENINSULA CRATER ZONE',
+        fieldNotes: 'Micro-ceramic dots printed onto the ripstop face resist sharp volcanic ash and scoria up to 540D while blocking 95 km/h gales.'
+      }
+    ];
+
+    // State
+    let currentCategory = 'ALL';
+    let stormPack = [];
+    let activeWindKmh = 28;
+    let activePrecipPct = 24;
+    let activeTerrainPct = 30;
+
+    // Derived Threshold Requirements from Sliders
+    function getRequiredThresholds() {
+      const reqWaterMm = Math.round((activePrecipPct / 100) * 25000); // 0 to 25,000 mm
+      const reqTerrainD = Math.round(100 + (activeTerrainPct / 100) * 500); // 100D to 600D
+      return {
+        windKmh: activeWindKmh,
+        waterMm: reqWaterMm,
+        terrainD: reqTerrainD
+      };
+    }
+
+    function getBeaufortInfo(kmh) {
+      if (kmh < 6) return { scale: 1, label: 'LIGHT AIR' };
+      if (kmh < 20) return { scale: 3, label: 'GENTLE BREEZE' };
+      if (kmh < 39) return { scale: 5, label: 'FRESH BREEZE' };
+      if (kmh < 62) return { scale: 7, label: 'HIGH WIND / NEAR GALE' };
+      if (kmh < 89) return { scale: 9, label: 'SEVERE GALE' };
+      if (kmh < 117) return { scale: 11, label: 'VIOLENT STORM' };
+      return { scale: 12, label: 'HURRICANE FORCE' };
+    }
+
+    function getPrecipStage(pct) {
+      if (pct <= 12) return 'DRY SUBARCTIC AIR';
+      if (pct <= 42) return 'COASTAL MIST & DRIZZLE';
+      if (pct <= 75) return 'HORIZONTAL RAIN STORM';
+      return 'GLACIAL SLEET & BLIZZARD';
+    }
+
+    function getTerrainStage(pct) {
+      if (pct <= 22) return 'PAVED / PACKED TRAIL';
+      if (pct <= 55) return 'HIGHLAND GRAVEL & SCREE';
+      if (pct <= 82) return 'SHARP LAVA FIELD / SCORIA';
+      return 'RAZOR BASALT & VOLCANIC ASH';
+    }
+
+    // Evaluate a product against current chamber sliders
+    function evaluateProduct(prod, req) {
+      const windFail = req.windKmh > prod.maxWindKmh;
+      const waterFail = req.waterMm > prod.maxWaterMm;
+      const terrainFail = req.terrainD > prod.maxTerrainD;
+      const passed = !windFail && !waterFail && !terrainFail;
+
+      let failReason = '';
+      if (waterFail) {
+        failReason = 'FAIL: EXCEEDS MEMBRANE CAPACITY';
+      } else if (windFail) {
+        failReason = 'FAIL: EXCEEDS WIND VELOCITY RATING';
+      } else if (terrainFail) {
+        failReason = 'FAIL: BASALT ABRASION TEAR LIMIT EXCEEDED';
+      }
+
+      return {
+        passed,
+        windFail,
+        waterFail,
+        terrainFail,
+        failReason
+      };
+    }
+
+    function setWeatherPreset(wind, precip, terrain) {
+      document.getElementById('windSlider').value = wind;
+      document.getElementById('precipSlider').value = precip;
+      document.getElementById('terrainSlider').value = terrain;
+      updateSimulation();
+    }
+
+    // Update UI Readouts & Re-render Grid when Sliders move
+    function updateSimulation() {
+      activeWindKmh = parseInt(document.getElementById('windSlider').value, 10);
+      activePrecipPct = parseInt(document.getElementById('precipSlider').value, 10);
+      activeTerrainPct = parseInt(document.getElementById('terrainSlider').value, 10);
+
+      const req = getRequiredThresholds();
+      const bft = getBeaufortInfo(activeWindKmh);
+      const precipLabel = getPrecipStage(activePrecipPct);
+      const terrainLabel = getTerrainStage(activeTerrainPct);
+
+      // Update Left Control Panel Readouts
+      document.getElementById('windReadout').textContent = activeWindKmh;
+      document.getElementById('windMsReadout').textContent = `(${(activeWindKmh / 3.6).toFixed(1)} m/s)`;
+      document.getElementById('beaufortBadge').textContent = `BEAUFORT ${bft.scale} // ${bft.label}`;
+
+      document.getElementById('hydroReqReadout').textContent = req.waterMm.toLocaleString('en-US');
+      document.getElementById('precipStageBadge').textContent = precipLabel;
+
+      document.getElementById('denierReqReadout').textContent = `${req.terrainD}D`;
+      document.getElementById('terrainStageBadge').textContent = terrainLabel;
+
+      // Trajectory angle: 0 km/h -> 2 deg, 120 km/h -> 78 deg
+      const tiltDeg = Math.round(2 + (activeWindKmh / 120) * 76);
+      document.getElementById('windVectorArrow').style.transform = `rotate(${tiltDeg}deg)`;
+      document.getElementById('trajectoryAngleReadout').textContent = `${tiltDeg}° TILT`;
+      document.getElementById('turbulenceReadout').textContent = `TURBULENCE: ${Math.min(100, Math.round(activeWindKmh * 0.82))}%`;
+
+      document.getElementById('canvasConditionHeadline').textContent =
+        `${bft.label} (${activeWindKmh} KM/H) • ${precipLabel}`;
+      document.getElementById('canvasSubTelemetry').textContent =
+        `RAIN VECTOR ANGLE: ${tiltDeg}° • HYDROSTATIC LOAD: ${req.waterMm.toLocaleString()} MM • MIN FABRIC: ${req.terrainD}D`;
+
+      const warnEl = document.getElementById('chamberWarningText');
+      if (activeWindKmh >= 95 || activePrecipPct >= 80 || activeTerrainPct >= 80) {
+        warnEl.textContent = '▲ EXTREME CATACLYSM THRESHOLD';
+        warnEl.className = 'text-hazard font-bold animate-pulse';
+      } else {
+        warnEl.textContent = 'CHAMBER TELEMETRY STABLE';
+        warnEl.className = 'text-slate-300';
+      }
+
+      renderGearGrid();
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      document.querySelectorAll('.cat-btn').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = 'cat-btn bg-volt text-basalt font-bold px-3 py-1.5 uppercase border border-volt';
+        } else {
+          btn.className = 'cat-btn bg-concrete text-slate-300 hover:border-volt px-3 py-1.5 uppercase border border-line';
+        }
+      });
+      renderGearGrid();
+    }
+
+    // Render Stress-Test Product Cards
+    function renderGearGrid() {
+      const req = getRequiredThresholds();
+      const hideFailed = document.getElementById('hideFailedToggle').checked;
+      const grid = document.getElementById('stressTestGrid');
+
+      let verifiedTotal = 0;
+      let failedTotal = 0;
+
+      PRODUCTS.forEach(p => {
+        const ev = evaluateProduct(p, req);
+        if (ev.passed) verifiedTotal++;
+        else failedTotal++;
+      });
+
+      document.getElementById('headerPassCount').textContent = `${verifiedTotal} / ${PRODUCTS.length}`;
+      document.getElementById('canvasVerifiedCount').textContent = `${verifiedTotal} ITEMS`;
+      document.getElementById('canvasFailedCount').textContent = `${failedTotal} ITEMS`;
+
+      const filtered = PRODUCTS.filter(p => {
+        const catMatch = currentCategory === 'ALL' || p.category === currentCategory;
+        if (!catMatch) return false;
+        if (hideFailed) {
+          return evaluateProduct(p, req).passed;
+        }
+        return true;
+      });
+
+      grid.innerHTML = filtered.map(prod => {
+        const ev = evaluateProduct(prod, req);
+
+        const windPct = Math.min(100, Math.round((req.windKmh / prod.maxWindKmh) * 100));
+        const waterPct = Math.min(100, Math.round((req.waterMm / prod.maxWaterMm) * 100));
+        const terrainPct = Math.min(100, Math.round((req.terrainD / prod.maxTerrainD) * 100));
+
+        return `
+          <article
+            onclick="openDetailsDrawer('${prod.id}')"
+            class="brutal-card p-5 flex flex-col justify-between cursor-pointer ${ev.passed ? 'verified' : 'failed'}"
+          >
+            <div>
+              <!-- Top Status Ribbon: Pulsing VERIFIED vs Technical FAIL -->
+              <div class="flex items-center justify-between gap-2 pb-3 mb-3 border-b border-line font-mono text-[11px]">
+                <span class="px-2 py-0.5 bg-panel border border-line text-slate-300 font-bold">
+                  ${prod.code} // ${prod.category}
+                </span>
+                ${ev.passed
+                  ? `<span class="badge-verified-pulse bg-volt text-basalt font-extrabold px-2.5 py-0.5 uppercase tracking-wider flex items-center gap-1.5">
+                       <span class="w-1.5 h-1.5 rounded-full bg-basalt"></span>
+                       VERIFIED FOR THIS STORM
+                     </span>`
+                  : `<span class="bg-hazard text-white font-extrabold px-2.5 py-0.5 uppercase tracking-wider">
+                       ${ev.failReason}
+                     </span>`
+                }
+              </div>
+
+              <!-- Title & Fabric Spec -->
+              <div class="flex justify-between items-start gap-3">
+                <h3 class="text-lg font-bold uppercase text-white leading-snug">
+                  ${prod.name}
+                </h3>
+                <span class="font-mono text-sm font-extrabold text-volt whitespace-nowrap">
+                  ${prod.priceISK.toLocaleString('de-DE')} ISK
+                </span>
+              </div>
+              <p class="font-mono text-xs text-slate-400 mt-1">
+                ${prod.fabricTitle}
+              </p>
+
+              <!-- 3 Hardcoded Tolerance Threshold Meters -->
+              <div class="mt-4 space-y-2.5 bg-basalt border border-line p-3 font-mono text-[11px]">
+                <!-- Wind Tolerance -->
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-slate-400">WIND RATING: <strong class="text-white">Resists up to ${prod.maxWindKmh} km/h</strong></span>
+                    <span class="${ev.windFail ? 'text-hazard font-bold' : 'text-volt'}">
+                      ${ev.windFail ? 'OVERLOAD' : 'PASS'}
+                    </span>
+                  </div>
+                  <div class="w-full h-1.5 bg-concrete overflow-hidden">
+                    <div class="h-full ${ev.windFail ? 'bg-hazard' : 'bg-volt'}" style="width: ${windPct}%"></div>
+                  </div>
+                </div>
+
+                <!-- Waterproof Tolerance -->
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-slate-400">MEMBRANE: <strong class="text-white">Waterproof ${(prod.maxWaterMm/1000)}k mm</strong></span>
+                    <span class="${ev.waterFail ? 'text-hazard font-bold' : 'text-volt'}">
+                      ${ev.waterFail ? 'LEAK RISK' : 'PASS'}
+                    </span>
+                  </div>
+                  <div class="w-full h-1.5 bg-concrete overflow-hidden">
+                    <div class="h-full ${ev.waterFail ? 'bg-hazard' : 'bg-volt'}" style="width: ${waterPct}%"></div>
+                  </div>
+                </div>
+
+                <!-- Tear / Basalt Abrasion Tolerance -->
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span class="text-slate-400">TEAR SHELL: <strong class="text-white">Ripstop ${prod.maxTerrainD}D Resistance</strong></span>
+                    <span class="${ev.terrainFail ? 'text-hazard font-bold' : 'text-volt'}">
+                      ${ev.terrainFail ? 'ABRASION FAIL' : 'PASS'}
+                    </span>
+                  </div>
+                  <div class="w-full h-1.5 bg-concrete overflow-hidden">
+                    <div class="h-full ${ev.terrainFail ? 'bg-hazard' : 'bg-volt'}" style="width: ${terrainPct}%"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card Footer Actions -->
+            <div class="mt-4 pt-3 border-t border-line flex items-center justify-between gap-2 font-mono text-xs">
+              <button
+                onclick="event.stopPropagation(); openDetailsDrawer('${prod.id}')"
+                class="px-3 py-2 bg-panel border border-line hover:border-volt text-slate-300 uppercase text-[11px]"
+              >
+                INSPECT WEAVE & LOG [↗]
+              </button>
+
+              ${ev.passed
+                ? `<button
+                     onclick="event.stopPropagation(); addToStormPack('${prod.id}')"
+                     class="px-4 py-2 bg-volt hover:bg-[#d8ff33] text-basalt font-extrabold uppercase text-[11px] transition"
+                   >
+                     ADD TO PACK +
+                   </button>`
+                : `<div class="fail-stripes px-3 py-2 border border-hazard/50 text-hazard font-bold text-[10px] uppercase">
+                     UNSAFE FOR CURRENT STORM
+                   </div>`
+              }
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    // Macro Texture SVG Generator for Details Drawer
+    function generateMacroWeaveSvg(weaveType) {
+      if (weaveType === 'cordura600' || weaveType === 'ripstop600') {
+        return `
+          <svg viewBox="0 0 200 140" class="w-full h-full">
+            <defs>
+              <pattern id="ripGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <rect width="20" height="20" fill="#0B0E13"/>
+                <path d="M 20 0 L 0 0 0 20" fill="none" stroke="#2D3748" stroke-width="1.5"/>
+                <line x1="0" y1="10" x2="20" y2="10" stroke="#1E2430" stroke-width="1"/>
+                <line x1="10" y1="0" x2="10" y2="20" stroke="#1E2430" stroke-width="1"/>
+                <rect x="0" y="0" width="20" height="20" fill="none" stroke="#CCFF00" stroke-width="0.6" stroke-opacity="0.45"/>
+              </pattern>
+            </defs>
+            <rect width="200" height="140" fill="url(#ripGrid)" />
+            <circle cx="100" cy="70" r="46" fill="none" stroke="#CCFF00" stroke-width="1.2" stroke-dasharray="4 3" />
+            <text x="10" y="128" fill="#CCFF00" font-family="JetBrains Mono" font-size="9">INTERLOCK PITCH: 5.0MM // 600D</text>
+          </svg>
+        `;
+      }
+      if (weaveType === 'membrane28k') {
+        return `
+          <svg viewBox="0 0 200 140" class="w-full h-full">
+            <rect width="200" height="140" fill="#080B10"/>
+            <path d="M0,35 Q50,20 100,35 T200,35" fill="none" stroke="#CCFF00" stroke-width="2"/>
+            <path d="M0,70 Q50,55 100,70 T200,70" fill="none" stroke="#38BDF8" stroke-width="2" stroke-dasharray="3 3"/>
+            <path d="M0,105 Q50,90 100,105 T200,105" fill="none" stroke="#64748B" stroke-width="2"/>
+            <circle cx="65" cy="22" r="6" fill="#38BDF8" opacity="0.8"/>
+            <circle cx="135" cy="20" r="8" fill="#38BDF8" opacity="0.8"/>
+            <text x="10" y="130" fill="#CCFF00" font-family="JetBrains Mono" font-size="9">3L LAMINATE // 28,000MM H2O</text>
+          </svg>
+        `;
+      }
+      return `
+        <svg viewBox="0 0 200 140" class="w-full h-full">
+          <defs>
+            <pattern id="waffleGrid" width="24" height="24" patternUnits="userSpaceOnUse">
+              <rect x="2" y="2" width="18" height="18" rx="2" fill="#18202C" stroke="#CCFF00" stroke-width="0.8" stroke-opacity="0.6"/>
+            </pattern>
+          </defs>
+          <rect width="200" height="140" fill="url(#waffleGrid)" />
+          <text x="10" y="128" fill="#CCFF00" font-family="JetBrains Mono" font-size="9">THERMAL LOFT CHANNELS // DWR</text>
+        </svg>
+      `;
+    }
+
+    // Open Product Details Drawer
+    function openDetailsDrawer(prodId) {
+      const prod = PRODUCTS.find(p => p.id === prodId);
+      if (!prod) return;
+      const req = getRequiredThresholds();
+      const ev = evaluateProduct(prod, req);
+
+      document.getElementById('drawerItemCode').textContent = `${prod.code} // ${prod.maxTerrainD}D GRADE`;
+      document.getElementById('drawerItemName').textContent = prod.name;
+      document.getElementById('drawerItemCategory').textContent = `${prod.category} • ${prod.fabricTitle}`;
+      document.getElementById('drawerWeaveCode').textContent = `${prod.maxTerrainD}D / ${(prod.maxWaterMm/1000)}K MM`;
+      document.getElementById('drawerTestLocation').textContent = prod.location;
+      document.getElementById('drawerFieldNotes').textContent = prod.fieldNotes;
+      document.getElementById('drawerPriceISK').textContent = `${prod.priceISK.toLocaleString('de-DE')} ISK`;
+
+      const statusBanner = document.getElementById('drawerStatusBanner');
+      if (ev.passed) {
+        statusBanner.className = 'p-3.5 border border-volt bg-volt/10 font-mono text-xs text-volt font-bold';
+        statusBanner.innerHTML = `● VERIFIED FOR CURRENT CHAMBER SETTINGS (${req.windKmh} km/h | ${req.waterMm} mm | ${req.terrainD}D)`;
+      } else {
+        statusBanner.className = 'p-3.5 border border-hazard bg-hazard/15 font-mono text-xs text-hazard font-bold';
+        statusBanner.innerHTML = `▲ ${ev.failReason} — EXCEEDS RATED TOLERANCE IN CURRENT STORM`;
+      }
+
+      document.getElementById('macroWeaveSvgBox').innerHTML = generateMacroWeaveSvg(prod.weaveType);
+
+      document.getElementById('drawerWeaveMetrics').innerHTML = `
+        <div class="flex justify-between border-b border-line pb-1"><span class="text-slate-400">TENSILE:</span><span class="text-white font-bold">${prod.specs.warpStrength}</span></div>
+        <div class="flex justify-between border-b border-line pb-1"><span class="text-slate-400">MVTR VAPOR:</span><span class="text-white font-bold">${prod.specs.breathability}</span></div>
+        <div class="flex justify-between border-b border-line pb-1"><span class="text-slate-400">SURFACE DWR:</span><span class="text-volt font-bold">${prod.specs.dwrGrade}</span></div>
+        <div class="flex justify-between"><span class="text-slate-400">FABRIC MASS:</span><span class="text-white font-bold">${prod.specs.massGsm}</span></div>
+      `;
+
+      document.getElementById('drawerThresholdComparison').innerHTML = `
+        <div class="flex justify-between items-center">
+          <span>WIND VELOCITY (CHAMBER: ${req.windKmh} km/h)</span>
+          <span class="${ev.windFail ? 'text-hazard font-bold' : 'text-volt font-bold'}">MAX RATED: ${prod.maxWindKmh} km/h [${ev.windFail ? 'FAIL' : 'OK'}]</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span>HYDROSTATIC PRESSURE (CHAMBER: ${req.waterMm} mm)</span>
+          <span class="${ev.waterFail ? 'text-hazard font-bold' : 'text-volt font-bold'}">MAX RATED: ${prod.maxWaterMm} mm [${ev.waterFail ? 'FAIL' : 'OK'}]</span>
+        </div>
+        <div class="flex justify-between items-center">
+          <span>BASALT ABRASION (CHAMBER: ${req.terrainD}D)</span>
+          <span class="${ev.terrainFail ? 'text-hazard font-bold' : 'text-volt font-bold'}">MAX RATED: ${prod.maxTerrainD}D [${ev.terrainFail ? 'FAIL' : 'OK'}]</span>
+        </div>
+      `;
+
+      const addBtn = document.getElementById('drawerAddBtn');
+      addBtn.onclick = () => {
+        addToStormPack(prod.id);
+        closeDetailsDrawer();
+      };
+
+      document.getElementById('detailsOverlay').classList.remove('hidden');
+      document.getElementById('detailsDrawer').classList.remove('translate-x-full');
+    }
+
+    function closeDetailsDrawer() {
+      document.getElementById('detailsOverlay').classList.add('hidden');
+      document.getElementById('detailsDrawer').classList.add('translate-x-full');
+    }
+
+    // Storm Pack Cart Management
+    function addToStormPack(prodId) {
+      const prod = PRODUCTS.find(p => p.id === prodId);
+      if (!prod) return;
+      const existing = stormPack.find(i => i.id === prodId);
+      if (existing) existing.qty += 1;
+      else stormPack.push({ ...prod, qty: 1 });
+      renderStormPack();
+      togglePackDrawer(true);
+    }
+
+    function changePackQty(prodId, delta) {
+      const idx = stormPack.findIndex(i => i.id === prodId);
+      if (idx === -1) return;
+      stormPack[idx].qty += delta;
+      if (stormPack[idx].qty <= 0) stormPack.splice(idx, 1);
+      renderStormPack();
+    }
+
+    function renderStormPack() {
+      const count = stormPack.reduce((s, i) => s + i.qty, 0);
+      document.getElementById('packCounterBadge').textContent = count;
+
+      const container = document.getElementById('packItemsContainer');
+      if (stormPack.length === 0) {
+        container.innerHTML = `
+          <div class="p-8 border border-dashed border-line text-center font-mono text-xs text-slate-400">
+            YOUR STORM PACK IS EMPTY.<br/>ADD VERIFIED GEAR FROM THE STRESS-TEST GRID.
+          </div>
+        `;
+        document.getElementById('packTotalISK').textContent = '0 ISK';
+        return;
+      }
+
+      let total = 0;
+      container.innerHTML = stormPack.map(item => {
+        total += item.priceISK * item.qty;
+        return `
+          <div class="p-3 bg-panel border border-line flex justify-between items-center gap-3">
+            <div>
+              <div class="font-mono text-[10px] text-volt">${item.code} • ${item.maxWaterMm/1000}K MM / ${item.maxTerrainD}D</div>
+              <div class="font-bold text-sm text-white uppercase">${item.name}</div>
+              <div class="font-mono text-xs text-slate-400">${item.priceISK.toLocaleString('de-DE')} ISK × ${item.qty}</div>
+            </div>
+            <div class="flex items-center gap-1.5 font-mono">
+              <button onclick="changePackQty('${item.id}', -1)" class="w-7 h-7 bg-basalt border border-line text-white hover:border-volt">-</button>
+              <span class="text-xs font-bold px-1">${item.qty}</span>
+              <button onclick="changePackQty('${item.id}', 1)" class="w-7 h-7 bg-basalt border border-line text-white hover:border-volt">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('packTotalISK').textContent = `${total.toLocaleString('de-DE')} ISK`;
+    }
+
+    function togglePackDrawer(open) {
+      const overlay = document.getElementById('packOverlay');
+      const drawer = document.getElementById('packDrawer');
+      if (open) {
+        overlay.classList.remove('hidden');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        overlay.classList.add('hidden');
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function checkoutStormPack() {
+      if (stormPack.length === 0) {
+        alert('Add at least one verified garment to your Storm Pack before dispatch.');
+        return;
+      }
+      const total = document.getElementById('packTotalISK').textContent;
+      alert(`VEÐUR-LAB EXPEDITION DISPATCH CONFIRMED\n\nVerified Units: ${stormPack.reduce((s,i)=>s+i.qty,0)}\nChamber Stress Rating: ${activeWindKmh} km/h Wind | ${getRequiredThresholds().waterMm} mm H2O\nTotal Authorized: ${total}\n\nSame-day Dropp.is dispatch from Skeifan 10, Reykjavík.`);
+      togglePackDrawer(false);
+    }
+
+    // =====================================================================
+    // INTERACTIVE HTML5 CANVAS PARTICLE ENGINE (RAIN, SLEET, BASALT ASH)
+    // =====================================================================
+    const canvas = document.getElementById('weatherCanvas');
+    const ctx = canvas.getContext('2d');
+    let particles = [];
+    let ashParticles = [];
+
+    function resizeCanvas() {
+      const rect = canvas.parentElement.getBoundingClientRect();
+      canvas.width = rect.width;
+      canvas.height = rect.height;
+    }
+
+    function initParticles() {
+      particles = [];
+      ashParticles = [];
+      for (let i = 0; i < 240; i++) {
+        particles.push({
+          x: Math.random() * 1200,
+          y: Math.random() * 550,
+          len: 12 + Math.random() * 18,
+          speed: 6 + Math.random() * 8,
+          size: 1 + Math.random() * 1.8
+        });
+      }
+      for (let i = 0; i < 90; i++) {
+        ashParticles.push({
+          x: Math.random() * 1200,
+          y: Math.random() * 550,
+          r: 1 + Math.random() * 2.5,
+          vx: 1 + Math.random() * 3,
+          vy: -0.5 + Math.random() * 1.5,
+          ember: Math.random() > 0.78
+        });
+      }
+    }
+
+    function animateWeatherCanvas() {
+      if (canvas.width !== canvas.parentElement.clientWidth) {
+        resizeCanvas();
+      }
+      const w = canvas.width;
+      const h = canvas.height;
+
+      ctx.clearRect(0, 0, w, h);
+
+      // Subtle atmospheric background grid
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.025)';
+      ctx.lineWidth = 1;
+      for (let x = 0; x < w; x += 48) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += 48) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // Dynamic Mist / Fog Layer based on Precipitation
+      if (activePrecipPct > 10) {
+        const mistAlpha = Math.min(0.24, (activePrecipPct / 100) * 0.24);
+        const grad = ctx.createLinearGradient(0, 0, 0, h);
+        grad.addColorStop(0, `rgba(148, 163, 184, ${mistAlpha * 0.5})`);
+        grad.addColorStop(1, `rgba(15, 23, 42, ${mistAlpha})`);
+        ctx.fillStyle = grad;
+        ctx.fillRect(0, 0, w, h);
+      }
+
+      // Calculate Wind Horizontal Velocity & Rain Count
+      const windFactor = activeWindKmh / 120; // 0 to 1
+      const vxBase = 1 + windFactor * 22;     // horizontal speed
+      const vyBase = 7 + (1 - windFactor * 0.35) * 8; // vertical speed
+
+      const activeRainCount = Math.floor((activePrecipPct / 100) * particles.length);
+      const isBlizzard = activePrecipPct >= 75;
+
+      // Draw Rain / Sleet / Blizzard Particles
+      for (let i = 0; i < activeRainCount; i++) {
+        const p = particles[i];
+        const vx = vxBase * (0.85 + (i % 5) * 0.08);
+        const vy = isBlizzard ? vyBase * 0.65 : vyBase;
+
+        ctx.beginPath();
+        if (isBlizzard && i % 3 === 0) {
+          // Sleet / Ice pellets
+          ctx.fillStyle = 'rgba(226, 232, 240, 0.85)';
+          ctx.arc(p.x, p.y, p.size * 1.3, 0, Math.PI * 2);
+          ctx.fill();
+        } else {
+          // Angled rain streaks
+          ctx.strokeStyle = activePrecipPct > 60
+            ? 'rgba(204, 255, 0, 0.55)'
+            : 'rgba(186, 230, 253, 0.55)';
+          ctx.lineWidth = p.size * 0.85;
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(p.x + vx * 1.35, p.y + vy * 1.35);
+          ctx.stroke();
+        }
+
+        p.x += vx;
+        p.y += vy;
+
+        if (p.y > h) {
+          p.y = -20;
+          p.x = Math.random() * w - (windFactor * 250);
+        }
+        if (p.x > w + 40) {
+          p.x = -20;
+          p.y = Math.random() * h;
+        }
+      }
+
+      // Draw Volcanic Basalt Dust & Scoria Ash Particles based on Terrain Slider
+      const activeAshCount = Math.floor((activeTerrainPct / 100) * ashParticles.length);
+      for (let j = 0; j < activeAshCount; j++) {
+        const a = ashParticles[j];
+        ctx.beginPath();
+        if (a.ember && activeTerrainPct > 65) {
+          ctx.fillStyle = 'rgba(255, 90, 30, 0.8)';
+        } else {
+          ctx.fillStyle = 'rgba(148, 163, 184, 0.45)';
+        }
+        ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+        ctx.fill();
+
+        a.x += a.vx + windFactor * 11;
+        a.y += a.vy + Math.sin(Date.now() * 0.003 + j) * 0.6;
+
+        if (a.x > w + 20) {
+          a.x = -10;
+          a.y = h * 0.35 + Math.random() * (h * 0.6);
+        }
+      }
+
+      requestAnimationFrame(animateWeatherCanvas);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      resizeCanvas();
+      initParticles();
+      updateSimulation();
+      renderStormPack();
+      requestAnimationFrame(animateWeatherCanvas);
+    });
+  </script>
+</body>
+</html>
