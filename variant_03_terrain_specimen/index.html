@@ -1,0 +1,1104 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IS-TERRAIN // SPECIMEN CATALOG [MGRS TOPOGRAPHIC ARCHIVE]</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Chakra Petch + IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            asphalt: '#1A1C1E',
+            asphaltDeep: '#121416',
+            asphaltCard: '#202326',
+            oliveDrab: '#3E4436',
+            oliveMuted: '#525B47',
+            oliveBright: '#8FA876',
+            silverText: '#E2E8F0',
+            silverBright: '#F8FAFC',
+            silverDim: '#94A3B8',
+          },
+          fontFamily: {
+            display: ['"Chakra Petch"', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --asphalt: #1A1C1E;
+      --asphalt-deep: #121416;
+      --olive-drab: #3E4436;
+      --olive-accent: #8FA876;
+      --silver: #E2E8F0;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1A1C1E;
+      color: #E2E8F0;
+      font-family: 'IBM Plex Mono', monospace;
+      overflow-x: hidden;
+      padding-bottom: 96px; /* Space for bottom floating docked tray */
+    }
+
+    /* Subtle MGRS Military Grid Background */
+    .mgrs-grid-bg {
+      background-size: 48px 48px;
+      background-image:
+        linear-gradient(to right, rgba(143, 168, 118, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(143, 168, 118, 0.06) 1px, transparent 1px);
+    }
+
+    /* Reflective Silver Text Effect */
+    .text-reflective {
+      color: #F8FAFC;
+      text-shadow: 0 0 14px rgba(226, 232, 240, 0.22);
+    }
+
+    /* Animated Topographic Contour Drift */
+    @keyframes contourFloat {
+      0% { stroke-dashoffset: 0; }
+      100% { stroke-dashoffset: 160; }
+    }
+    .contour-animated {
+      stroke-dasharray: 18 8;
+      animation: contourFloat 22s linear infinite;
+    }
+
+    /* Smooth Map Pan & Zoom Viewport Transition */
+    #topoMapCamera {
+      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+      transform-origin: center center;
+    }
+
+    /* Drop-Zone Radar Beacon Pulse */
+    @keyframes beaconPulse {
+      0% { r: 8; opacity: 0.9; }
+      100% { r: 28; opacity: 0; }
+    }
+    .beacon-ring {
+      animation: beaconPulse 2.2s cubic-bezier(0.16, 1, 0.3, 1) infinite;
+    }
+
+    /* Specimen Archive Card */
+    .specimen-card {
+      background: linear-gradient(180deg, #212427 0%, #17191B 100%);
+      border: 1px solid #353B30;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      position: relative;
+    }
+    .specimen-card:hover {
+      border-color: #8FA876;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 0 1px rgba(143, 168, 118, 0.3);
+    }
+
+    /* Exploded View Layer Transitions inside Material Anatomy Modal */
+    .exploded-layer {
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #121416;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3E4436;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #8FA876;
+    }
+  </style>
+</head>
+<body class="mgrs-grid-bg min-h-screen flex flex-col selection:bg-oliveBright selection:text-asphaltDeep">
+
+  <!-- =====================================================================
+       TOP MGRS TOPOGRAPHIC COMMAND HEADER
+       ===================================================================== -->
+  <header class="border-b border-[#32382D] bg-[#141618]/95 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-[1600px] mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-3">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 bg-oliveDrab border border-oliveBright/60 flex flex-col items-center justify-center text-[10px] font-bold text-silverBright leading-none">
+          <span>IS</span>
+          <span class="text-[8px] text-oliveBright mt-0.5">TOPO</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="font-display font-bold text-lg md:text-xl tracking-wider uppercase text-reflective">
+              IS-TERRAIN <span class="text-oliveBright">// SPECIMEN CATALOG</span>
+            </h1>
+            <span class="hidden sm:inline-block text-[10px] bg-oliveDrab/60 border border-oliveBright/40 text-silverText px-2 py-0.5">
+              DATUM: WGS84 • MGRS
+            </span>
+          </div>
+          <p class="text-[10px] text-silverDim tracking-widest uppercase">
+            GEOSPATIAL TACTICAL APPAREL ARCHIVE • ICELANDIC OPERATIONAL SECTORS
+          </p>
+        </div>
+      </div>
+
+      <!-- Live Telemetry & Sector Quick Switcher -->
+      <div class="flex flex-wrap items-center gap-2">
+        <div class="hidden xl:flex items-center gap-3 bg-asphaltDeep border border-[#2E3329] px-3 py-1.5 text-[11px]">
+          <span class="text-silverDim">CURSOR MGRS:</span>
+          <span id="liveCursorMgrs" class="text-oliveBright font-semibold">27W VM 88420 11940</span>
+          <span class="text-slate-600">|</span>
+          <span id="liveCursorElev" class="text-silverText">ELEV: +640m</span>
+        </div>
+
+        <button onclick="selectSector('ALL')" id="btnSector-ALL" class="sector-tab px-3 py-1.5 text-[11px] uppercase border border-oliveBright bg-oliveDrab text-silverBright font-semibold transition">
+          [00] ALL SECTORS
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       MAIN SPLIT WORKSPACE: INTERACTIVE TOPOGRAPHIC MAP + SPECIMEN FEED
+       ===================================================================== -->
+  <main class="max-w-[1600px] w-full mx-auto px-4 py-5 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- ===================================================================
+         LEFT / TOP COLUMN (6 COLS): INTERACTIVE TOPOGRAPHIC SVG MAP
+         =================================================================== -->
+    <section class="lg:col-span-6 bg-asphaltDeep border border-[#32382D] flex flex-col overflow-hidden lg:sticky lg:top-20">
+      <!-- Map Top HUD Strip -->
+      <div class="p-3.5 border-b border-[#2C3128] bg-[#16181A] flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <div class="text-[10px] text-oliveBright uppercase tracking-widest flex items-center gap-1.5">
+            <span class="w-2 h-2 rounded-full bg-oliveBright animate-ping"></span>
+            INTERACTIVE TOPOGRAPHIC DROP-ZONE SELECTOR
+          </div>
+          <h2 id="activeSectorHeadline" class="font-display font-bold text-base md:text-lg text-silverBright uppercase tracking-wide">
+            GLOBAL ICELANDIC THEATER // SELECT DROP-ZONE
+          </h2>
+        </div>
+        <button onclick="selectSector('ALL')" class="text-[10px] px-2.5 py-1 bg-asphalt border border-[#3E4436] hover:border-oliveBright text-silverText uppercase transition">
+          RESET CAMERA [⤢]
+        </button>
+      </div>
+
+      <!-- Interactive Topographic Map Viewport -->
+      <div
+        id="topoViewport"
+        onmousemove="updateCursorCoordinates(event)"
+        class="relative w-full h-[390px] sm:h-[440px] bg-[#111314] overflow-hidden select-none cursor-crosshair"
+      >
+        <!-- Corner MGRS Reticle Overlays -->
+        <div class="absolute top-3 left-3 z-20 pointer-events-none bg-asphaltDeep/85 border border-[#32382D] px-2.5 py-1.5 text-[10px]">
+          <div class="text-silverDim">ACTIVE GRID REF</div>
+          <div id="hudMgrsCode" class="text-oliveBright font-bold">27W VM 50000 50000</div>
+        </div>
+
+        <div class="absolute top-3 right-3 z-20 pointer-events-none bg-asphaltDeep/85 border border-[#32382D] px-2.5 py-1.5 text-[10px] text-right">
+          <div class="text-silverDim">TERRAIN DEMAND PROFILE</div>
+          <div id="hudTerrainDemand" class="text-silverBright font-bold">MULTI-CLIMATE MATRIX</div>
+        </div>
+
+        <!-- Pan & Zoom SVG Topographic Map Camera -->
+        <svg id="topoMapCamera" viewBox="0 0 900 600" class="w-full h-full">
+          <defs>
+            <radialGradient id="radarGlow" cx="50%" cy="50%" r="50%">
+              <stop offset="0%" stop-color="rgba(143, 168, 118, 0.16)" />
+              <stop offset="100%" stop-color="rgba(18, 20, 22, 0)" />
+            </radialGradient>
+            <pattern id="subGrid" width="60" height="60" patternUnits="userSpaceOnUse">
+              <path d="M 60 0 L 0 0 0 60" fill="none" stroke="rgba(143, 168, 118, 0.08)" stroke-width="0.8" />
+            </pattern>
+          </defs>
+
+          <!-- MGRS Coordinate Grid Layer -->
+          <rect width="900" height="600" fill="url(#subGrid)" />
+          <circle cx="450" cy="300" r="280" fill="url(#radarGlow)" />
+
+          <!-- Concentric Azimuth Radar Rings -->
+          <circle cx="450" cy="300" r="110" fill="none" stroke="rgba(143, 168, 118, 0.14)" stroke-width="1" stroke-dasharray="4 4" />
+          <circle cx="450" cy="300" r="220" fill="none" stroke="rgba(143, 168, 118, 0.14)" stroke-width="1" />
+          <line x1="0" y1="300" x2="900" y2="300" stroke="rgba(143, 168, 118, 0.12)" stroke-width="0.8" />
+          <line x1="450" y1="0" x2="450" y2="600" stroke="rgba(143, 168, 118, 0.12)" stroke-width="0.8" />
+
+          <!-- Multi-Layer Topographic Elevation Contour Lines (Iceland Landmass & Highland Ridges) -->
+          <g fill="none" stroke-linecap="round" stroke-linejoin="round">
+            <!-- Outer Coastal Shelf Contour (10m ASL) -->
+            <path
+              d="M 110,330 C 90,260 130,190 195,165 C 240,145 270,95 340,105 C 420,115 470,85 560,95 C 650,105 745,140 780,215 C 810,285 790,375 730,425 C 650,485 530,505 420,500 C 310,495 235,455 165,415 C 125,390 120,360 110,330 Z"
+              stroke="#3E4436"
+              stroke-width="2"
+              fill="rgba(62, 68, 54, 0.14)"
+            />
+            <!-- 200m Elevation Contour -->
+            <path
+              class="contour-animated"
+              d="M 155,325 C 145,265 175,210 230,190 C 285,170 315,130 380,140 C 455,150 510,120 590,135 C 670,150 735,190 745,255 C 755,320 715,390 650,425 C 575,465 465,475 370,465 C 280,455 215,410 175,375 Z"
+              stroke="#525B47"
+              stroke-width="1.4"
+            />
+            <!-- 500m Highland Plateau Contour -->
+            <path
+              d="M 215,320 C 210,265 245,225 305,210 C 370,195 415,165 485,175 C 555,185 635,205 675,260 C 705,305 675,365 615,395 C 545,430 445,440 355,425 C 275,410 225,370 215,320 Z"
+              stroke="#687559"
+              stroke-width="1.3"
+              fill="rgba(62, 68, 54, 0.12)"
+            />
+            <!-- 900m Central Highlands Interior Contour -->
+            <path
+              class="contour-animated"
+              d="M 295,305 C 295,265 340,235 405,225 C 470,215 545,230 595,270 C 630,300 610,345 560,370 C 495,400 415,395 355,375 C 310,360 295,335 295,305 Z"
+              stroke="#8FA876"
+              stroke-width="1.2"
+            />
+            <!-- 1,300m Vatnajökull & Hofsjökull Ice Cap Ridges -->
+            <path
+              d="M 385,295 C 395,265 445,250 495,260 C 545,270 570,295 550,325 C 525,355 460,355 415,340 C 385,330 375,310 385,295 Z"
+              stroke="#CBD5E1"
+              stroke-width="1"
+              stroke-dasharray="3 3"
+              fill="rgba(226, 232, 240, 0.06)"
+            />
+            <!-- Steep Topographic Fault Lines -->
+            <path d="M 260,420 L 390,290 L 530,170" stroke="rgba(143,168,118,0.22)" stroke-width="1" stroke-dasharray="2 4" />
+            <path d="M 190,340 L 450,300 L 710,250" stroke="rgba(143,168,118,0.22)" stroke-width="1" stroke-dasharray="2 4" />
+          </g>
+
+          <!-- Elevation Marker Labels on Map -->
+          <g font-family="IBM Plex Mono" font-size="9" fill="#94A3B8">
+            <text x="465" y="252">▲ +1,491m ASL</text>
+            <text x="610" y="185">27W WN // NE RIDGE</text>
+            <text x="135" y="210">FAXAFJÖRÐUR</text>
+            <text x="530" y="485">SOUTH ATLANTIC SURGE</text>
+          </g>
+
+          <!-- ===============================================================
+               DROP-ZONE 1: SECTOR 1 — HIGHLANDS INTERIOR
+               =============================================================== -->
+          <g class="cursor-pointer" onclick="selectSector('SECTOR_1')">
+            <circle cx="475" cy="275" r="10" fill="none" stroke="#8FA876" stroke-width="1.5" class="beacon-ring" />
+            <circle cx="475" cy="275" r="7" fill="#8FA876" stroke="#121416" stroke-width="2" />
+            <line x1="475" y1="275" x2="520" y2="230" stroke="#8FA876" stroke-width="1.2" />
+            <rect x="520" y="206" width="185" height="36" fill="#121416" stroke="#8FA876" stroke-width="1" />
+            <text x="528" y="221" fill="#F8FAFC" font-family="Chakra Petch" font-weight="700" font-size="11">
+              SECTOR 01: HIGHLANDS
+            </text>
+            <text x="528" y="234" fill="#8FA876" font-family="IBM Plex Mono" font-size="9">
+              3L RIPSTOP + HEAVY FLEECE
+            </text>
+          </g>
+
+          <!-- ===============================================================
+               DROP-ZONE 2: SECTOR 2 — BLACK SAND COASTLINE
+               =============================================================== -->
+          <g class="cursor-pointer" onclick="selectSector('SECTOR_2')">
+            <circle cx="430" cy="465" r="10" fill="none" stroke="#8FA876" stroke-width="1.5" class="beacon-ring" />
+            <circle cx="430" cy="465" r="7" fill="#8FA876" stroke="#121416" stroke-width="2" />
+            <line x1="430" y1="465" x2="475" y2="425" stroke="#8FA876" stroke-width="1.2" />
+            <rect x="475" y="402" width="198" height="36" fill="#121416" stroke="#8FA876" stroke-width="1" />
+            <text x="483" y="417" fill="#F8FAFC" font-family="Chakra Petch" font-weight="700" font-size="11">
+              SECTOR 02: BLACK SAND COAST
+            </text>
+            <text x="483" y="430" fill="#8FA876" font-family="IBM Plex Mono" font-size="9">
+              ABRASION CARGO + SALT SEAL
+            </text>
+          </g>
+
+          <!-- ===============================================================
+               DROP-ZONE 3: SECTOR 3 — URBAN RECON / REYKJAVÍK
+               =============================================================== -->
+          <g class="cursor-pointer" onclick="selectSector('SECTOR_3')">
+            <circle cx="205" cy="365" r="10" fill="none" stroke="#8FA876" stroke-width="1.5" class="beacon-ring" />
+            <circle cx="205" cy="365" r="7" fill="#8FA876" stroke="#121416" stroke-width="2" />
+            <line x1="205" y1="365" x2="245" y2="320" stroke="#8FA876" stroke-width="1.2" />
+            <rect x="245" y="296" width="185" height="36" fill="#121416" stroke="#8FA876" stroke-width="1" />
+            <text x="253" y="311" fill="#F8FAFC" font-family="Chakra Petch" font-weight="700" font-size="11">
+              SECTOR 03: URBAN RECON
+            </text>
+            <text x="253" y="324" fill="#8FA876" font-family="IBM Plex Mono" font-size="9">
+              REYKJAVÍK EDC SOFTSHELL
+            </text>
+          </g>
+        </svg>
+      </div>
+
+      <!-- 3 Interactive Drop-Zone Selector Buttons Below Map -->
+      <div class="grid grid-cols-1 sm:grid-cols-3 border-t border-[#2C3128] divide-y sm:divide-y-0 sm:divide-x divide-[#2C3128] bg-[#151719]">
+        <button onclick="selectSector('SECTOR_1')" id="btnSector-SECTOR_1" class="sector-tab p-3 text-left hover:bg-oliveDrab/40 transition">
+          <div class="flex items-center justify-between text-[10px] text-oliveBright">
+            <span>DROP-ZONE 01</span>
+            <span>+1,140m</span>
+          </div>
+          <div class="font-display font-bold text-sm text-silverBright uppercase mt-0.5">
+            Highlands Interior
+          </div>
+          <div class="text-[10px] text-silverDim truncate mt-0.5">
+            3L Ripstop Shell + Heavy Fleece
+          </div>
+        </button>
+
+        <button onclick="selectSector('SECTOR_2')" id="btnSector-SECTOR_2" class="sector-tab p-3 text-left hover:bg-oliveDrab/40 transition">
+          <div class="flex items-center justify-between text-[10px] text-oliveBright">
+            <span>DROP-ZONE 02</span>
+            <span>+12m ASL</span>
+          </div>
+          <div class="font-display font-bold text-sm text-silverBright uppercase mt-0.5">
+            Black Sand Coastline
+          </div>
+          <div class="text-[10px] text-silverDim truncate mt-0.5">
+            Reinforced 500D Cargo & Boots
+          </div>
+        </button>
+
+        <button onclick="selectSector('SECTOR_3')" id="btnSector-SECTOR_3" class="sector-tab p-3 text-left hover:bg-oliveDrab/40 transition">
+          <div class="flex items-center justify-between text-[10px] text-oliveBright">
+            <span>DROP-ZONE 03</span>
+            <span>+38m ASL</span>
+          </div>
+          <div class="font-display font-bold text-sm text-silverBright uppercase mt-0.5">
+            Urban Recon / RVK
+          </div>
+          <div class="text-[10px] text-silverDim truncate mt-0.5">
+            Sleek EDC Softshell & Commuter
+          </div>
+        </button>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         RIGHT COLUMN (6 COLS): DYNAMIC SPECIMEN CATALOG FEED
+         =================================================================== -->
+    <section class="lg:col-span-6 flex flex-col">
+      <!-- Sector Intelligence Brief Banner -->
+      <div class="bg-asphaltDeep border border-[#353B30] p-4 mb-4">
+        <div class="flex flex-wrap items-center justify-between gap-2 border-b border-[#2A2F26] pb-2.5 mb-2.5">
+          <div>
+            <span id="feedSectorTag" class="text-[10px] bg-oliveDrab text-oliveBright px-2 py-0.5 uppercase font-semibold">
+              ARCHIVE // ALL SECTORS (9 SPECIMENS)
+            </span>
+            <h2 id="feedSectorTitle" class="font-display font-bold text-xl text-reflective uppercase mt-1">
+              CERTIFIED TERRAIN SPECIMENS
+            </h2>
+          </div>
+          <div class="text-right text-[10px] text-silverDim">
+            <div>CLICK SPECIMEN CARD FOR</div>
+            <div class="text-oliveBright font-bold">EXPLODED MATERIAL ANATOMY [↗]</div>
+          </div>
+        </div>
+        <p id="feedSectorDescription" class="text-xs text-silverDim leading-relaxed">
+          Select a tactical drop-zone on the topographic map to pan the reconnaissance camera and filter garments certified for that elevation, wind shear, and volcanic substrate.
+        </p>
+      </div>
+
+      <!-- Specimen Cards Grid -->
+      <div id="specimenFeedGrid" class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Populated dynamically by JS -->
+      </div>
+    </section>
+  </main>
+
+  <!-- =====================================================================
+       MATERIAL ANATOMY MODAL (EXPLODED TECHNICAL GARMENT DIAGRAM)
+       ===================================================================== -->
+  <div id="anatomyModal" class="fixed inset-0 z-50 bg-black/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="bg-asphaltDeep border border-oliveBright max-w-3xl w-full max-h-[90vh] flex flex-col shadow-2xl overflow-hidden">
+      <!-- Modal Top Header -->
+      <div class="p-4 border-b border-[#32382D] bg-[#16191C] flex items-start justify-between gap-4">
+        <div>
+          <div class="flex items-center gap-2 text-[10px]">
+            <span id="modalSpecimenCode" class="bg-oliveDrab text-oliveBright px-2 py-0.5 font-bold uppercase">
+              SPECIMEN // IS-T01
+            </span>
+            <span id="modalSpecimenMgrs" class="text-silverDim">MGRS: 27W WN 94210 61800</span>
+          </div>
+          <h3 id="modalSpecimenName" class="font-display font-bold text-2xl text-reflective uppercase mt-1">
+            SPECIMEN DESIGNATION
+          </h3>
+        </div>
+        <button onclick="closeAnatomyModal()" class="px-3 py-1.5 bg-asphalt border border-[#3E4436] hover:border-oliveBright text-xs text-silverBright uppercase">
+          [ESC // CLOSE]
+        </button>
+      </div>
+
+      <!-- Modal Scrollable Content: Exploded Isometric Diagram + Callouts -->
+      <div class="p-5 overflow-y-auto flex-1 grid grid-cols-1 md:grid-cols-12 gap-5 items-center">
+        <!-- Left 7 Cols: Interactive Exploded Technical Blueprint SVG -->
+        <div class="md:col-span-7 bg-[#0E1012] border border-[#2D3329] p-4 relative">
+          <div class="flex items-center justify-between text-[10px] text-silverDim mb-2">
+            <span class="text-oliveBright font-bold uppercase">// EXPLODED STRUCTURAL ANATOMY</span>
+            <button onclick="toggleExplodeDepth()" id="explodeToggleBtn" class="px-2 py-0.5 bg-oliveDrab/70 border border-oliveBright/50 text-silverBright hover:bg-oliveBright hover:text-asphaltDeep transition uppercase">
+              [TOGGLE LAYER SEPARATION]
+            </button>
+          </div>
+
+          <!-- Technical Exploded View SVG -->
+          <svg viewBox="0 0 420 320" class="w-full h-72">
+            <!-- Background Calibration Crosshairs -->
+            <line x1="210" y1="15" x2="210" y2="305" stroke="rgba(143,168,118,0.2)" stroke-width="1" stroke-dasharray="4 4" />
+
+            <!-- LAYER 1 (TOP): OUTER RIPSTOP GRID WEAVE SHELL -->
+            <g id="explodedLayerTop" class="exploded-layer" style="transform: translateY(-18px);">
+              <polygon points="210,35 350,80 210,125 70,80" fill="rgba(62, 68, 54, 0.45)" stroke="#8FA876" stroke-width="1.8" />
+              <!-- Ripstop Crosshatch Matrix Lines -->
+              <line x1="140" y1="58" x2="280" y2="102" stroke="#8FA876" stroke-width="0.7" stroke-opacity="0.6" />
+              <line x1="175" y1="46" x2="315" y2="91" stroke="#8FA876" stroke-width="0.7" stroke-opacity="0.6" />
+              <line x1="140" y1="102" x2="280" y2="58" stroke="#8FA876" stroke-width="0.7" stroke-opacity="0.6" />
+              <line x1="175" y1="114" x2="315" y2="69" stroke="#8FA876" stroke-width="0.7" stroke-opacity="0.6" />
+              <circle cx="150" cy="78" r="5" fill="#8FA876" />
+              <line x1="150" y1="78" x2="45" y2="48" stroke="#F8FAFC" stroke-width="1" />
+              <text x="12" y="44" fill="#F8FAFC" font-family="IBM Plex Mono" font-size="9" font-weight="700">[01] RIPSTOP WEAVE</text>
+            </g>
+
+            <!-- LAYER 2 (MIDDLE): YKK AQUAGUARD & 22MM HEAT-TAPED SEAM MEMBRANE -->
+            <g id="explodedLayerMid" class="exploded-layer">
+              <polygon points="210,115 350,160 210,205 70,160" fill="rgba(30, 41, 59, 0.45)" stroke="#CBD5E1" stroke-width="1.5" stroke-dasharray="5 3" />
+              <!-- Waterproof Seam Tape Track -->
+              <line x1="115" y1="145" x2="305" y2="175" stroke="#F8FAFC" stroke-width="3" />
+              <line x1="115" y1="145" x2="305" y2="175" stroke="#121416" stroke-width="1" stroke-dasharray="3 3" />
+              <circle cx="275" cy="170" r="5" fill="#F8FAFC" />
+              <line x1="275" y1="170" x2="345" y2="145" stroke="#F8FAFC" stroke-width="1" />
+              <text x="285" y="138" fill="#F8FAFC" font-family="IBM Plex Mono" font-size="9" font-weight="700">[02] AQUAGUARD SEAM</text>
+            </g>
+
+            <!-- LAYER 3 (BOTTOM): REINFORCED CORDURA 500D PATCHES & THERMAL BACKER -->
+            <g id="explodedLayerBot" class="exploded-layer" style="transform: translateY(18px);">
+              <polygon points="210,195 350,240 210,285 70,240" fill="rgba(26, 28, 30, 0.85)" stroke="#8FA876" stroke-width="1.8" />
+              <!-- Articulated Cordura Abrasion Patch Hexagons -->
+              <polygon points="180,235 210,222 240,235 210,248" fill="rgba(143,168,118,0.3)" stroke="#8FA876" stroke-width="1.2" />
+              <circle cx="195" cy="242" r="5" fill="#8FA876" />
+              <line x1="195" y1="242" x2="80" y2="278" stroke="#F8FAFC" stroke-width="1" />
+              <text x="12" y="290" fill="#F8FAFC" font-family="IBM Plex Mono" font-size="9" font-weight="700">[03] CORDURA 500D ARMOR</text>
+            </g>
+          </svg>
+        </div>
+
+        <!-- Right 5 Cols: 3 Anatomical Callout Specs -->
+        <div class="md:col-span-5 space-y-3">
+          <div class="p-3 bg-asphalt border-l-2 border-oliveBright">
+            <div class="text-[10px] text-oliveBright font-bold uppercase">[01] OUTER FACE ARCHITECTURE</div>
+            <div id="modalLayer1Title" class="font-display font-bold text-sm text-silverBright mt-0.5"></div>
+            <p id="modalLayer1Desc" class="text-[11px] text-silverDim mt-1 leading-relaxed"></p>
+          </div>
+
+          <div class="p-3 bg-asphalt border-l-2 border-silverBright">
+            <div class="text-[10px] text-silverBright font-bold uppercase">[02] SEAM & ZIPPER SEALING</div>
+            <div id="modalLayer2Title" class="font-display font-bold text-sm text-silverBright mt-0.5"></div>
+            <p id="modalLayer2Desc" class="text-[11px] text-silverDim mt-1 leading-relaxed"></p>
+          </div>
+
+          <div class="p-3 bg-asphalt border-l-2 border-oliveBright">
+            <div class="text-[10px] text-oliveBright font-bold uppercase">[03] STRUCTURAL REINFORCEMENT</div>
+            <div id="modalLayer3Title" class="font-display font-bold text-sm text-silverBright mt-0.5"></div>
+            <p id="modalLayer3Desc" class="text-[11px] text-silverDim mt-1 leading-relaxed"></p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal Footer: Price & Add to Manifest -->
+      <div class="p-4 border-t border-[#32382D] bg-[#16191C] flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <div class="text-[10px] text-silverDim uppercase">REQUISITION COST (INCL. 24% VSK)</div>
+          <div id="modalSpecimenPrice" class="font-display font-bold text-2xl text-reflective">0 ISK</div>
+        </div>
+        <div class="flex items-center gap-3">
+          <button onclick="closeAnatomyModal()" class="px-4 py-2.5 bg-asphalt border border-[#3E4436] text-xs text-silverDim hover:text-white uppercase">
+            RETURN TO MAP
+          </button>
+          <button id="modalAddManifestBtn" class="px-6 py-2.5 bg-oliveDrab hover:bg-oliveBright hover:text-asphaltDeep border border-oliveBright text-silverBright font-display font-bold text-sm uppercase tracking-wider transition">
+            + LOCK INTO MANIFEST
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       BOTTOM FLOATING DOCKED TACTICAL TRAY ("MANIFEST")
+       ===================================================================== -->
+  <div class="fixed bottom-0 left-0 right-0 z-40 px-3 pb-3 pointer-events-none">
+    <div class="max-w-[1600px] mx-auto bg-[#131517]/95 border border-oliveBright/60 backdrop-blur-md shadow-[0_-10px_35px_rgba(0,0,0,0.75)] pointer-events-auto">
+      <!-- Expandable Quick-Add Drawer inside Dock -->
+      <div id="dockDrawerBody" class="hidden border-b border-[#2E3429] p-4 max-h-60 overflow-y-auto bg-[#0F1113]">
+        <div class="flex items-center justify-between text-[11px] text-silverDim mb-2.5 pb-1.5 border-b border-[#252A22]">
+          <span class="text-oliveBright font-bold uppercase">// ACTIVE FIELD MANIFEST REQUISITION</span>
+          <button onclick="clearManifest()" class="text-xs text-red-400 hover:underline">[CLEAR MANIFEST]</button>
+        </div>
+        <div id="manifestItemsList" class="space-y-2 text-xs">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Always-Visible Bottom Dock Bar -->
+      <div class="px-4 py-2.5 flex flex-wrap items-center justify-between gap-3">
+        <!-- Left: Active MGRS Coordinates & Sector -->
+        <div class="flex items-center gap-3">
+          <div class="w-2.5 h-2.5 bg-oliveBright rounded-full animate-pulse"></div>
+          <div>
+            <div class="text-[9px] text-silverDim uppercase tracking-widest">ACTIVE DEPLOYMENT COORDINATES</div>
+            <div id="dockCoordinatesLabel" class="text-xs font-bold text-silverBright">
+              MGRS: 27W VM 50000 50000 // ALL SECTORS
+            </div>
+          </div>
+        </div>
+
+        <!-- Center: Quick-Add Specimen Pills -->
+        <div class="hidden md:flex items-center gap-1.5 text-[10px]">
+          <span class="text-silverDim mr-1">QUICK-ADD:</span>
+          <button onclick="addSpecimenToManifest('SPEC-01')" class="px-2 py-1 bg-asphalt border border-[#3E4436] hover:border-oliveBright text-silverText">
+            + 3L Highland Shell
+          </button>
+          <button onclick="addSpecimenToManifest('SPEC-04')" class="px-2 py-1 bg-asphalt border border-[#3E4436] hover:border-oliveBright text-silverText">
+            + 500D Coast Cargo
+          </button>
+          <button onclick="addSpecimenToManifest('SPEC-07')" class="px-2 py-1 bg-asphalt border border-[#3E4436] hover:border-oliveBright text-silverText">
+            + Urban EDC Softshell
+          </button>
+        </div>
+
+        <!-- Right: Currency in ISK & Manifest Drawer Toggle -->
+        <div class="flex items-center gap-3 ml-auto sm:ml-0">
+          <div class="text-right">
+            <div class="text-[9px] text-silverDim uppercase">MANIFEST TOTAL (ISK)</div>
+            <div id="dockTotalISK" class="font-display font-bold text-lg text-oliveBright leading-none">
+              0 ISK
+            </div>
+          </div>
+
+          <button onclick="toggleManifestDrawer()" class="px-3.5 py-2 bg-asphalt border border-oliveBright/50 hover:border-oliveBright text-xs text-silverBright uppercase font-semibold flex items-center gap-2">
+            <span>MANIFEST</span>
+            <span id="dockItemCount" class="bg-oliveDrab text-oliveBright px-1.5 py-0.2 text-[11px] font-bold">0</span>
+            <span id="dockChevron">▲</span>
+          </button>
+
+          <button onclick="transmitManifestOrder()" class="px-4 py-2 bg-oliveBright hover:bg-[#a3be88] text-asphaltDeep font-display font-bold text-xs uppercase tracking-wider transition">
+            TRANSMIT ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT ENGINE: TOPOGRAPHIC SECTORS, SPECIMENS & EXPLODED MODAL
+       ===================================================================== -->
+  <script>
+    // Sector Topographic Configurations (Camera Pan/Zoom + MGRS Metadata)
+    const SECTORS = {
+      ALL: {
+        id: 'ALL',
+        name: 'GLOBAL ICELANDIC THEATER // ALL SECTORS',
+        mgrs: '27W VM 50000 50000',
+        elev: '0m – 2,110m ASL',
+        demand: 'MULTI-CLIMATE MATRIX',
+        cameraTransform: 'translate(0px, 0px) scale(1)',
+        description: 'Complete archival index across all three operational Icelandic drop-zones. Click any sector beacon on the topographic map to pan the camera and isolate terrain-specific specimens.'
+      },
+      SECTOR_1: {
+        id: 'SECTOR_1',
+        name: 'SECTOR 01: HIGHLANDS INTERIOR (LANDMANNALAUGAR / SPB)',
+        mgrs: '27W WN 94210 61800',
+        elev: '+1,140m ASL',
+        demand: '3-LAYER RIPSTOP SHELL + HEAVY WINDPROOF FLEECE',
+        cameraTransform: 'translate(-95px, 35px) scale(1.65)',
+        description: 'Uninhabited volcanic plateau above 1,000m. Exposed to katabatic glacier winds and horizontal sleet. Demands 3-layer 28,000mm Ripstop Hardshells paired with high-loft Windproof Grid Fleece.'
+      },
+      SECTOR_2: {
+        id: 'SECTOR_2',
+        name: 'SECTOR 02: BLACK SAND COASTLINE (VÍK / REYNISFJARA)',
+        mgrs: '27W VM 98100 04320',
+        elev: '+12m ASL',
+        demand: 'ABRASION-RESISTANT 500D CARGO + SALT-SPRAY ARMOR',
+        cameraTransform: 'translate(-30px, -185px) scale(1.7)',
+        description: 'High-velocity Atlantic surf zone with abrasive volcanic black basalt sand and corrosive sea salt spray. Demands 500D Cordura-reinforced Ripstop Cargo trousers and non-porous membranes.'
+      },
+      SECTOR_3: {
+        id: 'SECTOR_3',
+        name: 'SECTOR 03: URBAN RECON / REYKJAVÍK (SKEIFAN-10 HUB)',
+        mgrs: '27W VL 54890 59210',
+        elev: '+38m ASL',
+        demand: 'SLEEK EDC SOFTSHELL + TACTICAL COMMUTER PANTS',
+        cameraTransform: 'translate(245px, -85px) scale(1.75)',
+        description: 'Rapid transition between subarctic coastal squalls and urban operational interiors. Demands low-profile monochromatic DWR Softshells, 4-way stretch commuter trousers, and quick-release Cobra® hardware.'
+      }
+    };
+
+    // Specimen Catalog Database
+    const SPECIMENS = [
+      // --- SECTOR 1: HIGHLANDS INTERIOR ---
+      {
+        id: 'SPEC-01',
+        sector: 'SECTOR_1',
+        sectorName: 'Sector 1: Highlands Interior',
+        mgrs: '27W WN 94210 61800',
+        name: 'Askja 3-Layer Ripstop Storm Shell',
+        type: 'L6 EXPEDITION HARDSHELL',
+        weightG: 540,
+        priceISK: 58900,
+        summary: '3-layer 210T micro-ripstop laminate with 28,000mm hydrostatic head and helmet-compatible storm hood.',
+        anatomy: {
+          layer1Title: '210T Micro-Ripstop Nylon 6,6 Face + C6 DWR',
+          layer1Desc: 'High-tenacity interlocking ripstop grid prevents tear propagation during 35 m/s highland gales.',
+          layer2Title: 'YKK® AquaGuard® + 22mm Heat-Taped Micro-Seams',
+          layer2Desc: 'Ultrasonic welded interior seam tape and matte polyurethane zippers block horizontal glacial water ingress.',
+          layer3Title: 'Cordura® 500D Shoulder & Forearm Overlays',
+          layer3Desc: 'Eliminates rucksack strap abrasion and ice-axe shaft wear across high-friction upper torso zones.'
+        }
+      },
+      {
+        id: 'SPEC-02',
+        sector: 'SECTOR_1',
+        sectorName: 'Sector 1: Highlands Interior',
+        mgrs: '27W WN 94210 61800',
+        name: 'Hofsjökull Heavy Windproof Grid Fleece',
+        type: 'L3 THERMAL MID-LAYER',
+        weightG: 490,
+        priceISK: 26500,
+        summary: '390gsm double-velour thermal grid fleece with laminated wind-barrier chest membrane.',
+        anatomy: {
+          layer1Title: 'Dense Ripstop Wind-Baffle Chest Overlay',
+          layer1Desc: 'Blocks convective heat stripping across the sternum while maintaining high MVTR vapor release on the back.',
+          layer2Title: 'Flatlock 4-Needle Articulated Seam Construction',
+          layer2Desc: 'Zero-chafe structural seams engineered to layer smoothly beneath a 3-layer hardshell.',
+          layer3Title: 'Polartec® 390gsm Thermal Loft Channels',
+          layer3Desc: 'Deep geometric air pockets retain core warmth down to -18°C even under damp subarctic humidity.'
+        }
+      },
+      {
+        id: 'SPEC-03',
+        sector: 'SECTOR_1',
+        sectorName: 'Sector 1: Highlands Interior',
+        mgrs: '27W WN 94210 61800',
+        name: 'Bárðarbunga Aramid-Down Sub-Zero Parka',
+        type: 'L7 ARCTIC BELAY PARKA',
+        weightG: 860,
+        priceISK: 74900,
+        summary: 'Flame-retardant aramid ripstop shell filled with 800FP hydrophobic goose down for static highland vigils.',
+        anatomy: {
+          layer1Title: 'Takibi Aramid + Ripstop Matrix Shell',
+          layer1Desc: 'Impervious to volcanic embers, stove flare-ups, and freezing sleet abrasion.',
+          layer2Title: '3D Box-Wall Baffle & Storm Placket',
+          layer2Desc: 'Eliminates cold spots at stitch lines; magnetic storm flap seals over two-way YKK® Vislon zipper.',
+          layer3Title: 'Hydrophobic UDD 800-Fill Insulation',
+          layer3Desc: 'DWR-treated down clusters retain loft and thermal efficiency in 90% relative coastal humidity.'
+        }
+      },
+
+      // --- SECTOR 2: BLACK SAND COASTLINE ---
+      {
+        id: 'SPEC-04',
+        sector: 'SECTOR_2',
+        sectorName: 'Sector 2: Black Sand Coastline',
+        mgrs: '27W VM 98100 04320',
+        name: 'Reynisfjara 500D Reinforced Cargo Pants',
+        type: 'HEAVY ABRASION TROUSERS',
+        weightG: 685,
+        priceISK: 29900,
+        summary: 'Basalt-proof NYCO Ripstop cargo pants with articulated Cordura 500D knee and instep armor.',
+        anatomy: {
+          layer1Title: 'NYCO 50/50 Crosshatch Ripstop Chassis',
+          layer1Desc: 'Teflon® Shield+ treated weave repels wet black volcanic sand and corrosive Atlantic spindrift.',
+          layer2Title: 'Triple-Stitched Gusset & YKK® Brass Fly',
+          layer2Desc: 'Diamond crotch gusset and bar-tacked cargo bellows withstand dynamic scrambling on wet sea cliffs.',
+          layer3Title: 'Reinforced Cordura® 500D Knee & Cuff Patches',
+          layer3Desc: 'Double-layer ballistic nylon knee compartments accept internal neoprene impact pads.'
+        }
+      },
+      {
+        id: 'SPEC-05',
+        sector: 'SECTOR_2',
+        sectorName: 'Sector 2: Black Sand Coastline',
+        mgrs: '27W VM 98100 04320',
+        name: 'Dyrhólaey Salt-Immune Gelanots® Smock',
+        type: 'COASTAL ANORAK SHELL',
+        weightG: 590,
+        priceISK: 46500,
+        summary: 'Non-porous hydrophilic membrane smock that never clogs from sea-salt crystallization.',
+        anatomy: {
+          layer1Title: 'High-Density 300D Oxford Ripstop Weave',
+          layer1Desc: 'Resists sandblasting during 100 km/h south-coast gales.',
+          layer2Title: 'Toyota Gelanots® Non-Porous PUR Laminate',
+          layer2Desc: 'Unlike microporous membranes, salt crystals cannot block vapor transport; 20,000mm waterproof.',
+          layer3Title: 'Kangaroo Map Chest Vault & Storm Gaiter',
+          layer3Desc: 'Internal neoprene wrist cuffs prevent water from running up sleeves when handling wet lines.'
+        }
+      },
+      {
+        id: 'SPEC-06',
+        sector: 'SECTOR_2',
+        sectorName: 'Sector 2: Black Sand Coastline',
+        mgrs: '27W VM 98100 04320',
+        name: 'Sólheimasandur Cordura® 1000D Gaiters',
+        type: 'LOWER-LEG ARMOR',
+        weightG: 310,
+        priceISK: 14500,
+        summary: 'Full-height waterproof basalt and glacial river crossing gaiters with steel underfoot cable.',
+        anatomy: {
+          layer1Title: '1000D Ballistic Cordura® Lower Boot Shield',
+          layer1Desc: 'Maximum mechanical puncture resistance against sharp basalt scoria and ice crusts.',
+          layer2Title: '50mm Hook-and-Loop Front Storm Stormflap',
+          layer2Desc: 'Seals shin entry completely against knee-deep glacial outwash surges.',
+          layer3Title: 'TPU-Coated Stainless Steel Underfoot Strap',
+          layer3Desc: 'Locks gaiter to boot welt without fraying on volcanic rock.'
+        }
+      },
+
+      // --- SECTOR 3: URBAN RECON / REYKJAVÍK ---
+      {
+        id: 'SPEC-07',
+        sector: 'SECTOR_3',
+        sectorName: 'Sector 3: Urban Recon / Reykjavík',
+        mgrs: '27W VL 54890 59210',
+        name: 'Skeifan Stealth EDC Softshell Mk.III',
+        type: 'URBAN TACTICAL SOFTSHELL',
+        weightG: 510,
+        priceISK: 34900,
+        summary: 'Architectural matte softshell with concealed chest document vaults and 10,000mm Storm-Tex membrane.',
+        anatomy: {
+          layer1Title: '4-Way Mechanical Stretch Matte Woven Face',
+          layer1Desc: 'Zero-noise acoustic profile in solid obsidian/olive tones for discreet Reykjavík daily deployment.',
+          layer2Title: 'Concealed YKK® AquaGuard® EDC Access Ports',
+          layer2Desc: 'Vertical chest pockets with internal lanyard routing for comms, optics, and passport storage.',
+          layer3Title: 'Micro-Grid Waffle Fleece Interior Backer',
+          layer3Desc: 'Regulates microclimate when transitioning from +2°C harbour wind to heated interiors.'
+        }
+      },
+      {
+        id: 'SPEC-08',
+        sector: 'SECTOR_3',
+        sectorName: 'Sector 3: Urban Recon / Reykjavík',
+        mgrs: '27W VL 54890 59210',
+        name: 'Borgartún VersaStretch Commuter Pants',
+        type: 'EDC TACTICAL TROUSERS',
+        weightG: 440,
+        priceISK: 24500,
+        summary: 'Tailored silhouette hiding 8 low-profile tactical pockets and 4-way VersaStretch® mobility.',
+        anatomy: {
+          layer1Title: 'VersaStretch® 4-Way Nylon-Elastane Weave',
+          layer1Desc: 'DuPont™ Teflon DWR sheds sleet and coffee spills while maintaining a crisp architectural drape.',
+          layer2Title: 'Low-Profile Laser-Slit Thigh Organizers',
+          layer2Desc: 'Carries smartphone, flashlight, and multi-tool flush against the thigh with zero cargo bulk.',
+          layer3Title: 'Cordura®-Edged Knife Clip Pocket Mouths',
+          layer3Desc: 'Reinforced pocket rims prevent wear from steel EDC pocket clips.'
+        }
+      },
+      {
+        id: 'SPEC-09',
+        sector: 'SECTOR_3',
+        sectorName: 'Sector 3: Urban Recon / Reykjavík',
+        mgrs: '27W VL 54890 59210',
+        name: 'AustriAlpin Cobra® 18kN Operator Belt',
+        type: 'LOAD-BEARING EDC RIG',
+        weightG: 240,
+        priceISK: 13900,
+        summary: 'CNC-machined Austrian aluminum Cobra buckle on dual-layer 38mm scuba nylon webbing.',
+        anatomy: {
+          layer1Title: '7,000-lb Rated Resin-Treated Scuba Webbing',
+          layer1Desc: 'Rigid vertical stiffness supports holsters and heavy EDC pouches without sag.',
+          layer2Title: 'Authentic AustriAlpin COBRA® Quick-Release',
+          layer2Desc: 'Patented brass release ears cannot open under load; one-click release in winter gloves.',
+          layer3Title: '5-Row Lock-Stitched Anchor Termination',
+          layer3Desc: 'Reinforced velcro tail lock eliminates loose belt ends.'
+        }
+      }
+    ];
+
+    // State
+    let activeSector = 'ALL';
+    let manifestCart = [];
+    let isExploded = true;
+    let manifestDrawerOpen = false;
+
+    // Select Sector & Smoothly Pan/Zoom Topographic Camera
+    function selectSector(sectorKey) {
+      activeSector = sectorKey;
+      const cfg = SECTORS[sectorKey] || SECTORS.ALL;
+
+      // Update SVG Camera Pan/Zoom
+      const cam = document.getElementById('topoMapCamera');
+      cam.style.transform = cfg.cameraTransform;
+
+      // Update Top & Map HUD Labels
+      document.getElementById('activeSectorHeadline').textContent = cfg.name;
+      document.getElementById('hudMgrsCode').textContent = cfg.mgrs;
+      document.getElementById('hudTerrainDemand').textContent = cfg.demand;
+      document.getElementById('dockCoordinatesLabel').textContent = `MGRS: ${cfg.mgrs} // ${sectorKey === 'ALL' ? 'ALL SECTORS' : sectorKey}`;
+
+      // Highlight Active Sector Button
+      document.querySelectorAll('.sector-tab').forEach(btn => {
+        btn.classList.remove('bg-oliveDrab', 'border-oliveBright');
+      });
+      const activeBtn = document.getElementById(`btnSector-${sectorKey}`);
+      if (activeBtn) {
+        activeBtn.classList.add('bg-oliveDrab', 'border-oliveBright');
+      }
+
+      // Update Right Column Feed Header & Render Specimens
+      renderSpecimenFeed();
+    }
+
+    // Live Cursor MGRS Tracker on Map
+    function updateCursorCoordinates(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      const relX = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const relY = Math.max(0, Math.min(1, (e.clientY - rect.top) / rect.height));
+
+      const easting = Math.round(10000 + relX * 89000);
+      const northing = Math.round(99000 - relY * 88000);
+      // Estimate elevation based on distance from center of Iceland
+      const distCenter = Math.hypot(relX - 0.52, relY - 0.46);
+      const elev = Math.max(0, Math.round((1 - distCenter * 1.9) * 1490));
+
+      const mgrsEl = document.getElementById('liveCursorMgrs');
+      const elevEl = document.getElementById('liveCursorElev');
+      if (mgrsEl) mgrsEl.textContent = `27W VM ${easting} ${northing}`;
+      if (elevEl) elevEl.textContent = `ELEV: +${elev}m`;
+    }
+
+    // Technical Garment Wireframe SVG Generator for Cards (No generic stock photos)
+    function getSpecimenBlueprintSvg(spec) {
+      return `
+        <svg viewBox="0 0 220 110" class="w-full h-28 bg-[#121416] border border-[#2C3228]">
+          <defs>
+            <pattern id="grid-${spec.id}" width="14" height="14" patternUnits="userSpaceOnUse">
+              <path d="M 14 0 L 0 0 0 14" fill="none" stroke="rgba(143,168,118,0.12)" stroke-width="0.7"/>
+            </pattern>
+          </defs>
+          <rect width="220" height="110" fill="url(#grid-${spec.id})" />
+          <!-- Isometric Technical Layer Schematic -->
+          <polygon points="110,18 175,40 110,62 45,40" fill="rgba(62,68,54,0.45)" stroke="#8FA876" stroke-width="1.2"/>
+          <polygon points="110,36 175,58 110,80 45,58" fill="none" stroke="#CBD5E1" stroke-width="1" stroke-dasharray="3 2"/>
+          <polygon points="110,52 175,74 110,96 45,74" fill="rgba(26,28,30,0.7)" stroke="#525B47" stroke-width="1.2"/>
+          <circle cx="110" cy="40" r="3" fill="#8FA876"/>
+          <line x1="110" y1="40" x2="155" y2="20" stroke="#E2E8F0" stroke-width="0.8"/>
+          <text x="158" y="22" fill="#E2E8F0" font-family="IBM Plex Mono" font-size="7.5">3-LAYER SPEC</text>
+          <text x="8" y="102" fill="#8FA876" font-family="IBM Plex Mono" font-size="8">${spec.id} // ${spec.weightG}g</text>
+        </svg>
+      `;
+    }
+
+    // Render Right Column Specimen Cards
+    function renderSpecimenFeed() {
+      const cfg = SECTORS[activeSector] || SECTORS.ALL;
+      const filtered = activeSector === 'ALL'
+        ? SPECIMENS
+        : SPECIMENS.filter(s => s.sector === activeSector);
+
+      document.getElementById('feedSectorTag').textContent =
+        `ARCHIVE // ${activeSector === 'ALL' ? 'ALL SECTORS' : activeSector} (${filtered.length} SPECIMENS)`;
+      document.getElementById('feedSectorTitle').textContent = cfg.name;
+      document.getElementById('feedSectorDescription').textContent = cfg.description;
+
+      const grid = document.getElementById('specimenFeedGrid');
+      grid.innerHTML = filtered.map(spec => `
+        <article
+          onclick="openAnatomyModal('${spec.id}')"
+          class="specimen-card p-4 flex flex-col justify-between cursor-pointer"
+        >
+          <div>
+            <!-- Top Specimen Stamp & MGRS -->
+            <div class="flex items-center justify-between text-[10px] pb-2 mb-2.5 border-b border-[#2E342A]">
+              <span class="bg-oliveDrab text-oliveBright font-bold px-2 py-0.5">
+                ${spec.id}
+              </span>
+              <span class="text-silverDim">${spec.mgrs}</span>
+            </div>
+
+            <!-- Technical Schematic Blueprint Preview -->
+            ${getSpecimenBlueprintSvg(spec)}
+
+            <div class="mt-3">
+              <div class="text-[10px] text-oliveBright uppercase tracking-wider font-semibold">
+                ${spec.type} • ${spec.sectorName}
+              </div>
+              <h3 class="font-display font-bold text-base text-reflective uppercase mt-0.5 leading-snug">
+                ${spec.name}
+              </h3>
+              <p class="text-[11px] text-silverDim mt-1.5 leading-relaxed">
+                ${spec.summary}
+              </p>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t border-[#2E342A] flex items-center justify-between gap-2">
+            <div>
+              <div class="text-[9px] text-silverDim uppercase">UNIT COST</div>
+              <div class="font-display font-bold text-base text-silverBright">
+                ${spec.priceISK.toLocaleString('de-DE')} ISK
+              </div>
+            </div>
+
+            <div class="flex items-center gap-1.5">
+              <button
+                onclick="event.stopPropagation(); openAnatomyModal('${spec.id}')"
+                class="px-2.5 py-1.5 bg-asphaltDeep border border-[#3E4436] hover:border-oliveBright text-[10px] text-silverText uppercase"
+              >
+                ANATOMY [↗]
+              </button>
+              <button
+                onclick="event.stopPropagation(); addSpecimenToManifest('${spec.id}')"
+                class="px-3 py-1.5 bg-oliveDrab hover:bg-oliveBright hover:text-asphaltDeep border border-oliveBright/60 text-[10px] font-bold text-silverBright uppercase transition"
+              >
+                + ADD
+              </button>
+            </div>
+          </div>
+        </article>
+      `).join('');
+    }
+
+    // Open Material Anatomy Exploded Diagram Modal
+    function openAnatomyModal(specId) {
+      const spec = SPECIMENS.find(s => s.id === specId);
+      if (!spec) return;
+
+      document.getElementById('modalSpecimenCode').textContent = `SPECIMEN // ${spec.id}`;
+      document.getElementById('modalSpecimenMgrs').textContent = `MGRS: ${spec.mgrs} • ${spec.sectorName}`;
+      document.getElementById('modalSpecimenName').textContent = spec.name;
+      document.getElementById('modalSpecimenPrice').textContent = `${spec.priceISK.toLocaleString('de-DE')} ISK`;
+
+      document.getElementById('modalLayer1Title').textContent = spec.anatomy.layer1Title;
+      document.getElementById('modalLayer1Desc').textContent = spec.anatomy.layer1Desc;
+      document.getElementById('modalLayer2Title').textContent = spec.anatomy.layer2Title;
+      document.getElementById('modalLayer2Desc').textContent = spec.anatomy.layer2Desc;
+      document.getElementById('modalLayer3Title').textContent = spec.anatomy.layer3Title;
+      document.getElementById('modalLayer3Desc').textContent = spec.anatomy.layer3Desc;
+
+      const addBtn = document.getElementById('modalAddManifestBtn');
+      addBtn.onclick = () => {
+        addSpecimenToManifest(spec.id);
+        closeAnatomyModal();
+      };
+
+      isExploded = true;
+      applyExplodeState();
+
+      const modal = document.getElementById('anatomyModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeAnatomyModal() {
+      const modal = document.getElementById('anatomyModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function toggleExplodeDepth() {
+      isExploded = !isExploded;
+      applyExplodeState();
+    }
+
+    function applyExplodeState() {
+      const top = document.getElementById('explodedLayerTop');
+      const bot = document.getElementById('explodedLayerBot');
+      if (isExploded) {
+        top.style.transform = 'translateY(-22px)';
+        bot.style.transform = 'translateY(22px)';
+      } else {
+        top.style.transform = 'translateY(34px)';
+        bot.style.transform = 'translateY(-34px)';
+      }
+    }
+
+    // Bottom Docked Manifest Cart Logic
+    function addSpecimenToManifest(specId) {
+      const spec = SPECIMENS.find(s => s.id === specId);
+      if (!spec) return;
+      const existing = manifestCart.find(i => i.id === specId);
+      if (existing) existing.qty += 1;
+      else manifestCart.push({ ...spec, qty: 1 });
+      renderManifestDock();
+    }
+
+    function updateManifestQty(specId, delta) {
+      const idx = manifestCart.findIndex(i => i.id === specId);
+      if (idx === -1) return;
+      manifestCart[idx].qty += delta;
+      if (manifestCart[idx].qty <= 0) manifestCart.splice(idx, 1);
+      renderManifestDock();
+    }
+
+    function clearManifest() {
+      manifestCart = [];
+      renderManifestDock();
+    }
+
+    function toggleManifestDrawer() {
+      manifestDrawerOpen = !manifestDrawerOpen;
+      const drawer = document.getElementById('dockDrawerBody');
+      const chev = document.getElementById('dockChevron');
+      if (manifestDrawerOpen) {
+        drawer.classList.remove('hidden');
+        chev.textContent = '▼';
+      } else {
+        drawer.classList.add('hidden');
+        chev.textContent = '▲';
+      }
+    }
+
+    function renderManifestDock() {
+      const totalCount = manifestCart.reduce((s, i) => s + i.qty, 0);
+      const totalISK = manifestCart.reduce((s, i) => s + i.priceISK * i.qty, 0);
+
+      document.getElementById('dockItemCount').textContent = totalCount;
+      document.getElementById('dockTotalISK').textContent = `${totalISK.toLocaleString('de-DE')} ISK`;
+
+      const listEl = document.getElementById('manifestItemsList');
+      if (manifestCart.length === 0) {
+        listEl.innerHTML = `<div class="text-silverDim italic py-2">No terrain specimens locked in manifest. Click "+ ADD" on any specimen card.</div>`;
+        return;
+      }
+
+      listEl.innerHTML = manifestCart.map(item => `
+        <div class="flex items-center justify-between bg-asphalt px-3 py-2 border border-[#2F352A]">
+          <div>
+            <span class="text-oliveBright font-bold mr-2">[${item.id}]</span>
+            <span class="text-silverBright font-semibold">${item.name}</span>
+            <span class="text-[10px] text-silverDim ml-2">(${item.mgrs})</span>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="text-oliveBright font-bold">${(item.priceISK * item.qty).toLocaleString('de-DE')} ISK</span>
+            <div class="flex items-center gap-1">
+              <button onclick="updateManifestQty('${item.id}', -1)" class="w-6 h-6 bg-asphaltDeep border border-[#3E4436] text-white">-</button>
+              <span class="px-1.5 font-bold">${item.qty}</span>
+              <button onclick="updateManifestQty('${item.id}', 1)" class="w-6 h-6 bg-asphaltDeep border border-[#3E4436] text-white">+</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function transmitManifestOrder() {
+      if (manifestCart.length === 0) {
+        alert('Manifest is empty. Select at least one terrain specimen to transmit order.');
+        return;
+      }
+      const cfg = SECTORS[activeSector] || SECTORS.ALL;
+      const total = document.getElementById('dockTotalISK').textContent;
+      alert(`IS-TERRAIN MANIFEST TRANSMITTED\n\nTarget Drop-Zone: ${cfg.name}\nMGRS Coordinates: ${cfg.mgrs}\nSpecimens Authorized: ${manifestCart.reduce((s,i)=>s+i.qty,0)}\nTotal Value: ${total}\n\nDispatching from Skeifan-10 Depot via Dropp.is.`);
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      // Seed manifest with 1 specimen so the bottom dock immediately shows live coordinates & ISK pricing
+      addSpecimenToManifest('SPEC-01');
+      selectSector('ALL');
+    });
+  </script>
+</body>
+</html>
