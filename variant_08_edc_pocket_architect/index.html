@@ -1,0 +1,971 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>EDC POCKET ARCHITECT // UTILITY MATRIX — Gear-Loading Apparel Storefront</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter + IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            charcoal: '#1E2022',
+            charcoalDeep: '#151719',
+            charcoalCard: '#26292C',
+            charcoalLine: '#383C40',
+            stone: '#D7D4CB',
+            stoneLight: '#E8E6DF',
+            stoneDim: '#9E9B92',
+            zipOrange: '#FF5722',
+            zipAmber: '#F97316'
+          },
+          fontFamily: {
+            sans: ['"Inter"', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --charcoal: #1E2022;
+      --stone: #D7D4CB;
+      --orange: #FF5722;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1E2022;
+      color: #D7D4CB;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Scandinavian Precision Blueprint Grid */
+    .utility-grid {
+      background-size: 32px 32px;
+      background-image:
+        linear-gradient(to right, rgba(215, 212, 203, 0.045) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(215, 212, 203, 0.045) 1px, transparent 1px);
+    }
+
+    /* Draggable EDC Item Card */
+    .edc-item {
+      cursor: grab;
+      transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+    }
+    .edc-item:active {
+      cursor: grabbing;
+      transform: scale(0.97);
+    }
+    .edc-item.dragging {
+      opacity: 0.45;
+      border-color: #FF5722;
+    }
+
+    /* Pocket Drop Zone Styling */
+    .pocket-zone {
+      transition: all 0.2s ease;
+    }
+    .pocket-zone.drag-over {
+      background-color: rgba(255, 87, 34, 0.28) !important;
+      border-color: #FF5722 !important;
+      transform: scale(1.04);
+      box-shadow: 0 0 20px rgba(255, 87, 34, 0.45);
+    }
+
+    /* Zipper Teeth Decorative Pattern */
+    .zipper-track {
+      background-image: repeating-linear-gradient(
+        90deg,
+        #FF5722,
+        #FF5722 3px,
+        transparent 3px,
+        transparent 6px
+      );
+      height: 3px;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #151719;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #383C40;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF5722;
+    }
+  </style>
+</head>
+<body class="utility-grid min-h-screen flex flex-col justify-between selection:bg-zipOrange selection:text-stoneLight">
+
+  <!-- =====================================================================
+       TOP SCANDINAVIAN FUNCTIONAL UTILITY HEADER
+       ===================================================================== -->
+  <header class="border-b border-charcoalLine bg-charcoalDeep/95 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-[1600px] mx-auto px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 bg-stone text-charcoalDeep font-mono font-extrabold text-xs flex flex-col items-center justify-center leading-none border-b-4 border-zipOrange">
+          <span>EDC</span>
+          <span class="text-[8px] mt-0.5">MTX.08</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="font-extrabold text-lg md:text-xl tracking-tight uppercase text-stoneLight">
+              EDC POCKET ARCHITECT <span class="text-zipOrange font-normal">//</span> UTILITY MATRIX
+            </h1>
+            <span class="hidden sm:inline-block font-mono text-[10px] bg-zipOrange/15 border border-zipOrange/50 text-zipOrange px-2 py-0.5 uppercase">
+              LOAD-BEARING ERGONOMICS
+            </span>
+          </div>
+          <p class="font-mono text-[10px] text-stoneDim uppercase tracking-wider">
+            DRAG & DROP FIELD GEAR INTO GARMENT POCKETS TO INSPECT HIDDEN COMPARTMENT ENGINEERING
+          </p>
+        </div>
+      </div>
+
+      <!-- Target Garment Switcher & Equip Checkout CTA -->
+      <div class="flex flex-wrap items-center gap-3">
+        <div class="flex items-center bg-charcoal border border-charcoalLine p-1 font-mono text-xs">
+          <button
+            onclick="switchGarmentChassis('cargo')"
+            id="chassisBtn-cargo"
+            class="px-3 py-1.5 bg-stone text-charcoalDeep font-bold uppercase transition"
+          >
+            [01] Modular Ripstop Cargo
+          </button>
+          <button
+            onclick="switchGarmentChassis('smock')"
+            id="chassisBtn-smock"
+            class="px-3 py-1.5 text-stoneDim hover:text-stoneLight uppercase transition"
+          >
+            [02] All-Terrain Softshell Smock
+          </button>
+        </div>
+
+        <button
+          onclick="openEquipModal()"
+          class="bg-zipOrange hover:bg-zipAmber text-stoneLight font-mono font-bold text-xs uppercase px-4 py-2.5 flex items-center gap-2 transition shadow-lg"
+        >
+          <span>EQUIP GARMENT</span>
+          <span id="headerPriceBadge" class="bg-charcoalDeep text-stone px-2 py-0.5 text-[10px]">31.900 ISK</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       MAIN 3-COLUMN UTILITY MATRIX WORKSPACE:
+       [LEFT: EXPEDITION GEAR TRAY] | [CENTER: POCKET DROP-ZONE CANVAS] | [RIGHT: BALANCE SENSOR & ENGINEERING]
+       ===================================================================== -->
+  <main class="max-w-[1600px] w-full mx-auto px-5 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- ===================================================================
+         LEFT COLUMN (3 COLS): INTERACTIVE EXPEDITION GEAR TRAY
+         =================================================================== -->
+    <section class="lg:col-span-3 bg-charcoalDeep border border-charcoalLine p-4 flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between border-b border-charcoalLine pb-3 mb-3">
+          <div>
+            <span class="font-mono text-[10px] text-zipOrange font-bold uppercase tracking-widest">
+              // STEP 01 • FIELD EDC PAYLOAD
+            </span>
+            <h2 class="text-base font-extrabold uppercase text-stoneLight mt-0.5">
+              EXPEDITION GEAR TRAY
+            </h2>
+          </div>
+          <span id="trayRemainingBadge" class="font-mono text-[10px] bg-charcoalCard text-stone px-2 py-0.5 border border-charcoalLine">
+            6 ITEMS
+          </span>
+        </div>
+
+        <p class="text-xs text-stoneDim mb-3 leading-relaxed">
+          <strong>Drag & drop</strong> any item onto a pocket drop-zone on the garment, or <strong>click</strong> an item to auto-assign it to its optimal engineered pocket.
+        </p>
+
+        <!-- Quick Auto-Load / Reset Buttons -->
+        <div class="grid grid-cols-2 gap-1.5 mb-3.5 font-mono text-[10px]">
+          <button
+            onclick="autoLoadAllGear()"
+            class="py-2 px-2 bg-zipOrange/15 border border-zipOrange/60 hover:bg-zipOrange hover:text-stoneLight text-zipOrange font-bold uppercase transition"
+          >
+            ⚡ AUTO-LOAD ALL 6
+          </button>
+          <button
+            onclick="clearAllPockets()"
+            class="py-2 px-2 bg-charcoalCard border border-charcoalLine hover:border-stone text-stoneDim hover:text-stoneLight uppercase transition"
+          >
+            ✕ EMPTY POCKETS
+          </button>
+        </div>
+
+        <!-- 6 Draggable Expedition Items List -->
+        <div id="gearTrayContainer" class="space-y-2.5">
+          <!-- Populated dynamically by JS -->
+        </div>
+      </div>
+
+      <div class="mt-4 pt-3 border-t border-charcoalLine font-mono text-[10px] text-stoneDim">
+        TOTAL PAYLOAD AVAILABLE: <strong class="text-stoneLight">1,240 g (6 FIELD TOOLS)</strong>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         CENTER COLUMN (5 COLS): TARGET GARMENT CANVAS & DYNAMIC POCKET ZONES
+         =================================================================== -->
+    <section class="lg:col-span-5 bg-charcoalDeep border border-charcoalLine p-5 flex flex-col justify-between min-h-[700px] relative">
+      <!-- Top Garment Blueprint Header -->
+      <div class="border-b border-charcoalLine pb-3 flex flex-wrap items-center justify-between gap-2">
+        <div>
+          <span id="centerGarmentCode" class="font-mono text-[10px] text-zipOrange font-bold uppercase tracking-widest">
+            // CHASSIS 01 • 500D RIPSTOP + 4-WAY VERSASTRETCH
+          </span>
+          <h2 id="centerGarmentTitle" class="text-lg font-extrabold uppercase text-stoneLight mt-0.5">
+            MODULAR RIPSTOP FIELD CARGO PANTS
+          </h2>
+        </div>
+        <span id="loadedPocketCountBadge" class="font-mono text-xs bg-stone text-charcoalDeep font-extrabold px-2.5 py-1">
+          2 / 4 POCKET ZONES LOADED
+        </span>
+      </div>
+
+      <!-- Interactive Garment Silhouette + 4 Drop-Zone Pocket Targets -->
+      <div class="relative flex-1 flex items-center justify-center my-3 bg-[#181A1C] border border-charcoalLine p-4 overflow-hidden">
+        <!-- Corner Technical Annotations -->
+        <div class="absolute top-3 left-3 font-mono text-[9px] text-stoneDim pointer-events-none">
+          <div>SEAM SPEC: TRIPLE-STITCHED</div>
+          <div>ZIPPERS: YKK® AQUAGUARD ORANGE</div>
+        </div>
+        <div class="absolute top-3 right-3 font-mono text-[9px] text-stoneDim text-right pointer-events-none">
+          <div>DROP ITEMS INTO ORANGE BOXES</div>
+          <div class="text-zipOrange">OR CLICK POCKET TO INSPECT</div>
+        </div>
+
+        <!-- SVG Garment Blueprint (Switches between Cargo Pants & Softshell Smock) -->
+        <svg id="garmentBlueprintSvg" viewBox="0 0 380 480" class="w-full max-w-[340px] h-[430px] pointer-events-none">
+          <!-- Populated by JS -->
+        </svg>
+
+        <!-- Interactive HTML Drop-Zone Overlays (Positioned over the Garment Pockets) -->
+        <div id="pocketDropZonesOverlay" class="absolute inset-0">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Bottom Pocket Instruction Bar -->
+      <div class="bg-charcoal border border-charcoalLine p-3 flex flex-wrap items-center justify-between gap-2 font-mono text-[11px]">
+        <span class="text-stone">
+          <strong class="text-zipOrange">TIP:</strong> Click any loaded item tag inside a pocket to remove it, or click a pocket to read its hidden engineering blueprint.
+        </span>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         RIGHT COLUMN (4 COLS): HIDDEN POCKET ENGINEERING & BALANCE SENSOR
+         =================================================================== -->
+    <section class="lg:col-span-4 flex flex-col gap-5">
+
+      <!-- MODULE A: HIDDEN POCKET ENGINEERING INSPECTOR (Revealed on Drop/Click) -->
+      <div class="bg-stone text-charcoalDeep p-5 border-l-4 border-zipOrange shadow-xl">
+        <div class="flex items-center justify-between font-mono text-[10px] border-b border-charcoalDeep/15 pb-2 mb-3">
+          <span id="engZoneCode" class="bg-charcoalDeep text-stone px-2 py-0.5 font-bold uppercase">
+            POCKET ZONE P2 // ACTIVE BLUEPRINT
+          </span>
+          <span id="engZoneCapacity" class="font-bold text-zipOrange">CAPACITY: 850 ML</span>
+        </div>
+
+        <h3 id="engZoneTitle" class="text-lg font-extrabold uppercase tracking-tight text-charcoalDeep">
+          Reinforced Knife-Clip Cordura® 1000D Lip
+        </h3>
+
+        <div class="zipper-track w-full my-2.5"></div>
+
+        <p id="engZoneDescription" class="text-xs text-charcoalDeep/85 leading-relaxed">
+          Standard trouser pocket mouths fray within weeks when carrying a steel multi-tool or folding knife clip. We wrap the pocket lip in triple-folded 1000D ballistic Cordura® with an internal elastic stabilizer band so the tool stays vertical during sprints.
+        </p>
+
+        <!-- Technical Spec Breakdown of Active Pocket -->
+        <div class="mt-4 pt-3 border-t border-charcoalDeep/15 grid grid-cols-2 gap-2 font-mono text-[11px]">
+          <div>
+            <span class="text-charcoalDeep/60 block text-[9px]">LINING ARCHITECTURE</span>
+            <strong id="engZoneLining" class="text-charcoalDeep">1000D Cordura® Neck</strong>
+          </div>
+          <div>
+            <span class="text-charcoalDeep/60 block text-[9px]">CLOSURE HARDWARE</span>
+            <strong id="engZoneClosure" class="text-zipOrange">Angled Fast-Draw Mouth</strong>
+          </div>
+        </div>
+      </div>
+
+      <!-- MODULE B: BALANCE & WEIGHT DISTRIBUTION SENSOR (FLOATING GYRO WIDGET) -->
+      <div class="bg-charcoalDeep border border-charcoalLine p-5">
+        <div class="flex items-center justify-between border-b border-charcoalLine pb-3 mb-4">
+          <div>
+            <span class="font-mono text-[10px] text-zipOrange font-bold uppercase tracking-widest">
+              // BIOMECHANICAL LOAD SENSOR
+            </span>
+            <h2 class="text-base font-extrabold uppercase text-stoneLight mt-0.5">
+              BALANCE & WEIGHT DISTRIBUTION
+            </h2>
+          </div>
+          <span id="balanceStatusBadge" class="font-mono text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-600/50 px-2.5 py-0.5 font-bold uppercase">
+            BALANCED
+          </span>
+        </div>
+
+        <!-- Left / Right Bilateral Center-of-Gravity Balance Scale -->
+        <div class="bg-charcoal border border-charcoalLine p-3.5 mb-3.5 font-mono text-xs">
+          <div class="flex justify-between text-[10px] text-stoneDim mb-1.5">
+            <span>LEFT SIDE: <strong id="leftWeightVal" class="text-stoneLight">0 g</strong></span>
+            <span>CENTER OF GRAVITY</span>
+            <span>RIGHT SIDE: <strong id="rightWeightVal" class="text-stoneLight">0 g</strong></span>
+          </div>
+
+          <!-- Horizontal Balance Beam Indicator -->
+          <div class="w-full h-3 bg-charcoalDeep border border-charcoalLine relative flex items-center">
+            <!-- Center fiducial line -->
+            <div class="w-0.5 h-full bg-stone/50 mx-auto"></div>
+            <!-- Moving Center of Gravity Marker -->
+            <div
+              id="cogMarker"
+              class="w-3.5 h-3.5 bg-zipOrange border-2 border-stoneLight absolute top-1/2 -translate-y-1/2 -translate-x-1/2 transition-all duration-300"
+              style="left: 50%;"
+            ></div>
+          </div>
+
+          <div class="flex justify-between items-center mt-2 text-[10px]">
+            <span class="text-stoneDim">TOTAL EDC PAYLOAD:</span>
+            <span id="totalPayloadMass" class="text-stoneLight font-bold">0 g / 1,240 g</span>
+          </div>
+        </div>
+
+        <!-- Ergonomic Balance Diagnosis Note -->
+        <div id="balanceDiagnosisText" class="p-3 bg-charcoalCard border border-charcoalLine text-xs text-stone leading-relaxed">
+          Optimal ergonomic balance — low hip fatigue. Anti-sag internal pocket slings suspend heavy items from the waistband vector rather than pulling on the knee joint.
+        </div>
+      </div>
+
+      <!-- MODULE C: "EQUIP GARMENT" QUICK CHECKOUT SUMMARY CARD -->
+      <div class="bg-charcoalCard border border-charcoalLine p-5 flex items-center justify-between gap-4">
+        <div>
+          <div class="font-mono text-[10px] text-stoneDim uppercase">ACTIVE CHASSIS PRICE (INCL. VSK)</div>
+          <div id="bottomCardPriceISK" class="font-mono text-2xl font-extrabold text-stoneLight">31.900 ISK</div>
+          <div class="font-mono text-[10px] text-zipOrange mt-0.5">260N Tear Strength • 12 Utility Pockets</div>
+        </div>
+
+        <button
+          onclick="openEquipModal()"
+          class="px-5 py-3.5 bg-zipOrange hover:bg-zipAmber text-stoneLight font-mono font-extrabold text-xs uppercase tracking-wider transition shadow-md"
+        >
+          EQUIP GARMENT ➔
+        </button>
+      </div>
+
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       "EQUIP GARMENT" QUICK CHECKOUT MODAL
+       ===================================================================== -->
+  <div id="equipModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-charcoalDeep border-2 border-zipOrange max-w-xl w-full shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <div class="p-5 border-b border-charcoalLine bg-charcoal flex items-start justify-between">
+        <div>
+          <span class="font-mono text-[10px] text-zipOrange font-bold uppercase tracking-widest">
+            // SKEIFAN-10 EXPEDITION REQUISITION
+          </span>
+          <h3 id="modalGarmentTitle" class="text-xl font-extrabold uppercase text-stoneLight mt-0.5">
+            Modular Ripstop Field Cargo Pants
+          </h3>
+        </div>
+        <button onclick="closeEquipModal()" class="font-mono text-xs px-3 py-1 bg-charcoalCard border border-charcoalLine text-stone hover:border-zipOrange">
+          [CLOSE ✕]
+        </button>
+      </div>
+
+      <div class="p-5 overflow-y-auto flex-1 space-y-4">
+        <!-- Technical Spec Summary Table -->
+        <div class="bg-charcoal border border-charcoalLine p-4 font-mono text-xs space-y-2">
+          <div class="flex justify-between border-b border-charcoalLine pb-1.5">
+            <span class="text-stoneDim">FABRIC COMPOSITION:</span>
+            <span id="modalSpecFabric" class="font-bold text-stoneLight">500D NYCO Ripstop + 1000D Cordura Lips</span>
+          </div>
+          <div class="flex justify-between border-b border-charcoalLine pb-1.5">
+            <span class="text-stoneDim">TEAR STRENGTH (ISO 13937):</span>
+            <span id="modalSpecTear" class="font-bold text-zipOrange">260 Newtons (Anti-Sag Gusseted)</span>
+          </div>
+          <div class="flex justify-between border-b border-charcoalLine pb-1.5">
+            <span class="text-stoneDim">WEATHER BARRIER:</span>
+            <span id="modalSpecWeather" class="font-bold text-stoneLight">Teflon® Shield+ DWR + YKK AquaGuard</span>
+          </div>
+          <div class="flex justify-between">
+            <span class="text-stoneDim">TESTED EDC LOADOUT:</span>
+            <span id="modalLoadedSummary" class="font-bold text-emerald-400">2 Items Loaded (515g Balanced)</span>
+          </div>
+        </div>
+
+        <!-- Size Selector -->
+        <div class="bg-charcoal border border-charcoalLine p-4">
+          <div class="font-mono text-[11px] font-bold uppercase text-stone mb-2">
+            SELECT WAIST / CHASSIS SIZE:
+          </div>
+          <div class="grid grid-cols-5 gap-2 font-mono text-xs" id="modalSizeGroup">
+            <button onclick="selectModalSize('S / 30')" class="modal-sz py-2 border border-charcoalLine bg-charcoalDeep text-stone">S / 30</button>
+            <button onclick="selectModalSize('M / 32')" class="modal-sz py-2 border border-charcoalLine bg-charcoalDeep text-stone">M / 32</button>
+            <button onclick="selectModalSize('L / 34')" class="modal-sz py-2 border border-zipOrange bg-zipOrange text-stoneLight font-bold">L / 34</button>
+            <button onclick="selectModalSize('XL / 36')" class="modal-sz py-2 border border-charcoalLine bg-charcoalDeep text-stone">XL / 36</button>
+            <button onclick="selectModalSize('XXL / 38')" class="modal-sz py-2 border border-charcoalLine bg-charcoalDeep text-stone">XXL / 38</button>
+          </div>
+        </div>
+
+        <!-- Optional: Include Both Garments Bundle Checkbox -->
+        <label class="flex items-center justify-between p-3.5 bg-stone text-charcoalDeep cursor-pointer">
+          <div class="flex items-center gap-2.5">
+            <input type="checkbox" id="bundleBothCheckbox" onchange="updateModalPricing()" class="w-4 h-4 accent-[#FF5722]" />
+            <div>
+              <div class="font-bold text-xs uppercase">Equip Complete 2-Piece Utility Set (Save 10%)</div>
+              <div class="font-mono text-[10px] opacity-80">Modular Ripstop Cargo + All-Terrain Softshell Smock</div>
+            </div>
+          </div>
+          <span class="font-mono text-xs font-extrabold text-zipOrange">69.120 ISK</span>
+        </label>
+      </div>
+
+      <div class="p-5 border-t border-charcoalLine bg-charcoal flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <div class="font-mono text-[10px] text-stoneDim uppercase">TOTAL AUTHORIZED (INCL. 24% VSK)</div>
+          <div id="modalFinalPriceISK" class="font-mono text-2xl font-extrabold text-stoneLight">31.900 ISK</div>
+        </div>
+        <button
+          onclick="confirmEquipOrder()"
+          class="px-6 py-3.5 bg-zipOrange hover:bg-zipAmber text-stoneLight font-mono font-extrabold text-xs uppercase tracking-wider transition"
+        >
+          CONFIRM & DISPATCH GARMENT ➔
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT ENGINE: DRAG & DROP EDC MATRIX, POCKET ANATOMY & BALANCE
+       ===================================================================== -->
+  <script>
+    // 6 Everyday Expedition EDC Items
+    const EDC_ITEMS = [
+      {
+        id: 'smartphone',
+        name: 'Satellite Smartphone',
+        weightG: 235,
+        dims: '160×78mm',
+        preferredZone: 'P1',
+        icon: '📱',
+        desc: 'Cold-sensitive battery; benefits from fleece thermal pocket.'
+      },
+      {
+        id: 'multitool',
+        name: '16-in-1 Heavy Multi-Tool',
+        weightG: 280,
+        dims: '110mm Steel Clip',
+        preferredZone: 'P2',
+        icon: '🛠️',
+        desc: 'High-friction steel clip requires 1000D Cordura® lip armor.'
+      },
+      {
+        id: 'passport',
+        name: 'Passport & Field Notebook',
+        weightG: 110,
+        dims: '140×95mm',
+        preferredZone: 'P3',
+        icon: '📓',
+        desc: 'Critical paper records requiring RF-welded waterproof seal.'
+      },
+      {
+        id: 'thermos',
+        name: 'Titanium 350ml Thermos',
+        weightG: 310,
+        dims: 'Ø68×175mm',
+        preferredZone: 'P4',
+        icon: '🍶',
+        desc: 'Heavy cylindrical mass requiring anti-sag internal sling.'
+      },
+      {
+        id: 'gloves',
+        name: 'Heavy Arctic Glove Set',
+        weightG: 210,
+        dims: 'Gauntlet Pair',
+        preferredZone: 'P4',
+        icon: '🧤',
+        desc: 'High-volume gear stored in expandable bellowed dump cargo.'
+      },
+      {
+        id: 'headlamp',
+        name: 'Tri-Beam 700lm Headlamp',
+        weightG: 95,
+        dims: 'USB-C Compact',
+        preferredZone: 'P1',
+        icon: '🔦',
+        desc: 'Quick-access navigation light kept warm for peak lumen output.'
+      }
+    ];
+
+    // Garment Chassis Definitions & Their 4 Engineered Pocket Drop-Zones
+    const GARMENT_CHASSIS = {
+      cargo: {
+        id: 'cargo',
+        name: 'Modular Ripstop Field Cargo Pants',
+        code: '// CHASSIS 01 • 500D NYCO RIPSTOP + 1000D CORDURA LIPS',
+        priceISK: 31900,
+        fabric: '500D NYCO Ripstop + 1000D Cordura® Pocket Rims',
+        tear: '260 Newtons (Triple-Stitched Gusset)',
+        weather: 'Teflon® Shield+ DWR + YKK® AquaGuard Zips',
+        zones: {
+          P1: {
+            id: 'P1',
+            side: 'left',
+            label: 'P1: Heated Fleece Handwarmer (L)',
+            posStyle: 'left: 14%; top: 18%; width: 32%;',
+            capacity: '650 ML',
+            engTitle: 'Heated Fleece-Lined Handwarmer Pocket',
+            engDesc: 'Lined with 320gsm Polartec® micro-fleece backed against the femoral artery warmth zone. Keeps smartphone batteries from dying in sub-zero gusts and thaws numb fingers.',
+            lining: '320gsm Thermal Micro-Fleece',
+            closure: 'Reversed YKK® Wind-Flap'
+          },
+          P2: {
+            id: 'P2',
+            side: 'right',
+            label: 'P2: 1000D Knife-Clip Slash (R)',
+            posStyle: 'right: 14%; top: 18%; width: 32%;',
+            capacity: '550 ML',
+            engTitle: 'Reinforced Knife-Clip Cordura® 1000D Lip',
+            engDesc: 'Standard trouser pocket mouths fray within weeks when carrying a steel multi-tool or folding knife clip. We wrap the pocket lip in triple-folded 1000D ballistic Cordura® with an internal stabilizer band.',
+            lining: '1000D Ballistic Cordura® Collar',
+            closure: 'Horizontal Fast-Draw Cut'
+          },
+          P3: {
+            id: 'P3',
+            side: 'left',
+            label: 'P3: Waterproof Doc Sleeve (L Thigh)',
+            posStyle: 'left: 10%; top: 52%; width: 35%;',
+            capacity: '750 ML',
+            engTitle: 'Internal Waterproof Document Vault',
+            engDesc: 'Hermetically RF-welded TPU dry-sleeve nested inside the left thigh cargo assembly. Protects passports, maps, and electronics even during waist-deep glacial river wades.',
+            lining: 'RF-Welded Hydrophobic TPU',
+            closure: 'YKK® AquaGuard® Matte Zip'
+          },
+          P4: {
+            id: 'P4',
+            side: 'right',
+            label: 'P4: Anti-Sag Dump Cargo (R Thigh)',
+            posStyle: 'right: 10%; top: 52%; width: 35%;',
+            capacity: '1,800 ML',
+            engTitle: 'Dump Cargo Pocket with Anti-Sag Internal Sling',
+            engDesc: 'Expands outward via 3D pleated bellows to swallow bulky gloves or a 350ml thermos, while an internal webbing sling transfers weight directly up to the belt line so it never swings against the knee.',
+            lining: '500D Ripstop + Brass Drain Eyelet',
+            closure: 'Slotted Glove Button + Storm Flap'
+          }
+        }
+      },
+      smock: {
+        id: 'smock',
+        name: 'All-Terrain Softshell Expedition Smock',
+        code: '// CHASSIS 02 • STORM-TEX 10K SOFTSHELL + FLEECE GRID',
+        priceISK: 44900,
+        fabric: 'Storm-Tex® 4-Way Stretch Softshell + Waffle Backer',
+        tear: '235 Newtons (Abrasion Shoulder Matrix)',
+        weather: '10,000mm Hydrostatic Membrane + Taped Yoke',
+        zones: {
+          P1: {
+            id: 'P1',
+            side: 'left',
+            label: 'P1: Heated Napoleon Chest (L)',
+            posStyle: 'left: 12%; top: 24%; width: 34%;',
+            capacity: '800 ML',
+            engTitle: 'Heated Fleece-Lined Chest Comms Vault',
+            engDesc: 'Positioned against core chest heat behind the windproof membrane. Includes an internal silicone cable port and microfiber lens wipe for optics and satellite phones.',
+            lining: 'Brushed Waffle Thermal Loft',
+            closure: 'YKK® AquaGuard® + Garage'
+          },
+          P2: {
+            id: 'P2',
+            side: 'right',
+            label: 'P2: Cordura® Tool & Beacon Slot (R)',
+            posStyle: 'right: 12%; top: 24%; width: 34%;',
+            capacity: '800 ML',
+            engTitle: 'Cordura®-Reinforced Multi-Tool & Beacon Rig',
+            engDesc: 'Internal daisy-chain webbing loops and a 1000D Cordura® lower pocket floor prevent heavy metal tools from puncturing the softshell membrane.',
+            lining: '1000D Puncture-Proof Base',
+            closure: 'One-Handed Paracord Pull'
+          },
+          P3: {
+            id: 'P3',
+            side: 'left',
+            label: 'P3: Submersible Map/Passport Vault',
+            posStyle: 'left: 12%; top: 56%; width: 35%;',
+            capacity: '1,100 ML',
+            engTitle: 'Internal Waterproof Map & Passport Sleeve',
+            engDesc: 'Double storm-guttered document sleeve with a Para-Aramid tether cord. Accessible without unzipping the main front wind-baffle.',
+            lining: '20,000mm Laminated Ripstop',
+            closure: 'Magnetic Storm Flap + Zip'
+          },
+          P4: {
+            id: 'P4',
+            side: 'right',
+            label: 'P4: Kangaroo Dump Bellows (Lower)',
+            posStyle: 'right: 12%; top: 56%; width: 35%;',
+            capacity: '2,200 ML',
+            engTitle: 'High-Volume Kangaroo Dump Cargo Pocket',
+            engDesc: 'Suspended by internal diagonal load-tape so a full thermos and arctic mittens ride comfortably above a backpack hip-belt without sagging the jacket hem.',
+            lining: 'High-Tenacity Ripstop Bellows',
+            closure: 'Dual Side-Access Storm Zips'
+          }
+        }
+      }
+    };
+
+    // State
+    let currentChassisKey = 'cargo';
+    let activePocketFocus = 'P2';
+    let selectedSize = 'L / 34';
+    // itemAssignments maps item.id -> 'P1' | 'P2' | 'P3' | 'P4' | null
+    let itemAssignments = {
+      multitool: 'P2',
+      smartphone: 'P1'
+    };
+
+    function switchGarmentChassis(key) {
+      currentChassisKey = key;
+      const g = GARMENT_CHASSIS[key];
+
+      document.getElementById('chassisBtn-cargo').className =
+        key === 'cargo'
+          ? 'px-3 py-1.5 bg-stone text-charcoalDeep font-bold uppercase transition'
+          : 'px-3 py-1.5 text-stoneDim hover:text-stoneLight uppercase transition';
+      document.getElementById('chassisBtn-smock').className =
+        key === 'smock'
+          ? 'px-3 py-1.5 bg-stone text-charcoalDeep font-bold uppercase transition'
+          : 'px-3 py-1.5 text-stoneDim hover:text-stoneLight uppercase transition';
+
+      document.getElementById('centerGarmentCode').textContent = g.code;
+      document.getElementById('centerGarmentTitle').textContent = g.name.toUpperCase();
+      document.getElementById('headerPriceBadge').textContent = `${g.priceISK.toLocaleString('de-DE')} ISK`;
+      document.getElementById('bottomCardPriceISK').textContent = `${g.priceISK.toLocaleString('de-DE')} ISK`;
+
+      renderAll();
+    }
+
+    // Drag & Drop Handlers
+    function handleDragStart(e, itemId) {
+      e.dataTransfer.setData('text/plain', itemId);
+      e.currentTarget.classList.add('dragging');
+    }
+
+    function handleDragEnd(e) {
+      e.currentTarget.classList.remove('dragging');
+    }
+
+    function handleDragOver(e) {
+      e.preventDefault();
+      e.currentTarget.classList.add('drag-over');
+    }
+
+    function handleDragLeave(e) {
+      e.currentTarget.classList.remove('drag-over');
+    }
+
+    function handleDropOnPocket(e, zoneId) {
+      e.preventDefault();
+      e.currentTarget.classList.remove('drag-over');
+      const itemId = e.dataTransfer.getData('text/plain');
+      if (itemId) {
+        assignItemToPocket(itemId, zoneId);
+      }
+    }
+
+    function assignItemToPocket(itemId, zoneId) {
+      itemAssignments[itemId] = zoneId;
+      activePocketFocus = zoneId;
+      renderAll();
+    }
+
+    function removeItemFromPocket(itemId) {
+      delete itemAssignments[itemId];
+      renderAll();
+    }
+
+    function quickAssignItem(itemId) {
+      const item = EDC_ITEMS.find(i => i.id === itemId);
+      if (!item) return;
+      if (itemAssignments[itemId]) {
+        delete itemAssignments[itemId];
+      } else {
+        itemAssignments[itemId] = item.preferredZone;
+        activePocketFocus = item.preferredZone;
+      }
+      renderAll();
+    }
+
+    function autoLoadAllGear() {
+      EDC_ITEMS.forEach(item => {
+        itemAssignments[item.id] = item.preferredZone;
+      });
+      activePocketFocus = 'P4';
+      renderAll();
+    }
+
+    function clearAllPockets() {
+      itemAssignments = {};
+      renderAll();
+    }
+
+    function inspectPocketZone(zoneId) {
+      activePocketFocus = zoneId;
+      renderAll();
+    }
+
+    // Render Garment SVG Blueprint in Center Column
+    function renderGarmentBlueprintSvg() {
+      const svg = document.getElementById('garmentBlueprintSvg');
+      if (currentChassisKey === 'cargo') {
+        svg.innerHTML = `
+          <!-- Modular Ripstop Cargo Pants Technical Outline -->
+          <rect x="95" y="20" width="190" height="24" fill="#26292C" stroke="#D7D4CB" stroke-width="1.8" />
+          <path d="M 95,44 L 285,44 L 302,210 L 292,455 L 208,455 L 190,185 L 172,455 L 88,455 L 78,210 Z" fill="#202326" stroke="#D7D4CB" stroke-width="2" />
+          <!-- Diamond Gusset -->
+          <polygon points="190,150 206,172 190,194 174,172" fill="#2D3135" stroke="#FF5722" stroke-width="1.2" />
+          <!-- Articulated Knee Panels -->
+          <rect x="92" y="295" width="76" height="58" fill="none" stroke="#9E9B92" stroke-width="1.2" stroke-dasharray="4 3" />
+          <rect x="212" y="295" width="76" height="58" fill="none" stroke="#9E9B92" stroke-width="1.2" stroke-dasharray="4 3" />
+        `;
+      } else {
+        svg.innerHTML = `
+          <!-- All-Terrain Softshell Expedition Smock Outline -->
+          <path d="M 145,18 L 235,18 L 245,58 L 230,78 L 150,78 L 135,58 Z" fill="#26292C" stroke="#D7D4CB" stroke-width="1.8" />
+          <path d="M 95,78 L 285,78 L 335,145 L 315,320 L 280,320 L 272,175 L 272,445 L 108,445 L 108,175 L 100,320 L 65,320 L 45,145 Z" fill="#202326" stroke="#D7D4CB" stroke-width="2" />
+          <!-- Half-Zip Storm Placket -->
+          <line x1="190" y1="78" x2="190" y2="235" stroke="#FF5722" stroke-width="3" />
+        `;
+      }
+    }
+
+    // Render Everything
+    function renderAll() {
+      const chassis = GARMENT_CHASSIS[currentChassisKey];
+      renderGarmentBlueprintSvg();
+
+      // 1. Render Left Gear Tray
+      const trayEl = document.getElementById('gearTrayContainer');
+      const unloadedCount = EDC_ITEMS.filter(i => !itemAssignments[i.id]).length;
+      document.getElementById('trayRemainingBadge').textContent = `${unloadedCount} IN TRAY`;
+
+      trayEl.innerHTML = EDC_ITEMS.map(item => {
+        const assignedZone = itemAssignments[item.id];
+        return `
+          <div
+            draggable="true"
+            ondragstart="handleDragStart(event, '${item.id}')"
+            ondragend="handleDragEnd(event)"
+            onclick="quickAssignItem('${item.id}')"
+            class="edc-item p-3 border transition ${
+              assignedZone
+                ? 'bg-charcoal border-zipOrange/60 opacity-75'
+                : 'bg-charcoalCard border-charcoalLine hover:border-stone'
+            }"
+          >
+            <div class="flex items-center justify-between font-mono text-[10px] mb-1">
+              <span class="text-stone font-bold">${item.icon} ${item.dims}</span>
+              <span class="${assignedZone ? 'text-zipOrange font-bold' : 'text-stoneDim'}">
+                ${assignedZone ? `[IN POCKET ${assignedZone} ✕]` : `[${item.weightG}g • DRAG +]`}
+              </span>
+            </div>
+            <div class="font-bold text-xs text-stoneLight uppercase">${item.name}</div>
+            <div class="text-[11px] text-stoneDim mt-0.5 leading-snug">${item.desc}</div>
+          </div>
+        `;
+      }).join('');
+
+      // 2. Render Center Pocket Drop-Zones Overlay
+      const overlayEl = document.getElementById('pocketDropZonesOverlay');
+      let loadedZonesCount = 0;
+
+      overlayEl.innerHTML = Object.values(chassis.zones).map(zone => {
+        const itemsInZone = EDC_ITEMS.filter(i => itemAssignments[i.id] === zone.id);
+        if (itemsInZone.length > 0) loadedZonesCount++;
+        const isFocused = activePocketFocus === zone.id;
+        const zoneWeight = itemsInZone.reduce((s, i) => s + i.weightG, 0);
+
+        return `
+          <div
+            ondragover="handleDragOver(event)"
+            ondragleave="handleDragLeave(event)"
+            ondrop="handleDropOnPocket(event, '${zone.id}')"
+            onclick="inspectPocketZone('${zone.id}')"
+            style="${zone.posStyle}"
+            class="pocket-zone absolute p-2.5 cursor-pointer border-2 ${
+              isFocused
+                ? 'bg-charcoalDeep/95 border-zipOrange shadow-[0_0_20px_rgba(255,87,34,0.35)]'
+                : itemsInZone.length > 0
+                  ? 'bg-charcoalDeep/90 border-stone'
+                  : 'bg-charcoalDeep/75 border-dashed border-stoneDim/60 hover:border-zipOrange'
+            }"
+          >
+            <div class="zipper-track w-full mb-1.5"></div>
+            <div class="flex items-center justify-between font-mono text-[9px] text-stoneDim">
+              <span class="font-bold ${isFocused ? 'text-zipOrange' : 'text-stoneLight'}">${zone.id}</span>
+              <span>${zoneWeight}g</span>
+            </div>
+            <div class="font-bold text-[11px] text-stoneLight leading-tight mt-0.5">
+              ${zone.label.split(': ')[1]}
+            </div>
+
+            <!-- Loaded Items Chips inside Pocket -->
+            <div class="mt-2 space-y-1">
+              ${itemsInZone.length === 0
+                ? `<div class="font-mono text-[9px] text-stoneDim italic py-1">[DROP GEAR HERE]</div>`
+                : itemsInZone.map(it => `
+                    <div
+                      onclick="event.stopPropagation(); removeItemFromPocket('${it.id}')"
+                      class="px-1.5 py-0.5 bg-zipOrange text-stoneLight font-mono text-[9px] font-bold flex items-center justify-between hover:bg-red-600 transition"
+                      title="Click to remove from pocket"
+                    >
+                      <span class="truncate">${it.icon} ${it.name}</span>
+                      <span class="ml-1">✕</span>
+                    </div>
+                  `).join('')
+              }
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.getElementById('loadedPocketCountBadge').textContent =
+        `${loadedZonesCount} / 4 POCKET ZONES ACTIVE`;
+
+      // 3. Update Right Column Hidden Pocket Engineering Blueprint Card
+      const activeZoneObj = chassis.zones[activePocketFocus] || chassis.zones.P2;
+      document.getElementById('engZoneCode').textContent = `POCKET ZONE ${activeZoneObj.id} // ACTIVE BLUEPRINT`;
+      document.getElementById('engZoneCapacity').textContent = `CAPACITY: ${activeZoneObj.capacity}`;
+      document.getElementById('engZoneTitle').textContent = activeZoneObj.engTitle;
+      document.getElementById('engZoneDescription').textContent = activeZoneObj.engDesc;
+      document.getElementById('engZoneLining').textContent = activeZoneObj.lining;
+      document.getElementById('engZoneClosure').textContent = activeZoneObj.closure;
+
+      // 4. Update Balance & Weight Distribution Sensor
+      let leftMass = 0;
+      let rightMass = 0;
+      EDC_ITEMS.forEach(item => {
+        const zId = itemAssignments[item.id];
+        if (zId && chassis.zones[zId]) {
+          if (chassis.zones[zId].side === 'left') leftMass += item.weightG;
+          else rightMass += item.weightG;
+        }
+      });
+
+      const totalMass = leftMass + rightMass;
+      document.getElementById('leftWeightVal').textContent = `${leftMass} g`;
+      document.getElementById('rightWeightVal').textContent = `${rightMass} g`;
+      document.getElementById('totalPayloadMass').textContent = `${totalMass} g / 1,240 g`;
+
+      // Center of gravity percentage (50% is dead center)
+      let cogPct = 50;
+      if (totalMass > 0) {
+        cogPct = Math.round(50 + ((rightMass - leftMass) / totalMass) * 40);
+      }
+      document.getElementById('cogMarker').style.left = `${cogPct}%`;
+
+      const balBadge = document.getElementById('balanceStatusBadge');
+      const balDiag = document.getElementById('balanceDiagnosisText');
+      const imbalance = Math.abs(leftMass - rightMass);
+
+      if (totalMass === 0) {
+        balBadge.textContent = 'UNLOADED (0g)';
+        balBadge.className = 'font-mono text-[10px] bg-charcoalCard text-stoneDim border border-charcoalLine px-2.5 py-0.5 font-bold uppercase';
+        balDiag.textContent = 'No EDC payload loaded yet. Drag tools from the Left Gear Tray into any garment pocket to test load suspension.';
+      } else if (imbalance > 320) {
+        balBadge.textContent = 'ASYMMETRIC LOAD';
+        balBadge.className = 'font-mono text-[10px] bg-zipOrange/20 text-zipOrange border border-zipOrange px-2.5 py-0.5 font-bold uppercase';
+        balDiag.textContent = `Asymmetric bias detected (${imbalance}g difference between Left and Right). Move one heavy item to the opposite side for neutral hip-flexor gait balance.`;
+      } else {
+        balBadge.textContent = 'OPTIMAL BALANCE';
+        balBadge.className = 'font-mono text-[10px] bg-emerald-950 text-emerald-300 border border-emerald-600/50 px-2.5 py-0.5 font-bold uppercase';
+        balDiag.textContent = `Optimal ergonomic balance (${leftMass}g L / ${rightMass}g R) — low hip fatigue. Internal anti-sag pocket slings keep all ${totalMass}g stabilized against your center of gravity.`;
+      }
+    }
+
+    // Equip Garment Checkout Modal
+    function openEquipModal() {
+      const chassis = GARMENT_CHASSIS[currentChassisKey];
+      const loadedCount = Object.keys(itemAssignments).length;
+      const loadedMass = EDC_ITEMS.filter(i => itemAssignments[i.id]).reduce((s, i) => s + i.weightG, 0);
+
+      document.getElementById('modalGarmentTitle').textContent = chassis.name;
+      document.getElementById('modalSpecFabric').textContent = chassis.fabric;
+      document.getElementById('modalSpecTear').textContent = chassis.tear;
+      document.getElementById('modalSpecWeather').textContent = chassis.weather;
+      document.getElementById('modalLoadedSummary').textContent = `${loadedCount} EDC Items Tested (${loadedMass}g Payload)`;
+
+      updateModalPricing();
+
+      const modal = document.getElementById('equipModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function selectModalSize(sz) {
+      selectedSize = sz;
+      document.querySelectorAll('.modal-sz').forEach(btn => {
+        if (btn.textContent === sz) {
+          btn.className = 'modal-sz py-2 border border-zipOrange bg-zipOrange text-stoneLight font-bold';
+        } else {
+          btn.className = 'modal-sz py-2 border border-charcoalLine bg-charcoalDeep text-stone';
+        }
+      });
+    }
+
+    function updateModalPricing() {
+      const bundleBoth = document.getElementById('bundleBothCheckbox').checked;
+      const chassis = GARMENT_CHASSIS[currentChassisKey];
+      const finalISK = bundleBoth ? 69120 : chassis.priceISK;
+      document.getElementById('modalFinalPriceISK').textContent = `${finalISK.toLocaleString('de-DE')} ISK`;
+    }
+
+    function closeEquipModal() {
+      const modal = document.getElementById('equipModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmEquipOrder() {
+      const total = document.getElementById('modalFinalPriceISK').textContent;
+      const bundleBoth = document.getElementById('bundleBothCheckbox').checked;
+      const itemTitle = bundleBoth
+        ? 'Complete 2-Piece EDC Utility Set (Cargo Pants + Softshell Smock)'
+        : GARMENT_CHASSIS[currentChassisKey].name;
+      alert(`EDC POCKET ARCHITECT // REQUISITION CONFIRMED\n\nGarment: ${itemTitle}\nChassis Size: ${selectedSize}\nTotal Authorized: ${total}\n\nDispatched from Skeifan 10, Reykjavík via Dropp.is.`);
+      closeEquipModal();
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      renderAll();
+    });
+  </script>
+</body>
+</html>
