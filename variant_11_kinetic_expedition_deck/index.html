@@ -1,0 +1,1169 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KINETIC EXPEDITION DECK // 0m–2110m Altitude Gear Turntable</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --magnesium: #2A2D32;
+      --magnesium-dark: #1D1F23;
+      --magnesium-deep: #141619;
+      --chalk: #F4F5F0;
+      --chalk-dim: rgba(244, 245, 240, 0.58);
+      --beacon: #FFE500;
+      --grid-line: rgba(244, 245, 240, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: var(--magnesium);
+      color: var(--chalk);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .font-display { font-family: 'Syne', sans-serif; }
+    .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
+
+    /* Brushed Magnesium Industrial Surface Texture */
+    .magnesium-surface {
+      background-color: var(--magnesium);
+      background-image:
+        repeating-linear-gradient(90deg, rgba(255,255,255,0.014) 0px, rgba(255,255,255,0.014) 1px, transparent 1px, transparent 3px),
+        radial-gradient(circle at 70% 35%, rgba(255, 229, 0, 0.05), transparent 60%);
+    }
+
+    /* Raw Technical Border Grid with Crosshair Corner Markers */
+    .tech-cell {
+      position: relative;
+      border: 1px solid var(--grid-line);
+    }
+    .crosshair-corner::before,
+    .crosshair-corner::after {
+      content: '+';
+      position: absolute;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      line-height: 1;
+      color: var(--beacon);
+      pointer-events: none;
+      z-index: 20;
+    }
+    .crosshair-corner::before { top: -6px; left: -4px; }
+    .crosshair-corner::after { bottom: -6px; right: -4px; }
+
+    /* Vertical Giant Industrial Typography */
+    .vertical-title {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+    }
+
+    /* Custom Morphing Cursor */
+    #customCursor {
+      pointer-events: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease, border-color 0.2s ease;
+    }
+
+    /* Slide-Out Field Rucksack Drawer */
+    .rucksack-drawer {
+      transform: translateX(100%);
+      transition: transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .rucksack-drawer.open {
+      transform: translateX(0%);
+    }
+
+    /* Seam Inspector Popover */
+    .seam-modal {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(10px);
+      transition: all 0.25s ease;
+    }
+    .seam-modal.active {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body class="magnesium-surface flex flex-col justify-between h-screen w-screen overflow-hidden">
+
+  <!-- CUSTOM MORPHING INDUSTRIAL CURSOR -->
+  <div id="customCursor" class="hidden md:flex items-center justify-center">
+    <div id="cursorBox" class="px-2.5 py-1 bg-[#141619]/90 border border-[#FFE500] text-[#FFE500] font-mono-tech text-[10px] font-bold tracking-widest uppercase whitespace-nowrap shadow-xl flex items-center gap-1.5">
+      <span class="w-1.5 h-1.5 bg-[#FFE500] inline-block"></span>
+      <span id="cursorLabel">DECK NAV</span>
+    </div>
+  </div>
+
+  <!-- TOP INDUSTRIAL HEADER BAR -->
+  <header class="h-16 shrink-0 bg-[#1D1F23]/95 border-b border-[#F4F5F0]/15 px-4 md:px-8 flex items-center justify-between z-30">
+    <!-- Left Brand & Hub Return -->
+    <div class="flex items-center gap-4">
+      <a href="../experiments_index.html"
+         onmouseenter="setCursorState('HUB INDEX')"
+         onmouseleave="setCursorState('DECK NAV')"
+         class="px-3 py-1.5 bg-[#2A2D32] border border-[#F4F5F0]/25 hover:border-[#FFE500] text-[11px] font-mono-tech uppercase tracking-widest flex items-center gap-2 transition">
+        <span>←</span>
+        <span class="hidden sm:inline">LAB HUB</span>
+      </a>
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="font-display font-extrabold text-lg tracking-tight text-[#F4F5F0]">KINETIC EXPEDITION DECK</span>
+          <span class="px-2 py-0.5 bg-[#FFE500] text-[#141619] font-mono-tech text-[10px] font-bold uppercase tracking-widest">VARIANT 11</span>
+        </div>
+        <div class="text-[10px] font-mono-tech text-[#F4F5F0]/55 uppercase tracking-widest">
+          BRUSHED MAGNESIUM RIG // 0M LITTORAL TO 2110M GLACIER SUMMIT
+        </div>
+      </div>
+    </div>
+
+    <!-- Center Live Barometric & Altitude Readout -->
+    <div class="hidden xl:flex items-center gap-6 px-5 py-1.5 bg-[#141619] border border-[#F4F5F0]/15 font-mono-tech text-xs">
+      <div>
+        <span class="text-[#F4F5F0]/45 text-[10px]">ALTITUDE:</span>
+        <span id="headerAltitude" class="text-[#FFE500] font-bold ml-1">0m ASL</span>
+      </div>
+      <div class="h-3 w-[1px] bg-[#F4F5F0]/15"></div>
+      <div>
+        <span class="text-[#F4F5F0]/45 text-[10px]">BAROMETER:</span>
+        <span id="headerPressure" class="text-[#F4F5F0] font-bold ml-1">1013 hPa</span>
+      </div>
+      <div class="h-3 w-[1px] bg-[#F4F5F0]/15"></div>
+      <div>
+        <span class="text-[#F4F5F0]/45 text-[10px]">AMBIENT:</span>
+        <span id="headerTemp" class="text-[#F4F5F0] font-bold ml-1">+6.0°C</span>
+      </div>
+      <div class="h-3 w-[1px] bg-[#F4F5F0]/15"></div>
+      <div>
+        <span class="text-[#F4F5F0]/45 text-[10px]">REQUIRED LAYER:</span>
+        <span id="headerLayerTag" class="text-[#FFE500] font-bold ml-1">DECK 01 // LITTORAL</span>
+      </div>
+    </div>
+
+    <!-- Right Controls: Audio Tick + Keyboard Hint + Field Rucksack Cart -->
+    <div class="flex items-center gap-3">
+      <button onclick="toggleAudio()"
+              onmouseenter="setCursorState('TOGGLE HAPTIC')"
+              onmouseleave="setCursorState('DECK NAV')"
+              class="px-3 py-2 bg-[#141619] border border-[#F4F5F0]/20 hover:border-[#FFE500] font-mono-tech text-[11px] uppercase tracking-widest flex items-center gap-2 transition">
+        <span id="audioIndicator" class="w-2 h-2 rounded-full bg-[#FFE500]"></span>
+        <span id="audioText" class="hidden sm:inline">TICKS: ON</span>
+      </button>
+
+      <div class="hidden md:flex items-center gap-1 font-mono-tech text-[10px] text-[#F4F5F0]/60">
+        <button onclick="stepSlide(-1)" class="px-2.5 py-2 bg-[#141619] border border-[#F4F5F0]/20 hover:border-[#FFE500]">◀</button>
+        <span id="slideCounter" class="px-2 font-bold text-[#F4F5F0]">01 / 05</span>
+        <button onclick="stepSlide(1)" class="px-2.5 py-2 bg-[#141619] border border-[#F4F5F0]/20 hover:border-[#FFE500]">▶</button>
+      </div>
+
+      <button onclick="toggleRucksack(true)"
+              onmouseenter="setCursorState('OPEN RUCKSACK')"
+              onmouseleave="setCursorState('DECK NAV')"
+              class="px-4 py-2 bg-[#FFE500] text-[#141619] hover:bg-[#F4F5F0] font-mono-tech text-[11px] font-bold uppercase tracking-widest flex items-center gap-2 transition shadow-lg">
+        <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3">
+          <path d="M6 20h12a2 2 0 0 0 2-2V9a6 6 0 0 0-12 0v9a2 2 0 0 0 2 2Z"/>
+          <path d="M9 5a3 3 0 0 1 6 0"/>
+          <line x1="6" y1="14" x2="18" y2="14"/>
+        </svg>
+        <span>RUCKSACK [<span id="rucksackCount">2</span>]</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN HORIZONTAL SPLIT-SCREEN EXPEDITION DECK VIEWPORT -->
+  <main id="deckViewport" class="relative flex-1 w-full overflow-hidden flex items-stretch select-none">
+    <!-- Horizontal Momentum Track containing 5 Full-Viewport Split-Screen Decks -->
+    <div id="deckTrack" class="flex h-full will-change-transform">
+      <!-- Populated dynamically via JS -->
+    </div>
+  </main>
+
+  <!-- STICKY BOTTOM BAR: DYNAMIC TERRAIN ELEVATION PROFILE (0m Coast -> 800m Highland -> 1400m Glacier -> 2110m Summit) -->
+  <footer class="h-32 shrink-0 bg-[#141619] border-t border-[#F4F5F0]/20 px-4 md:px-8 flex flex-col justify-between py-2.5 z-30 relative">
+    <!-- Top Label Strip -->
+    <div class="flex items-center justify-between font-mono-tech text-[10px] uppercase tracking-widest">
+      <div class="flex items-center gap-3">
+        <span class="px-2 py-0.5 bg-[#FFE500]/15 text-[#FFE500] border border-[#FFE500]/40 font-bold">ELEVATION SCRUBBER</span>
+        <span class="text-[#F4F5F0]/65 hidden sm:inline">DRAG TIMELINE OR USE [← / →] KEYS TO ASCEND ICELANDIC TOPOGRAPHY (0M → 2110M)</span>
+      </div>
+      <div class="flex items-center gap-4">
+        <span id="footerZoneLabel" class="text-[#FFE500] font-bold">ZONE 01: 0m BLACK SAND LITTORAL</span>
+      </div>
+    </div>
+
+    <!-- Interactive SVG Elevation Graph -->
+    <div id="elevationScrubberArea"
+         onmouseenter="setCursorState('SCRUB ALTITUDE')"
+         onmouseleave="setCursorState('DECK NAV')"
+         class="relative w-full h-16 cursor-ew-resize flex items-center">
+      <svg id="elevationSvg" viewBox="0 0 1200 70" preserveAspectRatio="none" class="w-full h-full overflow-visible">
+        <defs>
+          <linearGradient id="elevFill" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#FFE500" stop-opacity="0.32"/>
+            <stop offset="100%" stop-color="#FFE500" stop-opacity="0.02"/>
+          </linearGradient>
+        </defs>
+
+        <!-- Background Grid Lines -->
+        <line x1="0" y1="15" x2="1200" y2="15" stroke="rgba(244,245,240,0.08)" stroke-dasharray="3 3"/>
+        <line x1="0" y1="35" x2="1200" y2="35" stroke="rgba(244,245,240,0.08)" stroke-dasharray="3 3"/>
+        <line x1="0" y1="55" x2="1200" y2="55" stroke="rgba(244,245,240,0.08)" stroke-dasharray="3 3"/>
+
+        <!-- Topographic Mountain Profile Polygon -->
+        <path d="M 0 64 L 0 60 C 120 58, 200 50, 300 46 C 420 42, 500 32, 600 28 C 720 24, 820 16, 900 14 C 1020 11, 1120 6, 1200 5 L 1200 64 Z"
+              fill="url(#elevFill)" />
+
+        <!-- Topographic Ridge Line -->
+        <path id="elevRidgePath"
+              d="M 0 60 C 120 58, 200 50, 300 46 C 420 42, 500 32, 600 28 C 720 24, 820 16, 900 14 C 1020 11, 1120 6, 1200 5"
+              fill="none" stroke="#F4F5F0" stroke-width="2" />
+
+        <!-- Active Highlighted Ridge Progress -->
+        <path id="elevActivePath"
+              d="M 0 60 C 120 58, 200 50, 300 46 C 420 42, 500 32, 600 28 C 720 24, 820 16, 900 14 C 1020 11, 1120 6, 1200 5"
+              fill="none" stroke="#FFE500" stroke-width="3" stroke-dasharray="1300" stroke-dashoffset="1300" />
+
+        <!-- 5 Altitude Checkpoint Nodes -->
+        <g onclick="jumpToDeck(0)" class="cursor-pointer">
+          <circle cx="40" cy="59" r="5" fill="#141619" stroke="#FFE500" stroke-width="2"/>
+          <text x="40" y="48" fill="#F4F5F0" font-size="10" font-family="JetBrains Mono" text-anchor="middle">0m COAST</text>
+        </g>
+        <g onclick="jumpToDeck(1)" class="cursor-pointer">
+          <circle cx="320" cy="45" r="5" fill="#141619" stroke="#FFE500" stroke-width="2"/>
+          <text x="320" y="34" fill="#F4F5F0" font-size="10" font-family="JetBrains Mono" text-anchor="middle">420m CANYON</text>
+        </g>
+        <g onclick="jumpToDeck(2)" class="cursor-pointer">
+          <circle cx="600" cy="28" r="5" fill="#141619" stroke="#FFE500" stroke-width="2"/>
+          <text x="600" y="18" fill="#F4F5F0" font-size="10" font-family="JetBrains Mono" text-anchor="middle">800m HIGHLAND</text>
+        </g>
+        <g onclick="jumpToDeck(3)" class="cursor-pointer">
+          <circle cx="880" cy="14" r="5" fill="#141619" stroke="#FFE500" stroke-width="2"/>
+          <text x="880" y="29" fill="#F4F5F0" font-size="10" font-family="JetBrains Mono" text-anchor="middle">1400m GLACIER</text>
+        </g>
+        <g onclick="jumpToDeck(4)" class="cursor-pointer">
+          <circle cx="1160" cy="6" r="5" fill="#141619" stroke="#FFE500" stroke-width="2"/>
+          <text x="1150" y="22" fill="#F4F5F0" font-size="10" font-family="JetBrains Mono" text-anchor="end">2110m SUMMIT</text>
+        </g>
+
+        <!-- Playhead Beacon Marker -->
+        <g id="elevPlayhead" transform="translate(40, 0)">
+          <line x1="0" y1="0" x2="0" y2="66" stroke="#FFE500" stroke-width="2"/>
+          <polygon points="-6,0 6,0 0,8" fill="#FFE500"/>
+          <rect x="-34" y="44" width="68" height="18" fill="#FFE500"/>
+          <text id="playheadAltText" x="0" y="56" fill="#141619" font-size="10" font-weight="bold" font-family="JetBrains Mono" text-anchor="middle">0m</text>
+        </g>
+      </svg>
+    </div>
+
+    <!-- Bottom Micro Status -->
+    <div class="flex items-center justify-between font-mono-tech text-[10px] text-[#F4F5F0]/45">
+      <span>0m REYNISFJARA LITTORAL</span>
+      <span>800m LANDMANNALAUGAR</span>
+      <span>1400m VATNAJÖKULL ICE CAP</span>
+      <span>2110m HVANNADALSHNÚKUR CREST</span>
+    </div>
+  </footer>
+
+  <!-- SLIDE-OUT "FIELD RUCKSACK" CART DRAWER (65L PACK VISUALIZER) -->
+  <aside id="rucksackDrawer" class="rucksack-drawer fixed top-0 right-0 bottom-0 w-full max-w-md bg-[#1D1F23] border-l border-[#F4F5F0]/25 z-50 flex flex-col justify-between p-6 shadow-2xl">
+    <div>
+      <!-- Header -->
+      <div class="flex items-center justify-between border-b border-[#F4F5F0]/15 pb-4">
+        <div>
+          <div class="font-mono-tech text-[10px] text-[#FFE500] uppercase tracking-widest">// EXPEDITION PACK LOADOUT</div>
+          <h2 class="font-display font-extrabold text-2xl uppercase tracking-tight text-[#F4F5F0]">
+            65L FIELD RUCKSACK
+          </h2>
+        </div>
+        <button onclick="toggleRucksack(false)" class="px-3 py-1.5 bg-[#141619] border border-[#F4F5F0]/25 hover:border-[#FFE500] font-mono-tech text-xs">
+          ✕ CLOSE
+        </button>
+      </div>
+
+      <!-- Pack Volume & Total Mass Telemetry -->
+      <div class="grid grid-cols-2 gap-3 my-4 font-mono-tech">
+        <div class="p-3.5 bg-[#141619] border border-[#F4F5F0]/15">
+          <div class="text-[10px] text-[#F4F5F0]/50 uppercase">TOTAL PACK MASS</div>
+          <div id="packTotalWeight" class="text-xl font-bold text-[#F4F5F0] mt-0.5">1,030 g</div>
+          <div class="text-[10px] text-[#FFE500] mt-0.5">ULTRALIGHT SPEC</div>
+        </div>
+        <div class="p-3.5 bg-[#141619] border border-[#F4F5F0]/15">
+          <div class="text-[10px] text-[#F4F5F0]/50 uppercase">PACK VOLUME (LITERS)</div>
+          <div id="packTotalVolume" class="text-xl font-bold text-[#FFE500] mt-0.5">11.5L / 65L</div>
+          <div class="w-full h-1.5 bg-[#2A2D32] mt-2 overflow-hidden">
+            <div id="packVolumeBar" class="h-full bg-[#FFE500] transition-all duration-300" style="width: 18%;"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Stacked Rucksack Silo -->
+      <div class="mb-3 flex items-center justify-between font-mono-tech text-[10px] text-[#F4F5F0]/55 uppercase">
+        <span>STACKED RUCKSACK COMPARTMENTS</span>
+        <span>COMPRESSION RATIO: 3.4:1</span>
+      </div>
+
+      <div id="rucksackStackList" class="space-y-2.5 max-h-[360px] overflow-y-auto pr-1">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Bottom Dispatch Action -->
+    <div class="border-t border-[#F4F5F0]/15 pt-4 space-y-3">
+      <div class="flex items-center justify-between font-mono-tech text-sm">
+        <span class="text-[#F4F5F0]/65">EXPEDITION SUBTOTAL:</span>
+        <span id="packSubtotal" class="text-lg font-bold text-[#FFE500]">$1,140 USD</span>
+      </div>
+      <button onclick="dispatchRucksack()" class="w-full py-4 bg-[#FFE500] text-[#141619] hover:bg-[#F4F5F0] font-mono-tech text-xs font-bold uppercase tracking-widest transition">
+        DISPATCH SEALED RUCKSACK →
+      </button>
+    </div>
+  </aside>
+
+  <script>
+    // =========================================================================
+    // 1. EXPEDITION DECK DATA (0m Coast -> 2110m Summit)
+    // =========================================================================
+    const DECKS = [
+      {
+        deckNum: '01',
+        altitude: 0,
+        zone: '0m BLACK SAND LITTORAL',
+        pressure: '1013 hPa',
+        temp: '+6.0°C',
+        layerRole: 'BASE & WIND-SPRAY SHELL',
+        name: 'VÍK LITTORAL ANORAK MK.IV',
+        type: 'anorak',
+        price: 580,
+        weightGrams: 460,
+        volumeLiters: 4.5,
+        gsm: '185 g/m²',
+        hydroHead: '24,000 mm',
+        tearLimit: '410 N (ISO 13937)',
+        breathability: 'RET 3.4',
+        primaryColor: '#35393E',
+        panelColor: '#23262A',
+        accent: '#FFE500',
+        desc: 'Engineered for zero-elevation North Atlantic surf spray and horizontal black sand abrasion. Ultralight 3-layer magnesium-dyed ripstop with magnetic storm gusset.',
+        seams: [
+          { angle: 15, yRatio: 0.28, title: 'FIDLOCK® STORM NECK SEAL', spec: 'Magnetic self-sealing collar blocks salt spray gusts.' },
+          { angle: 110, yRatio: 0.52, title: 'UNDERARM LASER VENT', spec: '220mm waterproof YKK® AquaGuard® dump zip.' },
+          { angle: 195, yRatio: 0.42, title: '13MM WELDED SPINE TAPE', spec: 'Ultrasonic double-welded dorsal seam.' }
+        ]
+      },
+      {
+        deckNum: '02',
+        altitude: 420,
+        zone: '420m BASALT CANYON',
+        pressure: '962 hPa',
+        temp: '+1.5°C',
+        layerRole: 'LOWER ARTICULATED ARMOR',
+        name: 'KATLA CORDURA® CARGO PANT',
+        type: 'pants',
+        price: 440,
+        weightGrams: 570,
+        volumeLiters: 5.2,
+        gsm: '265 g/m²',
+        hydroHead: '18,000 mm DWR',
+        tearLimit: '680 N (Ballistic Knee)',
+        breathability: 'RET 4.1',
+        primaryColor: '#2E3237',
+        panelColor: '#1E2024',
+        accent: '#FFE500',
+        desc: 'Articulated 3D canyon scrambling trousers with 500D Cordura® knee & instep armor, diamond gusset, and pleated bellows pockets that stay flat when empty.',
+        seams: [
+          { angle: 25, yRatio: 0.45, title: 'EXPANDING BELLOWS CARGO', spec: 'Holds 2.5L field gear with internal shock-cord stabilizer.' },
+          { angle: 140, yRatio: 0.62, title: 'ARTICULATED 4-DART KNEE', spec: 'Pre-bent 32° ergonomic knee chassis.' },
+          { angle: 260, yRatio: 0.82, title: 'DYNEEMA® CRAMPON CUFF', spec: 'Slash-proof inner ankle guard with boot lace hook.' }
+        ]
+      },
+      {
+        deckNum: '03',
+        altitude: 800,
+        zone: '800m HIGHLAND INTERIOR',
+        pressure: '918 hPa',
+        temp: '-4.5°C',
+        layerRole: 'ACTIVE THERMAL INSULATION',
+        name: 'ASKJA POLARTEC® ALPHA HOODIE',
+        type: 'anorak',
+        price: 390,
+        weightGrams: 340,
+        volumeLiters: 3.8,
+        gsm: '145 g/m² (Alpha Direct)',
+        hydroHead: 'DWR C0 Hydrophobic',
+        tearLimit: '290 N Ripstop Face',
+        breathability: 'RET 1.8 (Air-Permeable)',
+        primaryColor: '#3E423A',
+        panelColor: '#262925',
+        accent: '#FFE500',
+        desc: 'High-altitude active midlayer built for relentless highland ascents. Releases excess metabolic vapor instantly while trapping core warmth under a windshell.',
+        seams: [
+          { angle: 0, yRatio: 0.35, title: 'BI-COMPONENT THERMAL GRID', spec: 'Lofted hydrophobic fibers retain 94% warmth when damp.' },
+          { angle: 175, yRatio: 0.24, title: 'BALACLAVA SCUBA HOOD', spec: 'Seamless under-helmet articulation.' }
+        ]
+      },
+      {
+        deckNum: '04',
+        altitude: 1400,
+        zone: '1400m VATNAJÖKULL GLACIER',
+        pressure: '852 hPa',
+        temp: '-13.0°C',
+        layerRole: 'HARD SHELL EXOSKELETON',
+        name: 'GRÍMSVÖTN 3L GLACIER SHELL',
+        type: 'parka',
+        price: 790,
+        weightGrams: 610,
+        volumeLiters: 6.0,
+        gsm: '210 g/m² 3-Layer',
+        hydroHead: '30,000 mm (ISO 811)',
+        tearLimit: '590 N Dyneema® Grid',
+        breathability: 'RET 3.0 ePTFE',
+        primaryColor: '#25292E',
+        panelColor: '#171A1E',
+        accent: '#FFE500',
+        desc: 'Full glacier storm armor with high-visibility emergency beacon hood brim, dual harness-compatible Napoleon bunkers, and Cohaesive™ one-hand cord locks.',
+        seams: [
+          { angle: 10, yRatio: 0.16, title: 'BEACON YELLOW STORM VISOR', spec: 'Wire-stiffened hood brim resists 35 m/s glacier katabatic winds.' },
+          { angle: 85, yRatio: 0.48, title: 'HARNESS-ACCESS BUNKER', spec: 'Positioned above climbing harness and 65L hip-belt.' },
+          { angle: 210, yRatio: 0.72, title: 'DROP-TAIL SNOW SKIRT', spec: 'Internal silicone gripper seals out spindrift.' }
+        ]
+      },
+      {
+        deckNum: '05',
+        altitude: 2110,
+        zone: '2110m HVANNADALSHNÚKUR SUMMIT',
+        pressure: '784 hPa',
+        temp: '-22.5°C',
+        layerRole: 'EXTREME SUB-ZERO BELAY PARKA',
+        name: 'SURTUR 900FP EXPEDITION PARKA',
+        type: 'parka',
+        price: 1120,
+        weightGrams: 940,
+        volumeLiters: 9.5,
+        gsm: '240 g/m² + 900FP Down',
+        hydroHead: '28,000 mm Welded Baffles',
+        tearLimit: '640 N Aramid Weave',
+        breathability: 'RET 3.8',
+        primaryColor: '#1F2226',
+        panelColor: '#141619',
+        accent: '#FFE500',
+        desc: 'Our apex summit fortress. Box-wall welded chambers packed with 900-fill hydrophobic goose down and heat-reflective titanium-coated inner lining for -30°C belays.',
+        seams: [
+          { angle: 35, yRatio: 0.38, title: 'ZERO-STITCH WELDED BAFFLES', spec: 'Eliminates pin-holes so wind never penetrates down chambers.' },
+          { angle: 180, yRatio: 0.5, title: 'TITANIUM IR REFLECTOR LINING', spec: 'Reflects radiant body heat back to the torso.' },
+          { angle: 300, yRatio: 0.65, title: 'CRYO BATTERY POCKET', spec: 'Aerogel-insulated chest sleeve preserves GPS & drone batteries.' }
+        ]
+      }
+    ];
+
+    // State
+    let currentDeckIndex = 0;
+    let currentTrackX = 0;
+    let targetTrackX = 0;
+    let isDraggingDeck = false;
+    let deckDragStartX = 0;
+    let deckDragInitialX = 0;
+
+    // 360 Rotation Angle per deck (in degrees)
+    const deckAngles = [25, -20, 15, -25, 20];
+    let activeRotateDeck = -1;
+    let rotateLastX = 0;
+    let lastTickAngle = 0;
+
+    // Rucksack Cart State
+    let rucksackItems = [DECKS[0], DECKS[1]];
+
+    // Audio Synthesizer
+    let audioEnabled = true;
+    let audioCtx = null;
+
+    function playTick(freq = 920, duration = 0.025) {
+      if (!audioEnabled) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'triangle';
+        osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.exponentialRampToValueAtTime(180, now + duration);
+        gain.gain.setValueAtTime(0.11, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + duration);
+      } catch (e) {}
+    }
+
+    function toggleAudio() {
+      audioEnabled = !audioEnabled;
+      document.getElementById('audioIndicator').className = audioEnabled
+        ? 'w-2 h-2 rounded-full bg-[#FFE500]'
+        : 'w-2 h-2 rounded-full bg-red-500';
+      document.getElementById('audioText').textContent = audioEnabled ? 'TICKS: ON' : 'TICKS: OFF';
+      if (audioEnabled) playTick(1200, 0.04);
+    }
+
+    // =========================================================================
+    // 2. CUSTOM MORPHING CURSOR
+    // =========================================================================
+    const cursorEl = document.getElementById('customCursor');
+    const cursorLabel = document.getElementById('cursorLabel');
+    const cursorBox = document.getElementById('cursorBox');
+
+    window.addEventListener('mousemove', (e) => {
+      cursorEl.style.transform = `translate3d(${e.clientX + 18}px, ${e.clientY + 18}px, 0)`;
+    });
+
+    function setCursorState(label) {
+      cursorLabel.textContent = label;
+      if (label === 'DRAG 360° RIG' || label === 'ADD TO KIT' || label === 'INSPECT SEAM') {
+        cursorBox.className = 'px-2.5 py-1 bg-[#FFE500] border border-[#141619] text-[#141619] font-mono-tech text-[10px] font-bold tracking-widest uppercase whitespace-nowrap shadow-xl flex items-center gap-1.5';
+      } else {
+        cursorBox.className = 'px-2.5 py-1 bg-[#141619]/90 border border-[#FFE500] text-[#FFE500] font-mono-tech text-[10px] font-bold tracking-widest uppercase whitespace-nowrap shadow-xl flex items-center gap-1.5';
+      }
+    }
+
+    // =========================================================================
+    // 3. BUILD HORIZONTAL SPLIT-SCREEN DECK SLIDES
+    // =========================================================================
+    function buildDecks() {
+      const track = document.getElementById('deckTrack');
+      track.innerHTML = DECKS.map((d, idx) => `
+        <section class="w-screen h-full shrink-0 grid grid-cols-1 lg:grid-cols-12 border-r border-[#F4F5F0]/15 relative overflow-hidden">
+          
+          <!-- LEFT COLUMN (1 Col): GIANT VERTICAL INDUSTRIAL TYPOGRAPHY -->
+          <div class="hidden lg:flex lg:col-span-1 border-r border-[#F4F5F0]/15 bg-[#1D1F23]/70 flex-col items-center justify-between py-6">
+            <span class="font-mono-tech text-xs text-[#FFE500] font-bold">DECK ${d.deckNum}</span>
+            <div class="vertical-title font-display font-extrabold text-4xl xl:text-5xl tracking-tighter uppercase text-[#F4F5F0]/90">
+              ${d.altitude}M // ${d.layerRole.split(' ')[0]}
+            </div>
+            <span class="font-mono-tech text-[10px] text-[#F4F5F0]/45">IS-64°N</span>
+          </div>
+
+          <!-- MIDDLE COLUMN (5 Cols): TECHNICAL SPEC SHEETS & TELEMETRY -->
+          <div class="lg:col-span-5 p-6 sm:p-10 flex flex-col justify-between bg-[#2A2D32]/90 border-r border-[#F4F5F0]/15 overflow-y-auto">
+            <div>
+              <!-- Altitude & Layer Badge -->
+              <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
+                <span class="px-2.5 py-1 bg-[#FFE500] text-[#141619] font-mono-tech text-[11px] font-bold uppercase tracking-widest">
+                  ALTITUDE ZONE: ${d.altitude}m ASL
+                </span>
+                <span class="font-mono-tech text-xs text-[#F4F5F0]/60">
+                  ${d.pressure} • ${d.temp}
+                </span>
+              </div>
+
+              <!-- Garment Title -->
+              <div class="font-mono-tech text-xs text-[#FFE500] uppercase tracking-widest mb-1">
+                // ${d.layerRole}
+              </div>
+              <h1 class="font-display font-extrabold text-3xl sm:text-5xl uppercase tracking-tight leading-[0.95] text-[#F4F5F0]">
+                ${d.name}
+              </h1>
+              <p class="text-xs sm:text-sm text-[#F4F5F0]/70 mt-4 leading-relaxed">
+                ${d.desc}
+              </p>
+
+              <!-- Raw Technical Spec Sheet Grid with Crosshair Corner Markers -->
+              <div class="grid grid-cols-2 gap-3 mt-6 font-mono-tech">
+                <div class="tech-cell crosshair-corner p-3.5 bg-[#1D1F23]">
+                  <div class="text-[10px] text-[#F4F5F0]/45 uppercase">FABRIC DENSITY (GSM)</div>
+                  <div class="text-base sm:text-lg font-bold text-[#F4F5F0] mt-1">${d.gsm}</div>
+                </div>
+                <div class="tech-cell crosshair-corner p-3.5 bg-[#1D1F23]">
+                  <div class="text-[10px] text-[#F4F5F0]/45 uppercase">HYDROSTATIC HEAD</div>
+                  <div class="text-base sm:text-lg font-bold text-[#FFE500] mt-1">${d.hydroHead}</div>
+                </div>
+                <div class="tech-cell crosshair-corner p-3.5 bg-[#1D1F23]">
+                  <div class="text-[10px] text-[#F4F5F0]/45 uppercase">TENSILE TEAR LIMIT</div>
+                  <div class="text-base sm:text-lg font-bold text-[#F4F5F0] mt-1">${d.tearLimit}</div>
+                </div>
+                <div class="tech-cell crosshair-corner p-3.5 bg-[#1D1F23]">
+                  <div class="text-[10px] text-[#F4F5F0]/45 uppercase">VAPOR RET / MASS</div>
+                  <div class="text-base sm:text-lg font-bold text-[#F4F5F0] mt-1">${d.breathability} • ${d.weightGrams}g</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Bottom Price & Add to Field Rucksack CTA -->
+            <div class="pt-6 mt-6 border-t border-[#F4F5F0]/15 flex flex-wrap items-center justify-between gap-4">
+              <div>
+                <div class="font-mono-tech text-[10px] text-[#F4F5F0]/45 uppercase">UNIT REQUISITION</div>
+                <div class="font-mono-tech text-2xl font-bold text-[#F4F5F0]">$${d.price} USD</div>
+                <div class="font-mono-tech text-[10px] text-[#FFE500]">PACK DISPLACEMENT: ${d.volumeLiters}L / ${d.weightGrams}g</div>
+              </div>
+
+              <button onclick="addToRucksack(${idx})"
+                      onmouseenter="setCursorState('ADD TO KIT')"
+                      onmouseleave="setCursorState('DECK NAV')"
+                      class="px-6 py-4 bg-[#FFE500] text-[#141619] hover:bg-[#F4F5F0] font-mono-tech text-xs font-bold uppercase tracking-widest transition shadow-xl">
+                + PACK INTO 65L RUCKSACK
+              </button>
+            </div>
+          </div>
+
+          <!-- RIGHT COLUMN (6 Cols): 360-DEGREE INTERACTIVE GARMENT TURNTABLE -->
+          <div class="lg:col-span-6 relative bg-[#1D1F23] flex flex-col justify-between p-6 overflow-hidden"
+               onmouseenter="setCursorState('DRAG 360° RIG')"
+               onmouseleave="setCursorState('DECK NAV')">
+            
+            <!-- Top Turntable Telemetry Overlay -->
+            <div class="relative z-20 flex items-center justify-between font-mono-tech text-xs pointer-events-none">
+              <div class="px-3 py-1.5 bg-[#141619]/90 border border-[#F4F5F0]/20 flex items-center gap-2">
+                <span class="w-2 h-2 rounded-full bg-[#FFE500] animate-ping"></span>
+                <span>360° TURNTABLE RIG // DRAG TO ROTATE</span>
+              </div>
+              <div class="px-3 py-1.5 bg-[#141619]/90 border border-[#FFE500]/50 text-[#FFE500] font-bold" id="angleBadge-${idx}">
+                AZIMUTH: 025° [FRONT-RIGHT]
+              </div>
+            </div>
+
+            <!-- Interactive 360 Canvas Stage -->
+            <div class="relative flex-1 w-full h-full flex items-center justify-center">
+              <canvas id="turntableCanvas-${idx}"
+                      data-deck="${idx}"
+                      class="w-full h-full cursor-grab active:cursor-grabbing block"></canvas>
+
+              <!-- Seam Inspector Popover Card -->
+              <div id="seamModal-${idx}" class="seam-modal absolute bottom-16 left-6 right-6 sm:left-auto sm:w-80 bg-[#141619]/95 border border-[#FFE500] p-4 font-mono-tech z-30 shadow-2xl">
+                <div class="flex items-center justify-between text-[10px] text-[#FFE500] uppercase mb-1">
+                  <span id="seamTitle-${idx}">SEAM CALLOUT</span>
+                  <button onclick="closeSeamModal(${idx})" class="text-[#F4F5F0]/60 hover:text-[#F4F5F0]">✕</button>
+                </div>
+                <p id="seamSpec-${idx}" class="text-xs text-[#F4F5F0]/85 leading-relaxed"></p>
+              </div>
+            </div>
+
+            <!-- Bottom 360 Degree Compass Scrub Ring -->
+            <div class="relative z-20 flex items-center justify-between border-t border-[#F4F5F0]/15 pt-3 font-mono-tech text-[10px] text-[#F4F5F0]/60">
+              <div class="flex gap-2">
+                <button onclick="setTurntableAngle(${idx}, 0)" class="px-2.5 py-1 bg-[#141619] border border-[#F4F5F0]/20 hover:border-[#FFE500]">0° FRONT</button>
+                <button onclick="setTurntableAngle(${idx}, 90)" class="px-2.5 py-1 bg-[#141619] border border-[#F4F5F0]/20 hover:border-[#FFE500]">90° PROFILE</button>
+                <button onclick="setTurntableAngle(${idx}, 180)" class="px-2.5 py-1 bg-[#141619] border border-[#F4F5F0]/20 hover:border-[#FFE500]">180° DORSAL</button>
+                <button onclick="setTurntableAngle(${idx}, 270)" class="px-2.5 py-1 bg-[#141619] border border-[#F4F5F0]/20 hover:border-[#FFE500]">270° FLANK</button>
+              </div>
+              <span class="hidden sm:inline text-[#FFE500]">CLICK [+] NODES ON GARMENT TO INSPECT SEAM</span>
+            </div>
+          </div>
+
+        </section>
+      `).join('');
+
+      initTurntableCanvases();
+    }
+
+    // =========================================================================
+    // 4. 360-DEGREE PROCEDURAL GARMENT TURNTABLE ENGINE (Canvas)
+    // =========================================================================
+    const turntableContexts = [];
+    const activeSeamHotspots = [[], [], [], [], []];
+
+    function initTurntableCanvases() {
+      DECKS.forEach((d, idx) => {
+        const canvas = document.getElementById(`turntableCanvas-${idx}`);
+        const ctx = canvas.getContext('2d');
+        turntableContexts[idx] = { canvas, ctx };
+
+        const resize = () => {
+          canvas.width = canvas.parentElement.clientWidth;
+          canvas.height = canvas.parentElement.clientHeight;
+        };
+        resize();
+        window.addEventListener('resize', resize);
+
+        // Drag to rotate 360
+        canvas.addEventListener('mousedown', (e) => {
+          e.stopPropagation();
+          // Check if user clicked a seam inspection node first
+          const rect = canvas.getBoundingClientRect();
+          const mx = e.clientX - rect.left;
+          const my = e.clientY - rect.top;
+          const hit = activeSeamHotspots[idx].find(h => Math.hypot(h.x - mx, h.y - my) < 18);
+          if (hit) {
+            playTick(1350, 0.045);
+            showSeamModal(idx, hit.title, hit.spec);
+            return;
+          }
+
+          activeRotateDeck = idx;
+          rotateLastX = e.clientX;
+        });
+
+        canvas.addEventListener('mousemove', (e) => {
+          const rect = canvas.getBoundingClientRect();
+          const mx = e.clientX - rect.left;
+          const my = e.clientY - rect.top;
+          const hit = activeSeamHotspots[idx].find(h => Math.hypot(h.x - mx, h.y - my) < 18);
+          if (hit) {
+            setCursorState('INSPECT SEAM');
+          } else if (activeRotateDeck === -1) {
+            setCursorState('DRAG 360° RIG');
+          }
+        });
+      });
+    }
+
+    window.addEventListener('mousemove', (e) => {
+      if (activeRotateDeck !== -1) {
+        const dx = e.clientX - rotateLastX;
+        rotateLastX = e.clientX;
+        deckAngles[activeRotateDeck] = (deckAngles[activeRotateDeck] + dx * 0.85 + 360) % 360;
+
+        if (Math.abs(deckAngles[activeRotateDeck] - lastTickAngle) >= 12) {
+          lastTickAngle = deckAngles[activeRotateDeck];
+          playTick(760, 0.018);
+        }
+        updateAngleBadge(activeRotateDeck);
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      activeRotateDeck = -1;
+    });
+
+    function setTurntableAngle(idx, deg) {
+      deckAngles[idx] = deg;
+      playTick(1080, 0.03);
+      updateAngleBadge(idx);
+    }
+
+    function updateAngleBadge(idx) {
+      const deg = Math.round((deckAngles[idx] + 360) % 360);
+      let viewLabel = 'FRONT VIEW';
+      if (deg >= 45 && deg < 135) viewLabel = 'RIGHT PROFILE';
+      else if (deg >= 135 && deg < 225) viewLabel = 'DORSAL BACK';
+      else if (deg >= 225 && deg < 315) viewLabel = 'LEFT FLANK';
+      const el = document.getElementById(`angleBadge-${idx}`);
+      if (el) el.textContent = `AZIMUTH: ${String(deg).padStart(3, '0')}° [${viewLabel}]`;
+    }
+
+    function showSeamModal(idx, title, spec) {
+      document.getElementById(`seamTitle-${idx}`).textContent = `// ${title}`;
+      document.getElementById(`seamSpec-${idx}`).textContent = spec;
+      document.getElementById(`seamModal-${idx}`).classList.add('active');
+    }
+
+    function closeSeamModal(idx) {
+      document.getElementById(`seamModal-${idx}`).classList.remove('active');
+    }
+
+    // Render 360 Turntable Garments in 60FPS
+    function renderTurntables() {
+      DECKS.forEach((d, idx) => {
+        const entry = turntableContexts[idx];
+        if (!entry) return;
+        const { canvas, ctx } = entry;
+        const w = canvas.width;
+        const h = canvas.height;
+        if (w === 0 || h === 0) return;
+
+        ctx.clearRect(0, 0, w, h);
+
+        const cx = w / 2;
+        const cy = h / 2;
+        const deg = (deckAngles[idx] + 360) % 360;
+        const rad = (deg * Math.PI) / 180;
+        const cosA = Math.cos(rad); // +1 at 0 deg (front), -1 at 180 deg (back)
+        const sinA = Math.sin(rad); // +1 at 90 deg (right profile)
+
+        // 1. Draw 3D Turntable Base Plinth Ring & Degree Ticks
+        const plinthY = cy + h * 0.34;
+        const plinthRx = Math.min(w, h) * 0.34;
+        const plinthRy = plinthRx * 0.22;
+
+        ctx.save();
+        ctx.beginPath();
+        ctx.ellipse(cx, plinthY, plinthRx, plinthRy, 0, 0, Math.PI * 2);
+        ctx.strokeStyle = 'rgba(244, 245, 240, 0.22)';
+        ctx.lineWidth = 1.5;
+        ctx.stroke();
+
+        // Rotating tick marks on the turntable ring
+        for (let a = 0; a < 360; a += 15) {
+          const tickRad = ((a + deg) * Math.PI) / 180;
+          const tx1 = cx + Math.cos(tickRad) * (plinthRx * 0.92);
+          const ty1 = plinthY + Math.sin(tickRad) * (plinthRy * 0.92);
+          const tx2 = cx + Math.cos(tickRad) * (plinthRx * 1.04);
+          const ty2 = plinthY + Math.sin(tickRad) * (plinthRy * 1.04);
+          ctx.beginPath();
+          ctx.moveTo(tx1, ty1);
+          ctx.lineTo(tx2, ty2);
+          ctx.strokeStyle = a % 90 === 0 ? '#FFE500' : 'rgba(244, 245, 240, 0.3)';
+          ctx.lineWidth = a % 90 === 0 ? 2 : 1;
+          ctx.stroke();
+        }
+        ctx.restore();
+
+        // 2. Draw 360° Parametric 3D Garment Wireframe & Shaded Panels
+        const scale = Math.min(w, h) / 360;
+        // Width foreshortens slightly at 90° / 270° profile views!
+        const profileFactor = 0.62 + 0.38 * Math.abs(cosA);
+
+        ctx.save();
+        ctx.translate(cx, cy - 10 * scale);
+
+        if (d.type === 'pants') {
+          // 3D Articulated Expedition Cargo Pants
+          const waistW = 68 * scale * profileFactor;
+          const hipW = 78 * scale * profileFactor;
+          const legSpread = (28 * Math.abs(cosA) + 8) * scale;
+          const legW = 32 * scale * (0.75 + 0.25 * Math.abs(cosA));
+          const kneeBendX = sinA * 14 * scale; // knees articulate forward in profile view!
+
+          // Waistband
+          ctx.fillStyle = d.panelColor;
+          ctx.strokeStyle = '#F4F5F0';
+          ctx.lineWidth = 2;
+          ctx.beginPath();
+          ctx.rect(-waistW, -105 * scale, waistW * 2, 18 * scale);
+          ctx.fill();
+          ctx.stroke();
+
+          // Left & Right Articulated Legs
+          [-1, 1].forEach(side => {
+            const lx = side * legSpread;
+            ctx.beginPath();
+            ctx.moveTo(side * waistW * 0.95, -87 * scale);
+            ctx.lineTo(lx + side * legW * 0.6 + kneeBendX, 5 * scale); // Knee
+            ctx.lineTo(lx + side * legW * 0.5, 105 * scale); // Cuff
+            ctx.lineTo(lx - side * legW * 0.5, 105 * scale);
+            ctx.lineTo(lx - side * legW * 0.4 + kneeBendX, 5 * scale);
+            ctx.lineTo(0, -45 * scale); // Diamond gusset crotch
+            ctx.closePath();
+            ctx.fillStyle = d.primaryColor;
+            ctx.fill();
+            ctx.strokeStyle = '#F4F5F0';
+            ctx.stroke();
+
+            // Cordura Knee Reinforcement Patch (visible on front/side)
+            if (cosA > -0.4) {
+              ctx.fillStyle = 'rgba(255, 229, 0, 0.14)';
+              ctx.strokeStyle = '#FFE500';
+              ctx.lineWidth = 1.3;
+              ctx.fillRect(lx - legW * 0.35 + kneeBendX, -12 * scale, legW * 0.7, 32 * scale);
+              ctx.strokeRect(lx - legW * 0.35 + kneeBendX, -12 * scale, legW * 0.7, 32 * scale);
+            }
+          });
+        } else {
+          // 3D Anorak / Glacier Parka Turntable Mesh
+          const shoulderW = 86 * scale * profileFactor;
+          const chestW = 72 * scale * profileFactor;
+          const hemW = 78 * scale * profileFactor;
+          const sleeveSpan = (125 * Math.abs(cosA) + 42) * scale;
+          const sleeveForward = sinA * 18 * scale;
+
+          // Storm Hood (3D dome + brim)
+          ctx.beginPath();
+          ctx.moveTo(-34 * scale * profileFactor, -82 * scale);
+          ctx.quadraticCurveTo(sinA * 12 * scale, -138 * scale, 34 * scale * profileFactor, -82 * scale);
+          ctx.closePath();
+          ctx.fillStyle = d.panelColor;
+          ctx.fill();
+          ctx.strokeStyle = '#FFE500';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Left & Right Articulated Sleeves
+          [-1, 1].forEach(side => {
+            ctx.beginPath();
+            ctx.moveTo(side * shoulderW * 0.85, -78 * scale);
+            ctx.lineTo(side * sleeveSpan + sleeveForward, -5 * scale);
+            ctx.lineTo(side * (sleeveSpan - 18 * scale) + sleeveForward, 18 * scale);
+            ctx.lineTo(side * chestW * 0.88, -32 * scale);
+            ctx.closePath();
+            ctx.fillStyle = d.panelColor;
+            ctx.fill();
+            ctx.strokeStyle = '#F4F5F0';
+            ctx.lineWidth = 1.8;
+            ctx.stroke();
+          });
+
+          // Main Torso Cylinder Shell
+          ctx.beginPath();
+          ctx.moveTo(-shoulderW, -78 * scale);
+          ctx.lineTo(shoulderW, -78 * scale);
+          ctx.lineTo(hemW, 95 * scale);
+          ctx.lineTo(-hemW, 95 * scale);
+          ctx.closePath();
+          ctx.fillStyle = d.primaryColor;
+          ctx.fill();
+          ctx.strokeStyle = '#F4F5F0';
+          ctx.lineWidth = 2;
+          ctx.stroke();
+
+          // Horizontal Welded Baffles or Technical Seam Grid
+          ctx.strokeStyle = 'rgba(244, 245, 240, 0.22)';
+          ctx.lineWidth = 1;
+          for (let y = -50; y <= 75; y += 25) {
+            ctx.beginPath();
+            ctx.moveTo(-chestW * 0.95, y * scale);
+            ctx.quadraticCurveTo(0, (y + cosA * 6) * scale, chestW * 0.95, y * scale);
+            ctx.stroke();
+          }
+
+          // Front Storm Placket / Dorsal Spine Seam depending on rotation angle
+          const centerLineOffset = sinA * chestW * 0.55;
+          if (cosA >= 0) {
+            // Front Storm Zipper & Chest Bunker
+            ctx.strokeStyle = '#FFE500';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(centerLineOffset, -82 * scale);
+            ctx.lineTo(centerLineOffset, 95 * scale);
+            ctx.stroke();
+          } else {
+            // Back 13mm Welded Spine Tape
+            ctx.strokeStyle = '#F4F5F0';
+            ctx.setLineDash([5, 4]);
+            ctx.beginPath();
+            ctx.moveTo(-centerLineOffset, -82 * scale);
+            ctx.lineTo(-centerLineOffset, 95 * scale);
+            ctx.stroke();
+            ctx.setLineDash([]);
+          }
+        }
+        ctx.restore();
+
+        // 3. Render 3D Rotating Seam Inspection Callout Nodes [+]
+        activeSeamHotspots[idx] = [];
+        d.seams.forEach((s, sIdx) => {
+          const nodeRad = ((s.angle + deg) * Math.PI) / 180;
+          const radiusX = 68 * scale;
+          const nx = cx + Math.sin(nodeRad) * radiusX;
+          const ny = (cy - 105 * scale) + s.yRatio * (210 * scale);
+          const isFrontFacing = Math.cos(nodeRad) > -0.25;
+
+          if (isFrontFacing) {
+            activeSeamHotspots[idx].push({ x: nx, y: ny, title: s.title, spec: s.spec });
+
+            ctx.save();
+            ctx.fillStyle = '#FFE500';
+            ctx.strokeStyle = '#141619';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(nx, ny, 10, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+
+            ctx.fillStyle = '#141619';
+            ctx.font = 'bold 12px JetBrains Mono';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText('+', nx, ny + 0.5);
+            ctx.restore();
+          }
+        });
+      });
+
+      requestAnimationFrame(renderTurntables);
+    }
+
+    // =========================================================================
+    // 5. HORIZONTAL MOMENTUM CAROUSEL + ELEVATION TIMELINE SYNC
+    // =========================================================================
+    const viewport = document.getElementById('deckViewport');
+    const track = document.getElementById('deckTrack');
+
+    function jumpToDeck(index) {
+      currentDeckIndex = Math.max(0, Math.min(DECKS.length - 1, index));
+      targetTrackX = -currentDeckIndex * window.innerWidth;
+      playTick(880, 0.035);
+      syncTelemetryToProgress(currentDeckIndex / (DECKS.length - 1));
+    }
+
+    function stepSlide(dir) {
+      jumpToDeck(currentDeckIndex + dir);
+    }
+
+    // Keyboard Left / Right Arrow Support
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') stepSlide(1);
+      if (e.key === 'ArrowLeft') stepSlide(-1);
+    });
+
+    // Mouse Wheel Horizontal Translation
+    window.addEventListener('wheel', (e) => {
+      if (Math.abs(e.deltaY) > 15 || Math.abs(e.deltaX) > 15) {
+        const delta = Math.abs(e.deltaX) > Math.abs(e.deltaY) ? e.deltaX : e.deltaY;
+        const maxScroll = (DECKS.length - 1) * window.innerWidth;
+        targetTrackX = Math.max(-maxScroll, Math.min(0, targetTrackX - delta * 1.35));
+        const rawIndex = Math.round(Math.abs(targetTrackX) / window.innerWidth);
+        if (rawIndex !== currentDeckIndex) {
+          currentDeckIndex = rawIndex;
+          playTick(920, 0.025);
+        }
+      }
+    }, { passive: true });
+
+    // Elevation Scrubber Dragging
+    const elevArea = document.getElementById('elevationScrubberArea');
+    let scrubbingElevation = false;
+
+    function handleElevationPointer(e) {
+      const rect = elevArea.getBoundingClientRect();
+      const ratio = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+      const maxScroll = (DECKS.length - 1) * window.innerWidth;
+      targetTrackX = -ratio * maxScroll;
+
+      const nearestIdx = Math.round(ratio * (DECKS.length - 1));
+      if (nearestIdx !== currentDeckIndex) {
+        currentDeckIndex = nearestIdx;
+        playTick(1050, 0.025);
+      }
+      syncTelemetryToProgress(ratio);
+    }
+
+    elevArea.addEventListener('mousedown', (e) => {
+      scrubbingElevation = true;
+      handleElevationPointer(e);
+    });
+    window.addEventListener('mousemove', (e) => {
+      if (scrubbingElevation) handleElevationPointer(e);
+    });
+    window.addEventListener('mouseup', () => {
+      if (scrubbingElevation) {
+        scrubbingElevation = false;
+        // Snap smoothly to nearest station
+        jumpToDeck(currentDeckIndex);
+      }
+    });
+
+    function syncTelemetryToProgress(ratio) {
+      const clamped = Math.max(0, Math.min(1, ratio));
+      const alt = Math.round(clamped * 2110);
+      const pressure = Math.round(1013 - clamped * 229);
+      const temp = (6 - clamped * 28.5).toFixed(1);
+
+      const d = DECKS[currentDeckIndex];
+      document.getElementById('headerAltitude').textContent = `${alt}m ASL`;
+      document.getElementById('headerPressure').textContent = `${pressure} hPa`;
+      document.getElementById('headerTemp').textContent = `${temp > 0 ? '+' : ''}${temp}°C`;
+      document.getElementById('headerLayerTag').textContent = `DECK ${d.deckNum} // ${d.layerRole}`;
+      document.getElementById('slideCounter').textContent = `0${currentDeckIndex + 1} / 05`;
+      document.getElementById('footerZoneLabel').textContent = `ZONE ${d.deckNum}: ${d.zone} (${d.name})`;
+
+      // Update SVG Elevation Playhead
+      const svgX = 40 + clamped * 1120;
+      const playhead = document.getElementById('elevPlayhead');
+      if (playhead) playhead.setAttribute('transform', `translate(${svgX}, 0)`);
+      const playheadText = document.getElementById('playheadAltText');
+      if (playheadText) playheadText.textContent = `${alt}m`;
+
+      const activePath = document.getElementById('elevActivePath');
+      if (activePath) {
+        activePath.style.strokeDashoffset = String(1300 - clamped * 1300);
+      }
+    }
+
+    function animateDeckTrack() {
+      currentTrackX += (targetTrackX - currentTrackX) * 0.12;
+      track.style.transform = `translate3d(${currentTrackX.toFixed(2)}px, 0, 0)`;
+
+      const maxScroll = (DECKS.length - 1) * window.innerWidth || 1;
+      const progress = Math.abs(currentTrackX) / maxScroll;
+      if (!scrubbingElevation) {
+        syncTelemetryToProgress(progress);
+      }
+      requestAnimationFrame(animateDeckTrack);
+    }
+
+    window.addEventListener('resize', () => {
+      targetTrackX = -currentDeckIndex * window.innerWidth;
+    });
+
+    // =========================================================================
+    // 6. SLIDE-OUT "FIELD RUCKSACK" CART (65L PACK VISUALIZER)
+    // =========================================================================
+    function toggleRucksack(open) {
+      playTick(980, 0.035);
+      const drawer = document.getElementById('rucksackDrawer');
+      if (open) {
+        renderRucksack();
+        drawer.classList.add('open');
+      } else {
+        drawer.classList.remove('open');
+      }
+    }
+
+    function addToRucksack(idx) {
+      rucksackItems.push(DECKS[idx]);
+      playTick(1280, 0.045);
+      renderRucksack();
+      toggleRucksack(true);
+    }
+
+    function removeFromRucksack(i) {
+      rucksackItems.splice(i, 1);
+      playTick(620, 0.03);
+      renderRucksack();
+    }
+
+    function renderRucksack() {
+      document.getElementById('rucksackCount').textContent = rucksackItems.length;
+      const totalGrams = rucksackItems.reduce((sum, item) => sum + item.weightGrams, 0);
+      const totalLiters = rucksackItems.reduce((sum, item) => sum + item.volumeLiters, 0);
+      const totalPrice = rucksackItems.reduce((sum, item) => sum + item.price, 0);
+
+      document.getElementById('packTotalWeight').textContent = `${totalGrams.toLocaleString()} g`;
+      document.getElementById('packTotalVolume').textContent = `${totalLiters.toFixed(1)}L / 65L`;
+      document.getElementById('packSubtotal').textContent = `$${totalPrice.toLocaleString()} USD`;
+
+      const pct = Math.min(100, (totalLiters / 65) * 100);
+      document.getElementById('packVolumeBar').style.width = `${pct}%`;
+
+      const listEl = document.getElementById('rucksackStackList');
+      if (rucksackItems.length === 0) {
+        listEl.innerHTML = `<div class="p-6 bg-[#141619] border border-[#F4F5F0]/10 font-mono-tech text-xs text-[#F4F5F0]/45 text-center">RUCKSACK EMPTY // ADD SPECIMENS FROM EXPEDITION DECK</div>`;
+        return;
+      }
+
+      listEl.innerHTML = rucksackItems.map((item, i) => `
+        <div class="p-3.5 bg-[#141619] border-l-4 border-[#FFE500] border border-[#F4F5F0]/15 flex items-center justify-between gap-3 font-mono-tech">
+          <div>
+            <div class="text-[10px] text-[#FFE500]">LAYER ${i + 1} // ${item.altitude}m RATING</div>
+            <div class="text-xs font-bold text-[#F4F5F0] mt-0.5">${item.name}</div>
+            <div class="text-[10px] text-[#F4F5F0]/55 mt-0.5">${item.weightGrams}g • ${item.volumeLiters}L • $${item.price}</div>
+          </div>
+          <button onclick="removeFromRucksack(${i})" class="px-2 py-1 text-xs text-[#F4F5F0]/50 hover:text-[#FFE500]">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function dispatchRucksack() {
+      playTick(1420, 0.06);
+      alert(`65L EXPEDITION RUCKSACK DISPATCHED (${rucksackItems.length} layers sealed).`);
+      toggleRucksack(false);
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      buildDecks();
+      renderRucksack();
+      renderTurntables();
+      animateDeckTrack();
+    });
+  </script>
+</body>
+</html>
