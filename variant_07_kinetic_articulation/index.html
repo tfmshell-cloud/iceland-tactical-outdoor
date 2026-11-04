@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KINETIC COMFORT // ARTICULATION LAB — Biomechanical Outdoor Apparel</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            obsidian: '#0E1013',
+            slateWarm: '#181B20',
+            slateCard: '#21252C',
+            slateLine: '#323842',
+            chalk: '#F5F4F0',
+            chalkDim: '#B8B6AE',
+            amberKin: '#F59E0B',
+            amberDeep: '#D97706'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --obsidian: #0E1013;
+      --slate: #181B20;
+      --chalk: #F5F4F0;
+      --amber: #F59E0B;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #0E1013;
+      color: #F5F4F0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Precision Goniometer Grid Background */
+    .kinetic-grid {
+      background-size: 36px 36px;
+      background-image:
+        linear-gradient(to right, rgba(245, 244, 240, 0.035) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(245, 244, 240, 0.035) 1px, transparent 1px);
+    }
+
+    /* Fluid Biomechanical Joint Transitions on SVG */
+    .kinematic-part {
+      transition: all 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Pulsing Stress-Release Callout Node */
+    @keyframes amberPing {
+      0%, 100% { r: 7; stroke-opacity: 1; }
+      50% { r: 12; stroke-opacity: 0.35; }
+    }
+    .stress-node-ring {
+      animation: amberPing 1.8s infinite ease-in-out;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0E1013;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #323842;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #F59E0B;
+    }
+  </style>
+</head>
+<body class="kinetic-grid min-h-screen flex flex-col justify-between selection:bg-amberKin selection:text-obsidian">
+
+  <!-- =====================================================================
+       TOP BIOMECHANICAL ENGINEERING HEADER
+       ===================================================================== -->
+  <header class="border-b border-slateLine bg-obsidian/95 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-[1600px] mx-auto px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 bg-amberKin text-obsidian font-mono font-extrabold text-xs flex flex-col items-center justify-center leading-none">
+          <span>KIN</span>
+          <span class="text-[8px] mt-0.5">LAB.07</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="font-extrabold text-lg md:text-xl tracking-tight uppercase text-chalk">
+              KINETIC COMFORT <span class="text-amberKin font-normal">//</span> ARTICULATION LAB
+            </h1>
+            <span class="hidden sm:inline-block font-mono text-[10px] bg-amberKin/15 border border-amberKin/50 text-amberKin px-2 py-0.5 uppercase">
+              GONIOMETRIC FIT ENGINE
+            </span>
+          </div>
+          <p class="font-mono text-[10px] text-chalkDim uppercase tracking-wider">
+            BIOMECHANICS-DRIVEN ICELANDIC OUTDOOR APPAREL • ZERO SEAM RESTRICTION
+          </p>
+        </div>
+      </div>
+
+      <!-- Right: Active Freedom Score & Direct Purchase Drawer Trigger -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-2 bg-slateWarm border border-slateLine px-3.5 py-1.5 font-mono text-xs">
+          <span class="text-chalkDim">FREEDOM SCORE:</span>
+          <span id="headerFreedomScore" class="text-amberKin font-bold">98 / 100</span>
+        </div>
+
+        <button
+          onclick="togglePurchaseDrawer(true)"
+          class="bg-chalk hover:bg-amberKin text-obsidian font-mono font-extrabold text-xs uppercase px-4 py-2.5 flex items-center gap-2 transition"
+        >
+          <span>KINETIC KIT BAG</span>
+          <span id="cartCountPill" class="bg-obsidian text-amberKin px-2 py-0.5 text-[10px]">1</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       01. MOVEMENT POSE SELECTOR BAR (4 DYNAMIC FIELD POSES)
+       ===================================================================== -->
+  <section class="border-b border-slateLine bg-slateWarm">
+    <div class="max-w-[1600px] mx-auto px-5 py-4">
+      <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+        <span class="font-mono text-xs text-amberKin font-bold uppercase tracking-wider">
+          01 // SELECT BIOMECHANICAL FIELD POSE TO MORPH THE FIT RIG
+        </span>
+        <span id="activeJointAnglesReadout" class="font-mono text-xs text-chalkDim">
+          HIP FLEXION: 112° • KNEE ARTICULATION: 84° • SHOULDER ELEVATION: 45°
+        </span>
+      </div>
+
+      <!-- 4 Pose Selector Buttons -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3" id="poseSelectorBar">
+        <button
+          onclick="selectPose('scramble')"
+          id="poseBtn-scramble"
+          class="p-3.5 border-2 border-amberKin bg-slateCard text-left transition"
+        >
+          <div class="flex justify-between font-mono text-[10px] text-amberKin font-bold">
+            <span>POSE 01 // HIGH STEP</span>
+            <span>HIP 112°</span>
+          </div>
+          <div class="font-bold text-sm uppercase text-chalk mt-1">[Steep Step / Rock Scramble]</div>
+          <div class="text-xs text-chalkDim mt-0.5">Tests knee darts & crotch gusset give</div>
+        </button>
+
+        <button
+          onclick="selectPose('squat')"
+          id="poseBtn-squat"
+          class="p-3.5 border border-slateLine bg-obsidian hover:border-chalk/40 text-left transition"
+        >
+          <div class="flex justify-between font-mono text-[10px] text-chalkDim">
+            <span>POSE 02 // DEEP FLEXION</span>
+            <span>KNEE 46°</span>
+          </div>
+          <div class="font-bold text-sm uppercase text-chalk mt-1">[Full Squat / Camp Task]</div>
+          <div class="text-xs text-chalkDim mt-0.5">Tests lumbar drop-hem & diamond gusset</div>
+        </button>
+
+        <button
+          onclick="selectPose('reach')"
+          id="poseBtn-reach"
+          class="p-3.5 border border-slateLine bg-obsidian hover:border-chalk/40 text-left transition"
+        >
+          <div class="flex justify-between font-mono text-[10px] text-chalkDim">
+            <span>POSE 03 // VERTICAL CLIMB</span>
+            <span>ARM 168°</span>
+          </div>
+          <div class="font-bold text-sm uppercase text-chalk mt-1">[Reaching Overhead / Climbing]</div>
+          <div class="text-xs text-chalkDim mt-0.5">Tests underarm gusset & zero hem lift</div>
+        </button>
+
+        <button
+          onclick="selectPose('driving')"
+          id="poseBtn-driving"
+          class="p-3.5 border border-slateLine bg-obsidian hover:border-chalk/40 text-left transition"
+        >
+          <div class="flex justify-between font-mono text-[10px] text-chalkDim">
+            <span>POSE 04 // STATIC SEATED</span>
+            <span>HIP 92°</span>
+          </div>
+          <div class="font-bold text-sm uppercase text-chalk mt-1">[Driving / Long Sitting]</div>
+          <div class="text-xs text-chalkDim mt-0.5">Tests behind-knee bunching & waist comfort</div>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       MAIN 3-COLUMN BIOMECHANICAL WORKSPACE:
+       [LEFT: STRESS-POINT ANATOMY] | [CENTER: DYNAMIC MORPHING FIT RIG] | [RIGHT: FREEDOM SCORE & ACOUSTICS]
+       ===================================================================== -->
+  <main class="max-w-[1600px] w-full mx-auto px-5 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- ===================================================================
+         LEFT COLUMN (4 COLS): 4 GARMENT STRESS-POINT HIGHLIGHTING MODULES
+         =================================================================== -->
+    <section class="lg:col-span-4 space-y-3">
+      <div class="border-b border-slateLine pb-2.5 flex items-center justify-between">
+        <div>
+          <span class="font-mono text-[10px] text-amberKin font-bold uppercase tracking-widest">
+            // ENGINEERED TENSION RELEASE
+          </span>
+          <h2 class="text-lg font-extrabold uppercase text-chalk">
+            STRESS-POINT HIGHLIGHTING
+          </h2>
+        </div>
+        <span class="font-mono text-[10px] text-chalkDim">CLICK TO FOCUS</span>
+      </div>
+
+      <!-- 1. Diamond Crotch Gusset -->
+      <div
+        onclick="focusStressPoint('gusset')"
+        id="stressCard-gusset"
+        class="p-4 border border-amberKin bg-slateCard cursor-pointer transition"
+      >
+        <div class="flex justify-between items-center font-mono text-[10px] text-amberKin font-bold mb-1">
+          <span>[ZONE 01] DIAMOND CROTCH GUSSET</span>
+          <span id="stressTag-gusset">PEAK LOAD IN THIS POSE</span>
+        </div>
+        <h3 class="font-bold text-sm text-chalk uppercase">
+          4-Way Stretch Diamond Inseam Panel
+        </h3>
+        <p class="text-xs text-chalkDim mt-1 leading-relaxed">
+          Replaces the traditional 4-seam cross junction with a 28cm diamond panel, eliminating crotch blowouts during high rock steps and deep camp squats.
+        </p>
+        <div class="mt-2.5 pt-2 border-t border-slateLine flex justify-between font-mono text-[10px]">
+          <span class="text-chalkDim">SEAM TENSION REDUCTION:</span>
+          <span class="text-amberKin font-bold">-68% Peak Strain</span>
+        </div>
+      </div>
+
+      <!-- 2. Articulated Knee Darts -->
+      <div
+        onclick="focusStressPoint('knee')"
+        id="stressCard-knee"
+        class="p-4 border border-slateLine bg-slateWarm hover:border-chalk/40 cursor-pointer transition"
+      >
+        <div class="flex justify-between items-center font-mono text-[10px] text-amberKin font-bold mb-1">
+          <span>[ZONE 02] ARTICULATED KNEE DARTS</span>
+          <span id="stressTag-knee">ACTIVE FLEXION</span>
+        </div>
+        <h3 class="font-bold text-sm text-chalk uppercase">
+          Pre-Curved 32° Dual Knee Pleats & Back-Scallop
+        </h3>
+        <p class="text-xs text-chalkDim mt-1 leading-relaxed">
+          4 intake darts around the patella create a natural 3D pocket so fabric never pulls tight across the kneecap or bunches behind the popliteal fossa when sitting.
+        </p>
+        <div class="mt-2.5 pt-2 border-t border-slateLine flex justify-between font-mono text-[10px]">
+          <span class="text-chalkDim">FABRIC BUNCHING INDEX:</span>
+          <span class="text-amberKin font-bold">0.0% Popliteal Pinch</span>
+        </div>
+      </div>
+
+      <!-- 3. Drop-Back Lumbar Hem -->
+      <div
+        onclick="focusStressPoint('lumbar')"
+        id="stressCard-lumbar"
+        class="p-4 border border-slateLine bg-slateWarm hover:border-chalk/40 cursor-pointer transition"
+      >
+        <div class="flex justify-between items-center font-mono text-[10px] text-amberKin font-bold mb-1">
+          <span>[ZONE 03] DROP-BACK LUMBAR HEM</span>
+          <span id="stressTag-lumbar">COVERAGE SEAL</span>
+        </div>
+        <h3 class="font-bold text-sm text-chalk uppercase">
+          +6.5 cm Extended Scalloped Rear Storm Tail
+        </h3>
+        <p class="text-xs text-chalkDim mt-1 leading-relaxed">
+          Maintains complete overlap over the trouser waistband when hunched forward setting tent stakes in a gale or leaning into a 45° highland scramble.
+        </p>
+        <div class="mt-2.5 pt-2 border-t border-slateLine flex justify-between font-mono text-[10px]">
+          <span class="text-chalkDim">LUMBAR GAP AT 45° LEAN:</span>
+          <span class="text-amberKin font-bold">0.0 cm (Full Seal)</span>
+        </div>
+      </div>
+
+      <!-- 4. Seamless Shoulder Panels -->
+      <div
+        onclick="focusStressPoint('shoulder')"
+        id="stressCard-shoulder"
+        class="p-4 border border-slateLine bg-slateWarm hover:border-chalk/40 cursor-pointer transition"
+      >
+        <div class="flex justify-between items-center font-mono text-[10px] text-amberKin font-bold mb-1">
+          <span>[ZONE 04] SEAMLESS SHOULDER & GUSSET</span>
+          <span id="stressTag-shoulder">ZERO FRICTION</span>
+        </div>
+        <h3 class="font-bold text-sm text-chalk uppercase">
+          One-Piece Raglan Yoke + Underarm Pivot Gusset
+        </h3>
+        <p class="text-xs text-chalkDim mt-1 leading-relaxed">
+          Shifts all stitching off the clavicle ridge so heavy backpack straps never rub a seam into your shoulder, while single-piece underarm panels prevent waist-hem lift when reaching overhead.
+        </p>
+        <div class="mt-2.5 pt-2 border-t border-slateLine flex justify-between font-mono text-[10px]">
+          <span class="text-chalkDim">WAIST LIFT AT 170° REACH:</span>
+          <span class="text-amberKin font-bold">0.0 cm Hem Rise</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         CENTER COLUMN (4 COLS): THE DYNAMIC MORPHING FIT RIG (SVG MANNEQUIN)
+         =================================================================== -->
+    <section class="lg:col-span-4 bg-slateWarm border border-slateLine p-5 flex flex-col justify-between min-h-[670px] relative">
+      <!-- Top Rig Header -->
+      <div class="border-b border-slateLine pb-3 flex items-start justify-between">
+        <div>
+          <span class="font-mono text-[10px] text-amberKin font-bold uppercase tracking-widest">
+            // KINEMATIC MOTION CAPTURE RIG
+          </span>
+          <h2 id="rigPoseHeadline" class="text-lg font-extrabold uppercase text-chalk mt-0.5">
+            POSE 01: STEEP STEP / ROCK SCRAMBLE
+          </h2>
+        </div>
+        <span class="font-mono text-[10px] bg-obsidian border border-slateLine px-2 py-1 text-amberKin">
+          GONIOMETER ON
+        </span>
+      </div>
+
+      <!-- Interactive Morphing Biomechanical SVG Viewport -->
+      <div class="relative flex-1 flex items-center justify-center my-2 bg-obsidian border border-slateLine overflow-hidden p-3">
+        <!-- Corner Goniometer Protractor Overlay -->
+        <div class="absolute top-3 left-3 font-mono text-[10px] text-chalkDim pointer-events-none">
+          <div>PELVIC TILT: <strong id="hudPelvicTilt" class="text-chalk">+14°</strong></div>
+          <div>KNEE TORQUE: <strong id="hudKneeTorque" class="text-amberKin">0.4 N·m (LOW)</strong></div>
+        </div>
+
+        <div class="absolute top-3 right-3 font-mono text-[10px] text-right text-chalkDim pointer-events-none">
+          <div>ACTIVE FOCUS:</div>
+          <div id="hudFocusZone" class="text-amberKin font-bold uppercase">DIAMOND CROTCH GUSSET</div>
+        </div>
+
+        <!-- Morphing Kinematic SVG Mannequin -->
+        <svg id="kinematicSvg" viewBox="0 0 360 440" class="w-full max-w-[330px] h-[400px] overflow-visible">
+          <!-- Floor / Terrain Reference Line -->
+          <line x1="20" y1="405" x2="340" y2="405" stroke="#323842" stroke-width="1.5" />
+          <!-- Rock Step Block (Shown during Scramble / Sitting) -->
+          <rect id="svgTerrainProp" x="195" y="335" width="95" height="70" fill="#181B20" stroke="#323842" stroke-width="1.5" class="kinematic-part" />
+
+          <!-- Garment & Skeleton Dynamic Group (Rendered via JS for crisp joint morphing) -->
+          <g id="kinematicBodyLayer"></g>
+        </svg>
+      </div>
+
+      <!-- Bottom Pose Telemetry Summary -->
+      <div class="bg-obsidian border border-slateLine p-3.5 font-mono text-xs">
+        <div class="flex justify-between text-[10px] text-amberKin font-bold uppercase mb-1">
+          <span id="rigObservationTitle">BIOMECHANICAL ADVANTAGE IN THIS POSE</span>
+          <span>ZERO BINDING</span>
+        </div>
+        <p id="rigObservationDesc" class="text-[11px] text-chalkDim font-sans leading-relaxed">
+          During a steep 65cm rock step, the diamond crotch gusset and pre-bent 32° knee darts eliminate upward cuff drag and prevent fabric tension across the hip flexors.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         RIGHT COLUMN (4 COLS): "FREEDOM-OF-MOTION SCORE" & ACOUSTIC METER
+         =================================================================== -->
+    <section class="lg:col-span-4 flex flex-col gap-5">
+      <!-- Freedom-of-Motion Scorecard -->
+      <div class="bg-slateWarm border border-slateLine p-5">
+        <div class="flex items-center justify-between border-b border-slateLine pb-3 mb-4">
+          <div>
+            <span class="font-mono text-[10px] text-amberKin font-bold uppercase tracking-widest">
+              // KINEMATIC & ACOUSTIC TELEMETRY
+            </span>
+            <h2 class="text-lg font-extrabold uppercase text-chalk mt-0.5">
+              FREEDOM-OF-MOTION SCORE
+            </h2>
+          </div>
+          <div class="text-right font-mono">
+            <span id="scoreMainVal" class="text-3xl font-extrabold text-amberKin">98</span>
+            <span class="text-xs text-chalkDim">/100</span>
+          </div>
+        </div>
+
+        <!-- Active Specimen Switcher inside Right Column -->
+        <div class="mb-4">
+          <div class="font-mono text-[10px] text-chalkDim uppercase mb-1.5">
+            COMPARE FABRIC & ACOUSTIC PROFILE:
+          </div>
+          <div class="grid grid-cols-2 gap-2 font-mono text-xs">
+            <button
+              onclick="selectFabricProfile('silent')"
+              id="profBtn-silent"
+              class="p-2.5 border border-amberKin bg-slateCard text-left transition"
+            >
+              <div class="font-bold text-chalk">Silent-Hunt Softshell</div>
+              <div class="text-[10px] text-amberKin">21 dB Whisper • 4-Way</div>
+            </button>
+            <button
+              onclick="selectFabricProfile('ripstop')"
+              id="profBtn-ripstop"
+              class="p-2.5 border border-slateLine bg-obsidian text-left hover:border-chalk/40 transition"
+            >
+              <div class="font-bold text-chalk">Rugged 500D Ripstop</div>
+              <div class="text-[10px] text-chalkDim">36 dB Storm • Mechanical</div>
+            </button>
+          </div>
+        </div>
+
+        <!-- 3 Dynamic Engineering Meters -->
+        <div class="space-y-3.5 font-mono text-xs">
+          <!-- 1. 4-Way Flexibility & Joint Give -->
+          <div class="bg-obsidian p-3 border border-slateLine">
+            <div class="flex justify-between mb-1">
+              <span class="text-chalkDim">MULTI-AXIS FLEXIBILITY RATING:</span>
+              <span id="metricFlexVal" class="font-bold text-amberKin">98% (28% 4-WAY ELONGATION)</span>
+            </div>
+            <div class="w-full h-2 bg-slateWarm">
+              <div id="barFlex" class="h-full bg-amberKin transition-all duration-300" style="width: 98%;"></div>
+            </div>
+          </div>
+
+          <!-- 2. Acoustic Noise Level (Silent-Hunt vs Rugged Ripstop) -->
+          <div class="bg-obsidian p-3 border border-slateLine">
+            <div class="flex justify-between mb-1">
+              <span class="text-chalkDim">FRICTION NOISE LEVEL (DECIBELS):</span>
+              <span id="metricNoiseVal" class="font-bold text-emerald-400">21 dB (SILENT STALKING GRADE)</span>
+            </div>
+            <div class="w-full h-2 bg-slateWarm">
+              <div id="barNoise" class="h-full bg-emerald-400 transition-all duration-300" style="width: 24%;"></div>
+            </div>
+            <div class="flex justify-between text-[9px] text-chalkDim mt-1">
+              <span>15 dB SILENT</span>
+              <span>35 dB BRISK WALK</span>
+              <span>55 dB CRINKLE SHELL</span>
+            </div>
+          </div>
+
+          <!-- 3. Fabric Weight & Articulation Darts -->
+          <div class="bg-obsidian p-3 border border-slateLine grid grid-cols-2 gap-3">
+            <div>
+              <div class="text-[10px] text-chalkDim">FABRIC DENSITY</div>
+              <div id="metricGsmVal" class="font-bold text-chalk text-sm mt-0.5">245 g/m² (510g Total)</div>
+            </div>
+            <div>
+              <div class="text-[10px] text-chalkDim">ANATOMICAL PANELS</div>
+              <div class="font-bold text-amberKin text-sm mt-0.5">18 Articulated Cuts</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Kinetic Garment Catalog Quick-Select & Add to Kit -->
+      <div class="bg-slateWarm border border-slateLine p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <div class="font-mono text-[10px] text-amberKin font-bold uppercase tracking-widest mb-2">
+            // ARTICULATED SPECIMEN LINEUP
+          </div>
+          <div id="kineticCatalogList" class="space-y-2.5">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <button
+          onclick="togglePurchaseDrawer(true)"
+          class="mt-4 w-full py-3.5 px-5 bg-amberKin hover:bg-amberDeep text-obsidian font-mono font-extrabold text-xs uppercase tracking-wider flex items-center justify-between transition"
+        >
+          <span>CONFIGURE LIMB SIZING & PURCHASE</span>
+          <span>[OPEN DRAWER ➔]</span>
+        </button>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- =====================================================================
+       04. DIRECT PURCHASE DRAWER (LIMB ARTICULATION & COMFORT CALIBRATOR)
+       ===================================================================== -->
+  <div id="purchaseOverlay" onclick="togglePurchaseDrawer(false)" class="fixed inset-0 bg-black/75 backdrop-blur-xs z-50 hidden"></div>
+  <aside
+    id="purchaseDrawer"
+    class="fixed top-0 right-0 h-full w-full max-w-lg bg-slateWarm border-l border-amberKin z-50 translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl"
+  >
+    <div class="p-5 border-b border-slateLine bg-obsidian flex items-start justify-between">
+      <div>
+        <span class="font-mono text-[10px] text-amberKin font-bold uppercase tracking-widest">
+          // BIOMECHANICAL SIZE & JOINT ALIGNMENT
+        </span>
+        <h3 class="text-xl font-extrabold uppercase text-chalk mt-0.5">
+          Direct Purchase & Limb Calibrator
+        </h3>
+      </div>
+      <button onclick="togglePurchaseDrawer(false)" class="font-mono text-xs px-3 py-1.5 bg-slateCard border border-slateLine text-chalk hover:border-amberKin">
+        [CLOSE ✕]
+      </button>
+    </div>
+
+    <div class="p-5 overflow-y-auto flex-1 space-y-5">
+      <!-- Limb Articulation Length Selector (Aligns Knee Darts & Elbow Panels) -->
+      <div class="bg-obsidian border border-slateLine p-4">
+        <div class="font-mono text-[11px] font-bold text-amberKin uppercase mb-2">
+          01. LIMB ARTICULATION LENGTH (ALIGNS KNEE & ELBOW DARTS)
+        </div>
+        <div class="grid grid-cols-3 gap-2 font-mono text-xs">
+          <button onclick="setLimbLength('Short (-4cm)')" id="limbBtn-Short (-4cm)" class="limb-btn p-2.5 border border-slateLine bg-slateWarm text-chalk text-left">
+            <div class="font-bold">SHORT</div>
+            <div class="text-[10px] text-chalkDim">Inseam 76cm</div>
+          </button>
+          <button onclick="setLimbLength('Regular (Std)')" id="limbBtn-Regular (Std)" class="limb-btn p-2.5 border border-amberKin bg-slateCard text-chalk text-left">
+            <div class="font-bold text-amberKin">REGULAR</div>
+            <div class="text-[10px] text-chalkDim">Inseam 81cm</div>
+          </button>
+          <button onclick="setLimbLength('Tall (+5cm)')" id="limbBtn-Tall (+5cm)" class="limb-btn p-2.5 border border-slateLine bg-slateWarm text-chalk text-left">
+            <div class="font-bold">TALL</div>
+            <div class="text-[10px] text-chalkDim">Inseam 86cm</div>
+          </button>
+        </div>
+
+        <!-- Waist / Torso Comfort Preference -->
+        <div class="font-mono text-[11px] font-bold text-amberKin uppercase mt-4 mb-2">
+          02. DYNAMIC RANGE PREFERENCE
+        </div>
+        <div class="grid grid-cols-2 gap-2 font-mono text-xs">
+          <button onclick="setComfortPref('Athletic Scrambler')" id="prefBtn-Athletic Scrambler" class="p-2.5 border border-amberKin bg-slateCard text-chalk text-left">
+            <div class="font-bold text-amberKin">ATHLETIC SCRAMBLER</div>
+            <div class="text-[10px] text-chalkDim">Contoured zero-flap cut</div>
+          </button>
+          <button onclick="setComfortPref('Relaxed Expedition')" id="prefBtn-Relaxed Expedition" class="p-2.5 border border-slateLine bg-slateWarm text-chalk text-left">
+            <div class="font-bold">RELAXED EXPEDITION</div>
+            <div class="text-[10px] text-chalkDim">+4cm thermal underlayer room</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- Selected Kit Items -->
+      <div>
+        <div class="font-mono text-[11px] font-bold uppercase text-chalkDim mb-2">
+          03. SELECTED KINETIC SPECIMENS
+        </div>
+        <div id="drawerCartList" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </div>
+
+    <div class="p-5 border-t border-slateLine bg-obsidian">
+      <div class="flex justify-between font-mono text-xs text-chalkDim mb-1">
+        <span>JOINT DART ALIGNMENT GUARANTEE:</span>
+        <span class="text-amberKin font-bold">FREE 30-DAY EXCHANGE</span>
+      </div>
+      <div class="flex justify-between items-baseline font-mono mb-4">
+        <span class="text-xs uppercase text-chalk">TOTAL (INCL. 24% VSK):</span>
+        <span id="drawerTotalISK" class="text-2xl font-extrabold text-amberKin">29.900 ISK</span>
+      </div>
+      <button
+        onclick="completeKineticOrder()"
+        class="w-full py-3.5 bg-amberKin hover:bg-amberDeep text-obsidian font-mono font-extrabold text-xs uppercase tracking-wider transition"
+      >
+        DISPATCH ARTICULATED ORDER ➔
+      </button>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       JAVASCRIPT ENGINE: KINEMATIC POSE MORPHING, STRESS ZONES & CATALOG
+       ===================================================================== -->
+  <script>
+    // Biomechanical Pose Coordinates for the Dynamic SVG Mannequin
+    const POSES = {
+      scramble: {
+        title: 'POSE 01: STEEP STEP / ROCK SCRAMBLE',
+        angles: 'HIP FLEXION: 112° • KNEE ARTICULATION: 84° • TORSO LEAN: 18°',
+        pelvicTilt: '+14° ANTERIOR',
+        kneeTorque: '0.4 N·m (ULTRA-LOW)',
+        primaryStressZone: 'gusset',
+        observation: 'During a steep 65cm rock step, the diamond crotch gusset and pre-bent 32° knee darts eliminate upward cuff drag and prevent fabric tension across the hip flexors.',
+        propStyle: { x: 195, y: 335, w: 95, h: 70, opacity: 1 },
+        // Joint coordinates: head, neck, shoulder, elbowL, handL, elbowR, handR, hip, crotch, kneeL, footL, kneeR, footR
+        joints: {
+          head: [175, 58],
+          neck: [170, 88],
+          lumbar: [152, 205],
+          hip: [158, 222],
+          shoulder: [168, 102],
+          elbowL: [130, 152],
+          handL: [148, 195],
+          elbowR: [208, 142],
+          handR: [238, 118],
+          kneeL: [135, 312],
+          footL: [120, 402],
+          kneeR: [232, 240],
+          footR: [232, 333]
+        }
+      },
+      squat: {
+        title: 'POSE 02: FULL SQUAT / CAMP TASK',
+        angles: 'HIP FLEXION: 138° • KNEE ARTICULATION: 46° • LUMBAR DROP-HEM: +6.5CM',
+        pelvicTilt: '+28° DEEP SQUAT',
+        kneeTorque: '0.6 N·m (ZERO PINCH)',
+        primaryStressZone: 'lumbar',
+        observation: 'In a full camp squat, standard pants pull down at the rear waistband while knees bind. Our +6.5cm scalloped drop-back hem and dual knee pleats maintain 100% lumbar seal and zero popliteal bunching.',
+        propStyle: { x: 260, y: 375, w: 60, h: 30, opacity: 0.4 },
+        joints: {
+          head: [195, 118],
+          neck: [182, 148],
+          lumbar: [132, 252],
+          hip: [142, 268],
+          shoulder: [176, 160],
+          elbowL: [195, 220],
+          handL: [242, 245],
+          elbowR: [215, 210],
+          handR: [262, 230],
+          kneeL: [222, 285],
+          footL: [168, 402],
+          kneeR: [236, 272],
+          footR: [192, 402]
+        }
+      },
+      reach: {
+        title: 'POSE 03: REACHING OVERHEAD / CLIMBING',
+        angles: 'SHOULDER ABDUCTION: 168° • ELBOW EXTENSION: 158° • HEM LIFT: 0.0 CM',
+        pelvicTilt: '+4° NEUTRAL',
+        kneeTorque: '0.3 N·m (MINIMAL)',
+        primaryStressZone: 'shoulder',
+        observation: 'Reaching high for an ice-axe placement normally yanks the entire jacket waist upward above your belt. Our single-piece underarm pivot gusset allows a full 168° vertical reach with 0.0cm hem rise.',
+        propStyle: { x: 230, y: 355, w: 80, h: 50, opacity: 0.8 },
+        joints: {
+          head: [168, 62],
+          neck: [168, 92],
+          lumbar: [164, 212],
+          hip: [166, 228],
+          shoulder: [168, 106],
+          elbowL: [132, 58],
+          handL: [122, 18],
+          elbowR: [206, 52],
+          handR: [218, 14],
+          kneeL: [148, 318],
+          footL: [138, 402],
+          kneeR: [222, 285],
+          footR: [248, 353]
+        }
+      },
+      driving: {
+        title: 'POSE 04: DRIVING / LONG SITTING (DEFENDER CABIN)',
+        angles: 'HIP ANGLE: 92° • KNEE ANGLE: 90° • SCIATIC PRESSURE: ZERO',
+        pelvicTilt: '0° SEATED SUPPORT',
+        kneeTorque: '0.2 N·m (AT REST)',
+        primaryStressZone: 'knee',
+        observation: 'During 6-hour 4x4 highland approaches, scalloped behind-the-knee articulation prevents thick Ripstop fabric from bunching into the tendons, while side-mounted cargo pockets sit flat on the thigh.',
+        propStyle: { x: 115, y: 265, w: 70, h: 140, opacity: 1 },
+        joints: {
+          head: [152, 74],
+          neck: [150, 105],
+          lumbar: [138, 225],
+          hip: [148, 245],
+          shoulder: [148, 120],
+          elbowL: [182, 178],
+          handL: [232, 168],
+          elbowR: [192, 172],
+          handR: [242, 160],
+          kneeL: [238, 245],
+          footL: [252, 385],
+          kneeR: [248, 252],
+          footR: [268, 395]
+        }
+      }
+    };
+
+    // Kinetic Specimen Catalog
+    const KINETIC_ITEMS = [
+      {
+        id: 'KC-01',
+        name: 'Vindur 3D-Articulated Scrambler Pants',
+        role: 'LOWER CHASSIS // 18-PANEL CUT',
+        priceISK: 29900,
+        weightG: 510,
+        score: 98,
+        desc: 'Diamond crotch gusset + 32° dual knee darts in 4-way mechanical VersaStretch®.'
+      },
+      {
+        id: 'KC-02',
+        name: 'Zero-Lift Raglan Climbing Anorak',
+        role: 'UPPER SHELL // PIVOT SLEEVE',
+        priceISK: 42900,
+        weightG: 490,
+        score: 99,
+        desc: 'Seamless clavicle yoke + underarm pivot gusset and +6.5cm scalloped drop-back tail.'
+      },
+      {
+        id: 'KC-03',
+        name: 'Silent-Hunt Brushed Softshell Jacket',
+        role: 'STEALTH OUTER // 21 dB ACOUSTIC',
+        priceISK: 36500,
+        weightG: 540,
+        score: 97,
+        desc: 'Ultra-quiet brushed face weave eliminating nylon swish during wildlife observation.'
+      }
+    ];
+
+    // State
+    let currentPose = 'scramble';
+    let activeStressZone = 'gusset';
+    let currentFabricProfile = 'silent'; // 'silent' | 'ripstop'
+    let selectedLimbLength = 'Regular (Std)';
+    let selectedComfortPref = 'Athletic Scrambler';
+    let kineticCart = [{ ...KINETIC_ITEMS[0], limb: 'Regular (Std)', pref: 'Athletic Scrambler', qty: 1 }];
+
+    // Select Biomechanical Pose & Morph SVG Rig
+    function selectPose(poseKey) {
+      currentPose = poseKey;
+      const p = POSES[poseKey];
+
+      ['scramble', 'squat', 'reach', 'driving'].forEach(k => {
+        document.getElementById(`poseBtn-${k}`).className =
+          k === poseKey
+            ? 'p-3.5 border-2 border-amberKin bg-slateCard text-left transition'
+            : 'p-3.5 border border-slateLine bg-obsidian hover:border-chalk/40 text-left transition';
+      });
+
+      document.getElementById('rigPoseHeadline').textContent = p.title;
+      document.getElementById('activeJointAnglesReadout').textContent = p.angles;
+      document.getElementById('hudPelvicTilt').textContent = p.pelvicTilt;
+      document.getElementById('hudKneeTorque').textContent = p.kneeTorque;
+      document.getElementById('rigObservationDesc').textContent = p.observation;
+
+      focusStressPoint(p.primaryStressZone, false);
+      renderKinematicRig();
+    }
+
+    function focusStressPoint(zoneKey, manualClick = true) {
+      activeStressZone = zoneKey;
+      const zoneLabels = {
+        gusset: 'DIAMOND CROTCH GUSSET',
+        knee: '3D ARTICULATED KNEE DARTS',
+        lumbar: 'DROP-BACK LUMBAR STORM HEM',
+        shoulder: 'SEAMLESS RAGLAN SHOULDER YOKE'
+      };
+      document.getElementById('hudFocusZone').textContent = zoneLabels[zoneKey];
+
+      ['gusset', 'knee', 'lumbar', 'shoulder'].forEach(k => {
+        document.getElementById(`stressCard-${k}`).className =
+          k === zoneKey
+            ? 'p-4 border-2 border-amberKin bg-slateCard cursor-pointer transition'
+            : 'p-4 border border-slateLine bg-slateWarm hover:border-chalk/40 cursor-pointer transition';
+      });
+
+      if (manualClick) {
+        renderKinematicRig();
+      }
+    }
+
+    // Render the Kinematic Mannequin & Highlighted Stress-Point Nodes
+    function renderKinematicRig() {
+      const p = POSES[currentPose];
+      const j = p.joints;
+
+      // Update terrain prop box
+      const prop = document.getElementById('svgTerrainProp');
+      prop.setAttribute('x', p.propStyle.x);
+      prop.setAttribute('y', p.propStyle.y);
+      prop.setAttribute('width', p.propStyle.w);
+      prop.setAttribute('height', p.propStyle.h);
+      prop.setAttribute('opacity', p.propStyle.opacity);
+
+      // Compute Stress-Point Node Coordinates based on current joints
+      const stressCoords = {
+        gusset: [(j.hip[0] + j.kneeR[0]) * 0.48, j.hip[1] + 18],
+        knee: [j.kneeR[0], j.kneeR[1]],
+        lumbar: [j.lumbar[0] - 14, j.lumbar[1] + 8],
+        shoulder: [j.shoulder[0], j.shoulder[1] - 4]
+      };
+
+      const layer = document.getElementById('kinematicBodyLayer');
+      layer.innerHTML = `
+        <!-- Left Leg & Arm (Back Layer) -->
+        <line x1="${j.hip[0]}" y1="${j.hip[1]}" x2="${j.kneeL[0]}" y2="${j.kneeL[1]}" stroke="#475569" stroke-width="20" stroke-linecap="round" />
+        <line x1="${j.kneeL[0]}" y1="${j.kneeL[1]}" x2="${j.footL[0]}" y2="${j.footL[1]}" stroke="#475569" stroke-width="16" stroke-linecap="round" />
+        <line x1="${j.shoulder[0]}" y1="${j.shoulder[1]}" x2="${j.elbowL[0]}" y2="${j.elbowL[1]}" stroke="#475569" stroke-width="15" stroke-linecap="round" />
+        <line x1="${j.elbowL[0]}" y1="${j.elbowL[1]}" x2="${j.handL[0]}" y2="${j.handL[1]}" stroke="#475569" stroke-width="12" stroke-linecap="round" />
+
+        <!-- Torso Jacket Chassis (with Drop-Back Lumbar Tail) -->
+        <path
+          d="M ${j.shoulder[0]-18},${j.shoulder[1]} L ${j.shoulder[0]+20},${j.shoulder[1]} L ${j.hip[0]+18},${j.hip[1]} L ${j.lumbar[0]-22},${j.lumbar[1]+16} Z"
+          fill="#262C36"
+          stroke="#F5F4F0"
+          stroke-width="2"
+        />
+
+        <!-- Right Leg (Foreground Articulated Trouser Leg) -->
+        <line x1="${j.hip[0]}" y1="${j.hip[1]}" x2="${j.kneeR[0]}" y2="${j.kneeR[1]}" stroke="#323842" stroke-width="22" stroke-linecap="round" />
+        <line x1="${j.kneeR[0]}" y1="${j.kneeR[1]}" x2="${j.footR[0]}" y2="${j.footR[1]}" stroke="#323842" stroke-width="18" stroke-linecap="round" />
+
+        <!-- Right Arm (Foreground Articulated Sleeve) -->
+        <line x1="${j.shoulder[0]}" y1="${j.shoulder[1]}" x2="${j.elbowR[0]}" y2="${j.elbowR[1]}" stroke="#3B4252" stroke-width="16" stroke-linecap="round" />
+        <line x1="${j.elbowR[0]}" y1="${j.elbowR[1]}" x2="${j.handR[0]}" y2="${j.handR[1]}" stroke="#3B4252" stroke-width="13" stroke-linecap="round" />
+
+        <!-- Head & Cranial Profile -->
+        <circle cx="${j.head[0]}" cy="${j.head[1]}" r="18" fill="#21252C" stroke="#F5F4F0" stroke-width="2" />
+
+        <!-- Goniometer Angle Arc at Active Right Knee -->
+        <circle cx="${j.kneeR[0]}" cy="${j.kneeR[1]}" r="22" fill="none" stroke="#F59E0B" stroke-width="1.2" stroke-dasharray="4 3" />
+
+        <!-- 4 Clickable Stress-Point Nodes on Mannequin -->
+        ${Object.entries(stressCoords).map(([key, pt]) => {
+          const isFocused = activeStressZone === key;
+          return `
+            <g class="cursor-pointer" onclick="focusStressPoint('${key}')">
+              ${isFocused ? `<circle cx="${pt[0]}" cy="${pt[1]}" r="12" fill="none" stroke="#F59E0B" stroke-width="2" class="stress-node-ring" />` : ''}
+              <circle cx="${pt[0]}" cy="${pt[1]}" r="${isFocused ? 6.5 : 4.5}" fill="${isFocused ? '#F59E0B' : '#F5F4F0'}" stroke="#0E1013" stroke-width="1.5" />
+            </g>
+          `;
+        }).join('')}
+      `;
+    }
+
+    // Switch Acoustic & Fabric Profile (Silent-Hunt Softshell vs Rugged Ripstop)
+    function selectFabricProfile(prof) {
+      currentFabricProfile = prof;
+      const btnSilent = document.getElementById('profBtn-silent');
+      const btnRip = document.getElementById('profBtn-ripstop');
+
+      if (prof === 'silent') {
+        btnSilent.className = 'p-2.5 border border-amberKin bg-slateCard text-left transition';
+        btnRip.className = 'p-2.5 border border-slateLine bg-obsidian text-left hover:border-chalk/40 transition';
+        document.getElementById('scoreMainVal').textContent = '98';
+        document.getElementById('headerFreedomScore').textContent = '98 / 100';
+        document.getElementById('metricFlexVal').textContent = '98% (28% 4-WAY ELONGATION)';
+        document.getElementById('barFlex').style.width = '98%';
+        document.getElementById('metricNoiseVal').textContent = '21 dB (SILENT STALKING GRADE)';
+        document.getElementById('metricNoiseVal').className = 'font-bold text-emerald-400';
+        document.getElementById('barNoise').style.width = '24%';
+        document.getElementById('barNoise').className = 'h-full bg-emerald-400 transition-all duration-300';
+        document.getElementById('metricGsmVal').textContent = '245 g/m² (510g Total)';
+      } else {
+        btnRip.className = 'p-2.5 border border-amberKin bg-slateCard text-left transition';
+        btnSilent.className = 'p-2.5 border border-slateLine bg-obsidian text-left hover:border-chalk/40 transition';
+        document.getElementById('scoreMainVal').textContent = '94';
+        document.getElementById('headerFreedomScore').textContent = '94 / 100';
+        document.getElementById('metricFlexVal').textContent = '94% (MECHANICAL STRETCH + GUSSET)';
+        document.getElementById('barFlex').style.width = '94%';
+        document.getElementById('metricNoiseVal').textContent = '36 dB (RUGGED BASALT RIPSTOP)';
+        document.getElementById('metricNoiseVal').className = 'font-bold text-amberKin';
+        document.getElementById('barNoise').style.width = '54%';
+        document.getElementById('barNoise').className = 'h-full bg-amberKin transition-all duration-300';
+        document.getElementById('metricGsmVal').textContent = '285 g/m² (640g Total)';
+      }
+    }
+
+    // Render Right Column Specimen List
+    function renderKineticCatalog() {
+      const list = document.getElementById('kineticCatalogList');
+      list.innerHTML = KINETIC_ITEMS.map(item => `
+        <div class="p-3 bg-obsidian border border-slateLine hover:border-amberKin transition flex items-center justify-between gap-3">
+          <div>
+            <div class="font-mono text-[10px] text-amberKin font-bold">${item.id} • SCORE ${item.score}/100</div>
+            <div class="font-bold text-sm text-chalk">${item.name}</div>
+            <div class="text-xs text-chalkDim mt-0.5">${item.desc}</div>
+          </div>
+          <div class="text-right shrink-0">
+            <div class="font-mono text-xs font-bold text-chalk mb-1.5">${item.priceISK.toLocaleString('de-DE')} ISK</div>
+            <button
+              onclick="addKineticItem('${item.id}')"
+              class="px-3 py-1 bg-chalk hover:bg-amberKin text-obsidian font-mono font-extrabold text-[10px] uppercase transition"
+            >
+              + ADD TO KIT
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Direct Purchase Drawer Handlers
+    function setLimbLength(len) {
+      selectedLimbLength = len;
+      ['Short (-4cm)', 'Regular (Std)', 'Tall (+5cm)'].forEach(k => {
+        const btn = document.getElementById(`limbBtn-${k}`);
+        if (btn) {
+          btn.className = k === len
+            ? 'limb-btn p-2.5 border border-amberKin bg-slateCard text-chalk text-left'
+            : 'limb-btn p-2.5 border border-slateLine bg-slateWarm text-chalk text-left';
+        }
+      });
+    }
+
+    function setComfortPref(pref) {
+      selectedComfortPref = pref;
+      ['Athletic Scrambler', 'Relaxed Expedition'].forEach(k => {
+        const btn = document.getElementById(`prefBtn-${k}`);
+        if (btn) {
+          btn.className = k === pref
+            ? 'p-2.5 border border-amberKin bg-slateCard text-chalk text-left'
+            : 'p-2.5 border border-slateLine bg-slateWarm text-chalk text-left';
+        }
+      });
+    }
+
+    function addKineticItem(itemId) {
+      const item = KINETIC_ITEMS.find(i => i.id === itemId);
+      if (!item) return;
+      const existing = kineticCart.find(c => c.id === itemId && c.limb === selectedLimbLength);
+      if (existing) existing.qty += 1;
+      else kineticCart.push({ ...item, limb: selectedLimbLength, pref: selectedComfortPref, qty: 1 });
+      renderPurchaseDrawer();
+      togglePurchaseDrawer(true);
+    }
+
+    function updateKineticQty(idx, delta) {
+      if (!kineticCart[idx]) return;
+      kineticCart[idx].qty += delta;
+      if (kineticCart[idx].qty <= 0) kineticCart.splice(idx, 1);
+      renderPurchaseDrawer();
+    }
+
+    function renderPurchaseDrawer() {
+      const count = kineticCart.reduce((s, i) => s + i.qty, 0);
+      const total = kineticCart.reduce((s, i) => s + i.priceISK * i.qty, 0);
+
+      document.getElementById('cartCountPill').textContent = count;
+      document.getElementById('drawerTotalISK').textContent = `${total.toLocaleString('de-DE')} ISK`;
+
+      const container = document.getElementById('drawerCartList');
+      if (kineticCart.length === 0) {
+        container.innerHTML = `<div class="p-6 border border-dashed border-slateLine text-center font-mono text-xs text-chalkDim">Your Kinetic Kit Bag is empty.</div>`;
+        return;
+      }
+
+      container.innerHTML = kineticCart.map((item, idx) => `
+        <div class="p-3 bg-obsidian border border-slateLine flex items-center justify-between gap-3">
+          <div>
+            <div class="font-mono text-[10px] text-amberKin font-bold uppercase">${item.id} • ${item.limb} • ${item.pref}</div>
+            <div class="font-bold text-sm text-chalk">${item.name}</div>
+            <div class="font-mono text-xs text-chalkDim">${item.priceISK.toLocaleString('de-DE')} ISK × ${item.qty}</div>
+          </div>
+          <div class="flex items-center gap-1.5 font-mono text-xs">
+            <button onclick="updateKineticQty(${idx}, -1)" class="w-7 h-7 bg-slateWarm border border-slateLine text-chalk">-</button>
+            <span class="px-1 font-bold">${item.qty}</span>
+            <button onclick="updateKineticQty(${idx}, 1)" class="w-7 h-7 bg-slateWarm border border-slateLine text-chalk">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function togglePurchaseDrawer(open) {
+      const overlay = document.getElementById('purchaseOverlay');
+      const drawer = document.getElementById('purchaseDrawer');
+      if (open) {
+        overlay.classList.remove('hidden');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        overlay.classList.add('hidden');
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function completeKineticOrder() {
+      if (kineticCart.length === 0) return;
+      const total = document.getElementById('drawerTotalISK').textContent;
+      alert(`KINETIC COMFORT // ARTICULATION LAB DISPATCHED\n\nSpecimens: ${kineticCart.reduce((s,i)=>s+i.qty,0)}\nLimb Calibration: ${selectedLimbLength}\nFit Cut: ${selectedComfortPref}\nTotal Authorized: ${total}\n\nPrepared at Skeifan 10, Reykjavík for Dropp.is delivery.`);
+      togglePurchaseDrawer(false);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      selectPose('scramble');
+      renderKineticCatalog();
+      renderPurchaseDrawer();
+    });
+  </script>
+</body>
+</html>
