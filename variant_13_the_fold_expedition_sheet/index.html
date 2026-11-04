@@ -1,0 +1,837 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE FOLD // EXPEDITION SHEET — Origami Tyvek® Outdoor Storefront</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --paper-main: #EFECE4;
+      --paper-panel: #E6E2D6;
+      --paper-shade: #DAD4C5;
+      --stone-ink: #1F221E;
+      --lichen: #485441;
+      --lichen-light: #6B7B61;
+      --survey-red: #D94E28;
+      --grid-ink: rgba(31, 34, 30, 0.14);
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      margin: 0;
+      background-color: #181A17;
+      color: var(--stone-ink);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .font-display { font-family: 'Syne', sans-serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Waterproof Tyvek Map Paper Texture & Architectural Gridlines */
+    .tyvek-sheet {
+      background-color: var(--paper-main);
+      background-image:
+        linear-gradient(to right, rgba(31, 34, 30, 0.06) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(31, 34, 30, 0.06) 1px, transparent 1px),
+        radial-gradient(circle at 20% 30%, rgba(255,255,255,0.45), transparent 55%);
+      background-size: 28px 28px, 28px 28px, 100% 100%;
+      box-shadow: 0 35px 90px rgba(0, 0, 0, 0.65);
+    }
+
+    /* Origami 3D Perspective Stage */
+    .origami-stage {
+      perspective: 2000px;
+      transform-style: preserve-3d;
+    }
+
+    .map-sheet-wrapper {
+      transform-style: preserve-3d;
+      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    /* Individual Origami Panels with Crease Shadows */
+    .origami-panel {
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 0.85s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.85s ease, filter 0.5s ease;
+      border: 1px solid rgba(31, 34, 30, 0.18);
+      background-color: var(--paper-main);
+    }
+
+    /* Crease Line Shadow Overlay */
+    .crease-shadow-left {
+      background: linear-gradient(90deg, rgba(31, 34, 30, 0.14) 0%, transparent 18%);
+    }
+    .crease-shadow-top {
+      background: linear-gradient(180deg, rgba(31, 34, 30, 0.12) 0%, transparent 16%);
+    }
+
+    /* 3D Interactive Pocket Flap Hinge */
+    .pocket-container {
+      perspective: 900px;
+    }
+    .pocket-flap {
+      transform-origin: top center;
+      transform-style: preserve-3d;
+      transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1), box-shadow 0.4s ease;
+    }
+    .pocket-flap.open {
+      transform: rotateX(155deg);
+      box-shadow: 0 -12px 24px rgba(31, 34, 30, 0.22);
+    }
+
+    /* Interactive Zipper Slider Track */
+    .zipper-teeth {
+      background-image: repeating-linear-gradient(
+        90deg,
+        #1F221E 0px,
+        #1F221E 3px,
+        transparent 3px,
+        transparent 6px
+      );
+    }
+
+    /* Cinematic Depth-of-Field (DoF) Blur when Feature Inspector is active */
+    .dof-blur-active .dof-background-target {
+      filter: blur(7px) brightness(0.85);
+      pointer-events: none;
+    }
+
+    /* Perforated Fold Line */
+    .fold-crease-dashed {
+      border-style: dashed;
+      border-color: rgba(31, 34, 30, 0.28);
+    }
+  </style>
+</head>
+<body class="min-h-screen pb-24">
+
+  <!-- TOP ARCHITECTURAL MAP HEADER BAR -->
+  <header class="sticky top-0 z-40 bg-[#1F221E]/95 backdrop-blur-md text-[#EFECE4] border-b border-[#EFECE4]/15 px-4 md:px-8 h-16 flex items-center justify-between gap-4">
+    <div class="flex items-center gap-4">
+      <a href="../experiments_index.html" class="px-3 py-1.5 bg-[#2C312B] border border-[#EFECE4]/25 hover:border-[#D94E28] mono text-[11px] uppercase tracking-widest flex items-center gap-2 transition">
+        <span>←</span>
+        <span class="hidden sm:inline">LAB HUB</span>
+      </a>
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="font-display font-extrabold text-lg tracking-tight text-[#EFECE4]">THE FOLD // EXPEDITION SHEET</span>
+          <span class="px-2 py-0.5 bg-[#D94E28] text-[#EFECE4] mono text-[10px] font-bold uppercase tracking-widest">VARIANT 13</span>
+        </div>
+        <div class="mono text-[10px] text-[#EFECE4]/55 uppercase tracking-widest">
+          WATERPROOF TYVEK® MAP CATALOG • SCALE 1:25,000 • SHEET IS-64N
+        </div>
+      </div>
+    </div>
+
+    <!-- Center: 3-Stage Origami Unfold Controller -->
+    <div class="flex items-center gap-2">
+      <span class="hidden xl:inline mono text-[10px] text-[#EFECE4]/60 uppercase tracking-widest">ORIGAMI STATE:</span>
+      <div class="bg-[#141613] p-1 border border-[#EFECE4]/20 flex items-center gap-1 mono text-[10px]">
+        <button id="stageBtn0" onclick="setFoldStage(0)" class="px-2.5 py-1 uppercase transition bg-transparent text-[#EFECE4]/60 hover:text-white">
+          01. PACKET
+        </button>
+        <button id="stageBtn1" onclick="setFoldStage(1)" class="px-2.5 py-1 uppercase transition bg-transparent text-[#EFECE4]/60 hover:text-white">
+          02. HALF-FOLD
+        </button>
+        <button id="stageBtn2" onclick="setFoldStage(2)" class="px-2.5 py-1 uppercase transition bg-[#485441] text-[#EFECE4] font-bold">
+          03. FULL SHEET
+        </button>
+      </div>
+    </div>
+
+    <!-- Right: Continuous Origami Angle Scrubber + Sound Toggle -->
+    <div class="flex items-center gap-3">
+      <div class="hidden md:flex items-center gap-2 mono text-[10px]">
+        <span class="text-[#EFECE4]/60">FOLD:</span>
+        <input id="foldSlider" type="range" min="0" max="100" value="100"
+               oninput="scrubFoldPercentage(this.value)"
+               class="w-24 accent-[#D94E28] cursor-pointer" />
+        <span id="foldPctLabel" class="w-9 text-[#D94E28] font-bold">100%</span>
+      </div>
+
+      <button onclick="togglePaperAudio()" class="px-3 py-1.5 bg-[#2C312B] border border-[#EFECE4]/20 hover:border-[#D94E28] mono text-[10px] uppercase tracking-widest flex items-center gap-1.5">
+        <span id="paperAudioDot" class="w-2 h-2 rounded-full bg-[#D94E28]"></span>
+        <span id="paperAudioText" class="hidden sm:inline">PAPER SFX</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- COMPACT FOLDED PACKET BANNER (Interactive Trigger to Unfold) -->
+  <div class="max-w-[1560px] mx-auto px-4 md:px-8 pt-6">
+    <div class="bg-[#252924] text-[#EFECE4] border border-[#EFECE4]/15 p-4 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-9 h-9 bg-[#485441] border border-[#EFECE4]/30 flex items-center justify-center mono text-xs font-bold">
+          ⊞
+        </div>
+        <div>
+          <div class="mono text-[10px] text-[#D94E28] uppercase tracking-widest">
+            // 3D ORIGAMI EXPEDITION SHEET MECHANISM
+          </div>
+          <div class="text-xs sm:text-sm text-[#EFECE4]/85">
+            Click <strong class="text-white">"FOLD INTO PACKET"</strong> or drag the top slider to watch the 6-panel waterproof Tyvek® catalog fold and unfold in 3D space.
+          </div>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-2.5 mono text-xs">
+        <button onclick="cycleFoldStage()" id="primaryFoldCta" class="px-5 py-2.5 bg-[#D94E28] hover:bg-[#EFECE4] hover:text-[#1F221E] text-[#EFECE4] font-bold uppercase tracking-widest transition shadow-lg">
+          ⇄ FOLD / UNFOLD EXPEDITION SHEET
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MAIN 3D ORIGAMI UNFOLDING EXPEDITION SHEET WORKSPACE -->
+  <main id="mainWorkspace" class="origami-stage max-w-[1560px] mx-auto px-4 md:px-8 py-6">
+    <div id="mapSheetWrapper" class="map-sheet-wrapper tyvek-sheet relative">
+
+      <!-- TOP SHEET MARGIN: MAP REGISTRATION MARKS & SCALE BAR -->
+      <div class="dof-background-target border-b-2 border-[#1F221E] px-6 py-3 flex flex-wrap items-center justify-between gap-4 bg-[#E6E2D6] mono text-[11px]">
+        <div class="flex items-center gap-4">
+          <span class="font-bold text-[#1F221E]">⊕ SHEET NO. IS-2026-FOLD</span>
+          <span class="text-[#1F221E]/60">MATERIAL: 140GSM WATERPROOF TYVEK® SPECIMEN ARCHIVE</span>
+        </div>
+        <div class="flex items-center gap-4">
+          <span class="px-2 py-0.5 bg-[#485441] text-[#EFECE4] font-bold">MGRS: 27V WL 8492 1104</span>
+          <span class="text-[#D94E28] font-bold">FOLD CREASE LINES: 6 PANELS</span>
+        </div>
+      </div>
+
+      <!-- 6-PANEL ORIGAMI MAP GRID (Row 1: 3 Panels | Row 2: 3 Panels) -->
+      <div id="origamiGrid" class="grid grid-cols-1 lg:grid-cols-3">
+
+        <!-- =============================================================== -->
+        <!-- PANEL 01: EDITORIAL MANIFESTO & FOLDING COMPASS LEGEND          -->
+        <!-- =============================================================== -->
+        <div id="panel-0" class="origami-panel dof-background-target p-6 sm:p-8 flex flex-col justify-between min-h-[430px]" style="transform-origin: right bottom;">
+          <div>
+            <div class="flex items-center justify-between mono text-[10px] text-[#485441] border-b border-[#1F221E]/20 pb-2 mb-4">
+              <span>PANEL A1 // NORTH-WEST QUADRANT</span>
+              <span class="font-bold text-[#D94E28]">FOLD AXIS: 01</span>
+            </div>
+
+            <div class="mono text-xs uppercase tracking-widest text-[#485441] font-bold">
+              UNFOLDING TECHNICAL APPAREL
+            </div>
+            <h1 class="font-display font-extrabold text-4xl sm:text-5xl uppercase tracking-tight leading-[0.92] text-[#1F221E] mt-2">
+              THE FOLD<br/>EXPEDITION<br/>SHEET.
+            </h1>
+
+            <p class="text-xs sm:text-sm text-[#1F221E]/75 mt-4 leading-relaxed">
+              Inspired by waterproof Icelandic topographic survey charts. Every garment is pattern-cut like structural origami — minimizing exposed seams while hiding modular storm compartments under weather-sealed flaps.
+            </p>
+          </div>
+
+          <!-- Topographic Legend & Interactive Instructions -->
+          <div class="mt-6 pt-4 border-t border-dashed border-[#1F221E]/30 mono text-[11px] space-y-2">
+            <div class="font-bold text-[#1F221E] uppercase">HOW TO INSPECT THIS SHEET:</div>
+            <div class="flex items-center gap-2 text-[#1F221E]/75">
+              <span class="px-1.5 py-0.5 bg-[#1F221E] text-[#EFECE4] text-[9px]">01</span>
+              <span>Click any <strong>Pocket Flap</strong> on Panels B2–C2 to flip open hidden hardware.</span>
+            </div>
+            <div class="flex items-center gap-2 text-[#1F221E]/75">
+              <span class="px-1.5 py-0.5 bg-[#D94E28] text-[#EFECE4] text-[9px]">02</span>
+              <span>Click any <strong>Red Callout Pin</strong> on Panel A2 to engage Depth-of-Field Zoom.</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PANEL 02 (CENTER HERO): MODULAR FEATURE INSPECTOR WITH DOF ZOOM -->
+        <!-- =============================================================== -->
+        <div id="panel-1" class="origami-panel crease-shadow-left p-6 sm:p-8 flex flex-col justify-between min-h-[430px] relative overflow-hidden" style="transform-origin: center bottom;">
+          <div class="flex items-center justify-between mono text-[10px] text-[#485441] border-b border-[#1F221E]/20 pb-2 mb-3">
+            <span>PANEL A2 // MODULAR FEATURE INSPECTOR</span>
+            <span class="px-2 py-0.5 bg-[#D94E28] text-[#EFECE4] font-bold">CLICK PINS FOR DOF ZOOM</span>
+          </div>
+
+          <!-- Interactive Blueprint Stage that Zooms on Pin Click -->
+          <div id="inspectorViewport" class="relative flex-1 bg-[#E4E0D4] border border-[#1F221E]/25 flex items-center justify-center p-4 overflow-hidden transition-transform duration-500">
+            <!-- Topographic Contour Lines SVG Background -->
+            <svg viewBox="0 0 360 320" class="w-full h-72">
+              <!-- Subtle map contours -->
+              <path d="M10 40 Q180 90 350 30 M10 140 Q190 190 350 120 M10 260 Q160 220 350 280" fill="none" stroke="rgba(72,84,65,0.18)" stroke-width="1" stroke-dasharray="4 3"/>
+
+              <!-- Technical Origami Shell Blueprint -->
+              <g id="blueprintGarmentGroup">
+                <!-- Storm Hood -->
+                <path d="M140 52 L180 22 L220 52 L208 82 L152 82 Z" fill="#485441" stroke="#1F221E" stroke-width="2"/>
+                <!-- Main Origami Torso & Sleeves -->
+                <path d="M128 82 L232 82 L288 148 L262 174 L228 134 L232 278 L128 278 L132 134 L98 174 L72 148 Z" fill="#D5D0C1" stroke="#1F221E" stroke-width="2.2"/>
+                <!-- Origami Structural Fold Lines on Garment -->
+                <line x1="180" y1="52" x2="180" y2="278" stroke="#1F221E" stroke-width="1.8"/>
+                <line x1="128" y1="82" x2="180" y2="155" stroke="#1F221E" stroke-width="1.2" stroke-dasharray="4 2"/>
+                <line x1="232" y1="82" x2="180" y2="155" stroke="#1F221E" stroke-width="1.2" stroke-dasharray="4 2"/>
+                <!-- Chest Map Pocket Outline -->
+                <rect x="142" y="132" width="32" height="44" fill="#BFC7B8" stroke="#1F221E" stroke-width="1.5"/>
+                <rect x="186" y="132" width="32" height="44" fill="#BFC7B8" stroke="#1F221E" stroke-width="1.5"/>
+              </g>
+
+              <!-- 4 Clickable Modular Feature Pins (Storm Hood, Collar, Cuff, Hem) -->
+              <g onclick="inspectFeature(0)" class="cursor-pointer">
+                <circle cx="180" cy="42" r="10" fill="#D94E28" stroke="#EFECE4" stroke-width="2"/>
+                <text x="180" y="46" text-anchor="middle" fill="#EFECE4" font-size="10" font-family="JetBrains Mono" font-weight="bold">1</text>
+              </g>
+              <g onclick="inspectFeature(1)" class="cursor-pointer">
+                <circle cx="180" cy="86" r="10" fill="#D94E28" stroke="#EFECE4" stroke-width="2"/>
+                <text x="180" y="90" text-anchor="middle" fill="#EFECE4" font-size="10" font-family="JetBrains Mono" font-weight="bold">2</text>
+              </g>
+              <g onclick="inspectFeature(2)" class="cursor-pointer">
+                <circle cx="272" cy="158" r="10" fill="#D94E28" stroke="#EFECE4" stroke-width="2"/>
+                <text x="272" y="162" text-anchor="middle" fill="#EFECE4" font-size="10" font-family="JetBrains Mono" font-weight="bold">3</text>
+              </g>
+              <g onclick="inspectFeature(3)" class="cursor-pointer">
+                <circle cx="158" cy="154" r="10" fill="#D94E28" stroke="#EFECE4" stroke-width="2"/>
+                <text x="158" y="158" text-anchor="middle" fill="#EFECE4" font-size="10" font-family="JetBrains Mono" font-weight="bold">4</text>
+              </g>
+            </svg>
+
+            <!-- Pop-up Feature Inspector Card (Appears when zoomed in with DoF Blur) -->
+            <div id="featureInspectorCard" class="hidden absolute inset-x-3 bottom-3 bg-[#1F221E] text-[#EFECE4] p-4 border-2 border-[#D94E28] shadow-2xl z-30">
+              <div class="flex items-center justify-between mono text-[10px] text-[#D94E28] uppercase mb-1">
+                <span id="featTag">MODULE 01 // ZOOMED 3.2×</span>
+                <button onclick="resetFeatureZoom()" class="px-2 py-0.5 bg-[#EFECE4] text-[#1F221E] font-bold">✕ EXIT DOF ZOOM</button>
+              </div>
+              <h4 id="featTitle" class="font-bold text-base text-white">Origami Wire-Brim Storm Hood</h4>
+              <p id="featDesc" class="text-xs text-[#EFECE4]/80 mt-1 leading-relaxed"></p>
+            </div>
+          </div>
+
+          <!-- Quick Pin Selector Buttons -->
+          <div class="mt-3 grid grid-cols-4 gap-1.5 mono text-[10px]">
+            <button onclick="inspectFeature(0)" class="py-1.5 bg-[#DAD4C5] hover:bg-[#D94E28] hover:text-white border border-[#1F221E]/20 font-bold transition">[1] HOOD</button>
+            <button onclick="inspectFeature(1)" class="py-1.5 bg-[#DAD4C5] hover:bg-[#D94E28] hover:text-white border border-[#1F221E]/20 font-bold transition">[2] COLLAR</button>
+            <button onclick="inspectFeature(2)" class="py-1.5 bg-[#DAD4C5] hover:bg-[#D94E28] hover:text-white border border-[#1F221E]/20 font-bold transition">[3] CUFFS</button>
+            <button onclick="inspectFeature(3)" class="py-1.5 bg-[#DAD4C5] hover:bg-[#D94E28] hover:text-white border border-[#1F221E]/20 font-bold transition">[4] BUNKER</button>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- PANEL 03: INTERACTIVE ZIPPER SLIDER & HARDWARE ANATOMY          -->
+        <!-- =============================================================== -->
+        <div id="panel-2" class="origami-panel dof-background-target crease-shadow-left p-6 sm:p-8 flex flex-col justify-between min-h-[430px]" style="transform-origin: left bottom;">
+          <div>
+            <div class="flex items-center justify-between mono text-[10px] text-[#485441] border-b border-[#1F221E]/20 pb-2 mb-4">
+              <span>PANEL A3 // INTERACTIVE YKK® AQUAGUARD ZIP</span>
+              <span class="font-bold">DRAG SLIDER</span>
+            </div>
+
+            <h2 class="font-display font-bold text-2xl uppercase text-[#1F221E]">
+              SLIDE STORM ZIPPER TO REVEAL MAP SLEEVE
+            </h2>
+            <p class="text-xs text-[#1F221E]/75 mt-1">
+              Drag the vertical zipper pull below to unzip the polyurethane-coated chest bunker and expose the internal waterproof Tyvek® map pouch &amp; titanium D-ring.
+            </p>
+
+            <!-- Interactive Zipper Compartment Box -->
+            <div class="mt-4 relative h-52 bg-[#252923] border-2 border-[#1F221E] overflow-hidden p-4 text-[#EFECE4]">
+              <!-- Revealed Internal Fleece & Titanium D-Ring Layer -->
+              <div class="h-full flex flex-col justify-between mono text-xs">
+                <div class="flex items-center justify-between text-[#D94E28]">
+                  <span>INTERNAL BUNKER EXPOSED</span>
+                  <span>28,000MM SEAL</span>
+                </div>
+                <div class="my-auto flex items-center gap-4">
+                  <!-- Titanium D-Ring SVG -->
+                  <svg class="w-14 h-14 shrink-0 text-[#D94E28]" viewBox="0 0 60 60" fill="none" stroke="currentColor" stroke-width="3">
+                    <rect x="18" y="6" width="24" height="10" fill="#485441" stroke="#EFECE4" stroke-width="2"/>
+                    <path d="M16 16 H44 A12 12 0 0 1 44 48 H16 A12 12 0 0 1 16 16 Z"/>
+                  </svg>
+                  <div>
+                    <div class="font-bold text-sm text-white">GRADE-5 TITANIUM D-RING + FLEECE</div>
+                    <div class="text-[11px] text-[#EFECE4]/70 mt-0.5">
+                      Anchors GPS compass tether inside brushed Polartec® micro-grid handwarmer pocket.
+                    </div>
+                  </div>
+                </div>
+                <div class="text-[10px] text-[#EFECE4]/50">WATERPROOF MEMBRANE BACKING // ZERO SEEPAGE</div>
+              </div>
+
+              <!-- Sliding Outer Fabric Flaps that part as user unzips -->
+              <div id="zipCoverLeft" class="absolute inset-y-0 left-0 w-1/2 bg-[#485441] border-r-2 border-[#1F221E] transition-transform duration-150 flex items-center justify-center mono text-[10px] text-[#EFECE4]/70">
+                OUTER 3L SHELL [L]
+              </div>
+              <div id="zipCoverRight" class="absolute inset-y-0 right-0 w-1/2 bg-[#485441] border-l-2 border-[#1F221E] transition-transform duration-150 flex items-center justify-center mono text-[10px] text-[#EFECE4]/70">
+                OUTER 3L SHELL [R]
+              </div>
+            </div>
+
+            <!-- Interactive Zipper Pull Slider -->
+            <div class="mt-3 flex items-center gap-3 mono text-xs">
+              <span class="text-[10px] font-bold uppercase text-[#1F221E]">UNZIP BUNKER:</span>
+              <input type="range" min="0" max="100" value="0"
+                     oninput="handleZipperSlide(this.value)"
+                     class="flex-1 accent-[#D94E28] cursor-pointer" />
+              <span id="zipValueLabel" class="font-bold text-[#D94E28] w-12 text-right">CLOSED</span>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-dashed border-[#1F221E]/30 flex justify-between mono text-[10px] text-[#1F221E]/60">
+            <span>HARDWARE: YKK® #8 VISLON AQUAGUARD</span>
+            <span>CYCLES: 50,000+</span>
+          </div>
+        </div>
+
+        <!-- =============================================================== -->
+        <!-- ROW 2: 3 GARMENT SPECIMEN CARDS WITH INTERACTIVE POCKET FLAPS   -->
+        <!-- =============================================================== -->
+        <div id="panel-3" class="origami-panel dof-background-target crease-shadow-top p-6 sm:p-8 flex flex-col justify-between min-h-[450px]" style="transform-origin: right top;">
+          <!-- Populated by JS Card 0 -->
+        </div>
+
+        <div id="panel-4" class="origami-panel dof-background-target crease-shadow-top crease-shadow-left p-6 sm:p-8 flex flex-col justify-between min-h-[450px]" style="transform-origin: center top;">
+          <!-- Populated by JS Card 1 -->
+        </div>
+
+        <div id="panel-5" class="origami-panel dof-background-target crease-shadow-top crease-shadow-left p-6 sm:p-8 flex flex-col justify-between min-h-[450px]" style="transform-origin: left top;">
+          <!-- Populated by JS Card 2 -->
+        </div>
+
+      </div>
+    </div>
+  </main>
+
+  <!-- FLOATING TECHNICAL BOTTOM BAR: CURRENCY (ISK / EUR), HIGHLAND WEATHER & ONE-TAP CHECKOUT -->
+  <footer class="fixed bottom-0 inset-x-0 z-40 bg-[#1F221E] text-[#EFECE4] border-t-2 border-[#D94E28] px-4 md:px-8 py-3 shadow-2xl">
+    <div class="max-w-[1560px] mx-auto flex flex-wrap items-center justify-between gap-4">
+      <!-- Left: Currency Switcher (ISK / EUR) -->
+      <div class="flex items-center gap-3 mono text-xs">
+        <span class="text-[#EFECE4]/55 text-[10px] uppercase">CURRENCY:</span>
+        <div class="bg-[#141613] p-0.5 border border-[#EFECE4]/20 flex">
+          <button id="currBtnEUR" onclick="setCurrency('EUR')" class="px-3 py-1 bg-[#D94E28] text-[#EFECE4] font-bold">
+            EUR (€)
+          </button>
+          <button id="currBtnISK" onclick="setCurrency('ISK')" class="px-3 py-1 text-[#EFECE4]/65 hover:text-white">
+            ISK (kr)
+          </button>
+        </div>
+      </div>
+
+      <!-- Center: Live Icelandic Highlands Weather Telemetry -->
+      <div class="hidden lg:flex items-center gap-6 mono text-xs bg-[#282C26] px-4 py-1.5 border border-[#EFECE4]/15">
+        <div class="flex items-center gap-2">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+          <span class="text-[#EFECE4]/60">LANDMANNALAUGAR (63°59'N):</span>
+        </div>
+        <span class="font-bold text-white">-4.2°C SLEET</span>
+        <span class="text-[#EFECE4]/40">|</span>
+        <span class="text-[#D94E28] font-bold">WIND: NW 19.4 m/s</span>
+        <span class="text-[#EFECE4]/40">|</span>
+        <span class="text-[#EFECE4]/80">HUMIDITY: 92%</span>
+      </div>
+
+      <!-- Right: Selected Sheet Total & One-Tap Origami Checkout -->
+      <div class="flex items-center gap-4 ml-auto lg:ml-0">
+        <div class="mono text-right">
+          <div class="text-[9px] text-[#EFECE4]/50 uppercase">DISPATCH PACKET [<span id="cartQty">1</span> ITEM]</div>
+          <div id="footerTotalPrice" class="text-sm sm:text-base font-bold text-[#EFECE4]">€620 EUR</div>
+        </div>
+
+        <button onclick="oneTapOrigamiCheckout()" class="px-5 py-2.5 bg-[#D94E28] hover:bg-[#EFECE4] hover:text-[#1F221E] text-[#EFECE4] mono text-xs font-bold uppercase tracking-widest transition shadow-lg">
+          ⊞ ONE-TAP FOLD &amp; DISPATCH →
+        </button>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // =========================================================================
+    // 1. CATALOG GARMENTS WITH INTERACTIVE POCKET FLAPS & CURRENCY CONVERSION
+    // =========================================================================
+    const SHEET_PRODUCTS = [
+      {
+        id: 'FLD-01',
+        panelCode: 'PANEL B1 // SOUTH-WEST QUADRANT',
+        name: 'ASKJA ORIGAMI ANORAK',
+        subtitle: 'SINGLE-SHEET PATTERN • 2 SEAMS ONLY',
+        priceEUR: 620,
+        priceISK: 92400,
+        flapLabel: 'CHEST MAP BUNKER FLAP',
+        hiddenTitle: 'HIDDEN TYVEK® MAP SLEEVE & D-RING',
+        hiddenSpec: 'Laser-welded storm pocket lined with 200g Polartec® micro-fleece, internal anodized D-ring, and magnetic Fidlock® snap stud.',
+        specs: ['3L Basalt Ripstop', '28,000mm Hydro Head', 'Weight: 485g']
+      },
+      {
+        id: 'FLD-02',
+        panelCode: 'PANEL B2 // SOUTH-CENTER QUADRANT',
+        name: 'HEKLA PLEATED CARGO PANT',
+        subtitle: 'EXPANDING ORIGAMI BELLOWS POCKETS',
+        priceEUR: 450,
+        priceISK: 67050,
+        flapLabel: 'THIGH BELLOWS STORM FLAP',
+        hiddenTitle: 'CORDURA® KNIFE LIP & ELASTIC MAG LOOPS',
+        hiddenSpec: 'Origami box-pleat expands from flat 4mm profile to 2.8L capacity. Features internal shock-cord stabilizer and fleece hand sleeve.',
+        specs: ['500D Cordura® Weave', 'Articulated Knee Gusset', 'Weight: 530g']
+      },
+      {
+        id: 'FLD-03',
+        panelCode: 'PANEL B3 // SOUTH-EAST QUADRANT',
+        name: 'KRAFLA FOLDABLE STORM CAPE',
+        subtitle: 'SELF-PACKING FIELD PONCHO / SHELL',
+        priceEUR: 510,
+        priceISK: 75990,
+        flapLabel: 'SELF-STOWING KANGAROO FLAP',
+        hiddenTitle: 'REVERSIBLE POCKET PACKET + CARABINER LOOP',
+        hiddenSpec: 'The entire 3-layer storm shell folds in 4 origami steps directly into this front chest compartment (18cm × 12cm packet).',
+        specs: ['Dyneema® Tear Grid', 'Fits Over 65L Pack', 'Weight: 320g']
+      }
+    ];
+
+    const FEATURE_PINS = [
+      {
+        tag: 'PIN 01 // WIRE-BRIM ORIGAMI STORM HOOD',
+        title: 'Tri-Fold Laminated Peak & Cranial Lock',
+        desc: 'Constructed from a single folded sheet of 3L membrane with a shape-memory titanium wire brim that sheds horizontal sleet.',
+        transform: 'scale(1.85) translate(0%, 24%)'
+      },
+      {
+        tag: 'PIN 02 // COHAESIVE™ HIGH STORM COLLAR',
+        title: 'Laser-Perforated Breathing Gusset + Fleece Chin Guard',
+        desc: 'High origami funnel collar protects up to the cheekbones while laser-cut micro-vents prevent goggle fogging.',
+        transform: 'scale(1.9) translate(0%, 8%)'
+      },
+      {
+        tag: 'PIN 03 // DIE-CUT HYPALON® CUFF TAB',
+        title: 'Origami Gusseted Wrist Seal',
+        desc: 'Folds neatly over heavy expedition gloves with zero bulk and locks via molded Hypalon® hook-and-loop tabs.',
+        transform: 'scale(1.95) translate(-22%, -10%)'
+      },
+      {
+        tag: 'PIN 04 // DOUBLE-FOLD MAP BUNKER',
+        title: 'Self-Sealing Watertight Gutter Flap',
+        desc: 'Even if left unsnapped in a 35 m/s gale, the double-folded top gutter prevents water ingress into the document sleeve.',
+        transform: 'scale(1.9) translate(10%, -8%)'
+      }
+    ];
+
+    let currency = 'EUR'; // 'EUR' or 'ISK'
+    let cartTotalEUR = 620;
+    let cartQty = 1;
+    let currentFoldStage = 2; // 0 = Packet, 1 = Half-Fold, 2 = Full Unfolded Sheet
+    let paperAudioOn = true;
+    let audioCtx = null;
+
+    // =========================================================================
+    // 2. WEB AUDIO API: TYVEK PAPER RUSTLE, ZIPPER & SNAP STUD SYNTHESIZER
+    // =========================================================================
+    function getAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playPaperSound(type = 'fold') {
+      if (!paperAudioOn) return;
+      try {
+        const ctx = getAudio();
+        const now = ctx.currentTime;
+
+        if (type === 'fold') {
+          // Crisp Tyvek paper rustle burst
+          const bufSize = ctx.sampleRate * 0.14;
+          const buf = ctx.createBuffer(1, bufSize, ctx.sampleRate);
+          const data = buf.getChannelData(0);
+          for (let i = 0; i < bufSize; i++) {
+            data[i] = (Math.random() * 2 - 1) * Math.sin((i / bufSize) * Math.PI);
+          }
+          const src = ctx.createBufferSource();
+          src.buffer = buf;
+
+          const filter = ctx.createBiquadFilter();
+          filter.type = 'bandpass';
+          filter.frequency.setValueAtTime(1400, now);
+          filter.frequency.exponentialRampToValueAtTime(2800, now + 0.14);
+          filter.Q.value = 1.4;
+
+          const gain = ctx.createGain();
+          gain.gain.value = 0.16;
+
+          src.connect(filter);
+          filter.connect(gain);
+          gain.connect(ctx.destination);
+          src.start();
+        } else if (type === 'snap') {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(980, now);
+          osc.frequency.exponentialRampToValueAtTime(240, now + 0.045);
+          gain.gain.setValueAtTime(0.2, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now);
+          osc.stop(now + 0.05);
+        }
+      } catch (e) {}
+    }
+
+    function togglePaperAudio() {
+      paperAudioOn = !paperAudioOn;
+      document.getElementById('paperAudioDot').className = paperAudioOn
+        ? 'w-2 h-2 rounded-full bg-[#D94E28]'
+        : 'w-2 h-2 rounded-full bg-zinc-500';
+      document.getElementById('paperAudioText').textContent = paperAudioOn ? 'PAPER SFX' : 'MUTED';
+    }
+
+    // =========================================================================
+    // 3. 3D ORIGAMI UNFOLDING MAP ENGINE (3 STAGES + CONTINUOUS SLIDER)
+    // =========================================================================
+    function setFoldStage(stage) {
+      currentFoldStage = stage;
+      playPaperSound('fold');
+
+      [0, 1, 2].forEach(s => {
+        const btn = document.getElementById(`stageBtn${s}`);
+        if (s === stage) {
+          btn.className = 'px-2.5 py-1 uppercase transition bg-[#D94E28] text-[#EFECE4] font-bold';
+        } else {
+          btn.className = 'px-2.5 py-1 uppercase transition bg-transparent text-[#EFECE4]/60 hover:text-white';
+        }
+      });
+
+      const pct = stage === 0 ? 12 : stage === 1 ? 55 : 100;
+      document.getElementById('foldSlider').value = pct;
+      scrubFoldPercentage(pct);
+    }
+
+    function cycleFoldStage() {
+      const next = currentFoldStage === 2 ? 0 : currentFoldStage + 1;
+      setFoldStage(next);
+    }
+
+    function scrubFoldPercentage(val) {
+      const pct = Number(val);
+      document.getElementById('foldPctLabel').textContent = `${pct}%`;
+
+      // t = 0 means fully flat (100% unfolded), t = 1 means folded packet
+      const foldFactor = 1 - pct / 100;
+
+      const wrapper = document.getElementById('mapSheetWrapper');
+      const p0 = document.getElementById('panel-0');
+      const p1 = document.getElementById('panel-1');
+      const p2 = document.getElementById('panel-2');
+      const p3 = document.getElementById('panel-3');
+      const p4 = document.getElementById('panel-4');
+      const p5 = document.getElementById('panel-5');
+
+      const sheetTiltX = foldFactor * 26;
+      const sheetTiltZ = foldFactor * -6;
+      const sheetScale = 1 - foldFactor * 0.22;
+      wrapper.style.transform = `scale(${sheetScale.toFixed(3)}) rotateX(${sheetTiltX.toFixed(1)}deg) rotateZ(${sheetTiltZ.toFixed(1)}deg)`;
+
+      // Left Wing Panels (0 & 3) fold inward along right edge
+      const wingAngle = foldFactor * 125;
+      p0.style.transform = `rotateY(${wingAngle.toFixed(1)}deg)`;
+      p3.style.transform = `rotateY(${wingAngle.toFixed(1)}deg) rotateX(${(foldFactor * 75).toFixed(1)}deg)`;
+
+      // Center Bottom Panel (4) folds upward along top crease
+      p4.style.transform = `rotateX(${(foldFactor * 95).toFixed(1)}deg)`;
+
+      // Right Wing Panels (2 & 5) fold inward along left edge
+      p2.style.transform = `rotateY(${(-wingAngle).toFixed(1)}deg)`;
+      p5.style.transform = `rotateY(${(-wingAngle).toFixed(1)}deg) rotateX(${(foldFactor * 75).toFixed(1)}deg)`;
+    }
+
+    // =========================================================================
+    // 4. INTERACTIVE POCKET FLAPS & ZIPPER HARDWARE
+    // =========================================================================
+    function renderProductPanels() {
+      SHEET_PRODUCTS.forEach((prod, idx) => {
+        const panelEl = document.getElementById(`panel-${idx + 3}`);
+        const priceFormatted = currency === 'EUR'
+          ? `€${prod.priceEUR} EUR`
+          : `${prod.priceISK.toLocaleString()} ISK`;
+
+        panelEl.innerHTML = `
+          <div>
+            <div class="flex items-center justify-between mono text-[10px] text-[#485441] border-b border-[#1F221E]/20 pb-2 mb-3">
+              <span>${prod.panelCode}</span>
+              <span class="font-bold text-[#D94E28]">${prod.id}</span>
+            </div>
+
+            <div class="mono text-[10px] text-[#485441] uppercase tracking-widest">${prod.subtitle}</div>
+            <h3 class="font-display font-extrabold text-2xl uppercase text-[#1F221E] mt-0.5">${prod.name}</h3>
+
+            <!-- Interactive 3D Pocket Flap Module -->
+            <div class="pocket-container mt-4 relative h-48">
+              <!-- Hidden Interior Pocket Compartment (Fleece + D-Ring + Spec) -->
+              <div class="absolute inset-0 bg-[#1F221E] text-[#EFECE4] p-4 border-2 border-[#1F221E] flex flex-col justify-between">
+                <div class="flex items-center justify-between mono text-[10px] text-[#D94E28]">
+                  <span>✓ POCKET FLAP UNSNAPPED</span>
+                  <span>INTERNAL VIEW</span>
+                </div>
+                <div>
+                  <div class="font-bold text-sm text-white">${prod.hiddenTitle}</div>
+                  <p class="text-xs text-[#EFECE4]/75 mt-1 leading-relaxed">${prod.hiddenSpec}</p>
+                </div>
+                <div class="flex items-center justify-between mono text-[10px] text-[#94A684]">
+                  <span>POLARTEC® GRID FLEECE</span>
+                  <button onclick="togglePocketFlap(${idx})" class="underline text-white">CLOSE FLAP ▲</button>
+                </div>
+              </div>
+
+              <!-- 3D Hinged Outer Pocket Flap -->
+              <div id="pocketFlap-${idx}"
+                   onclick="togglePocketFlap(${idx})"
+                   class="pocket-flap absolute inset-0 bg-[#D7D2C2] hover:bg-[#CEC8B6] border-2 border-[#1F221E] p-4 cursor-pointer flex flex-col justify-between shadow-md">
+                <div class="flex items-center justify-between mono text-[10px] text-[#1F221E]/70">
+                  <span>${prod.flapLabel}</span>
+                  <span class="px-2 py-0.5 bg-[#D94E28] text-white font-bold">CLICK TO LIFT FLAP ▼</span>
+                </div>
+
+                <!-- Stitched Pocket Diagram -->
+                <div class="my-auto border border-dashed border-[#1F221E]/40 p-3 text-center">
+                  <div class="w-4 h-4 rounded-full border-2 border-[#1F221E] bg-[#EFECE4] mx-auto mb-1.5"></div>
+                  <span class="mono text-[11px] font-bold text-[#1F221E] uppercase">
+                    TAP TO UNSNAP FIDLOCK® FLAP &amp; INSPECT INTERIOR
+                  </span>
+                </div>
+
+                <div class="flex justify-between mono text-[9px] text-[#1F221E]/60">
+                  <span>DOUBLE-STITCHED BAR TACK</span>
+                  <span>WATERPROOF GUTTER</span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Spec Pills -->
+            <div class="mt-4 flex flex-wrap gap-1.5 mono text-[10px]">
+              ${prod.specs.map(s => `<span class="px-2 py-1 bg-[#E4E0D4] border border-[#1F221E]/20 text-[#1F221E]">${s}</span>`).join('')}
+            </div>
+          </div>
+
+          <!-- Footer Price & Add to Dispatch Sheet -->
+          <div class="pt-4 mt-4 border-t border-dashed border-[#1F221E]/30 flex items-center justify-between">
+            <div>
+              <div class="mono text-[9px] text-[#1F221E]/55 uppercase">SHEET UNIT PRICE</div>
+              <div class="mono text-lg font-bold text-[#1F221E]">${priceFormatted}</div>
+            </div>
+            <button onclick="addProductToSheet(${idx})" class="px-4 py-2.5 bg-[#1F221E] hover:bg-[#D94E28] text-[#EFECE4] mono text-[11px] font-bold uppercase tracking-wider transition">
+              + ADD TO SHEET
+            </button>
+          </div>
+        `;
+      });
+    }
+
+    function togglePocketFlap(idx) {
+      playPaperSound('snap');
+      const flap = document.getElementById(`pocketFlap-${idx}`);
+      if (flap) flap.classList.toggle('open');
+    }
+
+    function handleZipperSlide(val) {
+      const pct = Number(val);
+      const leftCover = document.getElementById('zipCoverLeft');
+      const rightCover = document.getElementById('zipCoverRight');
+      const label = document.getElementById('zipValueLabel');
+
+      leftCover.style.transform = `translateX(-${pct}%)`;
+      rightCover.style.transform = `translateX(${pct}%)`;
+      label.textContent = pct === 0 ? 'CLOSED' : pct === 100 ? 'OPEN' : `${pct}%`;
+
+      if (pct % 20 === 0) playPaperSound('snap');
+    }
+
+    // =========================================================================
+    // 5. MODULAR FEATURE INSPECTOR WITH DEPTH-OF-FIELD (DoF) BLUR
+    // =========================================================================
+    function inspectFeature(pinIdx) {
+      playPaperSound('snap');
+      const feat = FEATURE_PINS[pinIdx];
+      const viewport = document.getElementById('inspectorViewport');
+      const group = document.getElementById('blueprintGarmentGroup');
+      const card = document.getElementById('featureInspectorCard');
+
+      document.body.classList.add('dof-blur-active');
+      group.style.transition = 'transform 0.55s cubic-bezier(0.22, 1, 0.36, 1)';
+      group.style.transformOrigin = 'center center';
+      group.style.transform = feat.transform;
+
+      document.getElementById('featTag').textContent = feat.tag;
+      document.getElementById('featTitle').textContent = feat.title;
+      document.getElementById('featDesc').textContent = feat.desc;
+      card.classList.remove('hidden');
+    }
+
+    function resetFeatureZoom() {
+      playPaperSound('fold');
+      document.body.classList.remove('dof-blur-active');
+      const group = document.getElementById('blueprintGarmentGroup');
+      group.style.transform = 'scale(1) translate(0, 0)';
+      document.getElementById('featureInspectorCard').classList.add('hidden');
+    }
+
+    // =========================================================================
+    // 6. CURRENCY SWITCHER (ISK / EUR) & ONE-TAP ORIGAMI CHECKOUT
+    // =========================================================================
+    function setCurrency(curr) {
+      currency = curr;
+      playPaperSound('snap');
+
+      const btnEUR = document.getElementById('currBtnEUR');
+      const btnISK = document.getElementById('currBtnISK');
+      if (curr === 'EUR') {
+        btnEUR.className = 'px-3 py-1 bg-[#D94E28] text-[#EFECE4] font-bold';
+        btnISK.className = 'px-3 py-1 text-[#EFECE4]/65 hover:text-white';
+      } else {
+        btnISK.className = 'px-3 py-1 bg-[#D94E28] text-[#EFECE4] font-bold';
+        btnEUR.className = 'px-3 py-1 text-[#EFECE4]/65 hover:text-white';
+      }
+
+      renderProductPanels();
+      updateFooterPrice();
+    }
+
+    function addProductToSheet(idx) {
+      const prod = SHEET_PRODUCTS[idx];
+      cartQty++;
+      cartTotalEUR += prod.priceEUR;
+      playPaperSound('snap');
+      document.getElementById('cartQty').textContent = cartQty;
+      updateFooterPrice();
+    }
+
+    function updateFooterPrice() {
+      const el = document.getElementById('footerTotalPrice');
+      if (currency === 'EUR') {
+        el.textContent = `€${cartTotalEUR.toLocaleString()} EUR`;
+      } else {
+        const isk = cartTotalEUR * 149;
+        el.textContent = `${isk.toLocaleString()} ISK`;
+      }
+    }
+
+    function oneTapOrigamiCheckout() {
+      // Fold the sheet into a compact packet, then restore
+      setFoldStage(0);
+      setTimeout(() => {
+        alert(`EXPEDITION SHEET FOLDED & STAMPED FOR DISPATCH (${cartQty} item(s) — ${document.getElementById('footerTotalPrice').textContent}).`);
+        setFoldStage(2);
+      }, 900);
+    }
+
+    // Initialize on load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderProductPanels();
+      updateFooterPrice();
+      // Start slightly folded and smoothly unfold on entry!
+      scrubFoldPercentage(25);
+      setTimeout(() => {
+        setFoldStage(2);
+      }, 350);
+    });
+  </script>
+</body>
+</html>
