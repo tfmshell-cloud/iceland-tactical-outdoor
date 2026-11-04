@@ -1,0 +1,1165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NORDIC ANATOMY // DECONSTRUCTED — Luxury Technical Apparel Architecture</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Syne (Monumental Editorial) + Space Grotesk + JetBrains Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&family=Syne:wght@600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            basalt: '#0E1011',
+            basaltSoft: '#16191B',
+            basaltPanel: '#1C2023',
+            mist: '#ECEFEA',
+            mistDim: '#9BA39D',
+            signal: '#FF3B19',
+            signalSoft: 'rgba(255, 59, 25, 0.16)'
+          },
+          fontFamily: {
+            display: ['"Syne"', 'sans-serif'],
+            sans: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --bg-primary: #0E1011;
+      --text-primary: #ECEFEA;
+      --signal: #FF3B19;
+      --hairline: rgba(236, 239, 234, 0.11);
+    }
+
+    body.glacial-mode {
+      --bg-primary: #ECEFEA;
+      --text-primary: #0E1011;
+      --hairline: rgba(14, 16, 17, 0.12);
+      background-color: #ECEFEA !important;
+      color: #0E1011 !important;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      background-color: #0E1011;
+      color: #ECEFEA;
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+      transition: background-color 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.5s ease;
+    }
+
+    /* Ultra-Fine Architectural Grid */
+    .veilance-grid {
+      background-size: 64px 64px;
+      background-image:
+        linear-gradient(to right, var(--hairline) 1px, transparent 1px),
+        linear-gradient(to bottom, var(--hairline) 1px, transparent 1px);
+    }
+
+    /* 3D Perspective Stage & Floating Garment Depth Planes */
+    .stage-3d-viewport {
+      perspective: 1400px;
+      transform-style: preserve-3d;
+    }
+
+    .assembly-rig-3d {
+      transform-style: preserve-3d;
+      transition: transform 0.08s linear;
+      position: relative;
+      width: 340px;
+      height: 440px;
+    }
+
+    .depth-plane {
+      position: absolute;
+      inset: 0;
+      transform-style: preserve-3d;
+      transition: transform 0.12s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease, opacity 0.25s ease;
+      background: linear-gradient(145deg, rgba(28, 32, 35, 0.86) 0%, rgba(14, 16, 17, 0.92) 100%);
+      border: 1px solid rgba(236, 239, 234, 0.22);
+      backdrop-filter: blur(6px);
+      cursor: grab;
+    }
+    .depth-plane:active {
+      cursor: grabbing;
+    }
+    .depth-plane.plane-focused {
+      border-color: #FF3B19;
+      box-shadow: 0 0 38px rgba(255, 59, 25, 0.28), inset 0 0 20px rgba(255, 59, 25, 0.12);
+    }
+
+    /* Custom B&O Precision Scrub Slider */
+    input[type="range"].bo-scrubber {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 4px;
+      background: rgba(236, 239, 234, 0.2);
+      outline: none;
+      cursor: ew-resize;
+      border-radius: 999px;
+    }
+    input[type="range"].bo-scrubber::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 16px;
+      border-radius: 999px;
+      background: #FF3B19;
+      border: 2px solid #ECEFEA;
+      box-shadow: 0 0 18px rgba(255, 59, 25, 0.75);
+      cursor: ew-resize;
+      transition: transform 0.15s ease;
+    }
+    input[type="range"].bo-scrubber::-webkit-slider-thumb:hover {
+      transform: scale(1.15);
+    }
+
+    /* Custom Elastic Reticle Pointer */
+    #elasticPointer {
+      position: fixed;
+      width: 34px;
+      height: 34px;
+      border: 1px solid rgba(255, 59, 25, 0.75);
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s ease, height 0.2s ease, background-color 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    #elasticPointer::after {
+      content: '';
+      width: 4px;
+      height: 4px;
+      background: #FF3B19;
+      border-radius: 50%;
+    }
+
+    /* X-Ray Thermal Scanner Beam */
+    @keyframes xraySweep {
+      0% { top: 4%; opacity: 0.15; }
+      50% { opacity: 0.9; }
+      100% { top: 94%; opacity: 0.15; }
+    }
+    .xray-laser {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent 0%, #FF3B19 50%, transparent 100%);
+      box-shadow: 0 0 18px 3px rgba(255, 59, 25, 0.75);
+      animation: xraySweep 3.8s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    /* Callout Card Glassmorphism */
+    .callout-card {
+      background: rgba(18, 21, 23, 0.82);
+      border: 1px solid rgba(236, 239, 234, 0.15);
+      backdrop-filter: blur(12px);
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .callout-card:hover,
+    .callout-card.active-callout {
+      border-color: #FF3B19;
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #0E1011;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #2C3237;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF3B19;
+    }
+  </style>
+</head>
+<body class="veilance-grid min-h-screen flex flex-col justify-between relative pb-28 selection:bg-signal selection:text-mist">
+
+  <!-- Custom Elastic Magnetic Cursor -->
+  <div id="elasticPointer" class="hidden md:flex"></div>
+
+  <!-- =====================================================================
+       TOP ARCHITECTURAL GALLERY HEADER (VEILANCE × BANG & OLUFSEN)
+       ===================================================================== -->
+  <header class="border-b border-mist/10 bg-basalt/85 backdrop-blur-xl sticky top-0 z-40">
+    <div class="max-w-[1640px] mx-auto px-6 py-4 flex flex-wrap items-center justify-between gap-4">
+      <!-- Left: Monumental Brand Title -->
+      <div class="flex items-center gap-4">
+        <div class="w-9 h-9 rounded-full border border-mist/30 flex items-center justify-center relative">
+          <div class="w-2.5 h-2.5 rounded-full bg-signal animate-ping absolute"></div>
+          <div class="w-2.5 h-2.5 rounded-full bg-signal relative"></div>
+        </div>
+        <div>
+          <div class="flex items-center gap-3">
+            <h1 class="font-display font-extrabold text-lg md:text-xl tracking-tight uppercase">
+              NORDIC ANATOMY <span class="text-signal font-normal">/</span> DECONSTRUCTED
+            </h1>
+            <span class="hidden sm:inline-block font-mono text-[10px] tracking-[0.2em] px-2 py-0.5 border border-mist/20 text-mistDim uppercase">
+              SERIES 09 // ARCHIVE
+            </span>
+          </div>
+          <p class="font-mono text-[10px] text-mistDim tracking-[0.16em] uppercase mt-0.5">
+            SUBARCTIC LAMINATE ARCHITECTURE • SKEIFAN 10 REYKJAVÍK
+          </p>
+        </div>
+      </div>
+
+      <!-- Center: 3 Flagship Specimen Selector Pills -->
+      <div class="flex items-center gap-1.5 bg-basaltSoft border border-mist/15 p-1 rounded-full font-mono text-[11px]">
+        <button
+          onclick="selectSpecimen('mjolnir')"
+          id="specBtn-mjolnir"
+          class="px-3.5 py-1.5 rounded-full bg-signal text-mist font-semibold uppercase tracking-wider transition"
+        >
+          01 // Mjölnir 3L Shell
+        </button>
+        <button
+          onclick="selectSpecimen('valkyrja')"
+          id="specBtn-valkyrja"
+          class="px-3.5 py-1.5 rounded-full text-mistDim hover:text-mist uppercase tracking-wider transition"
+        >
+          02 // Valkyrja Down Parka
+        </button>
+        <button
+          onclick="selectSpecimen('fenrir')"
+          id="specBtn-fenrir"
+          class="px-3.5 py-1.5 rounded-full text-mistDim hover:text-mist uppercase tracking-wider transition"
+        >
+          03 // Fenrir Storm Pant
+        </button>
+      </div>
+
+      <!-- Right: X-Ray Mode, Gallery Theme & Vault Bag -->
+      <div class="flex items-center gap-2.5 font-mono text-[11px]">
+        <button
+          onclick="toggleXrayBeam()"
+          id="xrayBtn"
+          class="px-3 py-1.5 border border-mist/20 hover:border-signal text-mist uppercase tracking-wider transition"
+        >
+          X-RAY: <span id="xrayStateText" class="text-signal font-bold">ON</span>
+        </button>
+
+        <button
+          onclick="toggleAtmosphereTheme()"
+          class="px-3 py-1.5 border border-mist/20 hover:border-signal text-mist uppercase tracking-wider transition"
+          title="Switch between Basalt Obsidian and Glacial Mist Gallery"
+        >
+          TONE: <span id="themeStateText">BASALT</span>
+        </button>
+
+        <button
+          onclick="toggleCheckoutDrawer(true)"
+          class="px-4 py-2 bg-mist text-basalt hover:bg-signal hover:text-mist font-bold uppercase tracking-widest transition flex items-center gap-2"
+        >
+          <span>ACQUIRE</span>
+          <span id="vaultBagCount" class="bg-basalt text-mist px-1.5 py-0.2 text-[10px]">1</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       MAIN DECONSTRUCTED STAGE:
+       4 FLOATING CALLOUT CARDS + SPRING-PHYSICS SVG TETHERS + 3D EXPLODED RIG
+       ===================================================================== -->
+  <main class="max-w-[1640px] w-full mx-auto px-6 py-6 flex-1 flex flex-col justify-between relative">
+
+    <!-- Editorial Title & Live Telemetry Header -->
+    <div class="flex flex-col lg:flex-row lg:items-end justify-between gap-4 border-b border-mist/10 pb-5 mb-4 z-20">
+      <div>
+        <div class="font-mono text-[11px] text-signal tracking-[0.22em] uppercase mb-1 flex items-center gap-2">
+          <span>// INTERACTIVE 4-PLANE LAMINATE DECONSTRUCTION</span>
+          <span class="text-mistDim">• DRAG STAGE OR SCRUB BAR BELOW</span>
+        </div>
+        <h2 id="specimenHeroTitle" class="font-display font-extrabold text-3xl sm:text-5xl tracking-tight uppercase leading-[1.02]">
+          MJÖLNIR 3-LAYER RIPSTOP SHELL
+        </h2>
+      </div>
+
+      <!-- Live Micro-Mono Telemetry Strip -->
+      <div class="grid grid-cols-4 gap-4 sm:gap-6 font-mono text-xs border-l border-mist/15 pl-4">
+        <div>
+          <div class="text-[9px] text-mistDim uppercase tracking-widest">WATERBARRIER</div>
+          <div id="teleHydro" class="text-sm sm:text-base font-bold text-mist mt-0.5">28,400 mm</div>
+        </div>
+        <div>
+          <div class="text-[9px] text-mistDim uppercase tracking-widest">TETHER TENSION</div>
+          <div id="teleSpringTension" class="text-sm sm:text-base font-bold text-signal mt-0.5">14.2 N·m</div>
+        </div>
+        <div>
+          <div class="text-[9px] text-mistDim uppercase tracking-widest">Z-SEPARATION</div>
+          <div id="teleZSpread" class="text-sm sm:text-base font-bold text-mist mt-0.5">68% EXPLODED</div>
+        </div>
+        <div>
+          <div class="text-[9px] text-mistDim uppercase tracking-widest">VALUATION</div>
+          <div id="telePriceISK" class="text-sm sm:text-base font-bold text-mist mt-0.5">74.900 ISK</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ===================================================================
+         CENTRAL INTERACTIVE 3D STAGE + SPRING-PHYSICS SVG OVERLAY
+         =================================================================== -->
+    <div
+      id="deconstructStage"
+      class="relative w-full min-h-[580px] lg:min-h-[630px] flex items-center justify-center overflow-hidden select-none"
+    >
+      <!-- Background Atmospheric Particle & Airflow Shader Canvas -->
+      <canvas id="atmosphereCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+      <!-- Full-Stage SVG for Hooke's Law Spring-Physics Connecting Lines -->
+      <svg id="springTetherSvg" class="absolute inset-0 w-full h-full pointer-events-none z-20 overflow-visible">
+        <defs>
+          <filter id="signalGlow">
+            <feGaussianBlur stdDeviation="2.5" result="coloredBlur"/>
+            <feMerge>
+              <feMergeNode in="coloredBlur"/>
+              <feMergeNode in="SourceGraphic"/>
+            </feMerge>
+          </filter>
+        </defs>
+        <!-- 4 Dynamic Bezier Spring Curves (Updated at 60FPS in JS) -->
+        <path id="springPath-0" fill="none" stroke="#FF3B19" stroke-width="1.6" filter="url(#signalGlow)" />
+        <path id="springPath-1" fill="none" stroke="rgba(236,239,234,0.55)" stroke-width="1.2" stroke-dasharray="4 3" />
+        <path id="springPath-2" fill="none" stroke="#FF3B19" stroke-width="1.6" filter="url(#signalGlow)" />
+        <path id="springPath-3" fill="none" stroke="rgba(236,239,234,0.55)" stroke-width="1.2" stroke-dasharray="4 3" />
+
+        <!-- Anchor Dots on the 3D Garment Planes -->
+        <circle id="anchorDot-0" r="5" fill="#FF3B19" stroke="#ECEFEA" stroke-width="1.5" />
+        <circle id="anchorDot-1" r="4.5" fill="#ECEFEA" stroke="#0E1011" stroke-width="1.5" />
+        <circle id="anchorDot-2" r="5" fill="#FF3B19" stroke="#ECEFEA" stroke-width="1.5" />
+        <circle id="anchorDot-3" r="4.5" fill="#ECEFEA" stroke="#0E1011" stroke-width="1.5" />
+      </svg>
+
+      <!-- LEFT COLUMN FLOATING CALLOUT TAGS (LAYERS 01 & 02) -->
+      <div class="hidden lg:flex flex-col justify-between h-[480px] w-72 absolute left-4 top-1/2 -translate-y-1/2 z-30">
+        <!-- Callout 01: Outer 500D Ripstop Grid Shell -->
+        <div
+          id="calloutBox-0"
+          onmouseenter="focusLayerPlane(0)"
+          onclick="pluckSpring(0)"
+          class="callout-card active-callout p-4 cursor-pointer"
+        >
+          <div class="flex items-center justify-between font-mono text-[10px] text-signal mb-1">
+            <span>PLANE 01 // EXTERIOR ARMOR</span>
+            <span>[Z: +150mm]</span>
+          </div>
+          <h3 id="calloutTitle-0" class="font-display font-bold text-sm uppercase text-mist">
+            Outer 500D Ripstop Grid Shell
+          </h3>
+          <p id="calloutDesc-0" class="font-mono text-[11px] text-mistDim mt-1.5 leading-relaxed">
+            High-tenacity interlocking nylon 6,6 crosshatch barrier. Deflects 35 m/s subarctic sleet and volcanic basalt abrasion.
+          </p>
+          <div class="mt-2.5 pt-2 border-t border-mist/10 flex justify-between font-mono text-[9px] text-mist/70">
+            <span>CONTACT ANGLE: 144° DWR</span>
+            <span class="text-signal">CLICK TO PLUCK SPRING ↝</span>
+          </div>
+        </div>
+
+        <!-- Callout 02: Microporous Breathable Membrane -->
+        <div
+          id="calloutBox-1"
+          onmouseenter="focusLayerPlane(1)"
+          onclick="pluckSpring(1)"
+          class="callout-card p-4 cursor-pointer"
+        >
+          <div class="flex items-center justify-between font-mono text-[10px] text-mistDim mb-1">
+            <span>PLANE 02 // VAPOR MATRIX</span>
+            <span>[Z: +50mm]</span>
+          </div>
+          <h3 id="calloutTitle-1" class="font-display font-bold text-sm uppercase text-mist">
+            Microporous Breathable Membrane
+          </h3>
+          <p id="calloutDesc-1" class="font-mono text-[11px] text-mistDim mt-1.5 leading-relaxed">
+            Bi-component ePTFE matrix with 1.4 billion microscopic pores per cm². Impervious to liquid water; vents internal vapor at RET &lt; 3.5.
+          </p>
+          <div class="mt-2.5 pt-2 border-t border-mist/10 flex justify-between font-mono text-[9px] text-mist/70">
+            <span>HYDROSTATIC: 28,400 MM</span>
+            <span class="text-signal">CLICK TO PLUCK SPRING ↝</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- =================================================================
+           CENTER 3D CSS PRESERVE-3D GARMENT PLANES RIG
+           ================================================================= -->
+      <div class="stage-3d-viewport flex items-center justify-center z-10">
+        <div id="assemblyRig3D" class="assembly-rig-3d">
+
+          <!-- PLANE 04 (BACK): MOISTURE-WICKING THERMAL MICRO-GRID FLEECE LINING -->
+          <div
+            id="planeEl-3"
+            onclick="focusLayerPlane(3)"
+            class="depth-plane p-4 flex flex-col justify-between"
+          >
+            <div class="flex justify-between font-mono text-[9px] text-mistDim">
+              <span>LAYER 04 // NEXT-TO-CORE</span>
+              <span class="text-signal">THERMAL GRID</span>
+            </div>
+            <!-- SVG Micro-Grid Waffle Fleece Geometry -->
+            <svg viewBox="0 0 260 320" class="w-full h-72">
+              <defs>
+                <pattern id="waffleHex" width="18" height="18" patternUnits="userSpaceOnUse">
+                  <rect x="2" y="2" width="13" height="13" rx="1.5" fill="rgba(255, 59, 25, 0.14)" stroke="rgba(236, 239, 234, 0.25)" stroke-width="0.8" />
+                </pattern>
+              </defs>
+              <path d="M 85,18 L 175,18 L 235,68 L 215,295 L 45,295 L 25,68 Z" fill="url(#waffleHex)" stroke="#9BA39D" stroke-width="1.5" />
+              <circle cx="130" cy="165" r="42" fill="none" stroke="#FF3B19" stroke-width="1" stroke-dasharray="3 3" />
+              <text x="20" y="312" fill="#9BA39D" font-family="JetBrains Mono" font-size="8.5">320GSM THERMAL CAPILLARY LINING</text>
+            </svg>
+            <div class="font-mono text-[9px] text-mist/60 flex justify-between border-t border-mist/10 pt-1.5">
+              <span>CLO VALUE: 1.85</span>
+              <span>WICKING: 0.4s</span>
+            </div>
+          </div>
+
+          <!-- PLANE 03 (MID-BACK): FULLY TAPED SEAMS & MAGNETIC STORM FLAP HARDWARE -->
+          <div
+            id="planeEl-2"
+            onclick="focusLayerPlane(2)"
+            class="depth-plane p-4 flex flex-col justify-between"
+          >
+            <div class="flex justify-between font-mono text-[9px] text-mistDim">
+              <span>LAYER 03 // STRUCTURAL SEAL</span>
+              <span class="text-signal">13MM SEAM TAPE + FIDLOCK®</span>
+            </div>
+            <!-- SVG Taped Seams Skeleton & Fidlock Magnetic Nodes -->
+            <svg viewBox="0 0 260 320" class="w-full h-72">
+              <!-- Ultrasonic Welded Seam Skeleton -->
+              <path d="M 85,18 L 175,18 M 85,18 L 25,68 M 175,18 L 235,68 M 62,55 L 62,295 M 198,55 L 198,295 M 130,18 L 130,295" stroke="#ECEFEA" stroke-width="3.5" stroke-linecap="round" opacity="0.75" />
+              <path d="M 85,18 L 175,18 M 85,18 L 25,68 M 175,18 L 235,68 M 62,55 L 62,295 M 198,55 L 198,295 M 130,18 L 130,295" stroke="#FF3B19" stroke-width="1" stroke-dasharray="4 3" />
+              <!-- 5 Magnetic Storm Flap Hardware Points -->
+              <circle cx="130" cy="55" r="5.5" fill="#FF3B19" />
+              <circle cx="130" cy="110" r="5.5" fill="#FF3B19" />
+              <circle cx="130" cy="165" r="5.5" fill="#FF3B19" />
+              <circle cx="130" cy="220" r="5.5" fill="#FF3B19" />
+              <circle cx="130" cy="275" r="5.5" fill="#FF3B19" />
+              <text x="18" y="312" fill="#FF3B19" font-family="JetBrains Mono" font-size="8.5">ULTRASONIC WELD + MAGNETIC STORM HARDWARE</text>
+            </svg>
+            <div class="font-mono text-[9px] text-mist/60 flex justify-between border-t border-mist/10 pt-1.5">
+              <span>TAPE WIDTH: 13MM MICRO</span>
+              <span>ZIP: AQUAGUARD #8</span>
+            </div>
+          </div>
+
+          <!-- PLANE 02 (MID-FRONT): MICROPOROUS BREATHABLE MEMBRANE -->
+          <div
+            id="planeEl-1"
+            onclick="focusLayerPlane(1)"
+            class="depth-plane p-4 flex flex-col justify-between"
+          >
+            <div class="flex justify-between font-mono text-[9px] text-mistDim">
+              <span>LAYER 02 // HYDROSTATIC CORE</span>
+              <span class="text-signal">ePTFE 28,400MM</span>
+            </div>
+            <!-- SVG Molecular Membrane Lattice -->
+            <svg viewBox="0 0 260 320" class="w-full h-72">
+              <defs>
+                <pattern id="membraneDots" width="14" height="14" patternUnits="userSpaceOnUse">
+                  <circle cx="7" cy="7" r="2" fill="rgba(236, 239, 234, 0.32)" />
+                </pattern>
+              </defs>
+              <path d="M 85,18 L 175,18 L 235,68 L 215,295 L 45,295 L 25,68 Z" fill="url(#membraneDots)" stroke="#ECEFEA" stroke-width="1.2" stroke-dasharray="5 3" />
+              <!-- Vapor Escape Isobars -->
+              <ellipse cx="130" cy="155" rx="58" ry="82" fill="none" stroke="rgba(255,59,25,0.5)" stroke-width="1.2" />
+              <text x="18" y="312" fill="#ECEFEA" font-family="JetBrains Mono" font-size="8.5">1.4B PORES/CM² • RET &lt; 3.5 VAPOR MATRIX</text>
+            </svg>
+            <div class="font-mono text-[9px] text-mist/60 flex justify-between border-t border-mist/10 pt-1.5">
+              <span>MVTR: 32,000 G/M²/24H</span>
+              <span>WIND BLOCK: 100%</span>
+            </div>
+          </div>
+
+          <!-- PLANE 01 (FRONT): OUTER 500D RIPSTOP GRID SHELL -->
+          <div
+            id="planeEl-0"
+            onclick="focusLayerPlane(0)"
+            class="depth-plane plane-focused p-4 flex flex-col justify-between"
+          >
+            <!-- X-Ray Thermal Scanner Laser Line -->
+            <div id="xrayLaserBar" class="xray-laser"></div>
+
+            <div class="flex justify-between font-mono text-[9px] text-mist">
+              <span class="font-bold">LAYER 01 // EXTERIOR SHELL</span>
+              <span class="bg-signal text-mist px-1.5 py-0.2 font-bold">500D RIPSTOP</span>
+            </div>
+
+            <!-- SVG Architectural Outer Shell Silhouette -->
+            <svg viewBox="0 0 260 320" class="w-full h-72">
+              <defs>
+                <pattern id="ripstopFine" width="12" height="12" patternUnits="userSpaceOnUse">
+                  <path d="M 12 0 L 0 0 0 12" fill="none" stroke="rgba(236, 239, 234, 0.18)" stroke-width="0.9" />
+                </pattern>
+              </defs>
+              <!-- Storm Hood + Architectural Raglan Shell -->
+              <path d="M 102,4 L 158,4 L 175,24 L 242,72 L 222,295 L 38,295 L 18,72 L 85,24 Z" fill="url(#ripstopFine)" stroke="#ECEFEA" stroke-width="2" />
+              <!-- Asymmetrical Veilance Storm Zipper & Chest Vault -->
+              <line x1="138" y1="24" x2="138" y2="295" stroke="#FF3B19" stroke-width="2" />
+              <line x1="88" y1="95" x2="118" y2="165" stroke="#ECEFEA" stroke-width="1.8" />
+              <circle cx="88" cy="95" r="3.5" fill="#FF3B19" />
+              <circle cx="138" cy="52" r="3.5" fill="#FF3B19" />
+              <text x="18" y="312" fill="#ECEFEA" font-family="JetBrains Mono" font-size="8.5">SOLUTION-DYED 500D CORDURA® RIPSTOP</text>
+            </svg>
+
+            <div class="font-mono text-[9px] text-mist/80 flex justify-between border-t border-mist/15 pt-1.5">
+              <span>TEAR: 265 NEWTONS</span>
+              <span class="text-signal font-bold">DRAG TO ROTATE 3D ↻</span>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- RIGHT COLUMN FLOATING CALLOUT TAGS (LAYERS 03 & 04) -->
+      <div class="hidden lg:flex flex-col justify-between h-[480px] w-72 absolute right-4 top-1/2 -translate-y-1/2 z-30">
+        <!-- Callout 03: Fully Taped Seams & Magnetic Hardware -->
+        <div
+          id="calloutBox-2"
+          onmouseenter="focusLayerPlane(2)"
+          onclick="pluckSpring(2)"
+          class="callout-card p-4 cursor-pointer"
+        >
+          <div class="flex items-center justify-between font-mono text-[10px] text-signal mb-1">
+            <span>PLANE 03 // SEAM SKELETON</span>
+            <span>[Z: -50mm]</span>
+          </div>
+          <h3 id="calloutTitle-2" class="font-display font-bold text-sm uppercase text-mist">
+            13mm Taped Seams & Fidlock® Hardware
+          </h3>
+          <p id="calloutDesc-2" class="font-mono text-[11px] text-mistDim mt-1.5 leading-relaxed">
+            Ultrasonic micro-taped seams reduce bulk by 42% while self-aligning Fidlock® neodymium storm-flap magnets seal automatically with one hand.
+          </p>
+          <div class="mt-2.5 pt-2 border-t border-mist/10 flex justify-between font-mono text-[9px] text-mist/70">
+            <span>STITCH DENSITY: 16 SPI</span>
+            <span class="text-signal">CLICK TO SNAP MAGNET ⚡</span>
+          </div>
+        </div>
+
+        <!-- Callout 04: Moisture-Wicking Thermal Micro-Grid Fleece Lining -->
+        <div
+          id="calloutBox-3"
+          onmouseenter="focusLayerPlane(3)"
+          onclick="pluckSpring(3)"
+          class="callout-card p-4 cursor-pointer"
+        >
+          <div class="flex items-center justify-between font-mono text-[10px] text-mistDim mb-1">
+            <span>PLANE 04 // MICROCLIMATE</span>
+            <span>[Z: -150mm]</span>
+          </div>
+          <h3 id="calloutTitle-3" class="font-display font-bold text-sm uppercase text-mist">
+            Thermal Micro-Grid Fleece Lining
+          </h3>
+          <p id="calloutDesc-3" class="font-mono text-[11px] text-mistDim mt-1.5 leading-relaxed">
+            Geometric capillary channels trap radiant body warmth while accelerating moisture transfer away from base layers at -20°C.
+          </p>
+          <div class="mt-2.5 pt-2 border-t border-mist/10 flex justify-between font-mono text-[9px] text-mist/70">
+            <span>THERMAL EFFICIENCY: +94%</span>
+            <span class="text-signal">CLICK TO PLUCK SPRING ↝</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Mobile Callout Strip (Visible on smaller screens) -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:hidden gap-3 mt-4 z-20">
+      <div onclick="focusLayerPlane(0)" class="callout-card p-3">
+        <div class="font-mono text-[10px] text-signal">LAYER 01 // SHELL</div>
+        <div class="font-bold text-xs text-mist">Outer 500D Ripstop Grid Shell</div>
+      </div>
+      <div onclick="focusLayerPlane(1)" class="callout-card p-3">
+        <div class="font-mono text-[10px] text-mistDim">LAYER 02 // MEMBRANE</div>
+        <div class="font-bold text-xs text-mist">Microporous Breathable Membrane</div>
+      </div>
+      <div onclick="focusLayerPlane(2)" class="callout-card p-3">
+        <div class="font-mono text-[10px] text-signal">LAYER 03 // HARDWARE</div>
+        <div class="font-bold text-xs text-mist">Fully Taped Seams & Magnetic Flap</div>
+      </div>
+      <div onclick="focusLayerPlane(3)" class="callout-card p-3">
+        <div class="font-mono text-[10px] text-mistDim">LAYER 04 // LINING</div>
+        <div class="font-bold text-xs text-mist">Moisture-Wicking Thermal Micro-Grid</div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- =====================================================================
+       03. MICRO-INTERACTION DOCK (BOTTOM FLOATING GLASSMORPHIC PILL NAV)
+       ===================================================================== -->
+  <div class="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[95%] max-w-5xl">
+    <div class="bg-[#121517]/85 backdrop-blur-xl border border-mist/20 rounded-2xl px-5 py-3.5 shadow-[0_20px_50px_rgba(0,0,0,0.85)] flex flex-wrap items-center justify-between gap-4">
+
+      <!-- Left: Exploded Garment Scrub Bar -->
+      <div class="flex items-center gap-3.5 flex-1 min-w-[240px]">
+        <button
+          onclick="toggleAutoOrbit()"
+          id="orbitToggleBtn"
+          class="px-3 py-1.5 rounded-full bg-signal/20 border border-signal text-signal font-mono text-[10px] font-bold uppercase tracking-wider shrink-0 hover:bg-signal hover:text-mist transition"
+        >
+          ● 3D ORBIT
+        </button>
+
+        <div class="flex-1">
+          <div class="flex justify-between font-mono text-[9px] text-mistDim uppercase tracking-widest mb-1">
+            <span>DECONSTRUCT SCRUB (4 PLANES)</span>
+            <span id="scrubReadoutText" class="text-signal font-bold">68% SEPARATED</span>
+          </div>
+          <input
+            id="explodeScrubber"
+            type="range"
+            min="0"
+            max="100"
+            value="68"
+            class="bo-scrubber"
+            oninput="updateExplodeScrub(this.value)"
+          />
+        </div>
+      </div>
+
+      <!-- Center: Quick Size Matrix with Real-Time Stock Status Indicator -->
+      <div class="flex items-center gap-2 border-l border-r border-mist/15 px-4">
+        <div class="font-mono text-[9px] text-mistDim uppercase leading-tight mr-1">
+          <div>SIZE MATRIX</div>
+          <div id="stockStatusLabel" class="text-emerald-400 font-bold">● 6 IN REYKJAVÍK VAULT</div>
+        </div>
+        <div class="flex items-center gap-1 font-mono text-xs" id="dockSizeButtons">
+          <button onclick="selectDockSize('XS', 2)" data-sz="XS" class="sz-btn w-8 h-8 rounded-lg border border-mist/15 text-mistDim hover:border-mist transition">XS</button>
+          <button onclick="selectDockSize('S', 5)" data-sz="S" class="sz-btn w-8 h-8 rounded-lg border border-mist/15 text-mistDim hover:border-mist transition">S</button>
+          <button onclick="selectDockSize('M', 8)" data-sz="M" class="sz-btn w-8 h-8 rounded-lg border border-mist/15 text-mistDim hover:border-mist transition">M</button>
+          <button onclick="selectDockSize('L', 6)" data-sz="L" class="sz-btn w-8 h-8 rounded-lg border border-signal bg-signal text-mist font-bold transition">L</button>
+          <button onclick="selectDockSize('XL', 1)" data-sz="XL" class="sz-btn w-8 h-8 rounded-lg border border-mist/15 text-mistDim hover:border-mist transition">XL</button>
+        </div>
+      </div>
+
+      <!-- Right: B&O Tactile Audio Toggle & Acquire CTA -->
+      <div class="flex items-center gap-2.5">
+        <button
+          onclick="toggleTactileAudio()"
+          id="audioDockBtn"
+          class="px-3 py-2 rounded-xl bg-basaltSoft border border-mist/20 hover:border-signal font-mono text-[10px] text-mist flex items-center gap-1.5 transition"
+          title="Bang & Olufsen Acoustic Mechanical Clicks"
+        >
+          <span id="audioWaveIcon" class="w-2 h-2 rounded-full bg-signal animate-pulse"></span>
+          <span id="audioDockText">SOUND: ON</span>
+        </button>
+
+        <button
+          onclick="acquireCurrentSpecimen()"
+          class="px-5 py-2.5 rounded-xl bg-signal hover:bg-[#ff5233] text-mist font-display font-bold text-xs uppercase tracking-wider transition shadow-[0_0_25px_rgba(255,59,25,0.45)]"
+        >
+          LOCK SPECIMEN +
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       LUXURY VAULT ACQUISITION DRAWER
+       ===================================================================== -->
+  <div id="checkoutOverlay" onclick="toggleCheckoutDrawer(false)" class="fixed inset-0 bg-black/75 backdrop-blur-sm z-50 hidden"></div>
+  <aside
+    id="checkoutDrawer"
+    class="fixed top-0 right-0 h-full w-full max-w-md bg-basalt border-l border-mist/20 z-50 translate-x-full transition-transform duration-300 flex flex-col justify-between p-6 shadow-2xl"
+  >
+    <div class="border-b border-mist/15 pb-4 flex items-start justify-between">
+      <div>
+        <span class="font-mono text-[10px] text-signal uppercase tracking-[0.2em]">// SKEIFAN 10 ARCHITECTURAL VAULT</span>
+        <h3 class="font-display font-extrabold text-xl uppercase text-mist mt-1">SPECIMEN ACQUISITION</h3>
+      </div>
+      <button onclick="toggleCheckoutDrawer(false)" class="font-mono text-xs px-3 py-1 border border-mist/20 text-mistDim hover:text-mist">
+        [ESC]
+      </button>
+    </div>
+
+    <div id="vaultCartItems" class="my-6 flex-1 overflow-y-auto space-y-3">
+      <!-- Populated by JS -->
+    </div>
+
+    <div class="border-t border-mist/15 pt-4">
+      <div class="flex justify-between font-mono text-xs text-mistDim mb-1">
+        <span>SERIALIZED NFC AUTHENTICATION:</span>
+        <span class="text-mist">INCLUDED</span>
+      </div>
+      <div class="flex justify-between font-mono text-xs text-mistDim mb-3">
+        <span>DROPP.IS COURIER DISPATCH:</span>
+        <span class="text-signal">PRIORITY COMPLIMENTARY</span>
+      </div>
+      <div class="flex justify-between items-baseline mb-4">
+        <span class="font-mono text-xs uppercase text-mist">TOTAL (INCL. 24% VSK):</span>
+        <span id="vaultTotalISK" class="font-display font-extrabold text-2xl text-mist">74.900 ISK</span>
+      </div>
+      <button
+        onclick="completeVaultAcquisition()"
+        class="w-full py-4 bg-signal hover:bg-[#ff5233] text-mist font-display font-bold text-xs uppercase tracking-[0.18em] transition"
+      >
+        AUTHORIZE VAULT DISPATCH ➔
+      </button>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       JAVASCRIPT ENGINE: 3D DECONSTRUCTION, HOOKE'S SPRING PHYSICS & AUDIO
+       ===================================================================== -->
+  <script>
+    // 3 Luxury Technical Specimens
+    const SPECIMENS = {
+      mjolnir: {
+        id: 'mjolnir',
+        name: 'MJÖLNIR 3-LAYER RIPSTOP SHELL',
+        hydro: '28,400 mm',
+        priceISK: 74900,
+        layers: [
+          { title: 'Outer 500D Ripstop Grid Shell', desc: 'Solution-dyed 500D interlocking nylon 6,6 barrier with 144° hydrophobic DWR.' },
+          { title: 'Microporous Breathable Membrane', desc: 'Bi-component ePTFE membrane (1.4B pores/cm²) venting sweat at RET < 3.5.' },
+          { title: '13mm Taped Seams & Fidlock® Hardware', desc: 'Ultrasonic welded seams + self-sealing neodymium magnetic storm placket.' },
+          { title: 'Thermal Micro-Grid Fleece Lining', desc: 'Moisture-wicking capillary grid core calibrated for subarctic output.' }
+        ]
+      },
+      valkyrja: {
+        id: 'valkyrja',
+        name: 'VALKYRJA ARAMID-DOWN MONOLITH COAT',
+        hydro: '30,000 mm',
+        priceISK: 98500,
+        layers: [
+          { title: 'Takibi Flame-Retardant Aramid Shell', desc: 'Volcanic ember-proof aramid ripstop weave with matte basalt finish.' },
+          { title: 'Monolithic Windstopper® Storm Film', desc: 'Zero-porosity wind and freezing sleet barrier rated for 40 m/s gusts.' },
+          { title: '3D Box-Wall Baffle & Magnetic Seal', desc: 'Zero cold-spot stitchless chamber walls with Fidlock® collar latch.' },
+          { title: '850FP Hydrophobic Goose Down Core', desc: 'DWR-infused cluster insulation retaining 96% loft in wet sleet.' }
+        ]
+      },
+      fenrir: {
+        id: 'fenrir',
+        name: 'FENRIR ARTICULATED 3L STORM PANT',
+        hydro: '26,000 mm',
+        priceISK: 54900,
+        layers: [
+          { title: '600D Basalt-Shield Cordura® Face', desc: 'High-abrasion volcanic rock and crampon spike protection chassis.' },
+          { title: 'Electrospun Polyurethane Membrane', desc: 'Dynamic stretch waterproof barrier moving with 138° knee flexion.' },
+          { title: 'Aquaguard® Thigh Vents & Seam Tape', desc: 'Full-length welded ventilation ports + cobra-hook waist lock.' },
+          { title: 'Brushed Merino-Tricot Scrim Backer', desc: 'Silent, low-friction interior glide over thermal base layers.' }
+        ]
+      }
+    };
+
+    // State
+    let activeSpecKey = 'mjolnir';
+    let scrubPct = 68; // 0 to 100
+    let rotY = -24;
+    let rotX = 12;
+    let autoOrbit = true;
+    let soundEnabled = true;
+    let xrayEnabled = true;
+    let glacialTheme = false;
+    let selectedSize = 'L';
+    let vaultCart = [{ name: 'MJÖLNIR 3-LAYER RIPSTOP SHELL', size: 'L', priceISK: 74900, qty: 1 }];
+    let audioCtx = null;
+
+    // Hooke's Law Spring Physics State for the 4 SVG Callout Tethers
+    // Each spring has a control point (cx, cy) with velocity (vx, vy) that wobbles when dragged or plucked
+    const springs = [
+      { cx: 0, cy: 0, vx: 0, vy: 0, targetX: 0, targetY: 0 },
+      { cx: 0, cy: 0, vx: 0, vy: 0, targetX: 0, targetY: 0 },
+      { cx: 0, cy: 0, vx: 0, vy: 0, targetX: 0, targetY: 0 },
+      { cx: 0, cy: 0, vx: 0, vy: 0, targetX: 0, targetY: 0 }
+    ];
+
+    // =====================================================================
+    // B&O ORGANIC MECHANICAL CLICK SYNTHESIZER (WEB AUDIO API)
+    // =====================================================================
+    function playOrganicClick(freq = 920, duration = 0.022, type = 'sine') {
+      if (!soundEnabled) return;
+      try {
+        if (!audioCtx) {
+          audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        }
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+
+        const now = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now);
+        osc.frequency.exponentialRampToValueAtTime(140, now + duration);
+
+        gain.gain.setValueAtTime(0.06, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now);
+        osc.stop(now + duration + 0.005);
+      } catch (e) {}
+    }
+
+    function toggleTactileAudio() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('audioDockText').textContent = soundEnabled ? 'SOUND: ON' : 'SOUND: MUTE';
+      document.getElementById('audioWaveIcon').className = soundEnabled
+        ? 'w-2 h-2 rounded-full bg-signal animate-pulse'
+        : 'w-2 h-2 rounded-full bg-mistDim';
+      if (soundEnabled) playOrganicClick(1100, 0.03);
+    }
+
+    // =====================================================================
+    // 3D EXPLODED GARMENT SCRUB & DRAG ROTATION
+    // =====================================================================
+    function updateExplodeScrub(val) {
+      const nextVal = parseInt(val, 10);
+      if (Math.abs(nextVal - scrubPct) >= 3) {
+        playOrganicClick(520 + nextVal * 5, 0.015, 'triangle');
+      }
+      scrubPct = nextVal;
+      document.getElementById('scrubReadoutText').textContent = `${scrubPct}% SEPARATED`;
+      document.getElementById('teleZSpread').textContent = `${scrubPct}% EXPLODED`;
+
+      // Excite spring physics slightly when scrubbing
+      springs.forEach((s, idx) => {
+        s.vy += (idx % 2 === 0 ? -4.5 : 4.5);
+      });
+
+      apply3DPlaneTransforms();
+    }
+
+    function apply3DPlaneTransforms() {
+      const rig = document.getElementById('assemblyRig3D');
+      rig.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg)`;
+
+      // Z-offsets for the 4 planes based on scrubPct (0% -> tightly stacked, 100% -> wide apart)
+      const spread = (scrubPct / 100) * 145;
+      const zOffsets = [spread * 1.15, spread * 0.38, -spread * 0.38, -spread * 1.15];
+      const xOffsets = [-spread * 0.25, -spread * 0.08, spread * 0.08, spread * 0.25];
+
+      [0, 1, 2, 3].forEach(i => {
+        const el = document.getElementById(`planeEl-${i}`);
+        if (el) {
+          el.style.transform = `translate3d(${xOffsets[i]}px, 0px, ${zOffsets[i]}px)`;
+        }
+      });
+    }
+
+    function focusLayerPlane(planeIdx) {
+      playOrganicClick(880 + planeIdx * 120, 0.03, 'sine');
+      [0, 1, 2, 3].forEach(i => {
+        const p = document.getElementById(`planeEl-${i}`);
+        const c = document.getElementById(`calloutBox-${i}`);
+        if (p) p.classList.toggle('plane-focused', i === planeIdx);
+        if (c) c.classList.toggle('active-callout', i === planeIdx);
+      });
+      pluckSpring(planeIdx);
+    }
+
+    function pluckSpring(idx) {
+      playOrganicClick(660 + idx * 90, 0.045, 'triangle');
+      if (springs[idx]) {
+        springs[idx].vy -= 22;
+        springs[idx].vx += (idx < 2 ? 14 : -14);
+      }
+    }
+
+    // Drag-to-Rotate 3D Stage Interaction
+    let isDraggingStage = false;
+    let lastDragPos = { x: 0, y: 0 };
+    const stageEl = document.getElementById('deconstructStage');
+
+    stageEl.addEventListener('mousedown', e => {
+      isDraggingStage = true;
+      autoOrbit = false;
+      document.getElementById('orbitToggleBtn').textContent = '○ 3D ORBIT';
+      lastDragPos = { x: e.clientX, y: e.clientY };
+    });
+
+    window.addEventListener('mousemove', e => {
+      // Update custom elastic reticle pointer
+      const ptr = document.getElementById('elasticPointer');
+      if (ptr) {
+        ptr.style.left = `${e.clientX}px`;
+        ptr.style.top = `${e.clientY}px`;
+      }
+
+      if (!isDraggingStage) return;
+      const dx = e.clientX - lastDragPos.x;
+      const dy = e.clientY - lastDragPos.y;
+      lastDragPos = { x: e.clientX, y: e.clientY };
+
+      rotY = Math.max(-55, Math.min(55, rotY + dx * 0.35));
+      rotX = Math.max(-28, Math.min(32, rotX - dy * 0.25));
+
+      // Transfer drag momentum into the spring tethers
+      springs.forEach(s => {
+        s.vx += dx * 0.35;
+        s.vy += dy * 0.35;
+      });
+
+      apply3DPlaneTransforms();
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDraggingStage = false;
+    });
+
+    function toggleAutoOrbit() {
+      autoOrbit = !autoOrbit;
+      playOrganicClick(980, 0.025);
+      document.getElementById('orbitToggleBtn').textContent = autoOrbit ? '● 3D ORBIT' : '○ 3D ORBIT';
+    }
+
+    // =====================================================================
+    // 60FPS HOOKE'S LAW SPRING TETHER & ATMOSPHERIC SHADER LOOP
+    // =====================================================================
+    const atmosCanvas = document.getElementById('atmosphereCanvas');
+    const aCtx = atmosCanvas.getContext('2d');
+    let mistParticles = [];
+
+    function initAtmosParticles() {
+      const rect = stageEl.getBoundingClientRect();
+      atmosCanvas.width = rect.width;
+      atmosCanvas.height = rect.height;
+      mistParticles = [];
+      for (let i = 0; i < 55; i++) {
+        mistParticles.push({
+          x: Math.random() * atmosCanvas.width,
+          y: Math.random() * atmosCanvas.height,
+          vx: 0.3 + Math.random() * 0.7,
+          r: 1 + Math.random() * 2
+        });
+      }
+    }
+
+    function animateDeconstructedScene() {
+      const stageRect = stageEl.getBoundingClientRect();
+      if (atmosCanvas.width !== stageRect.width) {
+        atmosCanvas.width = stageRect.width;
+        atmosCanvas.height = stageRect.height;
+      }
+
+      // 1. Gentle Auto-Orbit 3D Breathing
+      if (autoOrbit && !isDraggingStage) {
+        const t = Date.now() * 0.0012;
+        rotY = -22 + Math.sin(t) * 16;
+        rotX = 11 + Math.cos(t * 0.8) * 6;
+        apply3DPlaneTransforms();
+      }
+
+      // 2. Render Subtle Subarctic Mist Particles on Background Canvas
+      aCtx.clearRect(0, 0, atmosCanvas.width, atmosCanvas.height);
+      aCtx.fillStyle = glacialTheme ? 'rgba(14, 16, 17, 0.18)' : 'rgba(236, 239, 234, 0.16)';
+      mistParticles.forEach(p => {
+        p.x += p.vx;
+        if (p.x > atmosCanvas.width) p.x = 0;
+        aCtx.beginPath();
+        aCtx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        aCtx.fill();
+      });
+
+      // 3. Update Hooke's Law Spring-Physics SVG Connecting Lines
+      let totalSpringEnergy = 0;
+      [0, 1, 2, 3].forEach(i => {
+        const calloutEl = document.getElementById(`calloutBox-${i}`);
+        const planeEl = document.getElementById(`planeEl-${i}`);
+        const pathEl = document.getElementById(`springPath-${i}`);
+        const dotEl = document.getElementById(`anchorDot-${i}`);
+
+        if (!calloutEl || !planeEl || !pathEl || calloutEl.offsetParent === null) {
+          if (pathEl) pathEl.setAttribute('d', '');
+          return;
+        }
+
+        const cRect = calloutEl.getBoundingClientRect();
+        const pRect = planeEl.getBoundingClientRect();
+
+        // Start point on Callout Card edge
+        const startX = (i < 2 ? cRect.right : cRect.left) - stageRect.left;
+        const startY = (cRect.top + cRect.height * 0.5) - stageRect.top;
+
+        // End point on corresponding 3D Garment Plane
+        const endX = (pRect.left + pRect.width * (i < 2 ? 0.28 : 0.72)) - stageRect.left;
+        const endY = (pRect.top + pRect.height * (0.28 + i * 0.16)) - stageRect.top;
+
+        // Midpoint target for quadratic Bezier control point
+        const midX = (startX + endX) * 0.5;
+        const midY = (startY + endY) * 0.5;
+
+        const s = springs[i];
+        if (s.cx === 0 && s.cy === 0) {
+          s.cx = midX;
+          s.cy = midY;
+        }
+
+        // Hooke's Law spring physics: F = -k * x - damping * v
+        const stiffness = 0.14;
+        const damping = 0.80;
+        const fx = (midX - s.cx) * stiffness;
+        const fy = (midY - s.cy) * stiffness;
+
+        s.vx = (s.vx + fx) * damping;
+        s.vy = (s.vy + fy) * damping;
+        s.cx += s.vx;
+        s.cy += s.vy;
+
+        totalSpringEnergy += Math.hypot(s.vx, s.vy);
+
+        pathEl.setAttribute('d', `M ${startX},${startY} Q ${s.cx},${s.cy} ${endX},${endY}`);
+        dotEl.setAttribute('cx', endX);
+        dotEl.setAttribute('cy', endY);
+      });
+
+      const tensionReadout = (12.4 + totalSpringEnergy * 0.45).toFixed(1);
+      document.getElementById('teleSpringTension').textContent = `${tensionReadout} N·m`;
+
+      requestAnimationFrame(animateDeconstructedScene);
+    }
+
+    // =====================================================================
+    // SPECIMEN SWITCHER, X-RAY BEAM, THEME & CHECKOUT VAULT
+    // =====================================================================
+    function selectSpecimen(key) {
+      activeSpecKey = key;
+      const spec = SPECIMENS[key];
+      playOrganicClick(1040, 0.035, 'sine');
+
+      ['mjolnir', 'valkyrja', 'fenrir'].forEach(k => {
+        document.getElementById(`specBtn-${k}`).className =
+          k === key
+            ? 'px-3.5 py-1.5 rounded-full bg-signal text-mist font-semibold uppercase tracking-wider transition'
+            : 'px-3.5 py-1.5 rounded-full text-mistDim hover:text-mist uppercase tracking-wider transition';
+      });
+
+      document.getElementById('specimenHeroTitle').textContent = spec.name;
+      document.getElementById('teleHydro').textContent = spec.hydro;
+      document.getElementById('telePriceISK').textContent = `${spec.priceISK.toLocaleString('de-DE')} ISK`;
+
+      spec.layers.forEach((l, idx) => {
+        document.getElementById(`calloutTitle-${idx}`).textContent = l.title;
+        document.getElementById(`calloutDesc-${idx}`).textContent = l.desc;
+      });
+
+      // Exciting spring bounce on specimen change
+      springs.forEach((s, i) => {
+        s.vy += (i % 2 === 0 ? -18 : 18);
+      });
+    }
+
+    function toggleXrayBeam() {
+      xrayEnabled = !xrayEnabled;
+      playOrganicClick(780, 0.025);
+      document.getElementById('xrayLaserBar').style.display = xrayEnabled ? 'block' : 'none';
+      document.getElementById('xrayStateText').textContent = xrayEnabled ? 'ON' : 'OFF';
+    }
+
+    function toggleAtmosphereTheme() {
+      glacialTheme = !glacialTheme;
+      playOrganicClick(620, 0.03);
+      document.body.classList.toggle('glacial-mode', glacialTheme);
+      document.getElementById('themeStateText').textContent = glacialTheme ? 'GLACIAL' : 'BASALT';
+    }
+
+    function selectDockSize(sz, stockCount) {
+      selectedSize = sz;
+      playOrganicClick(950, 0.02);
+      document.querySelectorAll('.sz-btn').forEach(btn => {
+        if (btn.getAttribute('data-sz') === sz) {
+          btn.className = 'sz-btn w-8 h-8 rounded-lg border border-signal bg-signal text-mist font-bold transition';
+        } else {
+          btn.className = 'sz-btn w-8 h-8 rounded-lg border border-mist/15 text-mistDim hover:border-mist transition';
+        }
+      });
+
+      const stockEl = document.getElementById('stockStatusLabel');
+      if (stockCount <= 2) {
+        stockEl.textContent = `▲ LOW STOCK: ${stockCount} IN VAULT`;
+        stockEl.className = 'text-signal font-bold';
+      } else {
+        stockEl.textContent = `● ${stockCount} IN REYKJAVÍK VAULT`;
+        stockEl.className = 'text-emerald-400 font-bold';
+      }
+    }
+
+    function acquireCurrentSpecimen() {
+      playOrganicClick(1200, 0.04, 'triangle');
+      const spec = SPECIMENS[activeSpecKey];
+      const existing = vaultCart.find(i => i.name === spec.name && i.size === selectedSize);
+      if (existing) existing.qty += 1;
+      else vaultCart.push({ name: spec.name, size: selectedSize, priceISK: spec.priceISK, qty: 1 });
+      renderVaultCart();
+      toggleCheckoutDrawer(true);
+    }
+
+    function renderVaultCart() {
+      const count = vaultCart.reduce((s, i) => s + i.qty, 0);
+      const total = vaultCart.reduce((s, i) => s + i.priceISK * i.qty, 0);
+      document.getElementById('vaultBagCount').textContent = count;
+      document.getElementById('vaultTotalISK').textContent = `${total.toLocaleString('de-DE')} ISK`;
+
+      const container = document.getElementById('vaultCartItems');
+      container.innerHTML = vaultCart.map((item, idx) => `
+        <div class="p-4 bg-basaltSoft border border-mist/15 flex items-center justify-between gap-3">
+          <div>
+            <div class="font-mono text-[10px] text-signal uppercase">SIZE ${item.size} // NFC SERIALIZED</div>
+            <div class="font-display font-bold text-sm text-mist">${item.name}</div>
+            <div class="font-mono text-xs text-mistDim mt-0.5">${item.priceISK.toLocaleString('de-DE')} ISK × ${item.qty}</div>
+          </div>
+          <button onclick="removeVaultItem(${idx})" class="font-mono text-xs text-mistDim hover:text-signal px-2">✕</button>
+        </div>
+      `).join('');
+    }
+
+    function removeVaultItem(idx) {
+      vaultCart.splice(idx, 1);
+      renderVaultCart();
+    }
+
+    function toggleCheckoutDrawer(open) {
+      playOrganicClick(700, 0.025);
+      const overlay = document.getElementById('checkoutOverlay');
+      const drawer = document.getElementById('checkoutDrawer');
+      if (open) {
+        overlay.classList.remove('hidden');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        overlay.classList.add('hidden');
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function completeVaultAcquisition() {
+      playOrganicClick(1320, 0.05);
+      const total = document.getElementById('vaultTotalISK').textContent;
+      alert(`NORDIC ANATOMY // VAULT ACQUISITION AUTHORIZED\n\nTotal Valuation: ${total}\nAuthentication: NFC Hardware Tag Registered\nCourier: Dropp.is Priority Same-Day from Skeifan 10, Reykjavík.`);
+      toggleCheckoutDrawer(false);
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initAtmosParticles();
+      apply3DPlaneTransforms();
+      renderVaultCart();
+      requestAnimationFrame(animateDeconstructedScene);
+    });
+  </script>
+</body>
+</html>
