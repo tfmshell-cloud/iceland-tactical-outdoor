@@ -1,0 +1,1051 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THERMAL & ACOUSTIC LAB // FLIR LWIR & Decibel Stealth Storefront</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --graphite: #121316;
+      --graphite-panel: #181A1F;
+      --graphite-deep: #0B0C0E;
+      --flir-navy: #11153A;
+      --flir-purple: #6A1B78;
+      --flir-red: #D92B3A;
+      --flir-orange: #FF7B00;
+      --flir-white: #FFFBE6;
+      --text-main: #ECEFF4;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    body {
+      margin: 0;
+      background-color: var(--graphite);
+      color: var(--text-main);
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* Authentic FLIR Ironbow Gradient Bar */
+    .flir-gradient {
+      background: linear-gradient(90deg,
+        #090C24 0%,
+        #2B145A 22%,
+        #781C68 45%,
+        #C82838 66%,
+        #FF7800 85%,
+        #FFFBE6 100%
+      );
+    }
+
+    .flir-gradient-vertical {
+      background: linear-gradient(0deg,
+        #090C24 0%,
+        #2B145A 22%,
+        #781C68 45%,
+        #C82838 66%,
+        #FF7800 85%,
+        #FFFBE6 100%
+      );
+    }
+
+    /* Pulsating Ergonomic Callout Node */
+    @keyframes pulseRing {
+      0% { transform: scale(0.95); opacity: 0.9; }
+      50% { transform: scale(1.45); opacity: 0.2; }
+      100% { transform: scale(0.95); opacity: 0.9; }
+    }
+    .ergo-pulse::before {
+      content: '';
+      position: absolute;
+      inset: -5px;
+      border-radius: 9999px;
+      border: 1.5px solid #FF7800;
+      animation: pulseRing 2.2s infinite ease-in-out;
+    }
+
+    /* Fidlock Magnetic Snap-Lock Overlay Animation */
+    #fidlockOverlay {
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+    #fidlockOverlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    .fidlock-half-left {
+      transform: translateX(-110px);
+      transition: transform 0.32s cubic-bezier(0.2, 1.3, 0.35, 1);
+    }
+    .fidlock-half-right {
+      transform: translateX(110px);
+      transition: transform 0.32s cubic-bezier(0.2, 1.3, 0.35, 1);
+    }
+    #fidlockOverlay.snapped .fidlock-half-left,
+    #fidlockOverlay.snapped .fidlock-half-right {
+      transform: translateX(0px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #0B0C0E; }
+    ::-webkit-scrollbar-thumb { background: #FF7B00; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between">
+
+  <!-- TOP FIELD RESEARCH LAB HEADER -->
+  <header class="sticky top-0 z-40 bg-[#121316]/90 backdrop-blur-md border-b border-white/10 px-4 md:px-8 h-16 flex items-center justify-between gap-4">
+    <!-- Left Lab Identity -->
+    <div class="flex items-center gap-4">
+      <a href="../experiments_index.html" class="px-3 py-1.5 bg-[#181A1F] border border-white/15 hover:border-[#FF7B00] mono text-[11px] uppercase tracking-widest flex items-center gap-2 transition">
+        <span>←</span>
+        <span class="hidden sm:inline">LAB HUB</span>
+      </a>
+      <div>
+        <div class="flex items-center gap-2.5">
+          <span class="font-bold text-lg tracking-tight text-white">THERMAL &amp; ACOUSTIC LAB</span>
+          <span class="px-2 py-0.5 flir-gradient text-[#0B0C0E] mono text-[10px] font-extrabold uppercase tracking-widest">VARIANT 12</span>
+        </div>
+        <div class="mono text-[10px] text-white/50 uppercase tracking-widest">
+          LWIR 8–14μm INFRARED THERMOGRAPHY &amp; ANECHOIC FRICTION CHAMBER
+        </div>
+      </div>
+    </div>
+
+    <!-- Center: "FLIR THERMAL VISION" MASTER TOGGLE -->
+    <div class="flex items-center gap-3">
+      <span class="hidden lg:inline mono text-[10px] text-white/50 uppercase tracking-widest">VISION SPECTRUM:</span>
+      <div class="bg-[#0B0C0E] p-1 border border-white/15 flex items-center gap-1">
+        <button id="btnOptical" onclick="setVisionMode('optical')" class="px-3.5 py-1.5 mono text-[11px] font-bold uppercase tracking-wider transition bg-[#252830] text-white">
+          OPTICAL STEALTH
+        </button>
+        <button id="btnFlir" onclick="setVisionMode('flir')" class="px-3.5 py-1.5 mono text-[11px] font-bold uppercase tracking-wider transition flir-gradient text-[#0B0C0E] shadow-lg">
+          ◉ FLIR THERMAL VISION
+        </button>
+      </div>
+    </div>
+
+    <!-- Right: Audio Acoustic Monitor & Fidlock Pack -->
+    <div class="flex items-center gap-3">
+      <button onclick="toggleLabAudio()" class="px-3 py-1.5 bg-[#181A1F] border border-white/15 hover:border-[#FF7B00] mono text-[11px] uppercase tracking-widest flex items-center gap-2 transition">
+        <span id="audioDot" class="w-2 h-2 rounded-full bg-[#FF7B00]"></span>
+        <span id="audioStatusText" class="hidden sm:inline">MIC: LIVE</span>
+      </button>
+
+      <button onclick="triggerFidlockDeploy()" class="px-4 py-2 bg-[#FF7B00] hover:bg-[#FFFBE6] text-[#0B0C0E] mono text-[11px] font-bold uppercase tracking-widest flex items-center gap-2 transition shadow-lg">
+        <span>FIDLOCK® BAG [</span><span id="bagCount">1</span><span>]</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE: LEFT SPECIMEN SELECTOR + CENTER FLIR STAGE + RIGHT TELEMETRY & DEPLOY -->
+  <main class="flex-1 max-w-[1640px] w-full mx-auto px-4 md:px-8 py-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+
+    <!-- LEFT COLUMN (3 Cols): STEALTH GARMENT SPECIMEN SELECTOR & CLIMATE CONTROLS -->
+    <div class="lg:col-span-3 flex flex-col justify-between gap-4">
+      <div class="bg-[#181A1F] border border-white/10 p-4 space-y-3">
+        <div class="flex items-center justify-between mono text-[10px] text-[#FF7B00] uppercase tracking-widest">
+          <span>// 01 — SPECIMEN SELECTOR</span>
+          <span>3 UNITS</span>
+        </div>
+
+        <div id="specimenList" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Ambient Cold Chamber & Thermal Retention Readout -->
+      <div class="bg-[#181A1F] border border-white/10 p-4 space-y-4">
+        <div class="flex items-center justify-between mono text-[10px] text-white/60 uppercase tracking-widest">
+          <span>// 02 — CHAMBER AMBIENT TEMP</span>
+          <span id="ambientVal" class="text-[#FF7B00] font-bold">-14°C ARCTIC</span>
+        </div>
+        <input id="ambientSlider" type="range" min="-25" max="5" value="-14"
+               oninput="updateAmbientTemp(this.value)"
+               class="w-full accent-[#FF7B00] cursor-pointer" />
+        <div class="flex justify-between mono text-[9px] text-white/40">
+          <span>-25°C GLACIER</span>
+          <span>-10°C HIGHLAND</span>
+          <span>+5°C COAST</span>
+        </div>
+
+        <!-- Thermal Delta Summary -->
+        <div class="pt-3 border-t border-white/10 grid grid-cols-2 gap-2 mono">
+          <div class="p-2.5 bg-[#121316] border border-white/10">
+            <div class="text-[9px] text-white/45">CORE RETENTION</div>
+            <div id="coreTempReadout" class="text-base font-bold text-[#FFFBE6] mt-0.5">+36.4°C</div>
+            <div class="text-[9px] text-[#FF7B00]">CHEST &amp; KIDNEYS</div>
+          </div>
+          <div class="p-2.5 bg-[#121316] border border-white/10">
+            <div class="text-[9px] text-white/45">VENT CHANNEL</div>
+            <div id="ventTempReadout" class="text-base font-bold text-[#38BDF8] mt-0.5">+19.8°C</div>
+            <div class="text-[9px] text-[#38BDF8]">AXILLARY MESH</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Selected Ergonomic Zone Detail Card -->
+      <div class="bg-[#181A1F] border border-[#FF7B00]/40 p-4 flex-1 flex flex-col justify-between">
+        <div>
+          <div class="mono text-[10px] text-[#FF7B00] uppercase tracking-widest mb-1" id="activeNodeBadge">
+            ACTIVE ZONE // CORE CHEST BAFFLE
+          </div>
+          <h3 id="activeNodeTitle" class="font-bold text-base text-white">
+            Graphene-Lined Core Retention Matrix
+          </h3>
+          <p id="activeNodeDesc" class="text-xs text-white/70 mt-1.5 leading-relaxed">
+            Traps metabolic infrared radiation across the sternum and renal arteries while preventing external thermal signature leakage.
+          </p>
+        </div>
+        <div class="mt-3 pt-2.5 border-t border-white/10 flex items-center justify-between mono text-[10px] text-white/55">
+          <span>CLICK FLOATING NODES ON RIG</span>
+          <span id="activeNodeTemp" class="text-[#FFFBE6] font-bold">36.4°C</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- CENTER COLUMN (6 Cols): INTERACTIVE FLIR THERMOGRAPHIC STAGE + FLOATING ERGONOMIC SPECS -->
+    <div class="lg:col-span-6 bg-[#0B0C0E] border border-white/15 relative flex flex-col justify-between overflow-hidden min-h-[500px]">
+      <!-- Top FLIR Camera HUD Overlay -->
+      <div class="relative z-20 p-4 flex items-center justify-between mono text-xs pointer-events-none">
+        <div class="flex items-center gap-3 bg-[#121316]/85 border border-white/15 px-3 py-1.5">
+          <span id="flirRecDot" class="w-2 h-2 rounded-full bg-[#FF7B00] animate-ping"></span>
+          <span id="flirHudLabel">FLIR LWIR IRONBOW // ε=0.98</span>
+        </div>
+        <div class="bg-[#121316]/85 border border-white/15 px-3 py-1.5 text-[#FFFBE6] font-bold" id="spotMeterHud">
+          SPOT METER: +35.8°C [CORE]
+        </div>
+      </div>
+
+      <!-- Interactive Garment Canvas + Floating Ergonomic Stem Badges -->
+      <div id="flirStageContainer" class="relative flex-1 w-full h-full flex items-center justify-center">
+        <canvas id="flirCanvas" class="w-full h-full block cursor-grab active:cursor-grabbing"></canvas>
+
+        <!-- SVG Micro-Stems Connecting Floating Badges to Garment Zones -->
+        <svg id="ergoStemSvg" class="pointer-events-none absolute inset-0 w-full h-full z-10"></svg>
+
+        <!-- Floating Ergonomic Spec Badges Container -->
+        <div id="ergoBadgesLayer" class="pointer-events-none absolute inset-0 z-20">
+          <!-- Populated dynamically via JS -->
+        </div>
+
+        <!-- Right-Side Vertical FLIR Temperature Color Scale Bar -->
+        <div class="pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 flex items-center gap-2 bg-[#121316]/85 border border-white/15 p-2 z-20">
+          <div class="flex flex-col justify-between h-44 mono text-[9px] text-right text-white/75">
+            <span>+38.0°C</span>
+            <span>+30.0°C</span>
+            <span>+20.0°C</span>
+            <span>+10.0°C</span>
+            <span id="scaleBottomTemp">-14.0°C</span>
+          </div>
+          <div class="w-3 h-44 flir-gradient-vertical border border-white/25"></div>
+        </div>
+      </div>
+
+      <!-- Bottom Drag Instruction Strip -->
+      <div class="relative z-20 bg-[#121316]/90 border-t border-white/10 px-4 py-2.5 flex flex-wrap items-center justify-between gap-2 mono text-[10px] text-white/65">
+        <span>⇄ DRAG GARMENT HORIZONTALLY TO TEST ACOUSTIC SLEEVE/KNEE FRICTION</span>
+        <span class="text-[#FF7B00]">SPOT-RADIOMETER FOLLOWS CURSOR</span>
+      </div>
+    </div>
+
+    <!-- RIGHT COLUMN (3 Cols): SPECIMEN TELEMETRY & TACTILE FIDLOCK DEPLOY -->
+    <div class="lg:col-span-3 flex flex-col justify-between gap-4">
+      <div class="bg-[#181A1F] border border-white/10 p-5 flex-1 flex flex-col justify-between">
+        <div>
+          <div class="flex items-center justify-between mono text-[10px] text-[#FF7B00] uppercase tracking-widest mb-1">
+            <span id="rightCode">SPECIMEN // TA-01</span>
+            <span>STEALTH CLASS A+</span>
+          </div>
+          <h2 id="rightTitle" class="font-bold text-2xl text-white tracking-tight">
+            SKUGGI SILENT ANORAK
+          </h2>
+          <div id="rightPrice" class="mono text-xl font-bold text-[#FFFBE6] mt-1">$640 USD</div>
+          <p id="rightDesc" class="text-xs text-white/70 mt-3 leading-relaxed">
+            Brushed micro-suede Cordura® face eliminates high-frequency nylon rustle during sub-zero wildlife observation and highland stalking.
+          </p>
+
+          <!-- Acoustic & Thermal Rating Bars -->
+          <div class="mt-5 space-y-3 mono text-xs">
+            <div>
+              <div class="flex justify-between text-[10px] mb-1">
+                <span class="text-white/55">ACOUSTIC FLOOR (MOTION)</span>
+                <span id="rightDbRating" class="text-emerald-400 font-bold">18.4 dB (ULTRA-SILENT)</span>
+              </div>
+              <div class="w-full h-1.5 bg-[#0B0C0E] overflow-hidden">
+                <div id="rightDbBar" class="h-full bg-emerald-400 transition-all duration-300" style="width: 22%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[10px] mb-1">
+                <span class="text-white/55">INFRARED CLO INSULATION</span>
+                <span id="rightCloRating" class="text-[#FF7B00] font-bold">3.85 CLO (CORE LOCK)</span>
+              </div>
+              <div class="w-full h-1.5 bg-[#0B0C0E] overflow-hidden">
+                <div id="rightCloBar" class="h-full flir-gradient transition-all duration-300" style="width: 88%;"></div>
+              </div>
+            </div>
+
+            <div>
+              <div class="flex justify-between text-[10px] mb-1">
+                <span class="text-white/55">AXILLARY VAPOR FLUX</span>
+                <span id="rightVentRating" class="text-sky-400 font-bold">42,000 g/m²/24h</span>
+              </div>
+              <div class="w-full h-1.5 bg-[#0B0C0E] overflow-hidden">
+                <div class="h-full bg-sky-400" style="width: 92%;"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Size Selector -->
+          <div class="mt-5">
+            <div class="mono text-[10px] text-white/50 uppercase mb-2">SELECT FIELD FIT</div>
+            <div class="grid grid-cols-4 gap-2 mono text-xs">
+              <button onclick="selectLabSize(this, 'S')" class="lab-size py-2 border border-white/15 hover:border-[#FF7B00]">S</button>
+              <button onclick="selectLabSize(this, 'M')" class="lab-size py-2 border border-[#FF7B00] bg-[#FF7B00]/20 text-white font-bold">M</button>
+              <button onclick="selectLabSize(this, 'L')" class="lab-size py-2 border border-white/15 hover:border-[#FF7B00]">L</button>
+              <button onclick="selectLabSize(this, 'XL')" class="lab-size py-2 border border-white/15 hover:border-[#FF7B00]">XL</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Tactile "Deploy to Bag" Fidlock Snap-Lock Button -->
+        <div class="pt-5 mt-5 border-t border-white/10">
+          <button onclick="triggerFidlockDeploy()" class="w-full py-4 flir-gradient text-[#0B0C0E] hover:brightness-110 mono text-xs font-extrabold uppercase tracking-widest transition shadow-xl flex items-center justify-center gap-2">
+            <span>⛨ SNAP-LOCK DEPLOY TO BAG</span>
+          </button>
+          <div class="mono text-[9px] text-center text-white/45 mt-2 uppercase">
+            ENGAGES MAGNETIC FIDLOCK® V-BUCKLE LATCH
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- BOTTOM DOCK: THE "ACOUSTIC FRICTION OSCILLOSCOPE" -->
+  <footer class="bg-[#0B0C0E] border-t border-white/15 px-4 md:px-8 py-4">
+    <div class="max-w-[1640px] mx-auto grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+      <!-- Left 4 Cols: Decibel Meter & Friction Scrubber Pad -->
+      <div class="lg:col-span-4 flex flex-col justify-between space-y-2">
+        <div class="flex items-center justify-between mono text-[10px]">
+          <span class="text-[#FF7B00] font-bold uppercase tracking-widest">// 03 — ACOUSTIC FRICTION OSCILLOSCOPE</span>
+          <span class="text-emerald-400">ANECHOIC MIC 01</span>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 mono">
+          <div class="p-2.5 bg-[#121316] border border-emerald-500/40">
+            <div class="text-[9px] text-emerald-400 uppercase">IS-SILENT FLEECE/SHELL</div>
+            <div id="liveSilentDb" class="text-xl font-bold text-white mt-0.5">18.2 dB</div>
+            <div class="text-[9px] text-white/45">BELOW SNOW AMBIENT (24dB)</div>
+          </div>
+          <div class="p-2.5 bg-[#121316] border border-rose-500/30">
+            <div class="text-[9px] text-rose-400 uppercase">STD HARD-SHELL NYLON</div>
+            <div id="liveNylonDb" class="text-xl font-bold text-rose-300 mt-0.5">54.6 dB</div>
+            <div class="text-[9px] text-white/45">AUDIBLE CRINKLE SPIKES</div>
+          </div>
+        </div>
+
+        <!-- Interactive Kinetic Rubbing Slider to simulate rapid movement -->
+        <div class="flex items-center gap-3 pt-1">
+          <button onclick="simulateStrideBurst()" class="px-3 py-1.5 bg-[#181A1F] hover:bg-[#FF7B00] hover:text-[#0B0C0E] border border-[#FF7B00]/50 mono text-[10px] font-bold uppercase tracking-wider transition shrink-0">
+            ⚡ SIMULATE SPRINT RUB
+          </button>
+          <span class="mono text-[10px] text-white/50">OR DRAG GARMENT ABOVE TO GENERATE FRICTION WAVE</span>
+        </div>
+      </div>
+
+      <!-- Right 8 Cols: Real-time Dual-Trace Reactive Oscilloscope Canvas -->
+      <div class="lg:col-span-8 relative h-28 bg-[#121316] border border-white/15 overflow-hidden">
+        <canvas id="oscilloscopeCanvas" class="w-full h-full block"></canvas>
+        <div class="pointer-events-none absolute top-2 left-3 flex gap-4 mono text-[10px]">
+          <span class="text-emerald-400 font-bold">─── CH1: SKUGGI BRUSHED WEAVE (STEALTH)</span>
+          <span class="text-rose-400/80">--- CH2: CONVENTIONAL 3L NYLON (REFERENCE)</span>
+        </div>
+        <div class="pointer-events-none absolute bottom-1.5 right-3 mono text-[9px] text-white/40">
+          TIMEBASE: 5ms/DIV • BANDWIDTH: 20Hz–16kHz
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- TACTILE "FIDLOCK® MAGNETIC BUCKLE" SNAP-LOCK DEPLOY MODAL -->
+  <div id="fidlockOverlay" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+    <div class="max-w-md w-full bg-[#181A1F] border border-[#FF7B00] p-6 text-center space-y-5 shadow-2xl">
+      <div class="mono text-[10px] text-[#FF7B00] uppercase tracking-widest">
+        // FIDLOCK® V-BUCKLE MAGNETIC SEAL ENGAGED
+      </div>
+
+      <!-- Animated Two-Part Magnetic Buckle SVG -->
+      <div class="h-24 bg-[#0B0C0E] border border-white/10 flex items-center justify-center overflow-hidden relative">
+        <!-- Left Magnetic Half -->
+        <div class="fidlock-half-left w-28 h-14 bg-[#252830] border-2 border-[#FF7B00] flex items-center justify-between px-3 mono text-xs font-bold text-white">
+          <span>MAG-L</span>
+          <span class="text-[#FF7B00]">▶</span>
+        </div>
+        <!-- Right Female Catch Half -->
+        <div class="fidlock-half-right w-28 h-14 bg-[#FF7B00] border-2 border-[#FFFBE6] flex items-center justify-between px-3 mono text-xs font-extrabold text-[#0B0C0E]">
+          <span>◀ LOCK</span>
+          <span>SEALED</span>
+        </div>
+      </div>
+
+      <div>
+        <h3 id="fidlockItemTitle" class="font-bold text-xl text-white uppercase">SKUGGI SILENT ANORAK</h3>
+        <p class="mono text-xs text-emerald-400 mt-1">
+          HERMETIC MAGNETIC LATCH LOCKED • ZERO ACOUSTIC SIGNATURE
+        </p>
+      </div>
+
+      <button onclick="closeFidlockModal()" class="w-full py-3 bg-[#FFFBE6] text-[#0B0C0E] mono text-xs font-bold uppercase tracking-widest">
+        CONTINUE LAB INSPECTION
+      </button>
+    </div>
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. STEALTH & THERMAL SPECIMEN DATA
+    // =========================================================================
+    const LAB_ITEMS = [
+      {
+        id: 'TA-01',
+        name: 'SKUGGI SILENT ANORAK',
+        category: 'STEALTH RECON SMOCK',
+        price: 640,
+        baseDb: 18.2,
+        clo: '3.85 CLO',
+        coreTemp: 36.4,
+        ventTemp: 19.8,
+        type: 'anorak',
+        desc: 'Brushed micro-suede Cordura® face eliminates high-frequency nylon rustle during sub-zero wildlife observation and highland stalking.',
+        ergoNodes: [
+          { id: 'chest', xPct: 0.5, yPct: 0.38, label: 'CORE CHEST BAFFLE', temp: '+36.4°C', title: 'Graphene-Lined Core Retention Matrix', detail: 'Traps metabolic infrared radiation across the sternum and heart while keeping outer signature muted.' },
+          { id: 'axilla', xPct: 0.34, yPct: 0.44, label: 'AXILLARY COOLING MESH', temp: '+19.8°C', title: 'Laser-Perforated Underarm Micro-Vent', detail: 'Dumps excess moisture vapor silently without mechanical zipper rattle.' },
+          { id: 'collar', xPct: 0.5, yPct: 0.19, label: 'CAROTID THERMAL SEAL', temp: '+35.9°C', title: 'High-Loft Shearling Fleece Storm Collar', detail: 'Seals warm air around neck arteries with magnetic Fidlock® tab.' },
+          { id: 'elbow', xPct: 0.72, yPct: 0.48, label: 'SILENT RAGLAN FLEX', temp: '+26.2°C', title: 'Zero-Friction Acoustic Gusset', detail: '4-way stretch panel eliminates sleeve-to-torso rubbing noise during stalks.' }
+        ]
+      },
+      {
+        id: 'TA-02',
+        name: 'HLJÓÐ STALKER PANT',
+        category: 'ACOUSTIC ARTICULATED TROUSER',
+        price: 470,
+        baseDb: 16.8,
+        clo: '3.10 CLO',
+        coreTemp: 35.2,
+        ventTemp: 18.4,
+        type: 'pants',
+        desc: 'Engineered with suede-bonded inner thigh panels so stride friction registers under 17 dB — quieter than falling snow.',
+        ergoNodes: [
+          { id: 'renal', xPct: 0.5, yPct: 0.22, label: 'LUMBAR & RENAL SHIELD', temp: '+35.6°C', title: 'High-Back Thermal Kidney Warmer', detail: 'Raised neoprene-fleece lumbar yoke retains core warmth when crouching.' },
+          { id: 'thigh', xPct: 0.48, yPct: 0.48, label: 'INNER-THIGH MESH CHANNEL', temp: '+18.4°C', title: 'Silent Micro-Mesh Heat Dump & Anti-Rub Panel', detail: 'Eliminates swishing noise between legs while venting uphill heat.' },
+          { id: 'knee', xPct: 0.62, yPct: 0.66, label: 'ARTICULATED KNEE CAP', temp: '+29.4°C', title: 'Closed-Cell Aerogel Knee Insert', detail: 'Blocks conductive heat loss when kneeling on glacial ice or frozen basalt.' }
+        ]
+      },
+      {
+        id: 'TA-03',
+        name: 'NÓTT IR-SHIELD PARKA',
+        category: 'DEEP SUB-ZERO THERMAL FORTRESS',
+        price: 890,
+        baseDb: 20.4,
+        clo: '4.60 CLO',
+        coreTemp: 37.0,
+        ventTemp: 21.1,
+        type: 'parka',
+        desc: 'Dual-chamber 850FP hydrophobic down combined with an infrared-absorbing matte graphite shell for -25°C arctic night observation.',
+        ergoNodes: [
+          { id: 'core', xPct: 0.5, yPct: 0.40, label: 'DUAL-WALL IR CORE', temp: '+37.0°C', title: 'Box-Wall 850FP + Titanium Reflector', detail: 'Zero cold bridges across the chest and kidneys at -25°C.' },
+          { id: 'vent', xPct: 0.32, yPct: 0.46, label: 'BAFFLED PIT CHANNEL', temp: '+21.1°C', title: 'Acoustic-Damped Mesh Dump Channel', detail: 'Regulates internal microclimate without exposing hot spots.' },
+          { id: 'hood', xPct: 0.5, yPct: 0.14, label: 'THERMAL HALO HOOD', temp: '+36.1°C', title: '3D Cranial Down Halo', detail: 'Rotates silently with head movement for unobstructed peripheral hearing.' }
+        ]
+      }
+    ];
+
+    let activeItemIdx = 0;
+    let visionMode = 'flir'; // 'flir' or 'optical'
+    let ambientTemp = -14;
+    let labAudioOn = true;
+    let audioCtx = null;
+    let bagCount = 1;
+
+    // Garment drag / friction state
+    let garmentOffsetX = 0;
+    let garmentOffsetY = 0;
+    let frictionEnergy = 0.08;
+    let isDraggingGarment = false;
+    let dragStartX = 0;
+    let dragStartY = 0;
+    let spotPointer = { x: 280, y: 240, active: false };
+
+    // =========================================================================
+    // 2. WEB AUDIO API: ACOUSTIC FRICTION & FIDLOCK SNAP SYNTHESIZER
+    // =========================================================================
+    function ensureAudio() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playFrictionGrain(intensity) {
+      if (!labAudioOn || intensity < 0.15) return;
+      try {
+        const ctx = ensureAudio();
+        const bufferSize = ctx.sampleRate * 0.045;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.5));
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        // Soft low-pass filter simulating ultra-quiet brushed softshell
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.value = 340;
+        filter.Q.value = 2.0;
+
+        const gain = ctx.createGain();
+        gain.gain.value = Math.min(0.06, intensity * 0.035);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start();
+      } catch (e) {}
+    }
+
+    function playFidlockSnapSound() {
+      if (!labAudioOn) return;
+      try {
+        const ctx = ensureAudio();
+        const now = ctx.currentTime;
+        // Two-stage magnetic pull + crisp latch lock
+        const osc1 = ctx.createOscillator();
+        const gain1 = ctx.createGain();
+        osc1.type = 'triangle';
+        osc1.frequency.setValueAtTime(220, now);
+        osc1.frequency.exponentialRampToValueAtTime(880, now + 0.06);
+        gain1.gain.setValueAtTime(0.18, now);
+        gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.07);
+        osc1.connect(gain1);
+        gain1.connect(ctx.destination);
+        osc1.start(now);
+        osc1.stop(now + 0.07);
+
+        const osc2 = ctx.createOscillator();
+        const gain2 = ctx.createGain();
+        osc2.type = 'sine';
+        osc2.frequency.setValueAtTime(1420, now + 0.09);
+        osc2.frequency.exponentialRampToValueAtTime(320, now + 0.17);
+        gain2.gain.setValueAtTime(0.24, now + 0.09);
+        gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+        osc2.connect(gain2);
+        gain2.connect(ctx.destination);
+        osc2.start(now + 0.09);
+        osc2.stop(now + 0.18);
+      } catch (e) {}
+    }
+
+    function toggleLabAudio() {
+      labAudioOn = !labAudioOn;
+      document.getElementById('audioDot').className = labAudioOn
+        ? 'w-2 h-2 rounded-full bg-[#FF7B00]'
+        : 'w-2 h-2 rounded-full bg-red-500';
+      document.getElementById('audioStatusText').textContent = labAudioOn ? 'MIC: LIVE' : 'MIC: MUTE';
+    }
+
+    // =========================================================================
+    // 3. SPECIMEN SELECTOR & VISION MODE SWITCH
+    // =========================================================================
+    function renderSpecimenList() {
+      const list = document.getElementById('specimenList');
+      list.innerHTML = LAB_ITEMS.map((item, idx) => {
+        const active = idx === activeItemIdx;
+        return `
+          <div onclick="selectSpecimen(${idx})"
+               class="p-3 border cursor-pointer transition flex items-center justify-between ${
+                 active
+                   ? 'bg-[#22252D] border-[#FF7B00]'
+                   : 'bg-[#121316] border-white/10 hover:border-white/30'
+               }">
+            <div>
+              <div class="mono text-[9px] text-[#FF7B00] uppercase">${item.id} // ${item.category}</div>
+              <div class="font-bold text-sm text-white mt-0.5">${item.name}</div>
+              <div class="mono text-[10px] text-white/55 mt-0.5">${item.baseDb} dB • ${item.clo}</div>
+            </div>
+            <div class="mono text-xs font-bold text-[#FFFBE6]">$${item.price}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectSpecimen(idx) {
+      activeItemIdx = idx;
+      const item = LAB_ITEMS[idx];
+      renderSpecimenList();
+
+      document.getElementById('rightCode').textContent = `SPECIMEN // ${item.id}`;
+      document.getElementById('rightTitle').textContent = item.name;
+      document.getElementById('rightPrice').textContent = `$${item.price} USD`;
+      document.getElementById('rightDesc').textContent = item.desc;
+      document.getElementById('rightDbRating').textContent = `${item.baseDb} dB (ULTRA-SILENT)`;
+      document.getElementById('rightCloRating').textContent = `${item.clo} (CORE LOCK)`;
+      document.getElementById('coreTempReadout').textContent = `+${item.coreTemp.toFixed(1)}°C`;
+      document.getElementById('ventTempReadout').textContent = `+${item.ventTemp.toFixed(1)}°C`;
+
+      buildErgonomicBadges();
+      selectErgoNode(0);
+      simulateStrideBurst();
+    }
+
+    function setVisionMode(mode) {
+      visionMode = mode;
+      const btnOpt = document.getElementById('btnOptical');
+      const btnFlir = document.getElementById('btnFlir');
+      const hudLabel = document.getElementById('flirHudLabel');
+
+      if (mode === 'flir') {
+        btnFlir.className = 'px-3.5 py-1.5 mono text-[11px] font-bold uppercase tracking-wider transition flir-gradient text-[#0B0C0E] shadow-lg';
+        btnOpt.className = 'px-3.5 py-1.5 mono text-[11px] font-bold uppercase tracking-wider transition bg-transparent text-white/60 hover:text-white';
+        hudLabel.textContent = 'FLIR LWIR IRONBOW // ε=0.98';
+      } else {
+        btnOpt.className = 'px-3.5 py-1.5 mono text-[11px] font-bold uppercase tracking-wider transition bg-white text-[#0B0C0E] shadow-lg';
+        btnFlir.className = 'px-3.5 py-1.5 mono text-[11px] font-bold uppercase tracking-wider transition bg-transparent text-white/60 hover:text-white';
+        hudLabel.textContent = 'OPTICAL MATTE GRAPHITE // STEALTH';
+      }
+      playFidlockSnapSound();
+    }
+
+    function updateAmbientTemp(val) {
+      ambientTemp = Number(val);
+      document.getElementById('ambientVal').textContent = `${ambientTemp > 0 ? '+' : ''}${ambientTemp}°C`;
+      document.getElementById('scaleBottomTemp').textContent = `${ambientTemp.toFixed(1)}°C`;
+    }
+
+    // =========================================================================
+    // 4. FLOATING ERGONOMIC SPECS WITH PULSATING MICRO-STEMS
+    // =========================================================================
+    let selectedNodeIndex = 0;
+
+    function buildErgonomicBadges() {
+      const item = LAB_ITEMS[activeItemIdx];
+      const container = document.getElementById('ergoBadgesLayer');
+
+      container.innerHTML = item.ergoNodes.map((n, i) => {
+        const isLeft = i % 2 === 1;
+        const badgeX = isLeft ? '6%' : '62%';
+        const badgeY = `${18 + i * 21}%`;
+
+        return `
+          <div id="ergoBadge-${i}"
+               onclick="selectErgoNode(${i})"
+               style="left: ${badgeX}; top: ${badgeY};"
+               class="pointer-events-auto absolute px-3 py-1.5 bg-[#121316]/90 border border-[#FF7B00]/60 hover:border-[#FFFBE6] cursor-pointer transition shadow-lg">
+            <div class="flex items-center gap-2 mono text-[10px]">
+              <span class="w-2 h-2 rounded-full bg-[#FF7B00] relative ergo-pulse"></span>
+              <span class="font-bold text-white">${n.label}</span>
+              <span class="text-[#FFFBE6] font-bold">${n.temp}</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectErgoNode(idx) {
+      selectedNodeIndex = idx;
+      const item = LAB_ITEMS[activeItemIdx];
+      const node = item.ergoNodes[idx];
+      if (!node) return;
+
+      document.getElementById('activeNodeBadge').textContent = `ACTIVE ZONE // ${node.label}`;
+      document.getElementById('activeNodeTitle').textContent = node.title;
+      document.getElementById('activeNodeDesc').textContent = node.detail;
+      document.getElementById('activeNodeTemp').textContent = node.temp;
+    }
+
+    // =========================================================================
+    // 5. FLIR THERMOGRAPHIC CANVAS + DRAG-TO-RUB FRICTION STAGE
+    // =========================================================================
+    const flirCanvas = document.getElementById('flirCanvas');
+    const fCtx = flirCanvas.getContext('2d');
+
+    function resizeFlirCanvas() {
+      const parent = document.getElementById('flirStageContainer');
+      flirCanvas.width = parent.clientWidth;
+      flirCanvas.height = parent.clientHeight;
+    }
+    window.addEventListener('resize', resizeFlirCanvas);
+
+    flirCanvas.addEventListener('mousedown', (e) => {
+      isDraggingGarment = true;
+      dragStartX = e.clientX;
+      dragStartY = e.clientY;
+    });
+
+    window.addEventListener('mousemove', (e) => {
+      const rect = flirCanvas.getBoundingClientRect();
+      if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+        spotPointer.x = e.clientX - rect.left;
+        spotPointer.y = e.clientY - rect.top;
+        spotPointer.active = true;
+      } else {
+        spotPointer.active = false;
+      }
+
+      if (isDraggingGarment) {
+        const dx = e.clientX - dragStartX;
+        const dy = e.clientY - dragStartY;
+        dragStartX = e.clientX;
+        dragStartY = e.clientY;
+
+        garmentOffsetX = Math.max(-65, Math.min(65, garmentOffsetX + dx * 0.7));
+        garmentOffsetY = Math.max(-35, Math.min(35, garmentOffsetY + dy * 0.5));
+
+        const speed = Math.hypot(dx, dy);
+        frictionEnergy = Math.min(1.0, frictionEnergy + speed * 0.025);
+        playFrictionGrain(frictionEnergy);
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      isDraggingGarment = false;
+    });
+
+    function simulateStrideBurst() {
+      frictionEnergy = 0.95;
+      garmentOffsetX = 32;
+      playFrictionGrain(0.9);
+    }
+
+    function renderFlirStage() {
+      const w = flirCanvas.width;
+      const h = flirCanvas.height;
+      if (w === 0 || h === 0) {
+        requestAnimationFrame(renderFlirStage);
+        return;
+      }
+
+      // Spring garment back to center
+      if (!isDraggingGarment) {
+        garmentOffsetX *= 0.88;
+        garmentOffsetY *= 0.88;
+      }
+      frictionEnergy = Math.max(0.04, frictionEnergy * 0.94);
+
+      const item = LAB_ITEMS[activeItemIdx];
+      const cx = w * 0.5 + garmentOffsetX;
+      const cy = h * 0.52 + garmentOffsetY;
+      const scale = Math.min(w, h) / 360;
+
+      // 1. Background Thermal Chamber Field
+      if (visionMode === 'flir') {
+        const bgGrad = fCtx.createRadialGradient(cx, cy, 20, cx, cy, Math.max(w, h) * 0.7);
+        bgGrad.addColorStop(0, '#1B1038');
+        bgGrad.addColorStop(0.55, '#0D0C22');
+        bgGrad.addColorStop(1, '#070814');
+        fCtx.fillStyle = bgGrad;
+        fCtx.fillRect(0, 0, w, h);
+      } else {
+        fCtx.fillStyle = '#0D0E12';
+        fCtx.fillRect(0, 0, w, h);
+      }
+
+      // Subtle Chamber Grid
+      fCtx.strokeStyle = visionMode === 'flir' ? 'rgba(255, 123, 0, 0.08)' : 'rgba(255, 255, 255, 0.05)';
+      fCtx.lineWidth = 1;
+      for (let x = 0; x < w; x += 36) {
+        fCtx.beginPath(); fCtx.moveTo(x, 0); fCtx.lineTo(x, h); fCtx.stroke();
+      }
+      for (let y = 0; y < h; y += 36) {
+        fCtx.beginPath(); fCtx.moveTo(0, y); fCtx.lineTo(w, y); fCtx.stroke();
+      }
+
+      // 2. Draw Garment Silhouette & Photorealistic FLIR Heat-Map Zones
+      fCtx.save();
+      fCtx.translate(cx, cy);
+
+      // Build Garment Clipping Path
+      fCtx.beginPath();
+      if (item.type === 'pants') {
+        fCtx.moveTo(-58 * scale, -115 * scale);
+        fCtx.lineTo(58 * scale, -115 * scale);
+        fCtx.lineTo(74 * scale, 120 * scale);
+        fCtx.lineTo(22 * scale, 120 * scale);
+        fCtx.lineTo(0, -15 * scale);
+        fCtx.lineTo(-22 * scale, 120 * scale);
+        fCtx.lineTo(-74 * scale, 120 * scale);
+        fCtx.closePath();
+      } else {
+        // Anorak / Parka Silhouette
+        fCtx.moveTo(-36 * scale, -105 * scale);
+        fCtx.quadraticCurveTo(0, -148 * scale, 36 * scale, -105 * scale);
+        fCtx.lineTo(88 * scale, -82 * scale);
+        fCtx.lineTo(132 * scale, 18 * scale);
+        fCtx.lineTo(98 * scale, 35 * scale);
+        fCtx.lineTo(74 * scale, -32 * scale);
+        fCtx.lineTo(78 * scale, 112 * scale);
+        fCtx.lineTo(-78 * scale, 112 * scale);
+        fCtx.lineTo(-74 * scale, -32 * scale);
+        fCtx.lineTo(-98 * scale, 35 * scale);
+        fCtx.lineTo(-132 * scale, 18 * scale);
+        fCtx.lineTo(-88 * scale, -82 * scale);
+        fCtx.closePath();
+      }
+
+      if (visionMode === 'flir') {
+        // Base Infrared Shell Color (Purple/Navy insulated barrier)
+        fCtx.fillStyle = '#2B1354';
+        fCtx.fill();
+
+        fCtx.save();
+        fCtx.clip();
+
+        // HOTSPOT 1: Core Chest & Renal Heat Retention (Deep Crimson -> Orange -> Hot White)
+        const coreY = item.type === 'pants' ? -65 * scale : -15 * scale;
+        const coreR = item.type === 'pants' ? 68 * scale : 82 * scale;
+        const coreGrad = fCtx.createRadialGradient(0, coreY, 6 * scale, 0, coreY, coreR);
+        coreGrad.addColorStop(0, '#FFFBE6');
+        coreGrad.addColorStop(0.28, '#FF7B00');
+        coreGrad.addColorStop(0.65, '#C82838');
+        coreGrad.addColorStop(1, 'rgba(106, 27, 120, 0)');
+        fCtx.fillStyle = coreGrad;
+        fCtx.fillRect(-150 * scale, -150 * scale, 300 * scale, 300 * scale);
+
+        // HOTSPOT 2: Carotid Neck / Hood Halo (or Knee Caps on Pants)
+        const neckY = item.type === 'pants' ? 50 * scale : -95 * scale;
+        const neckGrad = fCtx.createRadialGradient(0, neckY, 4 * scale, 0, neckY, 48 * scale);
+        neckGrad.addColorStop(0, '#FFFBE6');
+        neckGrad.addColorStop(0.45, '#FF7B00');
+        neckGrad.addColorStop(1, 'rgba(200, 40, 56, 0)');
+        fCtx.fillStyle = neckGrad;
+        fCtx.fillRect(-140 * scale, -150 * scale, 280 * scale, 300 * scale);
+
+        // COOLING BREATHABILITY CHANNELS: Underarm Axillary & Inner-Thigh Micro-Mesh (Deep Cyan/Blue Cool Zones)
+        const coolZones = item.type === 'pants'
+          ? [{ x: 0, y: 5 * scale, r: 34 * scale }]
+          : [{ x: -64 * scale, y: -22 * scale, r: 32 * scale }, { x: 64 * scale, y: -22 * scale, r: 32 * scale }];
+
+        coolZones.forEach(cz => {
+          const coolGrad = fCtx.createRadialGradient(cz.x, cz.y, 2, cz.x, cz.y, cz.r);
+          coolGrad.addColorStop(0, '#00E5FF');
+          coolGrad.addColorStop(0.45, '#1D4ED8');
+          coolGrad.addColorStop(1, 'rgba(43, 19, 84, 0)');
+          fCtx.fillStyle = coolGrad;
+          fCtx.beginPath();
+          fCtx.arc(cz.x, cz.y, cz.r, 0, Math.PI * 2);
+          fCtx.fill();
+        });
+
+        // Thermographic Isotherm Contour Lines
+        fCtx.strokeStyle = 'rgba(255, 251, 230, 0.25)';
+        fCtx.lineWidth = 1;
+        fCtx.beginPath();
+        fCtx.ellipse(0, coreY, 42 * scale, 52 * scale, 0, 0, Math.PI * 2);
+        fCtx.stroke();
+
+        fCtx.restore();
+
+        // Outer FLIR Edge Glow
+        fCtx.strokeStyle = '#FF7B00';
+        fCtx.lineWidth = 2;
+        fCtx.stroke();
+      } else {
+        // OPTICAL STEALTH MODE (Matte Graphite with subtle technical seam lines)
+        fCtx.fillStyle = '#1B1D22';
+        fCtx.fill();
+        fCtx.strokeStyle = 'rgba(236, 239, 244, 0.45)';
+        fCtx.lineWidth = 2;
+        fCtx.stroke();
+
+        // Technical Baffle / Articulation Seams
+        fCtx.strokeStyle = 'rgba(255, 123, 0, 0.35)';
+        fCtx.setLineDash([4, 4]);
+        fCtx.beginPath();
+        fCtx.moveTo(0, -100 * scale);
+        fCtx.lineTo(0, 100 * scale);
+        fCtx.stroke();
+        fCtx.setLineDash([]);
+      }
+      fCtx.restore();
+
+      // 3. Draw SVG Micro-Stems from Garment Nodes to Floating Ergonomic Badges
+      const svg = document.getElementById('ergoStemSvg');
+      let svgPaths = '';
+      item.ergoNodes.forEach((n, i) => {
+        const nx = cx + (n.xPct - 0.5) * 210 * scale;
+        const ny = cy + (n.yPct - 0.5) * 230 * scale;
+
+        const badgeEl = document.getElementById(`ergoBadge-${i}`);
+        if (badgeEl) {
+          const bRect = badgeEl.getBoundingClientRect();
+          const sRect = flirCanvas.getBoundingClientRect();
+          const bx = bRect.left - sRect.left + (i % 2 === 1 ? bRect.width : 0);
+          const by = bRect.top - sRect.top + bRect.height / 2;
+
+          const activeStroke = i === selectedNodeIndex ? '#FFFBE6' : 'rgba(255, 123, 0, 0.55)';
+          svgPaths += `
+            <polyline points="${nx},${ny} ${(nx + bx) * 0.5},${by} ${bx},${by}"
+                      fill="none" stroke="${activeStroke}" stroke-width="1.3" stroke-dasharray="3 2" />
+            <circle cx="${nx}" cy="${ny}" r="4.5" fill="#FF7B00" stroke="#FFFBE6" stroke-width="1.5" />
+          `;
+        }
+      });
+      svg.innerHTML = svgPaths;
+
+      // 4. Spot-Radiometer Crosshair following cursor
+      if (spotPointer.active) {
+        const distFromCore = Math.hypot(spotPointer.x - cx, spotPointer.y - cy);
+        const maxDist = 140 * scale;
+        let spotTemp = ambientTemp;
+        let zoneTag = 'AMBIENT CHAMBER';
+
+        if (distFromCore < maxDist) {
+          const factor = 1 - distFromCore / maxDist;
+          spotTemp = 19.5 + factor * (item.coreTemp - 19.5);
+          zoneTag = factor > 0.6 ? 'CORE RETENTION' : 'BREATHABLE SHELL';
+        }
+
+        document.getElementById('spotMeterHud').textContent =
+          `SPOT METER: ${spotTemp > 0 ? '+' : ''}${spotTemp.toFixed(1)}°C [${zoneTag}]`;
+
+        fCtx.save();
+        fCtx.strokeStyle = '#FFFBE6';
+        fCtx.lineWidth = 1.2;
+        fCtx.beginPath();
+        fCtx.arc(spotPointer.x, spotPointer.y, 16, 0, Math.PI * 2);
+        fCtx.moveTo(spotPointer.x - 24, spotPointer.y);
+        fCtx.lineTo(spotPointer.x + 24, spotPointer.y);
+        fCtx.moveTo(spotPointer.x, spotPointer.y - 24);
+        fCtx.lineTo(spotPointer.x, spotPointer.y + 24);
+        fCtx.stroke();
+        fCtx.restore();
+      }
+
+      requestAnimationFrame(renderFlirStage);
+    }
+
+    // =========================================================================
+    // 6. THE "ACOUSTIC FRICTION OSCILLOSCOPE" (Dual-Trace Real-Time Visualizer)
+    // =========================================================================
+    const oscCanvas = document.getElementById('oscilloscopeCanvas');
+    const oCtx = oscCanvas.getContext('2d');
+    let oscPhase = 0;
+
+    function resizeOscCanvas() {
+      oscCanvas.width = oscCanvas.parentElement.clientWidth;
+      oscCanvas.height = oscCanvas.parentElement.clientHeight;
+    }
+    window.addEventListener('resize', resizeOscCanvas);
+
+    function renderOscilloscope() {
+      const w = oscCanvas.width;
+      const h = oscCanvas.height;
+      if (w > 0 && h > 0) {
+        oscPhase += 0.14;
+        const item = LAB_ITEMS[activeItemIdx];
+
+        // Update Live Decibel Readouts based on frictionEnergy
+        const silentDb = (item.baseDb + frictionEnergy * 4.2).toFixed(1);
+        const nylonDb = (48.5 + frictionEnergy * 24.8).toFixed(1);
+        document.getElementById('liveSilentDb').textContent = `${silentDb} dB`;
+        document.getElementById('liveNylonDb').textContent = `${nylonDb} dB`;
+
+        oCtx.fillStyle = '#0D0E12';
+        oCtx.fillRect(0, 0, w, h);
+
+        // Oscilloscope Graticule Grid
+        oCtx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
+        oCtx.lineWidth = 1;
+        for (let x = 0; x < w; x += 40) {
+          oCtx.beginPath(); oCtx.moveTo(x, 0); oCtx.lineTo(x, h); oCtx.stroke();
+        }
+        oCtx.beginPath(); oCtx.moveTo(0, h / 2); oCtx.lineTo(w, h / 2); oCtx.stroke();
+
+        // TRACE 2 (Reference Red/Rose): Conventional Crinkly 3L Hard-Shell Nylon
+        oCtx.beginPath();
+        oCtx.strokeStyle = 'rgba(244, 63, 94, 0.55)';
+        oCtx.lineWidth = 1.4;
+        for (let x = 0; x < w; x += 3) {
+          const spike = Math.sin(x * 0.11 + oscPhase * 2.5) * Math.cos(x * 0.27 - oscPhase);
+          const jagged = (Math.random() - 0.5) * frictionEnergy * 38;
+          const amp = (10 + frictionEnergy * 34) * spike + jagged;
+          const y = h * 0.5 + amp;
+          if (x === 0) oCtx.moveTo(x, y);
+          else oCtx.lineTo(x, y);
+        }
+        oCtx.stroke();
+
+        // TRACE 1 (Primary Emerald Green): SKUGGI Ultra-Silent Brushed Softshell
+        oCtx.beginPath();
+        oCtx.strokeStyle = '#34D399';
+        oCtx.lineWidth = 2.2;
+        for (let x = 0; x < w; x += 3) {
+          const smoothWave = Math.sin(x * 0.035 + oscPhase) * (2.2 + frictionEnergy * 6.5);
+          const y = h * 0.5 + smoothWave;
+          if (x === 0) oCtx.moveTo(x, y);
+          else oCtx.lineTo(x, y);
+        }
+        oCtx.stroke();
+      }
+
+      requestAnimationFrame(renderOscilloscope);
+    }
+
+    // =========================================================================
+    // 7. TACTILE "FIDLOCK® SNAP-LOCK" DEPLOY FLOW
+    // =========================================================================
+    function selectLabSize(btn, size) {
+      document.querySelectorAll('.lab-size').forEach(b => {
+        b.className = 'lab-size py-2 border border-white/15 hover:border-[#FF7B00]';
+      });
+      btn.className = 'lab-size py-2 border border-[#FF7B00] bg-[#FF7B00]/20 text-white font-bold';
+      playFidlockSnapSound();
+    }
+
+    function triggerFidlockDeploy() {
+      const item = LAB_ITEMS[activeItemIdx];
+      document.getElementById('fidlockItemTitle').textContent = item.name;
+      const overlay = document.getElementById('fidlockOverlay');
+      overlay.classList.remove('snapped');
+      overlay.classList.add('active');
+
+      setTimeout(() => {
+        overlay.classList.add('snapped');
+        playFidlockSnapSound();
+        bagCount++;
+        document.getElementById('bagCount').textContent = bagCount;
+      }, 90);
+    }
+
+    function closeFidlockModal() {
+      document.getElementById('fidlockOverlay').classList.remove('active', 'snapped');
+    }
+
+    // Initialize Lab on Load
+    window.addEventListener('DOMContentLoaded', () => {
+      renderSpecimenList();
+      resizeFlirCanvas();
+      resizeOscCanvas();
+      buildErgonomicBadges();
+      selectErgoNode(0);
+      renderFlirStage();
+      renderOscilloscope();
+    });
+  </script>
+</body>
+</html>
