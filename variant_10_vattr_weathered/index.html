@@ -1,0 +1,1395 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>VÁTTR // WEATHERED IN ICELAND — Hydrophobic Technical Apparel</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@600;700;800&family=Space+Grotesk:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --asphalt: #141518;
+      --asphalt-deep: #0D0E10;
+      --lichen: #4A5243;
+      --lichen-bright: #94A684;
+      --frost: #F5F7FA;
+      --frost-dim: rgba(245, 247, 250, 0.62);
+      --frost-line: rgba(245, 247, 250, 0.12);
+      --storm-accent: #94A684;
+    }
+
+    body.mode-drizzle {
+      --storm-accent: #7DD3FC;
+    }
+
+    * {
+      box-sizing: border-box;
+      user-select: none;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--asphalt);
+      color: var(--frost);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    body {
+      background-color: var(--asphalt);
+      color: var(--frost);
+      overflow-x: hidden;
+      transition: background-color 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .font-display { font-family: 'Syne', sans-serif; }
+    .font-mono-tech { font-family: 'JetBrains Mono', monospace; }
+
+    /* Kinetic Typography reactive to scroll velocity & wind mode */
+    .kinetic-type {
+      will-change: transform;
+      transition: transform 0.08s linear, letter-spacing 0.4s ease;
+      transform-origin: left center;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: #0D0E10; }
+    ::-webkit-scrollbar-thumb { background: #4A5243; }
+
+    /* Mechanical Storm Shifter Switch */
+    .storm-switch-track {
+      position: relative;
+      background: #0D0E10;
+      border: 1px solid rgba(245, 247, 250, 0.22);
+      box-shadow: inset 0 2px 10px rgba(0,0,0,0.85);
+      transition: border-color 0.4s ease;
+    }
+    .storm-switch-thumb {
+      transition: transform 0.45s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.45s ease;
+    }
+
+    /* 3D Tilt Product Cards */
+    .tilt-card-wrapper {
+      perspective: 1100px;
+    }
+    .tilt-card {
+      transform-style: preserve-3d;
+      will-change: transform;
+      transition: transform 0.14s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.35s ease, box-shadow 0.35s ease;
+      background: linear-gradient(165deg, rgba(28, 30, 34, 0.92) 0%, rgba(16, 17, 20, 0.96) 100%);
+      border: 1px solid rgba(245, 247, 250, 0.12);
+    }
+    .tilt-card:hover {
+      border-color: var(--storm-accent);
+      box-shadow: 0 28px 60px -15px rgba(0, 0, 0, 0.85), 0 0 25px rgba(148, 166, 132, 0.12);
+    }
+    .tilt-glare {
+      pointer-events: none;
+      background: radial-gradient(circle at 50% 50%, rgba(245, 247, 250, 0.14), transparent 65%);
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+    .tilt-card:hover .tilt-glare {
+      opacity: 1;
+    }
+    .tilt-layer-depth {
+      transform: translateZ(34px);
+    }
+
+    /* Frost Vignette when in Freezing Drizzle Mode */
+    .frost-vignette {
+      pointer-events: none;
+      position: fixed;
+      inset: 0;
+      z-index: 35;
+      opacity: 0;
+      transition: opacity 0.8s ease;
+      background:
+        radial-gradient(circle at 50% 50%, transparent 62%, rgba(186, 230, 253, 0.08) 88%, rgba(224, 242, 254, 0.18) 100%);
+      box-shadow: inset 0 0 90px rgba(125, 211, 252, 0.14);
+    }
+    body.mode-drizzle .frost-vignette {
+      opacity: 1;
+    }
+
+    /* Specimen Drawer Modal */
+    .specimen-drawer {
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(24px) scale(0.985);
+      transition: opacity 0.42s cubic-bezier(0.16, 1, 0.3, 1), transform 0.42s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .specimen-drawer.open {
+      opacity: 1;
+      pointer-events: auto;
+      transform: translateY(0) scale(1);
+    }
+
+    /* Magnetic Button */
+    .magnetic-btn {
+      will-change: transform;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+  </style>
+</head>
+<body class="selection:bg-[#4A5243] selection:text-[#F5F7FA]">
+
+  <!-- Freezing Drizzle Frost Edge Vignette -->
+  <div class="frost-vignette"></div>
+
+  <!-- TOP EDITORIAL NAVIGATION BAR -->
+  <header class="fixed top-0 inset-x-0 z-40 bg-[#141518]/85 backdrop-blur-md border-b border-[#F5F7FA]/10">
+    <div class="max-w-[1600px] mx-auto px-5 md:px-10 h-20 flex items-center justify-between gap-4">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-5">
+        <a href="../experiments_index.html" class="px-3 py-1.5 border border-[#F5F7FA]/20 hover:border-[#94A684] text-[11px] font-mono-tech uppercase tracking-widest flex items-center gap-2 transition">
+          <span>←</span>
+          <span class="hidden sm:inline">LAB HUB</span>
+        </a>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <span class="font-display font-extrabold text-xl tracking-tight text-[#F5F7FA]">VÁTTR</span>
+            <span class="text-[10px] font-mono-tech px-2 py-0.5 bg-[#4A5243]/40 text-[#94A684] border border-[#94A684]/30 uppercase tracking-widest">VARIANT 10</span>
+          </div>
+          <div class="text-[10px] font-mono-tech text-[#F5F7FA]/50 tracking-widest uppercase">
+            WEATHERED IN ICELAND // 63°31'N 19°30'W
+          </div>
+        </div>
+      </div>
+
+      <!-- THE "STORM SHIFTER" MECHANICAL TOGGLE (Centerpiece Control) -->
+      <div class="flex items-center gap-3">
+        <span class="hidden lg:inline text-[10px] font-mono-tech uppercase tracking-widest text-[#F5F7FA]/50">STORM SHIFTER //</span>
+        <div id="stormShifter" role="button" tabindex="0" onclick="toggleStormMode()" class="storm-switch-track p-1 flex items-center cursor-pointer select-none w-[290px] sm:w-[340px] h-11 relative" title="Flip mechanical environmental switch">
+          <!-- Sliding Mechanical Thumb -->
+          <div id="stormThumb" class="storm-switch-thumb w-1/2 h-full bg-[#4A5243] border border-[#94A684]/60 absolute left-1 top-1 bottom-1" style="height: calc(100% - 8px); width: calc(50% - 4px);"></div>
+          
+          <!-- Option A: Gale Wind 35 m/s -->
+          <div id="labelGale" class="relative z-10 w-1/2 text-center font-mono-tech text-[10px] sm:text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 text-[#F5F7FA]">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9.59 4.59A2 2 0 1 1 11 8H2m10.59 11.41A2 2 0 1 0 14 16H2m15.73-8.27A2.5 2.5 0 1 1 19.5 12H2"/>
+            </svg>
+            <span>GALE / 35 m/s</span>
+          </div>
+
+          <!-- Option B: Freezing Drizzle -->
+          <div id="labelDrizzle" class="relative z-10 w-1/2 text-center font-mono-tech text-[10px] sm:text-[11px] font-bold tracking-wider uppercase flex items-center justify-center gap-1.5 text-[#F5F7FA]/55">
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242M8 19v2m4-4v2m4-2v2"/>
+            </svg>
+            <span>DRIZZLE / -6°C</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Status & Sack -->
+      <div class="flex items-center gap-3">
+        <button id="audioBtn" onclick="toggleAudio()" class="px-3 py-2 border border-[#F5F7FA]/15 hover:border-[#F5F7FA]/40 text-[11px] font-mono-tech uppercase tracking-widest flex items-center gap-2 transition">
+          <span id="audioDot" class="w-2 h-2 rounded-full bg-[#94A684]"></span>
+          <span id="audioLabel" class="hidden md:inline">SFX: ON</span>
+        </button>
+
+        <button onclick="openBagModal()" class="magnetic-btn px-4 py-2 bg-[#F5F7FA] text-[#141518] hover:bg-[#94A684] hover:text-[#0D0E10] font-mono-tech text-[11px] font-bold uppercase tracking-widest transition">
+          <span>PACK [</span><span id="packCount">0</span><span>]</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO SECTION: INTERACTIVE WATER-TENSION & WIND RIPPLE FABRIC CANVAS -->
+  <section class="relative min-h-screen pt-20 flex flex-col justify-between overflow-hidden border-b border-[#F5F7FA]/15">
+    <!-- Full-Bleed Interactive Hydrophobic Ripstop & Fluid Tension Canvas -->
+    <canvas id="fabricHeroCanvas" class="absolute inset-0 w-full h-full z-0 cursor-crosshair"></canvas>
+
+    <!-- Subtle Editorial Grid Overlay -->
+    <div class="pointer-events-none absolute inset-0 z-10 grid grid-cols-4 md:grid-cols-12 max-w-[1600px] mx-auto px-5 md:px-10">
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full hidden md:block"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full hidden md:block"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full hidden md:block"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full hidden md:block"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full hidden md:block"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full hidden md:block"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full"></div>
+      <div class="border-l border-[#F5F7FA]/[0.05] h-full hidden md:block"></div>
+      <div class="border-l border-r border-[#F5F7FA]/[0.05] h-full hidden md:block"></div>
+    </div>
+
+    <!-- Top Asymmetric Telemetry Strip -->
+    <div class="relative z-20 max-w-[1600px] w-full mx-auto px-5 md:px-10 pt-8 flex flex-wrap items-start justify-between gap-6 pointer-events-none">
+      <!-- Left Atmospheric Readout -->
+      <div class="bg-[#141518]/80 backdrop-blur-md border border-[#F5F7FA]/15 p-4 max-w-xs pointer-events-auto">
+        <div class="flex items-center justify-between text-[10px] font-mono-tech text-[#94A684] uppercase tracking-widest mb-1.5">
+          <span id="telemetryModeTag">// MODE: GALE FORCE SHEAR</span>
+          <span class="animate-pulse">● LIVE</span>
+        </div>
+        <div class="grid grid-cols-3 gap-3 pt-2 border-t border-[#F5F7FA]/10 font-mono-tech">
+          <div>
+            <div class="text-[9px] text-[#F5F7FA]/45 uppercase">VELOCITY</div>
+            <div id="telemetryWind" class="text-sm font-bold text-[#F5F7FA]">35.0 m/s</div>
+          </div>
+          <div>
+            <div class="text-[9px] text-[#F5F7FA]/45 uppercase">DWR ANGLE</div>
+            <div id="telemetryAngle" class="text-sm font-bold text-[#94A684]">148.6°</div>
+          </div>
+          <div>
+            <div class="text-[9px] text-[#F5F7FA]/45 uppercase">HYDRO HEAD</div>
+            <div id="telemetryHydro" class="text-sm font-bold text-[#F5F7FA]">28,000mm</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Hydrophobic Lotus Contact Angle Widget + Interactive Spray Trigger -->
+      <div class="bg-[#141518]/80 backdrop-blur-md border border-[#F5F7FA]/15 p-4 flex items-center gap-4 pointer-events-auto">
+        <!-- Mini SVG Goniometer showing droplet beading angle -->
+        <div class="w-16 h-12 bg-[#0D0E10] border border-[#F5F7FA]/15 flex flex-col items-center justify-end p-1 relative">
+          <svg viewBox="0 0 80 50" class="w-full h-full">
+            <!-- Ripstop surface line -->
+            <line x1="4" y1="42" x2="76" y2="42" stroke="#94A684" stroke-width="1.5" stroke-dasharray="3 2"/>
+            <!-- Beaded super-hydrophobic droplet -->
+            <path id="goniometerDrop" d="M 26 42 C 18 28, 28 10, 40 10 C 52 10, 62 28, 54 42 Z" fill="rgba(125, 211, 252, 0.35)" stroke="#F5F7FA" stroke-width="1.5"/>
+            <!-- Contact angle tangent arc -->
+            <line x1="26" y1="42" x2="14" y2="20" stroke="#FF5722" stroke-width="1.2"/>
+            <text x="40" y="29" text-anchor="middle" fill="#F5F7FA" font-size="8" font-family="JetBrains Mono">149°</text>
+          </svg>
+        </div>
+        <div>
+          <div class="text-[10px] font-mono-tech uppercase tracking-widest text-[#F5F7FA]/60">BIONIC C0 HYDROPHOBICITY</div>
+          <div class="text-xs text-[#F5F7FA]/90 mt-0.5">Move cursor to ripple weave &amp; coalesce droplets</div>
+          <div class="flex gap-2 mt-2">
+            <button onclick="spawnOceanSprayBurst()" class="px-2.5 py-1 bg-[#4A5243]/50 hover:bg-[#4A5243] border border-[#94A684]/50 text-[10px] font-mono-tech uppercase tracking-widest transition">
+              + SPRAY ATLANTIC BURST
+            </button>
+            <button onclick="triggerShockwave()" class="px-2.5 py-1 bg-[#0D0E10] hover:border-[#F5F7FA] border border-[#F5F7FA]/20 text-[10px] font-mono-tech uppercase tracking-widest transition">
+              GUST PULSE
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Center/Bottom Asymmetric Brutalist Editorial Typography + Showcase Spot -->
+    <div class="relative z-20 max-w-[1600px] w-full mx-auto px-5 md:px-10 pb-12 pt-16 grid grid-cols-1 lg:grid-cols-12 gap-8 items-end pointer-events-none">
+      <!-- Left 8 Columns: Kinetic Display Title -->
+      <div class="lg:col-span-8">
+        <div class="inline-flex items-center gap-3 px-3 py-1 bg-[#4A5243]/30 border border-[#94A684]/40 text-[#94A684] text-[11px] font-mono-tech uppercase tracking-widest mb-5">
+          <span>REYNISFJARA BLACK SAND &amp; NORTH ATLANTIC SWELL</span>
+          <span>//</span>
+          <span id="heroDefenseBadge">CERTIFIED: 35 M/S BEAUFORT 12</span>
+        </div>
+
+        <h1 id="kineticHeroTitle" class="kinetic-type font-display font-extrabold uppercase tracking-tighter text-[3.4rem] sm:text-[5.5rem] xl:text-[7.2rem] leading-[0.88] text-[#F5F7FA]">
+          WEATHERED<br/>
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-[#F5F7FA] via-[#94A684] to-[#F5F7FA]/60">IN ICELAND.</span>
+        </h1>
+
+        <p class="mt-6 max-w-xl text-sm sm:text-base text-[#F5F7FA]/75 leading-relaxed font-normal">
+          Engineered from high-tenacity 3-layer basalt-dyed Cordura® ripstop. Water beads at a 148.6° lotus contact angle and shears off under 35 m/s crosswinds without wetting the outer face.
+        </p>
+
+        <!-- Magnetic CTA Row -->
+        <div class="mt-8 flex flex-wrap items-center gap-4 pointer-events-auto">
+          <a href="#catalogRailSection" class="magnetic-btn px-7 py-4 bg-[#F5F7FA] text-[#141518] hover:bg-[#94A684] font-mono-tech text-xs font-bold uppercase tracking-widest transition shadow-lg">
+            <span>EXPLORE STORM ARCHIVE ↓</span>
+          </a>
+          <button onclick="openSpecimenDrawer(0)" class="magnetic-btn px-6 py-4 bg-[#141518]/90 hover:bg-[#4A5243]/40 text-[#F5F7FA] border border-[#F5F7FA]/25 font-mono-tech text-xs uppercase tracking-widest transition">
+            <span>INSPECT HERO SPECIMEN [40× MACRO]</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Right 4 Columns: Live Hero Specimen Defense Card -->
+      <div class="lg:col-span-4 pointer-events-auto">
+        <div onclick="openSpecimenDrawer(0)" class="group cursor-pointer bg-[#141518]/88 backdrop-blur-xl border border-[#F5F7FA]/20 hover:border-[#94A684] p-6 transition relative overflow-hidden">
+          <div class="flex items-center justify-between text-[10px] font-mono-tech uppercase tracking-widest text-[#F5F7FA]/55 mb-3">
+            <span>HERO SPECIMEN // VT-01</span>
+            <span id="heroCardRatingPill" class="px-2 py-0.5 bg-[#4A5243] text-[#F5F7FA] font-bold">WIND SHEAR: 35 M/S</span>
+          </div>
+
+          <div class="flex items-center gap-5">
+            <!-- Technical Vector Silhouette of Váttr Storm Smock -->
+            <div class="w-24 h-28 bg-[#0D0E10] border border-[#F5F7FA]/10 flex items-center justify-center p-2 shrink-0">
+              <svg viewBox="0 0 120 140" class="w-full h-full">
+                <!-- Storm Anorak Smock SVG -->
+                <path d="M38 16 L60 6 L82 16 L108 38 L96 58 L82 46 L82 126 L38 126 L38 46 L24 58 L12 38 Z" fill="#1E211D" stroke="#F5F7FA" stroke-width="2"/>
+                <path d="M46 16 Q60 28 74 16" fill="none" stroke="#94A684" stroke-width="1.5"/>
+                <line x1="60" y1="22" x2="60" y2="72" stroke="#94A684" stroke-width="2"/>
+                <rect x="44" y="70" width="32" height="24" fill="none" stroke="#F5F7FA" stroke-width="1.3" stroke-dasharray="3 2"/>
+                <circle cx="60" cy="48" r="3" fill="#94A684"/>
+              </svg>
+            </div>
+            <div>
+              <h2 class="font-display font-bold text-xl text-[#F5F7FA] group-hover:text-[#94A684] transition">
+                VÁTTR 3L STORM SMOCK
+              </h2>
+              <p class="text-xs text-[#F5F7FA]/65 mt-1 leading-relaxed">
+                3-Layer ePTFE Basalt Membrane • 500D High-Tenacity Ripstop • Fully Welded 13mm Seams.
+              </p>
+              <div class="mt-3 flex items-center justify-between font-mono-tech text-xs">
+                <span class="text-[#F5F7FA] font-bold">$680 USD</span>
+                <span class="text-[#94A684] underline">OPEN MACRO REPORT ↗</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECTION 2: ASYMMETRIC BRUTALIST EDITORIAL & INTERACTIVE PRODUCT RAIL -->
+  <section id="catalogRailSection" class="py-24 max-w-[1600px] mx-auto px-5 md:px-10">
+    <!-- Asymmetric Header with Scroll-Velocity Kinetic Typography -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 items-end mb-14 border-b border-[#F5F7FA]/12 pb-10">
+      <div class="lg:col-span-7">
+        <div class="text-[11px] font-mono-tech uppercase tracking-widest text-[#94A684] mb-2">
+          // 02 — FIELD-CERTIFIED SPECIMEN RAIL (3D PARALLEL TILT + MAGNETIC LOCK)
+        </div>
+        <h2 id="kineticSectionTitle" class="kinetic-type font-display font-extrabold text-4xl sm:text-6xl uppercase tracking-tight leading-none">
+          ENGINEERED FOR<br/>HORIZONTAL RAIN.
+        </h2>
+      </div>
+      <div class="lg:col-span-5 flex flex-col sm:flex-row lg:flex-col justify-between gap-4">
+        <p class="text-xs sm:text-sm text-[#F5F7FA]/65 leading-relaxed">
+          Hover any specimen card to engage 3D parallax inspection. Flip the <strong class="text-[#F5F7FA]">Storm Shifter</strong> above to highlight certified defense thresholds for <span class="text-[#94A684]">35 m/s Gale Wind</span> vs <span class="text-[#7DD3FC]">Freezing Drizzle</span>. Click any specimen to morph into a 40× Macro Weave Report.
+        </p>
+        <div class="flex items-center gap-2 font-mono-tech text-xs">
+          <button onclick="scrollRail(-420)" class="px-4 py-2 border border-[#F5F7FA]/20 hover:border-[#F5F7FA] transition">← PREV</button>
+          <button onclick="scrollRail(420)" class="px-4 py-2 border border-[#F5F7FA]/20 hover:border-[#F5F7FA] transition">NEXT →</button>
+          <span class="ml-auto text-[#F5F7FA]/45 text-[11px]">5 CERTIFIED GARMENTS</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Horizontal Sliding Product Rail -->
+    <div id="productRail" class="flex gap-7 overflow-x-auto pb-8 pt-2 snap-x snap-mandatory">
+      <!-- Populated dynamically via JS with 3D perspective tilt & magnetic buttons -->
+    </div>
+  </section>
+
+  <!-- SECTION 3: ICELANDIC ELEMENTAL EXPOSURE MATRIX (ASYMMETRIC EDITORIAL FOOTER) -->
+  <section class="border-t border-[#F5F7FA]/15 bg-[#0D0E10] py-20">
+    <div class="max-w-[1600px] mx-auto px-5 md:px-10 grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
+      <div class="lg:col-span-5">
+        <div class="text-[11px] font-mono-tech text-[#94A684] uppercase tracking-widest mb-2">
+          // 03 — MATERIAL PHYSICS VERIFICATION
+        </div>
+        <h3 class="font-display font-extrabold text-3xl sm:text-5xl uppercase tracking-tight leading-none">
+          ZERO WET-OUT.<br/>ZERO WIND PENETRATION.
+        </h3>
+        <p class="text-sm text-[#F5F7FA]/65 mt-4 leading-relaxed">
+          Tested on the Reynisfjara black sand littoral zone and Landmannalaugar obsidian ridges. Every VÁTTR shell is batch-tested in our Reykjavík hydrostatic column prior to serial numbering.
+        </p>
+      </div>
+
+      <div class="lg:col-span-7 grid grid-cols-1 sm:grid-cols-3 gap-4 font-mono-tech">
+        <div class="p-6 bg-[#141518] border border-[#F5F7FA]/12">
+          <div class="text-xs text-[#94A684] mb-2">01 // VOLCANIC ASH</div>
+          <div class="text-3xl font-bold text-[#F5F7FA]">120,000+</div>
+          <div class="text-[11px] text-[#F5F7FA]/55 mt-1">Martindale basalt abrasion cycles without fiber rupture.</div>
+        </div>
+        <div class="p-6 bg-[#141518] border border-[#F5F7FA]/12">
+          <div class="text-xs text-[#7DD3FC] mb-2">02 // OCEAN SPRAY</div>
+          <div class="text-3xl font-bold text-[#F5F7FA]">28,000 mm</div>
+          <div class="text-[11px] text-[#F5F7FA]/55 mt-1">ISO 811 hydrostatic pressure column before micro-seepage.</div>
+        </div>
+        <div class="p-6 bg-[#141518] border border-[#F5F7FA]/12">
+          <div class="text-xs text-[#94A684] mb-2">03 // ARCTIC GALE</div>
+          <div class="text-3xl font-bold text-[#F5F7FA]">0.0 CFM</div>
+          <div class="text-[11px] text-[#F5F7FA]/55 mt-1">Complete convective wind block up to 35 m/s (126 km/h).</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SMOOTH FULL-SCREEN SPECIMEN REPORT OVERLAY DRAWER (WITH 40x MACRO ZOOM LOUPE) -->
+  <div id="specimenDrawer" class="specimen-drawer fixed inset-0 z-50 bg-[#0D0E10]/95 backdrop-blur-2xl overflow-y-auto">
+    <div class="max-w-[1500px] mx-auto px-5 md:px-10 py-8 min-h-screen flex flex-col justify-between">
+      <!-- Top Bar -->
+      <div class="flex items-center justify-between border-b border-[#F5F7FA]/15 pb-5">
+        <div class="flex items-center gap-3 font-mono-tech text-xs">
+          <span id="drawerSerial" class="px-2.5 py-1 bg-[#4A5243] text-[#F5F7FA] font-bold">SPECIMEN // VT-01</span>
+          <span id="drawerSubtitle" class="text-[#F5F7FA]/60 uppercase">REYKJAVÍK HYDROSTATIC ARCHIVE REPORT</span>
+        </div>
+        <button onclick="closeSpecimenDrawer()" class="px-4 py-2 border border-[#F5F7FA]/25 hover:border-[#F5F7FA] font-mono-tech text-xs uppercase tracking-widest transition">
+          ✕ CLOSE REPORT [ESC]
+        </button>
+      </div>
+
+      <!-- Main Content Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-10 my-8 items-center">
+        <!-- Left 7 Columns: Interactive 40x Macro Fabric Zoom Canvas -->
+        <div class="lg:col-span-7">
+          <div class="flex items-center justify-between font-mono-tech text-[11px] text-[#F5F7FA]/60 uppercase mb-2">
+            <span>INTERACTIVE 40× MACRO WEAVE &amp; DWR DROPLET SCANNER (MOVE CURSOR OVER SWATCH)</span>
+            <span id="macroZoomCoord" class="text-[#94A684]">LOUPE: 40.0× OPTICAL</span>
+          </div>
+          <div class="relative w-full h-[380px] sm:h-[460px] bg-[#141518] border border-[#F5F7FA]/20 overflow-hidden cursor-none" id="macroStage">
+            <canvas id="macroZoomCanvas" class="w-full h-full block"></canvas>
+            <div class="pointer-events-none absolute bottom-4 left-4 bg-[#0D0E10]/85 border border-[#F5F7FA]/15 px-3 py-1.5 font-mono-tech text-[10px] text-[#F5F7FA]/80">
+              CLICK SWATCH TO JET HIGH-PRESSURE SLEET DROPLETS ONTO YARN
+            </div>
+          </div>
+        </div>
+
+        <!-- Right 5 Columns: Technical Breakdown & Magnetic Checkout -->
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-6">
+          <div>
+            <div id="drawerLocation" class="font-mono-tech text-xs text-[#94A684] uppercase tracking-widest">
+              FIELD SECTOR: VÍK Í MÝRDAL // BLACK SAND LITTORAL
+            </div>
+            <h2 id="drawerTitle" class="font-display font-extrabold text-3xl sm:text-5xl uppercase tracking-tight mt-1">
+              VÁTTR 3L STORM SMOCK
+            </h2>
+            <div id="drawerPrice" class="font-mono-tech text-2xl text-[#F5F7FA] font-bold mt-2">$680 USD</div>
+            <p id="drawerDesc" class="text-sm text-[#F5F7FA]/75 leading-relaxed mt-4">
+              An impenetrable 3-layer storm smock built for horizontal North Atlantic sleet. Features an angled chest storm bunker, Pit-Zip thermal dumps, and 500D basalt-dyed Cordura® reinforcements.
+            </p>
+          </div>
+
+          <!-- Certified Defense Specs Matrix -->
+          <div class="grid grid-cols-2 gap-3 font-mono-tech text-xs">
+            <div class="p-3.5 bg-[#141518] border border-[#F5F7FA]/15">
+              <div class="text-[10px] text-[#F5F7FA]/45 uppercase">GALE WIND RATING</div>
+              <div id="drawerWindSpec" class="text-base font-bold text-[#94A684] mt-0.5">35 m/s (126 km/h)</div>
+            </div>
+            <div class="p-3.5 bg-[#141518] border border-[#F5F7FA]/15">
+              <div class="text-[10px] text-[#F5F7FA]/45 uppercase">HYDROSTATIC HEAD</div>
+              <div id="drawerWaterSpec" class="text-base font-bold text-[#7DD3FC] mt-0.5">28,000 mm H₂O</div>
+            </div>
+            <div class="p-3.5 bg-[#141518] border border-[#F5F7FA]/15">
+              <div class="text-[10px] text-[#F5F7FA]/45 uppercase">MEMBRANE SPEC</div>
+              <div id="drawerMembraneSpec" class="text-sm font-bold text-[#F5F7FA] mt-0.5">3L ePTFE + C0 DWR</div>
+            </div>
+            <div class="p-3.5 bg-[#141518] border border-[#F5F7FA]/15">
+              <div class="text-[10px] text-[#F5F7FA]/45 uppercase">SPECIMEN MASS</div>
+              <div id="drawerWeightSpec" class="text-sm font-bold text-[#F5F7FA] mt-0.5">540g (Size L)</div>
+            </div>
+          </div>
+
+          <!-- Size Selector -->
+          <div>
+            <div class="text-[10px] font-mono-tech uppercase tracking-widest text-[#F5F7FA]/55 mb-2">SELECT EXPEDITION FIT</div>
+            <div class="grid grid-cols-5 gap-2 font-mono-tech text-xs" id="sizeButtons">
+              <button onclick="selectSize('XS')" class="size-btn py-2.5 border border-[#F5F7FA]/20 hover:border-[#F5F7FA]">XS</button>
+              <button onclick="selectSize('S')" class="size-btn py-2.5 border border-[#F5F7FA]/20 hover:border-[#F5F7FA]">S</button>
+              <button onclick="selectSize('M')" class="size-btn py-2.5 border border-[#94A684] bg-[#4A5243]/40 text-[#F5F7FA] font-bold">M</button>
+              <button onclick="selectSize('L')" class="size-btn py-2.5 border border-[#F5F7FA]/20 hover:border-[#F5F7FA]">L</button>
+              <button onclick="selectSize('XL')" class="size-btn py-2.5 border border-[#F5F7FA]/20 hover:border-[#F5F7FA]">XL</button>
+            </div>
+          </div>
+
+          <!-- Magnetic Add to Pack Button -->
+          <div class="pt-2">
+            <button id="drawerAddBtn" onclick="addActiveSpecimenToPack()" class="magnetic-btn w-full py-4 bg-[#F5F7FA] text-[#141518] hover:bg-[#94A684] font-mono-tech text-xs font-bold uppercase tracking-widest transition">
+              + SEAL SPECIMEN IN EXPEDITION PACK
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bottom Footnote -->
+      <div class="border-t border-[#F5F7FA]/10 pt-4 flex flex-wrap justify-between text-[11px] font-mono-tech text-[#F5F7FA]/45">
+        <span>TESTED AT SKEIFAN-10 REYKJAVÍK HYDRO-CHAMBER</span>
+        <span>USE ARROW KEYS OR ESC TO RETURN TO RAIL</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- TOAST NOTIFICATION -->
+  <div id="toastNotice" class="fixed bottom-6 right-6 z-50 bg-[#F5F7FA] text-[#141518] px-5 py-3.5 font-mono-tech text-xs font-bold uppercase tracking-wider shadow-2xl translate-y-24 opacity-0 transition-all duration-300 pointer-events-none">
+    SPECIMEN SEALED IN EXPEDITION PACK
+  </div>
+
+  <script>
+    // =========================================================================
+    // 1. CATALOG SPECIMEN DATA
+    // =========================================================================
+    const SPECIMENS = [
+      {
+        id: 'VT-01',
+        name: 'VÁTTR 3L STORM SMOCK',
+        sector: 'VÍK Í MÝRDAL // BLACK SAND LITTORAL',
+        price: 680,
+        windRating: '35 m/s (Beaufort 12)',
+        drizzleRating: '28,000 mm / 149° DWR',
+        membrane: '3L ePTFE + 500D Basalt Ripstop',
+        weight: '540g',
+        weaveColor: '#2A3028',
+        accentColor: '#94A684',
+        desc: 'An impenetrable 3-layer storm smock built for horizontal North Atlantic sleet. Features an angled chest storm bunker, Pit-Zip thermal dumps, and 500D basalt-dyed Cordura® reinforcements.',
+        svgPath: 'M36 16 L60 6 L84 16 L110 38 L96 58 L82 46 L82 126 L38 126 L38 46 L24 58 L10 38 Z'
+      },
+      {
+        id: 'VT-02',
+        name: 'REYNISFJARA BASALT CARGO',
+        sector: 'REYNISDRANGAR // SEA STACK SPRAY ZONE',
+        price: 460,
+        windRating: '32 m/s Abrasion Shield',
+        drizzleRating: '24,000 mm / Sealed Gusset',
+        membrane: 'Double-Weave Stretch Cordura®',
+        weight: '490g',
+        weaveColor: '#1E2024',
+        accentColor: '#7DD3FC',
+        desc: 'Articulated expedition trousers engineered to shed freezing Atlantic surf and resist volcanic glass tears. Equipped with self-draining bellows cargo pockets and gaiter hooks.',
+        svgPath: 'M34 14 L86 14 L94 126 L66 126 L60 56 L54 126 L26 126 Z'
+      },
+      {
+        id: 'VT-03',
+        name: 'SURTSEY ASH ANORAK',
+        sector: 'SURTSEY VOLCANIC ISLAND // TEPHRA CONE',
+        price: 740,
+        windRating: '35 m/s Zero-CFM Shell',
+        drizzleRating: '30,000 mm Hydro-Column',
+        membrane: 'Dyneema®-Grid 3L Laminate',
+        weight: '475g',
+        weaveColor: '#2E332B',
+        accentColor: '#94A684',
+        desc: 'Reinforced with a white Dyneema® ripstop grid that stops sharp tephra and basalt shards cold. High storm collar seals up to the goggles with magnetic Fidlock® tabs.',
+        svgPath: 'M38 12 L60 4 L82 12 L106 42 L92 60 L80 48 L84 126 L36 126 L40 48 L28 60 L14 42 Z'
+      },
+      {
+        id: 'VT-04',
+        name: 'JÖKULSÁRLÓN GLACIER PARKA',
+        sector: 'VATNAJÖKULL OUTLET // ICEBERG LAGOON',
+        price: 920,
+        windRating: '35 m/s Sub-Zero Lock',
+        drizzleRating: '28,000 mm + 850FP Hydro-Down',
+        membrane: 'Box-Wall Welded Gore-Tex® Pro',
+        weight: '860g',
+        weaveColor: '#191C20',
+        accentColor: '#7DD3FC',
+        desc: 'Encapsulates 850-fill hydrophobic Icelandic eider-grade goose down inside a fully welded 28,000mm waterproof exoskeleton. Zero cold spots in sleet or -25°C gales.',
+        svgPath: 'M34 14 L60 4 L86 14 L112 36 L98 62 L86 50 L86 132 L34 132 L34 50 L22 62 L8 36 Z'
+      },
+      {
+        id: 'VT-05',
+        name: 'KRÍA HIGHLAND SOFTSHELL',
+        sector: 'LANDMANNALAUGAR // RHYOLITE RIDGE',
+        price: 510,
+        windRating: '29 m/s Dynamic Breathable',
+        drizzleRating: '18,000 mm Super-Bead DWR',
+        membrane: '4-Way Stretch Schoeller® Dryskin',
+        weight: '410g',
+        weaveColor: '#363D32',
+        accentColor: '#94A684',
+        desc: 'High-output alpine softshell with permanent bionic DWR treatment that retains 98% water-beading performance after 100 highland storm ascents.',
+        svgPath: 'M40 16 L60 8 L80 16 L104 40 L92 56 L78 44 L78 122 L42 122 L42 44 L28 56 L16 40 Z'
+      }
+    ];
+
+    let stormMode = 'gale'; // 'gale' (35 m/s) or 'drizzle' (-6°C)
+    let soundEnabled = true;
+    let audioCtx = null;
+    let packCount = 0;
+    let activeSpecimenIndex = 0;
+    let selectedSize = 'M';
+
+    // =========================================================================
+    // 2. WEB AUDIO SYNTHESIZER (Mechanical Switch + Wind/Drizzle Pulse)
+    // =========================================================================
+    function getAudioCtx() {
+      if (!audioCtx) {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        audioCtx = new AudioContext();
+      }
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+      return audioCtx;
+    }
+
+    function playMechanicalSound(type = 'switch') {
+      if (!soundEnabled) return;
+      try {
+        const ctx = getAudioCtx();
+        const now = ctx.currentTime;
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+
+        if (type === 'switch') {
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(160, now);
+          osc.frequency.exponentialRampToValueAtTime(520, now + 0.045);
+          osc.frequency.exponentialRampToValueAtTime(95, now + 0.14);
+          gain.gain.setValueAtTime(0.18, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.15);
+          osc.start(now);
+          osc.stop(now + 0.15);
+        } else if (type === 'drop') {
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(580, now);
+          osc.frequency.exponentialRampToValueAtTime(1180, now + 0.07);
+          gain.gain.setValueAtTime(0.08, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+          osc.start(now);
+          osc.stop(now + 0.08);
+        }
+      } catch (e) {}
+    }
+
+    function toggleAudio() {
+      soundEnabled = !soundEnabled;
+      document.getElementById('audioDot').className = soundEnabled
+        ? 'w-2 h-2 rounded-full bg-[#94A684]'
+        : 'w-2 h-2 rounded-full bg-red-500';
+      document.getElementById('audioLabel').textContent = soundEnabled ? 'SFX: ON' : 'SFX: OFF';
+      if (soundEnabled) playMechanicalSound('drop');
+    }
+
+    // =========================================================================
+    // 3. THE "STORM SHIFTER" MECHANICAL TOGGLE
+    // =========================================================================
+    function toggleStormMode() {
+      stormMode = stormMode === 'gale' ? 'drizzle' : 'gale';
+      playMechanicalSound('switch');
+
+      const thumb = document.getElementById('stormThumb');
+      const labelGale = document.getElementById('labelGale');
+      const labelDrizzle = document.getElementById('labelDrizzle');
+
+      if (stormMode === 'drizzle') {
+        document.body.classList.add('mode-drizzle');
+        thumb.style.transform = 'translateX(100%)';
+        thumb.style.backgroundColor = '#0284C7';
+        thumb.style.borderColor = '#7DD3FC';
+        labelGale.classList.replace('text-[#F5F7FA]', 'text-[#F5F7FA]/55');
+        labelDrizzle.classList.replace('text-[#F5F7FA]/55', 'text-[#F5F7FA]');
+
+        document.getElementById('telemetryModeTag').textContent = '// MODE: FREEZING DRIZZLE (-6°C)';
+        document.getElementById('telemetryModeTag').className = 'text-[#7DD3FC]';
+        document.getElementById('telemetryWind').textContent = '18.5 m/s';
+        document.getElementById('telemetryAngle').textContent = '151.2°';
+        document.getElementById('telemetryAngle').className = 'text-sm font-bold text-[#7DD3FC]';
+        document.getElementById('telemetryHydro').textContent = '28,000mm';
+        document.getElementById('heroDefenseBadge').textContent = 'CERTIFIED: 28,000MM HYDROSTATIC + C0 LOTUS DWR';
+        document.getElementById('heroCardRatingPill').textContent = 'HYDROSTATIC: 28,000 MM';
+        document.getElementById('heroCardRatingPill').className = 'px-2 py-0.5 bg-[#0284C7] text-[#F5F7FA] font-bold';
+
+        spawnOceanSprayBurst(28);
+      } else {
+        document.body.classList.remove('mode-drizzle');
+        thumb.style.transform = 'translateX(0%)';
+        thumb.style.backgroundColor = '#4A5243';
+        thumb.style.borderColor = '#94A684';
+        labelDrizzle.classList.replace('text-[#F5F7FA]', 'text-[#F5F7FA]/55');
+        labelGale.classList.replace('text-[#F5F7FA]/55', 'text-[#F5F7FA]');
+
+        document.getElementById('telemetryModeTag').textContent = '// MODE: GALE FORCE SHEAR';
+        document.getElementById('telemetryModeTag').className = 'text-[#94A684]';
+        document.getElementById('telemetryWind').textContent = '35.0 m/s';
+        document.getElementById('telemetryAngle').textContent = '148.6°';
+        document.getElementById('telemetryAngle').className = 'text-sm font-bold text-[#94A684]';
+        document.getElementById('heroDefenseBadge').textContent = 'CERTIFIED: 35 M/S BEAUFORT 12';
+        document.getElementById('heroCardRatingPill').textContent = 'WIND SHEAR: 35 M/S';
+        document.getElementById('heroCardRatingPill').className = 'px-2 py-0.5 bg-[#4A5243] text-[#F5F7FA] font-bold';
+
+        triggerShockwave();
+      }
+
+      renderProductRail();
+    }
+
+    // =========================================================================
+    // 4. HERO CANVAS: RIPSTOP WEAVE RIPPLE + COALESCING DWR DROPLETS
+    // =========================================================================
+    const heroCanvas = document.getElementById('fabricHeroCanvas');
+    const hCtx = heroCanvas.getContext('2d');
+    let cw = 0, ch = 0;
+
+    // Grid nodes for fabric wind/mouse ripple
+    const GRID_COLS = 38;
+    const GRID_ROWS = 22;
+    let nodes = [];
+    let droplets = [];
+    let windParticles = [];
+    let pointer = { x: -999, y: -999, vx: 0, vy: 0, lastX: 0, lastY: 0, active: false };
+
+    function initHeroCanvas() {
+      cw = heroCanvas.width = heroCanvas.parentElement.clientWidth;
+      ch = heroCanvas.height = heroCanvas.parentElement.clientHeight;
+
+      nodes = [];
+      for (let r = 0; r <= GRID_ROWS; r++) {
+        for (let c = 0; c <= GRID_COLS; c++) {
+          const bx = (c / GRID_COLS) * cw;
+          const by = (r / GRID_ROWS) * ch;
+          nodes.push({
+            bx, by,
+            x: bx, y: by,
+            vx: 0, vy: 0
+          });
+        }
+      }
+
+      // Initial DWR water droplets beading on the fabric surface
+      droplets = [];
+      for (let i = 0; i < 42; i++) {
+        droplets.push(createDroplet(Math.random() * cw, Math.random() * ch));
+      }
+
+      // Atmospheric ash / sea spray streaks
+      windParticles = [];
+      for (let i = 0; i < 55; i++) {
+        windParticles.push({
+          x: Math.random() * cw,
+          y: Math.random() * ch,
+          len: 15 + Math.random() * 40,
+          speed: 8 + Math.random() * 14
+        });
+      }
+    }
+
+    function createDroplet(x, y, r = null) {
+      return {
+        x,
+        y,
+        r: r || (3.5 + Math.random() * 5.5),
+        vx: (Math.random() - 0.5) * 0.6,
+        vy: Math.random() * 0.8
+      };
+    }
+
+    function spawnOceanSprayBurst(count = 20) {
+      playMechanicalSound('drop');
+      const cx = pointer.active ? pointer.x : cw * 0.5;
+      const cy = pointer.active ? pointer.y : ch * 0.45;
+      for (let i = 0; i < count; i++) {
+        const angle = Math.random() * Math.PI * 2;
+        const dist = Math.random() * 140;
+        const d = createDroplet(cx + Math.cos(angle) * dist, cy + Math.sin(angle) * dist, 3 + Math.random() * 5);
+        d.vx = Math.cos(angle) * (2 + Math.random() * 3);
+        d.vy = Math.sin(angle) * (2 + Math.random() * 3);
+        droplets.push(d);
+      }
+      if (droplets.length > 95) droplets.splice(0, droplets.length - 95);
+    }
+
+    function triggerShockwave() {
+      playMechanicalSound('switch');
+      const cx = cw * 0.5;
+      const cy = ch * 0.5;
+      nodes.forEach(n => {
+        const dx = n.x - cx;
+        const dy = n.y - cy;
+        const dist = Math.hypot(dx, dy) || 1;
+        n.vx += (dx / dist) * 18;
+        n.vy += (dy / dist) * 18;
+      });
+    }
+
+    heroCanvas.addEventListener('mousemove', (e) => {
+      const rect = heroCanvas.getBoundingClientRect();
+      const nx = e.clientX - rect.left;
+      const ny = e.clientY - rect.top;
+      pointer.vx = nx - pointer.lastX;
+      pointer.vy = ny - pointer.lastY;
+      pointer.lastX = pointer.x = nx;
+      pointer.lastY = pointer.y = ny;
+      pointer.active = true;
+    });
+
+    heroCanvas.addEventListener('mouseleave', () => {
+      pointer.active = false;
+    });
+
+    heroCanvas.addEventListener('click', () => {
+      spawnOceanSprayBurst(16);
+    });
+
+    let simTime = 0;
+    function animateHeroCanvas() {
+      simTime += 0.025;
+      hCtx.fillStyle = stormMode === 'gale' ? '#141518' : '#101419';
+      hCtx.fillRect(0, 0, cw, ch);
+
+      const windForceX = stormMode === 'gale' ? 3.2 : 0.75;
+      const windWaveAmp = stormMode === 'gale' ? 7.5 : 3.2;
+
+      // Update fabric weave nodes (wind wave + cursor ripple)
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        const waveX = Math.sin(simTime * 2.2 + n.bx * 0.012 + n.by * 0.006) * windWaveAmp;
+        const waveY = Math.cos(simTime * 1.8 + n.bx * 0.01) * (windWaveAmp * 0.55);
+
+        if (pointer.active) {
+          const dx = n.x - pointer.x;
+          const dy = n.y - pointer.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 150 && dist > 1) {
+            const push = (1 - dist / 150) * 3.2;
+            n.vx += (dx / dist) * push + pointer.vx * 0.06;
+            n.vy += (dy / dist) * push + pointer.vy * 0.06;
+          }
+        }
+
+        // Spring back to base + wave offset
+        const targetX = n.bx + waveX;
+        const targetY = n.by + waveY;
+        n.vx += (targetX - n.x) * 0.085;
+        n.vy += (targetY - n.y) * 0.085;
+        n.vx *= 0.86;
+        n.vy *= 0.86;
+        n.x += n.vx;
+        n.y += n.vy;
+      }
+
+      // Draw Ripstop Weave Grid
+      hCtx.strokeStyle = stormMode === 'gale'
+        ? 'rgba(148, 166, 132, 0.13)'
+        : 'rgba(125, 211, 252, 0.14)';
+      hCtx.lineWidth = 1;
+
+      // Horizontal threads
+      for (let r = 0; r <= GRID_ROWS; r++) {
+        hCtx.beginPath();
+        for (let c = 0; c <= GRID_COLS; c++) {
+          const n = nodes[r * (GRID_COLS + 1) + c];
+          if (c === 0) hCtx.moveTo(n.x, n.y);
+          else hCtx.lineTo(n.x, n.y);
+        }
+        hCtx.stroke();
+      }
+
+      // Vertical threads
+      for (let c = 0; c <= GRID_COLS; c++) {
+        hCtx.beginPath();
+        for (let r = 0; r <= GRID_ROWS; r++) {
+          const n = nodes[r * (GRID_COLS + 1) + c];
+          if (r === 0) hCtx.moveTo(n.x, n.y);
+          else hCtx.lineTo(n.x, n.y);
+        }
+        hCtx.stroke();
+      }
+
+      // Update & Draw Coalescing DWR Water Droplets
+      const gravityY = stormMode === 'drizzle' ? 0.11 : 0.04;
+      const windSlideX = stormMode === 'gale' ? 0.14 : 0.03;
+
+      for (let i = 0; i < droplets.length; i++) {
+        const d = droplets[i];
+
+        // Gravity & wind shear based on droplet mass
+        d.vy += gravityY * (d.r * 0.22);
+        d.vx += windSlideX * (d.r * 0.15);
+
+        // Hydrophobic repulsion from cursor wake
+        if (pointer.active) {
+          const dx = d.x - pointer.x;
+          const dy = d.y - pointer.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < 110 && dist > 1) {
+            const repulse = (1 - dist / 110) * 1.9;
+            d.vx += (dx / dist) * repulse;
+            d.vy += (dy / dist) * repulse;
+          }
+        }
+
+        // Surface tensionstutter (hydrophobic bead friction)
+        d.vx *= 0.96;
+        d.vy *= 0.96;
+        d.x += d.vx;
+        d.y += d.vy;
+
+        // Coalescence: merge nearby droplets
+        for (let j = i + 1; j < droplets.length; j++) {
+          const d2 = droplets[j];
+          const dx = d2.x - d.x;
+          const dy = d2.y - d.y;
+          const dist = Math.hypot(dx, dy);
+          if (dist < (d.r + d2.r) * 0.85) {
+            // Merge area conservation
+            const newArea = d.r * d.r + d2.r * d2.r;
+            d.r = Math.min(12.5, Math.sqrt(newArea));
+            d.vx = (d.vx + d2.vx) * 0.55;
+            d.vy = (d.vy + d2.vy) * 0.55 + 0.6; // merged heavy droplet slides faster!
+            // Respawn d2 at top/left
+            d2.x = Math.random() * cw;
+            d2.y = -15;
+            d2.r = 3 + Math.random() * 4.5;
+            d2.vx = 0;
+            d2.vy = 1;
+          }
+        }
+
+        // Wrap around screen boundaries
+        if (d.y > ch + 20) {
+          d.y = -12;
+          d.x = Math.random() * cw;
+          d.r = 3.5 + Math.random() * 4.8;
+          d.vy = 0.5;
+        }
+        if (d.x > cw + 20) {
+          d.x = -12;
+          d.y = Math.random() * ch;
+        }
+
+        // Render 3D Hydrophobic Bead with specular highlight & contact shadow
+        hCtx.save();
+        // Shadow on ripstop weave
+        hCtx.beginPath();
+        hCtx.arc(d.x + 2, d.y + 3, d.r, 0, Math.PI * 2);
+        hCtx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+        hCtx.fill();
+
+        // Bead body
+        const grad = hCtx.createRadialGradient(
+          d.x - d.r * 0.35, d.y - d.r * 0.35, d.r * 0.1,
+          d.x, d.y, d.r
+        );
+        if (stormMode === 'drizzle') {
+          grad.addColorStop(0, 'rgba(245, 247, 250, 0.95)');
+          grad.addColorStop(0.55, 'rgba(125, 211, 252, 0.45)');
+          grad.addColorStop(1, 'rgba(14, 116, 144, 0.65)');
+        } else {
+          grad.addColorStop(0, 'rgba(245, 247, 250, 0.9)');
+          grad.addColorStop(0.6, 'rgba(148, 166, 132, 0.38)');
+          grad.addColorStop(1, 'rgba(30, 35, 30, 0.7)');
+        }
+        hCtx.beginPath();
+        hCtx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+        hCtx.fillStyle = grad;
+        hCtx.fill();
+        hCtx.strokeStyle = 'rgba(245, 247, 250, 0.45)';
+        hCtx.lineWidth = 0.8;
+        hCtx.stroke();
+        hCtx.restore();
+      }
+
+      // Draw Wind Shear / Freezing Sleet Streaks
+      hCtx.strokeStyle = stormMode === 'gale'
+        ? 'rgba(245, 247, 250, 0.16)'
+        : 'rgba(186, 230, 253, 0.25)';
+      hCtx.lineWidth = 1.1;
+      for (let i = 0; i < windParticles.length; i++) {
+        const p = windParticles[i];
+        hCtx.beginPath();
+        hCtx.moveTo(p.x, p.y);
+        if (stormMode === 'gale') {
+          // Horizontal gale streaks
+          hCtx.lineTo(p.x + p.len * 1.4, p.y + 2);
+          p.x += p.speed * 1.65;
+          p.y += 0.6;
+        } else {
+          // Angled sleet needles
+          hCtx.lineTo(p.x + p.len * 0.35, p.y + p.len * 0.85);
+          p.x += p.speed * 0.45;
+          p.y += p.speed * 1.1;
+        }
+        hCtx.stroke();
+
+        if (p.x > cw + 60) p.x = -60;
+        if (p.y > ch + 60) {
+          p.y = -40;
+          p.x = Math.random() * cw;
+        }
+      }
+
+      requestAnimationFrame(animateHeroCanvas);
+    }
+
+    window.addEventListener('resize', initHeroCanvas);
+
+    // =========================================================================
+    // 5. KINETIC TYPOGRAPHY REACTIVE TO SCROLL VELOCITY
+    // =========================================================================
+    let lastScrollY = window.scrollY;
+    let scrollVelocity = 0;
+
+    function updateKineticTypography() {
+      const currentY = window.scrollY;
+      const delta = currentY - lastScrollY;
+      lastScrollY = currentY;
+      scrollVelocity += (delta - scrollVelocity) * 0.18;
+
+      const clampedSkew = Math.max(-14, Math.min(14, scrollVelocity * 0.28));
+      const windBaseSkew = stormMode === 'gale' ? -3.5 : 0;
+      const scaleY = 1 + Math.min(0.12, Math.abs(scrollVelocity) * 0.0025);
+
+      const heroTitle = document.getElementById('kineticHeroTitle');
+      const secTitle = document.getElementById('kineticSectionTitle');
+      if (heroTitle) {
+        heroTitle.style.transform = `skewX(${(clampedSkew + windBaseSkew).toFixed(2)}deg) scaleY(${scaleY.toFixed(3)})`;
+      }
+      if (secTitle) {
+        secTitle.style.transform = `skewX(${(-clampedSkew * 0.7 + windBaseSkew).toFixed(2)}deg)`;
+      }
+
+      requestAnimationFrame(updateKineticTypography);
+    }
+
+    // =========================================================================
+    // 6. PRODUCT RAIL WITH 3D PARALLAX TILT & SPRING MAGNETIC BUY BUTTONS
+    // =========================================================================
+    function renderProductRail() {
+      const rail = document.getElementById('productRail');
+      rail.innerHTML = SPECIMENS.map((item, idx) => {
+        const badgeText = stormMode === 'gale' ? item.windRating : item.drizzleRating;
+        const badgeBg = stormMode === 'gale'
+          ? 'bg-[#4A5243]/50 text-[#94A684] border-[#94A684]/50'
+          : 'bg-[#0284C7]/30 text-[#7DD3FC] border-[#7DD3FC]/50';
+
+        return `
+          <div class="tilt-card-wrapper shrink-0 w-[320px] sm:w-[370px] snap-start">
+            <div class="tilt-card relative p-6 h-full flex flex-col justify-between cursor-pointer overflow-hidden"
+                 onmousemove="handleCardTilt(event, this)"
+                 onmouseleave="resetCardTilt(this)"
+                 onclick="openSpecimenDrawer(${idx})">
+              <div class="tilt-glare absolute inset-0"></div>
+
+              <div>
+                <!-- Top Specimen Meta & Active Storm Rating -->
+                <div class="flex items-center justify-between gap-2 font-mono-tech text-[10px] mb-4">
+                  <span class="text-[#F5F7FA]/50">${item.id} // ${item.weight}</span>
+                  <span class="px-2.5 py-1 border font-bold uppercase ${badgeBg}">
+                    ${badgeText}
+                  </span>
+                </div>
+
+                <!-- Garment Technical SVG Showcase with 3D Depth Pop -->
+                <div class="relative h-56 bg-[#0D0E10] border border-[#F5F7FA]/10 flex items-center justify-center p-6 mb-5 overflow-hidden">
+                  <div class="absolute inset-0 opacity-20" style="background-image: radial-gradient(${item.accentColor} 1px, transparent 1px); background-size: 12px 12px;"></div>
+                  <svg viewBox="0 0 120 140" class="w-36 h-40 tilt-layer-depth transition-transform duration-300">
+                    <path d="${item.svgPath}" fill="${item.weaveColor}" stroke="#F5F7FA" stroke-width="2"/>
+                    <line x1="60" y1="14" x2="60" y2="120" stroke="${item.accentColor}" stroke-width="1.5" stroke-dasharray="4 3"/>
+                    <circle cx="60" cy="48" r="3.5" fill="${item.accentColor}"/>
+                  </svg>
+                  <div class="absolute bottom-2.5 right-3 font-mono-tech text-[9px] text-[#F5F7FA]/45 uppercase">
+                    CLICK FOR 40× MACRO REPORT
+                  </div>
+                </div>
+
+                <!-- Title & Description -->
+                <div class="font-mono-tech text-[10px] text-[#94A684] uppercase tracking-widest">${item.sector}</div>
+                <h3 class="font-display font-bold text-2xl text-[#F5F7FA] mt-1">${item.name}</h3>
+                <p class="text-xs text-[#F5F7FA]/65 mt-2 leading-relaxed line-clamp-3">${item.desc}</p>
+              </div>
+
+              <!-- Footer Price + Spring Magnetic Buy Button -->
+              <div class="pt-5 mt-6 border-t border-[#F5F7FA]/12 flex items-center justify-between gap-3">
+                <div>
+                  <div class="text-[9px] font-mono-tech text-[#F5F7FA]/45 uppercase">EXPEDITION PRICE</div>
+                  <div class="font-mono-tech text-lg font-bold text-[#F5F7FA]">$${item.price} USD</div>
+                </div>
+
+                <button onclick="event.stopPropagation(); quickAddSpecimen(${idx})"
+                        class="magnetic-btn px-4 py-2.5 bg-[#F5F7FA] text-[#141518] hover:bg-[#94A684] font-mono-tech text-[11px] font-bold uppercase tracking-wider transition">
+                  + MAGNETIC ADD
+                </button>
+              </div>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      bindMagneticButtons();
+    }
+
+    function handleCardTilt(e, card) {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      const cx = rect.width / 2;
+      const cy = rect.height / 2;
+      const rotateX = ((y - cy) / cy) * -9;
+      const rotateY = ((x - cx) / cx) * 9;
+
+      card.style.transform = `rotateX(${rotateX.toFixed(2)}deg) rotateY(${rotateY.toFixed(2)}deg) translateY(-4px)`;
+      const glare = card.querySelector('.tilt-glare');
+      if (glare) {
+        glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(245, 247, 250, 0.18), transparent 65%)`;
+      }
+    }
+
+    function resetCardTilt(card) {
+      card.style.transform = 'rotateX(0deg) rotateY(0deg) translateY(0px)';
+    }
+
+    function scrollRail(offset) {
+      const rail = document.getElementById('productRail');
+      rail.scrollBy({ left: offset, behavior: 'smooth' });
+    }
+
+    // =========================================================================
+    // 7. SPRING-PHYSICS MAGNETIC BUTTONS
+    // =========================================================================
+    function bindMagneticButtons() {
+      const btns = document.querySelectorAll('.magnetic-btn');
+      btns.forEach(btn => {
+        if (btn.dataset.magneticBound) return;
+        btn.dataset.magneticBound = 'true';
+
+        let targetX = 0, targetY = 0;
+        let curX = 0, curY = 0;
+        let velX = 0, velY = 0;
+        let animating = false;
+
+        function springTick() {
+          const stiffness = 0.18;
+          const damping = 0.72;
+          velX = (velX + (targetX - curX) * stiffness) * damping;
+          velY = (velY + (targetY - curY) * stiffness) * damping;
+          curX += velX;
+          curY += velY;
+
+          btn.style.transform = `translate3d(${curX.toFixed(2)}px, ${curY.toFixed(2)}px, 0)`;
+
+          if (Math.abs(velX) > 0.05 || Math.abs(velY) > 0.05 || Math.abs(targetX - curX) > 0.05) {
+            requestAnimationFrame(springTick);
+          } else {
+            animating = false;
+          }
+        }
+
+        btn.addEventListener('mousemove', (e) => {
+          const rect = btn.getBoundingClientRect();
+          const dx = e.clientX - (rect.left + rect.width / 2);
+          const dy = e.clientY - (rect.top + rect.height / 2);
+          targetX = dx * 0.38;
+          targetY = dy * 0.42;
+          if (!animating) {
+            animating = true;
+            requestAnimationFrame(springTick);
+          }
+        });
+
+        btn.addEventListener('mouseleave', () => {
+          targetX = 0;
+          targetY = 0;
+          if (!animating) {
+            animating = true;
+            requestAnimationFrame(springTick);
+          }
+        });
+      });
+    }
+
+    // =========================================================================
+    // 8. FULL-SCREEN SPECIMEN REPORT OVERLAY + 40x MACRO FABRIC ZOOM CANVAS
+    // =========================================================================
+    const macroCanvas = document.getElementById('macroZoomCanvas');
+    const mCtx = macroCanvas.getContext('2d');
+    let macroPointer = { x: 260, y: 200 };
+    let macroDrops = [];
+    let drawerOpen = false;
+
+    function openSpecimenDrawer(index) {
+      activeSpecimenIndex = index;
+      const item = SPECIMENS[index];
+      playMechanicalSound('switch');
+
+      document.getElementById('drawerSerial').textContent = `SPECIMEN // ${item.id}`;
+      document.getElementById('drawerLocation').textContent = `FIELD SECTOR: ${item.sector}`;
+      document.getElementById('drawerTitle').textContent = item.name;
+      document.getElementById('drawerPrice').textContent = `$${item.price} USD`;
+      document.getElementById('drawerDesc').textContent = item.desc;
+      document.getElementById('drawerWindSpec').textContent = item.windRating;
+      document.getElementById('drawerWaterSpec').textContent = item.drizzleRating;
+      document.getElementById('drawerMembraneSpec').textContent = item.membrane;
+      document.getElementById('drawerWeightSpec').textContent = item.weight;
+
+      const drawer = document.getElementById('specimenDrawer');
+      drawer.classList.add('open');
+      drawerOpen = true;
+
+      setTimeout(() => {
+        initMacroCanvas();
+      }, 50);
+    }
+
+    function closeSpecimenDrawer() {
+      playMechanicalSound('switch');
+      document.getElementById('specimenDrawer').classList.remove('open');
+      drawerOpen = false;
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && drawerOpen) closeSpecimenDrawer();
+    });
+
+    function initMacroCanvas() {
+      const stage = document.getElementById('macroStage');
+      macroCanvas.width = stage.clientWidth;
+      macroCanvas.height = stage.clientHeight;
+      macroPointer.x = macroCanvas.width * 0.5;
+      macroPointer.y = macroCanvas.height * 0.5;
+
+      macroDrops = [];
+      for (let i = 0; i < 24; i++) {
+        macroDrops.push({
+          x: Math.random() * macroCanvas.width,
+          y: Math.random() * macroCanvas.height,
+          r: 6 + Math.random() * 14
+        });
+      }
+    }
+
+    document.getElementById('macroStage').addEventListener('mousemove', (e) => {
+      const rect = macroCanvas.getBoundingClientRect();
+      macroPointer.x = e.clientX - rect.left;
+      macroPointer.y = e.clientY - rect.top;
+      document.getElementById('macroZoomCoord').textContent =
+        `LOUPE: 40.0× // X:${Math.round(macroPointer.x)} Y:${Math.round(macroPointer.y)}`;
+    });
+
+    document.getElementById('macroStage').addEventListener('click', () => {
+      playMechanicalSound('drop');
+      for (let i = 0; i < 6; i++) {
+        macroDrops.push({
+          x: macroPointer.x + (Math.random() - 0.5) * 110,
+          y: macroPointer.y + (Math.random() - 0.5) * 110,
+          r: 8 + Math.random() * 16
+        });
+      }
+    });
+
+    function renderMacroLoop() {
+      if (drawerOpen) {
+        const w = macroCanvas.width;
+        const h = macroCanvas.height;
+        const item = SPECIMENS[activeSpecimenIndex];
+
+        // 1. Base 1x Fabric Swatch View
+        mCtx.fillStyle = item.weaveColor || '#1E221D';
+        mCtx.fillRect(0, 0, w, h);
+
+        mCtx.strokeStyle = 'rgba(245, 247, 250, 0.12)';
+        mCtx.lineWidth = 1;
+        const step = 14;
+        for (let x = 0; x < w; x += step) {
+          mCtx.beginPath(); mCtx.moveTo(x, 0); mCtx.lineTo(x, h); mCtx.stroke();
+        }
+        for (let y = 0; y < h; y += step) {
+          mCtx.beginPath(); mCtx.moveTo(0, y); mCtx.lineTo(w, y); mCtx.stroke();
+        }
+
+        // Draw base micro droplets
+        macroDrops.forEach(d => {
+          mCtx.beginPath();
+          mCtx.arc(d.x, d.y, d.r * 0.45, 0, Math.PI * 2);
+          mCtx.fillStyle = 'rgba(186, 230, 253, 0.35)';
+          mCtx.fill();
+        });
+
+        // 2. 40x Magnified Optical Loupe Circle around cursor
+        const loupeRadius = 115;
+        mCtx.save();
+        mCtx.beginPath();
+        mCtx.arc(macroPointer.x, macroPointer.y, loupeRadius, 0, Math.PI * 2);
+        mCtx.clip();
+
+        // Deep magnified background
+        mCtx.fillStyle = '#0B0D0F';
+        mCtx.fillRect(macroPointer.x - loupeRadius, macroPointer.y - loupeRadius, loupeRadius * 2, loupeRadius * 2);
+
+        // High-tenacity 40x woven Cordura filaments
+        const macroStep = 28;
+        const offsetX = (-macroPointer.x * 2.2) % macroStep;
+        const offsetY = (-macroPointer.y * 2.2) % macroStep;
+
+        for (let x = macroPointer.x - loupeRadius + offsetX; x < macroPointer.x + loupeRadius; x += macroStep) {
+          mCtx.fillStyle = 'rgba(148, 166, 132, 0.28)';
+          mCtx.fillRect(x - 5, macroPointer.y - loupeRadius, 10, loupeRadius * 2);
+        }
+        for (let y = macroPointer.y - loupeRadius + offsetY; y < macroPointer.y + loupeRadius; y += macroStep) {
+          mCtx.fillStyle = 'rgba(245, 247, 250, 0.22)';
+          mCtx.fillRect(macroPointer.x - loupeRadius, y - 5, loupeRadius * 2, 10);
+        }
+
+        // Magnified Super-Hydrophobic Droplets inside Loupe
+        macroDrops.forEach(d => {
+          const mx = macroPointer.x + (d.x - macroPointer.x) * 2.2;
+          const my = macroPointer.y + (d.y - macroPointer.y) * 2.2;
+          const mr = d.r * 1.6;
+          const grad = mCtx.createRadialGradient(mx - mr * 0.3, my - mr * 0.3, 2, mx, my, mr);
+          grad.addColorStop(0, '#FFFFFF');
+          grad.addColorStop(0.5, 'rgba(125, 211, 252, 0.65)');
+          grad.addColorStop(1, 'rgba(15, 23, 42, 0.85)');
+          mCtx.beginPath();
+          mCtx.arc(mx, my, mr, 0, Math.PI * 2);
+          mCtx.fillStyle = grad;
+          mCtx.fill();
+          mCtx.strokeStyle = 'rgba(245, 247, 250, 0.7)';
+          mCtx.lineWidth = 1.5;
+          mCtx.stroke();
+        });
+
+        mCtx.restore();
+
+        // Loupe Bezel & Crosshair HUD
+        mCtx.strokeStyle = item.accentColor;
+        mCtx.lineWidth = 2.5;
+        mCtx.beginPath();
+        mCtx.arc(macroPointer.x, macroPointer.y, loupeRadius, 0, Math.PI * 2);
+        mCtx.stroke();
+
+        mCtx.fillStyle = '#F5F7FA';
+        mCtx.font = '10px JetBrains Mono';
+        mCtx.fillText('40× CORDURA® + C0 DWR BEAD', macroPointer.x - 75, macroPointer.y - loupeRadius - 10);
+      }
+      requestAnimationFrame(renderMacroLoop);
+    }
+
+    // =========================================================================
+    // 9. SIZE SELECTION & EXPEDITION PACK ACTIONS
+    // =========================================================================
+    function selectSize(size) {
+      selectedSize = size;
+      playMechanicalSound('drop');
+      document.querySelectorAll('.size-btn').forEach(btn => {
+        if (btn.textContent.trim() === size) {
+          btn.className = 'size-btn py-2.5 border border-[#94A684] bg-[#4A5243]/40 text-[#F5F7FA] font-bold';
+        } else {
+          btn.className = 'size-btn py-2.5 border border-[#F5F7FA]/20 hover:border-[#F5F7FA]';
+        }
+      });
+    }
+
+    function quickAddSpecimen(idx) {
+      const item = SPECIMENS[idx];
+      packCount++;
+      document.getElementById('packCount').textContent = packCount;
+      playMechanicalSound('switch');
+      showToast(`SEALED: ${item.name} [SIZE ${selectedSize}]`);
+    }
+
+    function addActiveSpecimenToPack() {
+      quickAddSpecimen(activeSpecimenIndex);
+      closeSpecimenDrawer();
+    }
+
+    function openBagModal() {
+      playMechanicalSound('drop');
+      showToast(`EXPEDITION PACK: ${packCount} SPECIMEN(S) READY FOR DISPATCH`);
+    }
+
+    let toastTimer = null;
+    function showToast(msg) {
+      const toast = document.getElementById('toastNotice');
+      toast.textContent = msg;
+      toast.classList.remove('translate-y-24', 'opacity-0');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => {
+        toast.classList.add('translate-y-24', 'opacity-0');
+      }, 2800);
+    }
+
+    // =========================================================================
+    // INITIALIZE EVERYTHING ON LOAD
+    // =========================================================================
+    window.addEventListener('DOMContentLoaded', () => {
+      initHeroCanvas();
+      animateHeroCanvas();
+      updateKineticTypography();
+      renderProductRail();
+      bindMagneticButtons();
+      renderMacroLoop();
+    });
+  </script>
+</body>
+</html>
