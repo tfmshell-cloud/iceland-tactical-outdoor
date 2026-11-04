@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>TACTILE LAB // RAW WEAVE — Icelandic Material & Textile Storefront</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter (Swiss Grotesque) + IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            basalt: '#1C1B1A',
+            basaltSoft: '#282725',
+            moss: '#3A4434',
+            mossLight: '#4F5D47',
+            slateRaw: '#8A9090',
+            wool: '#E6E4DD',
+            woolWarm: '#DCD9CF',
+            woolLight: '#F3F2EE',
+            clay: '#8C4A32'
+          },
+          fontFamily: {
+            sans: ['"Inter"', '-apple-system', 'BlinkMacSystemFont', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --basalt: #1C1B1A;
+      --moss: #3A4434;
+      --slate: #8A9090;
+      --wool: #E6E4DD;
+      --wool-warm: #DCD9CF;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #E6E4DD;
+      color: #1C1B1A;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Swiss Laboratory Hairline Grid */
+    .swiss-border {
+      border-color: rgba(28, 27, 26, 0.18);
+    }
+    .swiss-border-dark {
+      border-color: rgba(230, 228, 221, 0.16);
+    }
+
+    /* Tactile Range Slider (Depth Peel) */
+    input[type="range"].tactile-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 6px;
+      background: #DCD9CF;
+      border: 1px solid rgba(28, 27, 26, 0.35);
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].tactile-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: #3A4434;
+      border: 2px solid #E6E4DD;
+      box-shadow: 0 2px 6px rgba(28, 27, 26, 0.4);
+      cursor: grab;
+      transition: transform 0.12s ease, background-color 0.15s ease;
+    }
+    input[type="range"].tactile-slider::-webkit-slider-thumb:hover {
+      background: #1C1B1A;
+      transform: scale(1.08);
+    }
+
+    /* Movable Loupe Magnifier Ring */
+    #fabricLoupe {
+      width: 156px;
+      height: 156px;
+      border-radius: 50%;
+      border: 3px solid #E6E4DD;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.55), inset 0 0 18px rgba(0, 0, 0, 0.45), 0 0 0 1px #1C1B1A;
+      pointer-events: none;
+      position: absolute;
+      transform: translate(-50%, -50%);
+      overflow: hidden;
+      z-index: 30;
+      transition: opacity 0.15s ease;
+    }
+
+    /* Breathability CFM Rising Vapor Particles */
+    @keyframes riseVapor {
+      0% { transform: translateY(28px); opacity: 0; }
+      35% { opacity: 0.85; }
+      100% { transform: translateY(-32px); opacity: 0; }
+    }
+    .vapor-dot {
+      animation: riseVapor 2.4s infinite ease-in-out;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #DCD9CF;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3A4434;
+    }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col selection:bg-moss selection:text-wool">
+
+  <!-- =====================================================================
+       SWISS LABORATORY TOP INDEX BAR
+       ===================================================================== -->
+  <header class="border-b swiss-border bg-wool/95 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-[1560px] mx-auto px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <!-- Left: Brand & Archive Reference -->
+      <div class="flex items-center gap-4">
+        <div class="w-9 h-9 bg-basalt text-wool font-mono font-semibold text-xs flex items-center justify-center tracking-tighter">
+          TL/04
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="font-bold text-base md:text-lg tracking-tight uppercase text-basalt">
+              TACTILE LAB <span class="font-normal text-slateRaw">/</span> RAW WEAVE
+            </h1>
+            <span class="hidden sm:inline-block font-mono text-[10px] bg-moss text-wool px-2 py-0.5 uppercase">
+              MATERIAL RESEARCH ARCHIVE
+            </span>
+          </div>
+          <p class="font-mono text-[10px] text-basalt/65 uppercase tracking-wider">
+            SKEIFAN 10, REYKJAVÍK • NATURAL TEXTILE ARCHITECTURE & FIELD ANATOMY
+          </p>
+        </div>
+      </div>
+
+      <!-- Center Navigation Anchors -->
+      <nav class="hidden lg:flex items-center gap-6 font-mono text-xs uppercase">
+        <a href="#sectionLens" class="text-basalt hover:text-moss font-medium">01. Fabric Lens</a>
+        <a href="#sectionPlayground" class="text-basalt hover:text-moss font-medium">02. Stress & DWR Lab</a>
+        <a href="#sectionCatalog" class="text-basalt hover:text-moss font-medium">03. Garment Specimens</a>
+        <a href="#sectionAnatomy" class="text-basalt hover:text-moss font-medium">04. Pack Ergonomics</a>
+      </nav>
+
+      <!-- Right: Direct-to-Bag Trigger -->
+      <div class="flex items-center gap-3">
+        <div class="hidden sm:block text-right font-mono text-[11px]">
+          <span class="text-basalt/60 block">ACTIVE FIT CALIBRATION</span>
+          <span id="headerFitModeLabel" class="font-semibold text-moss">ARTICULATED FIELD FIT</span>
+        </div>
+
+        <button
+          onclick="toggleBagDrawer(true)"
+          class="bg-basalt hover:bg-moss text-wool font-mono text-xs uppercase px-4 py-2.5 flex items-center gap-2.5 transition"
+        >
+          <span>FIELD BAG</span>
+          <span id="bagCountPill" class="bg-wool text-basalt px-1.5 py-0.5 text-[10px] font-bold">1</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       01. HERO FEATURE: INTERACTIVE "FABRIC LENS" & DEPTH LAYER PEEL
+       ===================================================================== -->
+  <section id="sectionLens" class="border-b swiss-border bg-woolLight">
+    <div class="max-w-[1560px] mx-auto grid grid-cols-1 lg:grid-cols-12">
+
+      <!-- LEFT 5 COLS: SWISS EDITORIAL BRIEF & DEPTH LAYER PEEL CONTROLLER -->
+      <div class="lg:col-span-5 p-6 md:p-8 border-b lg:border-b-0 lg:border-r swiss-border flex flex-col justify-between bg-wool">
+        <div>
+          <div class="flex items-center justify-between font-mono text-[11px] text-basalt/65 pb-3 mb-5 border-b swiss-border">
+            <span>SPECIMEN LENS // 01</span>
+            <span id="activeSpecimenCodeHero">RW-101 • HIGHLAND ANORAK</span>
+          </div>
+
+          <span class="font-mono text-xs uppercase tracking-widest text-moss font-semibold block mb-1">
+            MICROSCOPIC TEXTILE TRANSPARENCY
+          </span>
+          <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight text-basalt leading-[1.1]">
+            Inspect Every Thread Before You Enter the Highlands.
+          </h2>
+          <p class="text-sm text-basalt/80 mt-3 leading-relaxed">
+            Move the optical loupe over the specimen surface to examine filament density at <strong>12× magnification</strong>. Drag the <strong>Depth Layer</strong> slider below to peel back the outer Ripstop shell, the hydrophobic membrane, and the brushed thermal waffle core.
+          </p>
+
+          <!-- Interactive Depth Layer Peel Control Card -->
+          <div class="mt-6 bg-woolLight border swiss-border p-5">
+            <div class="flex items-center justify-between mb-2">
+              <label for="depthSlider" class="font-mono text-xs font-semibold uppercase text-basalt">
+                DEPTH LAYER CUTAWAY SLIDER
+              </label>
+              <span id="depthPctReadout" class="font-mono text-xs font-bold text-moss">
+                LAYER 01 // SURFACE RIPSTOP (0%)
+              </span>
+            </div>
+
+            <input
+              id="depthSlider"
+              type="range"
+              min="0"
+              max="100"
+              value="0"
+              class="tactile-slider my-2"
+              oninput="updateDepthLayer(this.value)"
+            />
+
+            <!-- 3 Layer Quick-Select Buttons -->
+            <div class="grid grid-cols-3 gap-1.5 mt-3 font-mono text-[10px]">
+              <button
+                onclick="setDepthPreset(0)"
+                id="depthBtn-1"
+                class="py-2 px-2 bg-moss text-wool font-semibold uppercase text-left border border-basalt/20 transition"
+              >
+                <div class="opacity-70 text-[9px]">01 / OUTER</div>
+                <div class="truncate">Ripstop Weave</div>
+              </button>
+              <button
+                onclick="setDepthPreset(50)"
+                id="depthBtn-2"
+                class="py-2 px-2 bg-woolWarm text-basalt hover:bg-basalt/10 uppercase text-left border border-basalt/20 transition"
+              >
+                <div class="opacity-70 text-[9px]">02 / MIDDLE</div>
+                <div class="truncate">Hydro Membrane</div>
+              </button>
+              <button
+                onclick="setDepthPreset(100)"
+                id="depthBtn-3"
+                class="py-2 px-2 bg-woolWarm text-basalt hover:bg-basalt/10 uppercase text-left border border-basalt/20 transition"
+              >
+                <div class="opacity-70 text-[9px]">03 / INNER</div>
+                <div class="truncate">Waffle Grid</div>
+              </button>
+            </div>
+
+            <!-- Active Layer Technical Specification Readout -->
+            <div class="mt-4 pt-3 border-t swiss-border font-mono text-xs space-y-1.5">
+              <div class="flex justify-between">
+                <span class="text-basalt/60">ACTIVE SUBSTRATE:</span>
+                <span id="layerSpecName" class="font-semibold text-basalt">500D Organic Waxed Nylon Ripstop</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-basalt/60">FILAMENT PITCH:</span>
+                <span id="layerSpecPitch" class="font-semibold text-moss">4.5 mm Crosshatch Lock</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-basalt/60">FUNCTION:</span>
+                <span id="layerSpecFunction" class="text-basalt">Basalt Abrasion & Wind Shear Barrier</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Natural Earth Palette Swatch Strip -->
+        <div class="mt-6 pt-4 border-t swiss-border flex items-center justify-between">
+          <span class="font-mono text-[10px] uppercase text-basalt/60">NATURAL DYE PALETTE:</span>
+          <div class="flex items-center gap-2 font-mono text-[10px]">
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 bg-[#1C1B1A] inline-block border border-black/20"></span>Basalt</span>
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 bg-[#3A4434] inline-block border border-black/20"></span>Wet Moss</span>
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 bg-[#8A9090] inline-block border border-black/20"></span>Raw Slate</span>
+            <span class="flex items-center gap-1.5"><span class="w-3.5 h-3.5 bg-[#E6E4DD] inline-block border border-black/40"></span>Undyed Wool</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT 7 COLS: ULTRA-HIGH-RES INTERACTIVE FABRIC LENS VIEWPORT -->
+      <div class="lg:col-span-7 relative min-h-[440px] lg:min-h-[540px] bg-basalt flex flex-col justify-between overflow-hidden">
+        <!-- Top Overlay Bar inside Fabric Surface -->
+        <div class="relative z-20 p-5 flex flex-wrap items-center justify-between gap-3 pointer-events-none">
+          <div class="bg-wool/95 text-basalt px-3.5 py-2 border border-basalt/20 shadow-sm">
+            <div class="font-mono text-[10px] text-moss font-semibold uppercase">
+              OPTICAL LOUPE ACTIVE • HOVER OR DRAG ACROSS SURFACE
+            </div>
+            <div id="lensOverlayTitle" class="font-bold text-sm uppercase">
+              LAYER 01: SURFACE RIPSTOP WEAVE (500D)
+            </div>
+          </div>
+
+          <div class="bg-basalt/90 text-wool border border-wool/20 px-3 py-2 font-mono text-[11px]">
+            <span>MAGNIFICATION: <strong class="text-[#A8B899]">12.0×</strong></span>
+            <span class="mx-2 opacity-40">|</span>
+            <span id="loupeCoordReadout">X: 240 • Y: 180</span>
+          </div>
+        </div>
+
+        <!-- Interactive Main Weave Canvas + Peel-Back Cutaway + Floating Magnifier Loupe -->
+        <div
+          id="fabricSurfaceContainer"
+          onmousemove="moveFabricLoupe(event)"
+          ontouchmove="moveFabricLoupeTouch(event)"
+          class="relative flex-1 w-full h-full cursor-none overflow-hidden"
+        >
+          <!-- Main 1x Composite Layer Cutaway Canvas -->
+          <canvas id="fabricMainCanvas" class="w-full h-full block"></canvas>
+
+          <!-- Circular Optical Magnifier Loupe (12x Zoom Canvas) -->
+          <div id="fabricLoupe" style="left: 50%; top: 50%;">
+            <canvas id="fabricZoomCanvas" width="156" height="156" class="w-full h-full block"></canvas>
+            <!-- Crosshair reticle inside loupe -->
+            <div class="absolute inset-0 pointer-events-none flex items-center justify-center">
+              <div class="w-full h-[1px] bg-wool/30"></div>
+              <div class="h-full w-[1px] bg-wool/30 absolute"></div>
+              <div class="w-6 h-6 rounded-full border border-wool/50"></div>
+            </div>
+            <div class="absolute bottom-2 inset-x-0 text-center font-mono text-[8px] text-wool bg-basalt/80 py-0.5 uppercase">
+              12× WEAVE LENS
+            </div>
+          </div>
+        </div>
+
+        <!-- Bottom Cutaway Legend Bar -->
+        <div class="relative z-20 bg-[#141312] border-t border-wool/15 px-5 py-3 flex flex-wrap items-center justify-between gap-3 font-mono text-[11px] text-wool/80">
+          <div class="flex items-center gap-4">
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 bg-[#3A4434] inline-block"></span>
+              <span>01: Ripstop Face</span>
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 bg-[#8A9090] inline-block"></span>
+              <span>02: Hydro-Membrane</span>
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 bg-[#D5D1C5] inline-block"></span>
+              <span>03: Waffle Fleece Core</span>
+            </span>
+          </div>
+          <span class="text-[#A8B899]">DRAG DEPTH SLIDER TO PEEL LAYERS ➔</span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       02. FABRIC STRESS & FLEX PLAYGROUND (ELASTICITY + DWR DROPLETS)
+       ===================================================================== -->
+  <section id="sectionPlayground" class="border-b swiss-border bg-wool py-10 px-5">
+    <div class="max-w-[1560px] mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b swiss-border pb-4 mb-6 gap-4">
+        <div>
+          <span class="font-mono text-xs text-moss font-semibold uppercase tracking-widest">
+            // SECTION 02 • INTERACTIVE MECHANICAL TESTING
+          </span>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-basalt tracking-tight mt-0.5">
+            Fabric Stress, 4-Way Stretch & DWR Hydrophobic Lab
+          </h2>
+        </div>
+
+        <!-- Switcher between Stress/Stretch Mesh & DWR Water Beading -->
+        <div class="flex items-center gap-2 font-mono text-xs">
+          <button
+            id="playBtn-stretch"
+            onclick="setPlaygroundMode('stretch')"
+            class="px-4 py-2 bg-basalt text-wool font-semibold uppercase transition"
+          >
+            [A] 4-Way Stretch Elasticity (Drag Nodes)
+          </button>
+          <button
+            id="playBtn-dwr"
+            onclick="setPlaygroundMode('dwr')"
+            class="px-4 py-2 bg-woolWarm text-basalt hover:bg-basalt/10 font-semibold uppercase border swiss-border transition"
+          >
+            [B] DWR Water Droplet Roll-Off (Hover / Pour)
+          </button>
+        </div>
+      </div>
+
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- Left 8 Cols: Interactive Physics Canvas -->
+        <div class="lg:col-span-8 bg-basalt border swiss-border relative min-h-[340px] flex flex-col justify-between overflow-hidden">
+          <div class="p-4 flex flex-wrap items-center justify-between gap-2 border-b border-wool/15 z-10 bg-[#161514]">
+            <div class="font-mono text-xs text-wool">
+              <span class="text-[#A8B899] font-semibold" id="playgroundModeTitle">MODE A // 4-WAY MECHANICAL ELASTICITY MESH</span>
+              <span class="text-wool/60 ml-2" id="playgroundInstruction">Click and drag any intersection node to stress-test warp & weft recovery.</span>
+            </div>
+            <button
+              id="pourWaterBtn"
+              onclick="spawnWaterBurst()"
+              class="hidden px-3 py-1 bg-moss hover:bg-mossLight text-wool font-mono text-[11px] uppercase"
+            >
+              + POUR GLACIAL RAIN BURST
+            </button>
+          </div>
+
+          <canvas id="playgroundCanvas" class="w-full h-[290px] block cursor-grab active:cursor-grabbing"></canvas>
+
+          <div class="px-4 py-2.5 bg-[#161514] border-t border-wool/15 flex flex-wrap justify-between font-mono text-[11px] text-wool/70">
+            <span id="playgroundMetric1">PEAK TENSION FORCE: <strong class="text-wool">0.0 N</strong></span>
+            <span id="playgroundMetric2">ELONGATION RATIO: <strong class="text-[#A8B899]">100% (AT REST)</strong></span>
+            <span id="playgroundMetric3">RECOVERY HYSTERESIS: <strong class="text-wool">99.4% SNAP-BACK</strong></span>
+          </div>
+        </div>
+
+        <!-- Right 4 Cols: Lab Telemetry & Material Findings -->
+        <div class="lg:col-span-4 bg-woolLight border swiss-border p-6 flex flex-col justify-between">
+          <div>
+            <div class="font-mono text-[11px] text-moss font-semibold uppercase mb-2">
+              WHY MECHANICAL WEAVE MATTERS IN ICELAND
+            </div>
+            <h3 class="text-xl font-bold text-basalt leading-snug">
+              Zero Spandex Breakdown. Pure High-Twist Filament Recovery.
+            </h3>
+            <p class="text-xs text-basalt/80 mt-2.5 leading-relaxed">
+              Conventional elastane absorbs up to 6% of its weight in glacial moisture and loses tension after 400 cycles. Our high-twist mechanical stretch yarn achieves <strong>24% bi-directional give</strong> while remaining completely hydrophobic.
+            </p>
+
+            <div class="mt-5 space-y-3 border-t swiss-border pt-4 font-mono text-xs">
+              <div class="flex justify-between">
+                <span class="text-basalt/60">MARTINDALE ABRASION:</span>
+                <span class="font-bold text-basalt">120,000+ Cycles (Basalt Rated)</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-basalt/60">DWR DROPLET ANGLE:</span>
+                <span class="font-bold text-moss">144° Super-Hydrophobic</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-basalt/60">PFC-FREE TREATMENT:</span>
+                <span class="font-bold text-basalt">Beeswax + Plant Silane Hybrid</span>
+              </div>
+              <div class="flex justify-between">
+                <span class="text-basalt/60">TEAR STRENGTH (ISO 13937):</span>
+                <span class="font-bold text-basalt">185 Newtons</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="mt-6 p-3.5 bg-woolWarm border swiss-border font-mono text-[11px] text-basalt">
+            <strong>TIP:</strong> Switch between <strong>[A] 4-Way Stretch</strong> and <strong>[B] DWR Water Roll-Off</strong> above to interact with both textile physics simulations.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       03. RAW WEAVE GARMENT SPECIMEN CATALOG
+       ===================================================================== -->
+  <section id="sectionCatalog" class="border-b swiss-border bg-woolLight py-10 px-5">
+    <div class="max-w-[1560px] mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b swiss-border pb-4 mb-6 gap-4">
+        <div>
+          <span class="font-mono text-xs text-moss font-semibold uppercase tracking-widest">
+            // SECTION 03 • FIELD-READY SPECIMENS
+          </span>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-basalt tracking-tight mt-0.5">
+            Raw Weave Garment Collection
+          </h2>
+        </div>
+        <p class="font-mono text-xs text-basalt/70">
+          CLICK ANY GARMENT TO LOAD ITS WEAVE INTO THE LENS & ANATOMY INSPECTOR BELOW
+        </p>
+      </div>
+
+      <!-- 6 Garment Specimen Cards -->
+      <div id="catalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       04. GARMENT ANATOMY INSPECTOR (SEAM-TAPING, CFM PARTICLES, HIP-BELT)
+       ===================================================================== -->
+  <section id="sectionAnatomy" class="py-10 px-5 bg-wool">
+    <div class="max-w-[1560px] mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b swiss-border pb-4 mb-6 gap-4">
+        <div>
+          <span class="font-mono text-xs text-moss font-semibold uppercase tracking-widest">
+            // SECTION 04 • GARMENT ANATOMY INSPECTOR
+          </span>
+          <h2 id="anatomyGarmentTitle" class="text-2xl md:text-3xl font-extrabold text-basalt tracking-tight mt-0.5">
+            Anatomy: Highland Softshell Anorak (RW-101)
+          </h2>
+        </div>
+
+        <button
+          id="anatomyAddBagBtn"
+          onclick="addActiveGarmentToBag()"
+          class="bg-moss hover:bg-basalt text-wool font-mono text-xs font-semibold uppercase px-5 py-3 transition"
+        >
+          + CONFIGURE FIT & ADD TO FIELD BAG
+        </button>
+      </div>
+
+      <!-- 3-Column Technical Anatomy Breakdown -->
+      <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+        <!-- MODULE 1: SEAM-TAPING MACRO INSPECTION -->
+        <div class="bg-woolLight border swiss-border p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center font-mono text-[11px] text-basalt/60 border-b swiss-border pb-2 mb-3">
+              <span class="font-bold text-moss uppercase">01 // SEAM-TAPING MACRO</span>
+              <span id="anatomySeamCode">22MM 3L ULTRASONIC</span>
+            </div>
+            <h3 class="font-bold text-base text-basalt">
+              Double-Felled Chainstitch + 22mm Hydro-Seal Tape
+            </h3>
+            <p id="anatomySeamDesc" class="text-xs text-basalt/75 mt-1.5 leading-relaxed">
+              Every needle perforation is thermally bonded under 4.2 bar pressure with a 22mm flexible polyurethane backing tape so horizontal glacial rain never wicks through stitch holes.
+            </p>
+
+            <!-- Seam Cross-Section SVG Diagram -->
+            <div class="mt-4 bg-basalt p-4 border swiss-border">
+              <svg viewBox="0 0 320 140" class="w-full h-36">
+                <!-- Left & Right Fabric Panels Meeting at Seam -->
+                <rect x="15" y="42" width="135" height="22" fill="#3A4434" stroke="#E6E4DD" stroke-width="1" />
+                <rect x="170" y="42" width="135" height="22" fill="#3A4434" stroke="#E6E4DD" stroke-width="1" />
+                <!-- Needle Stitch Thread Loop -->
+                <path d="M 135,38 L 150,70 L 170,70 L 185,38" fill="none" stroke="#E6E4DD" stroke-width="2" stroke-dasharray="3 2" />
+                <!-- 22mm Ultrasonic Seam Tape Sealing the Bottom -->
+                <rect x="105" y="66" width="110" height="14" rx="2" fill="#8A9090" stroke="#E6E4DD" stroke-width="1.2" />
+                <!-- Thermal Waffle Backing -->
+                <rect x="15" y="84" width="290" height="18" fill="#DCD9CF" opacity="0.25" />
+                <text x="115" y="76" fill="#1C1B1A" font-family="IBM Plex Mono" font-weight="700" font-size="8.5">22MM THERMAL SEAM TAPE</text>
+                <text x="20" y="32" fill="#E6E4DD" font-family="IBM Plex Mono" font-size="8.5">EXTERIOR WEATHER FACE (DWR)</text>
+                <text x="20" y="122" fill="#A8B899" font-family="IBM Plex Mono" font-size="8.5">HYDROSTATIC SEAL: 28,000 MM H2O</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t swiss-border flex justify-between font-mono text-[11px]">
+            <span class="text-basalt/60">THREAD TENSION:</span>
+            <span class="font-semibold text-basalt">11 Stitches Per Inch (Bonded Nylon 6,6)</span>
+          </div>
+        </div>
+
+        <!-- MODULE 2: BREATHABILITY CFM RATING VISUALIZED AS AIR PARTICLES -->
+        <div class="bg-woolLight border swiss-border p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center font-mono text-[11px] text-basalt/60 border-b swiss-border pb-2 mb-3">
+              <span class="font-bold text-moss uppercase">02 // BREATHABILITY CFM FLOW</span>
+              <span id="anatomyCfmBadge" class="font-bold text-basalt">18.5 CFM • 24,000 MVTR</span>
+            </div>
+            <h3 class="font-bold text-base text-basalt">
+              Active Moisture Vapor Convection vs. Wind Block
+            </h3>
+            <p class="text-xs text-basalt/75 mt-1.5 leading-relaxed">
+              Visualizing real-time Cubic Feet per Minute (CFM) vapor permeability: internal sweat vapor molecules pass upward through the membrane while external subarctic gusts deflect off the face weave.
+            </p>
+
+            <!-- Animated Air Particle Breathability Visualizer SVG -->
+            <div class="mt-4 bg-basalt p-4 border swiss-border relative overflow-hidden">
+              <svg viewBox="0 0 320 140" class="w-full h-36">
+                <!-- Top Cold Wind Deflection Arrows -->
+                <path d="M 30,15 Q 90,38 150,18" fill="none" stroke="#8A9090" stroke-width="1.5" />
+                <polygon points="150,18 142,15 144,23" fill="#8A9090" />
+                <path d="M 175,14 Q 235,38 290,18" fill="none" stroke="#8A9090" stroke-width="1.5" />
+                <polygon points="290,18 282,15 284,23" fill="#8A9090" />
+                <text x="16" y="14" fill="#8A9090" font-family="IBM Plex Mono" font-size="8">EXTERNAL ARCTIC WIND BLOCKED</text>
+
+                <!-- Microporous Membrane Midline -->
+                <rect x="10" y="55" width="300" height="22" fill="#3A4434" stroke="#E6E4DD" stroke-width="1" stroke-dasharray="6 4" />
+                <text x="82" y="69" fill="#E6E4DD" font-family="IBM Plex Mono" font-size="8.5">MICROPOROUS MEMBRANE MATRIX</text>
+
+                <!-- Rising Warm Body Vapor Particles (Animated CSS) -->
+                <g class="vapor-dot" style="animation-delay: 0s;">
+                  <circle cx="55" cy="95" r="3.5" fill="#E6E4DD" />
+                  <line x1="55" y1="95" x2="55" y2="112" stroke="#E6E4DD" stroke-width="1" />
+                </g>
+                <g class="vapor-dot" style="animation-delay: 0.5s;">
+                  <circle cx="115" cy="100" r="3.5" fill="#E6E4DD" />
+                  <line x1="115" y1="100" x2="115" y2="118" stroke="#E6E4DD" stroke-width="1" />
+                </g>
+                <g class="vapor-dot" style="animation-delay: 1.0s;">
+                  <circle cx="185" cy="92" r="3.5" fill="#E6E4DD" />
+                  <line x1="185" y1="92" x2="185" y2="110" stroke="#E6E4DD" stroke-width="1" />
+                </g>
+                <g class="vapor-dot" style="animation-delay: 1.5s;">
+                  <circle cx="255" cy="98" r="3.5" fill="#E6E4DD" />
+                  <line x1="255" y1="98" x2="255" y2="115" stroke="#E6E4DD" stroke-width="1" />
+                </g>
+
+                <text x="16" y="132" fill="#E6E4DD" font-family="IBM Plex Mono" font-size="8">↑ INTERNAL PERSPIRATION VAPOR ESCAPE (CFM)</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t swiss-border flex justify-between font-mono text-[11px]">
+            <span class="text-basalt/60">RET EVAPORATIVE INDEX:</span>
+            <span id="anatomyRetValue" class="font-semibold text-moss">RET 3.8 (Extremely Breathable)</span>
+          </div>
+        </div>
+
+        <!-- MODULE 3: POCKET ERGONOMIC PLACEMENT DIAGRAM (HIP-BELT OVERLAY) -->
+        <div class="bg-woolLight border swiss-border p-5 flex flex-col justify-between">
+          <div>
+            <div class="flex justify-between items-center font-mono text-[11px] text-basalt/60 border-b swiss-border pb-2 mb-3">
+              <span class="font-bold text-moss uppercase">03 // PACK HIP-BELT ERGONOMICS</span>
+              <button
+                onclick="togglePackOverlay()"
+                id="packOverlayToggleBtn"
+                class="px-2 py-0.5 bg-moss text-wool text-[10px] font-bold uppercase"
+              >
+                [PACK HARNESS: ON]
+              </button>
+            </div>
+            <h3 class="font-bold text-base text-basalt">
+              Zero Obstruction Under a 65L Expedition Hip-Belt
+            </h3>
+            <p class="text-xs text-basalt/75 mt-1.5 leading-relaxed">
+              Standard lower jacket pockets are pinned shut by a heavy backpack hip-belt. Our elevated Napoleon storm vaults and angled thigh cargo entries sit <strong>6cm clear of load-bearing straps</strong>.
+            </p>
+
+            <!-- Interactive Garment + Backpack Hip-Belt Overlay SVG -->
+            <div class="mt-4 bg-basalt p-4 border swiss-border">
+              <svg viewBox="0 0 320 140" class="w-full h-36">
+                <!-- Torso & Pelvis Garment Outline -->
+                <path d="M 105,12 L 215,12 L 230,45 L 215,128 L 105,128 L 90,45 Z" fill="#2A2927" stroke="#8A9090" stroke-width="1.5" />
+
+                <!-- High-Mounted Ergonomic Chest Pockets (Accessible Green/Cream) -->
+                <rect x="116" y="28" width="34" height="32" fill="rgba(58, 68, 52, 0.85)" stroke="#E6E4DD" stroke-width="1.5" />
+                <rect x="170" y="28" width="34" height="32" fill="rgba(58, 68, 52, 0.85)" stroke="#E6E4DD" stroke-width="1.5" />
+                <text x="122" y="47" fill="#E6E4DD" font-family="IBM Plex Mono" font-size="7.5" font-weight="700">OPEN</text>
+                <text x="176" y="47" fill="#E6E4DD" font-family="IBM Plex Mono" font-size="7.5" font-weight="700">OPEN</text>
+
+                <!-- Heavy Backpack Shoulder Straps & Hip-Belt Group (Toggleable) -->
+                <g id="svgPackHarnessGroup">
+                  <!-- Shoulder Straps -->
+                  <path d="M 105,12 L 112,85" stroke="#8C4A32" stroke-width="9" stroke-opacity="0.75" />
+                  <path d="M 215,12 L 208,85" stroke="#8C4A32" stroke-width="9" stroke-opacity="0.75" />
+                  <!-- Heavy Padded Hip-Belt Across Lower Waist -->
+                  <rect x="82" y="78" width="156" height="24" rx="4" fill="rgba(140, 74, 50, 0.85)" stroke="#E6E4DD" stroke-width="1" />
+                  <text x="108" y="93" fill="#E6E4DD" font-family="IBM Plex Mono" font-size="8" font-weight="700">65L PACK HIP-BELT ZONE</text>
+                </g>
+
+                <!-- Callout Text -->
+                <text x="12" y="134" fill="#A8B899" font-family="IBM Plex Mono" font-size="8">● CHEST VAULTS & THIGH SLITS 100% CLEAR OF STRAPS</text>
+              </svg>
+            </div>
+          </div>
+
+          <div class="mt-4 pt-3 border-t swiss-border flex justify-between font-mono text-[11px]">
+            <span class="text-basalt/60">ACCESS CLEARANCE:</span>
+            <span class="font-semibold text-basalt">+6.5 cm Above Iliac Crest Hip-Belt</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       05. DIRECT-TO-BAG TRAY (SLIDING DRAWER WITH MOVEMENT SIZE CALIBRATOR)
+       ===================================================================== -->
+  <div id="bagOverlay" onclick="toggleBagDrawer(false)" class="fixed inset-0 bg-basalt/60 backdrop-blur-xs z-50 hidden"></div>
+  <aside
+    id="bagDrawer"
+    class="fixed top-0 right-0 h-full w-full max-w-lg bg-wool border-l swiss-border z-50 translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl"
+  >
+    <!-- Drawer Header -->
+    <div class="p-6 border-b swiss-border bg-woolLight flex items-start justify-between">
+      <div>
+        <span class="font-mono text-[10px] text-moss font-semibold uppercase tracking-widest">
+          // DIRECT-TO-BAG REQUISITION TRAY
+        </span>
+        <h3 class="text-xl font-extrabold text-basalt uppercase mt-0.5">
+          Field Bag & Fit Calibrator
+        </h3>
+      </div>
+      <button onclick="toggleBagDrawer(false)" class="font-mono text-xs px-3 py-1.5 bg-woolWarm border swiss-border hover:bg-basalt hover:text-wool transition">
+        [CLOSE ✕]
+      </button>
+    </div>
+
+    <!-- Drawer Scrollable Body -->
+    <div class="p-6 overflow-y-auto flex-1 space-y-6">
+
+      <!-- Body Movement & Layering Fit Selector -->
+      <div class="bg-woolLight border swiss-border p-4">
+        <div class="flex justify-between items-center font-mono text-[11px] mb-2">
+          <span class="font-bold text-basalt uppercase">01. SELECT BODY MOVEMENT & LAYERING PROFILE</span>
+          <span class="text-moss font-semibold">ERGONOMIC FIT</span>
+        </div>
+
+        <div class="grid grid-cols-3 gap-1.5 font-mono text-[10px] my-2.5">
+          <button
+            onclick="selectFitProfile('trim')"
+            id="fitBtn-trim"
+            class="p-2.5 border swiss-border bg-wool text-basalt text-left transition"
+          >
+            <div class="font-bold">ACTIVE TRIM</div>
+            <div class="text-[9px] opacity-70 mt-0.5">High-Output Climb</div>
+          </button>
+          <button
+            onclick="selectFitProfile('standard')"
+            id="fitBtn-standard"
+            class="p-2.5 border swiss-border bg-moss text-wool text-left transition"
+          >
+            <div class="font-bold">ARTICULATED</div>
+            <div class="text-[9px] opacity-80 mt-0.5">Base + Mid Fleece</div>
+          </button>
+          <button
+            onclick="selectFitProfile('expedition')"
+            id="fitBtn-expedition"
+            class="p-2.5 border swiss-border bg-wool text-basalt text-left transition"
+          >
+            <div class="font-bold">EXPEDITION</div>
+            <div class="text-[9px] opacity-70 mt-0.5">Full Sub-Zero Stack</div>
+          </button>
+        </div>
+
+        <p id="fitProfileRecommendation" class="font-mono text-[11px] text-basalt/80 bg-woolWarm p-2.5 border swiss-border">
+          <strong>Articulated Field Fit:</strong> +8cm chest gusset allowance. Engineered for full overhead ice-axe reach with a 200gsm Merino base and 320gsm Waffle Grid fleece underneath.
+        </p>
+
+        <!-- Size Selector Pills -->
+        <div class="mt-3 pt-3 border-t swiss-border flex items-center justify-between">
+          <span class="font-mono text-[11px] text-basalt/70 uppercase">CHASSIS SIZE:</span>
+          <div class="flex gap-1.5 font-mono text-xs" id="sizeSelectorGroup">
+            <button onclick="selectGarmentSize('S')" data-size="S" class="size-pill w-9 h-8 border swiss-border bg-wool text-basalt hover:bg-basalt hover:text-wool">S</button>
+            <button onclick="selectGarmentSize('M')" data-size="M" class="size-pill w-9 h-8 border swiss-border bg-wool text-basalt hover:bg-basalt hover:text-wool">M</button>
+            <button onclick="selectGarmentSize('L')" data-size="L" class="size-pill w-9 h-8 border swiss-border bg-basalt text-wool font-bold">L</button>
+            <button onclick="selectGarmentSize('XL')" data-size="XL" class="size-pill w-9 h-8 border swiss-border bg-wool text-basalt hover:bg-basalt hover:text-wool">XL</button>
+            <button onclick="selectGarmentSize('XXL')" data-size="XXL" class="size-pill w-10 h-8 border swiss-border bg-wool text-basalt hover:bg-basalt hover:text-wool">XXL</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Bag Items List -->
+      <div>
+        <div class="font-mono text-[11px] font-bold uppercase text-basalt/70 mb-2.5">
+          02. SELECTED RAW WEAVE GARMENTS
+        </div>
+        <div id="bagItemsList" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Drawer Footer Checkout -->
+    <div class="p-6 border-t swiss-border bg-woolLight">
+      <div class="flex justify-between font-mono text-xs text-basalt/70 mb-1">
+        <span>DROPP.IS REYKJAVÍK & HIGHLAND DISPATCH:</span>
+        <span class="font-semibold text-moss">COMPLIMENTARY</span>
+      </div>
+      <div class="flex justify-between items-baseline mb-4">
+        <span class="font-mono text-xs uppercase text-basalt">TOTAL (INCL. 24% VSK):</span>
+        <span id="bagTotalISK" class="font-mono text-2xl font-bold text-basalt">38.900 ISK</span>
+      </div>
+      <button
+        onclick="completeBagOrder()"
+        class="w-full py-3.5 bg-basalt hover:bg-moss text-wool font-mono text-xs font-bold uppercase tracking-widest transition"
+      >
+        DISPATCH RAW WEAVE ORDER ➔
+      </button>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       JAVASCRIPT ENGINE: LENS MAGNIFIER, ELASTIC MESH, DWR & CATALOG
+       ===================================================================== -->
+  <script>
+    // Curated Raw Weave Garments Database
+    const GARMENTS = [
+      {
+        id: 'RW-101',
+        name: 'Highland Softshell Anorak',
+        category: 'OUTER SHELL // ANORAK',
+        priceISK: 38900,
+        weightG: 540,
+        cfm: '18.5 CFM • 24,000 MVTR',
+        ret: 'RET 3.8 (High Vapor Release)',
+        seamSpec: '22MM 3L ULTRASONIC TAPE',
+        weaveColor: '#3A4434', // Wet Moss
+        summary: 'Half-zip storm smock in high-twist mechanical stretch ripstop with elevated pack-clear chest vaults.',
+        layer1: { name: '500D Organic Waxed Nylon Ripstop', pitch: '4.5 mm Crosshatch Lock', func: 'Basalt Abrasion & Wind Shear Barrier' },
+        layer2: { name: 'Non-Porous Hydrophilic PUR Membrane', pitch: 'Molecular Vapor Transfer', func: '20,000mm Salt-Immune Waterproof Seal' },
+        layer3: { name: '320gsm Merino-Loft Waffle Grid', pitch: '6.0 mm Thermal Channels', func: 'Microclimate Core Insulation & Wicking' }
+      },
+      {
+        id: 'RW-102',
+        name: 'Tough-Knee Trekking Pants',
+        category: 'LOWER CHASSIS // FIELD TROUSERS',
+        priceISK: 28500,
+        weightG: 610,
+        cfm: '22.0 CFM • UNLAMINATED WEAVE',
+        ret: 'RET 2.9 (Maximum Breathability)',
+        seamSpec: 'TRIPLE-FELLED LOCKSTITCH',
+        weaveColor: '#1C1B1A', // Volcanic Basalt
+        summary: 'Double-layer articulated basalt knee armor over 4-way stretch high-twist nylon-cotton canvas.',
+        layer1: { name: '600D Double-Weave Basalt Cordura®', pitch: '3.8 mm Heavy Twill Grid', func: 'Direct Volcanic Rock & Kneeling Armor' },
+        layer2: { name: 'Beeswax + Plant Silane Hybrid Barrier', pitch: '144° Contact Angle', func: 'PFC-Free Wet Moss & Sleet Repellency' },
+        layer3: { name: 'Brushed Cotton-Merino Twill Interior', pitch: 'Soft Loop Backer', func: 'Next-to-Skin Chafe Elimination' }
+      },
+      {
+        id: 'RW-103',
+        name: 'Landmannalaugar 3L Storm Parka',
+        category: 'EXPEDITION SHELL // L6',
+        priceISK: 64900,
+        weightG: 720,
+        cfm: '14.2 CFM • 28,000MM H2O',
+        ret: 'RET 4.4 (Storm Rated)',
+        seamSpec: '24MM MICRO-WELDED SEAMS',
+        weaveColor: '#5D6363', // Raw Slate Gray
+        summary: 'Full-length highland storm parka engineered for horizontal sleet and prolonged glacier crossings.',
+        layer1: { name: '3-Layer Abrasion-Resistant Slate Ripstop', pitch: '5.0 mm Reinforced Grid', func: '120 km/h Hurricane Wind Protection' },
+        layer2: { name: '28,000mm ePTFE Microporous Laminate', pitch: '1.4B Pores / cm²', func: 'Absolute Liquid Water Impermeability' },
+        layer3: { name: 'Woven Tricot Scrim Backer', pitch: '1.2 mm Micro-Knit', func: 'Smooth Layering Glide Over Fleece' }
+      },
+      {
+        id: 'RW-104',
+        name: 'Askja Undyed Merino Waffle Hoody',
+        category: 'THERMAL MID-LAYER // L2',
+        priceISK: 24900,
+        weightG: 410,
+        cfm: '42.0 CFM • OPEN THERMAL GRID',
+        ret: 'RET 1.8 (Instant Vapor Dump)',
+        seamSpec: '4-NEEDLE FLATLOCK SEAMS',
+        weaveColor: '#C8C4B7', // Undyed Wool
+        summary: 'Unbleached 18.5-micron lofted waffle fleece that retains 88% of its thermal efficiency when damp.',
+        layer1: { name: 'High-Twist Keratin Outer Face', pitch: '2.5 mm Jersey Knit', func: 'Pilling Resistance Under Pack Straps' },
+        layer2: { name: 'Geometric Air-Trap Loft Matrix', pitch: '8.0 mm Waffle Pockets', func: 'Dead-Air Thermal Retention (-12°C)' },
+        layer3: { name: 'Unbleached Raw Merino Capillary Loops', pitch: '18.5 Micron Fiber', func: 'Natural Antimicrobial Moisture Transfer' }
+      },
+      {
+        id: 'RW-105',
+        name: 'Reynisfjara Basalt-Shield Bibs',
+        category: 'OVERALLS // COASTAL & ICE',
+        priceISK: 52900,
+        weightG: 790,
+        cfm: '16.0 CFM • 25,000MM H2O',
+        ret: 'RET 4.1 (Alpine Bib)',
+        seamSpec: '22MM TRIPLE-SEALED TAPE',
+        weaveColor: '#2B3027', // Deep Moss Basalt
+        summary: 'High-chest salopettes with 650D crampon scuff guards and full-length thigh ventilation zips.',
+        layer1: { name: '650D Ballistic Nylon Instep & Knee Face', pitch: '4.0 mm Ripstop Matrix', func: 'Crampon Spike & Sea-Cliff Protection' },
+        layer2: { name: 'Hydrophobic Polyurethane Storm Film', pitch: 'Zero-Pore Monolithic', func: 'Saltwater & Glacial River Immunity' },
+        layer3: { name: '210gsm Thermal Brushed Backer', pitch: '4.5 mm Micro-Waffle', func: 'Lower-Body Sub-Zero Warmth' }
+      },
+      {
+        id: 'RW-106',
+        name: 'Skeifan Heavy Canvas Field Overshirt',
+        category: 'UTILITY OVERSHIRT // L4',
+        priceISK: 26900,
+        weightG: 560,
+        cfm: '28.5 CFM • WAXED CANVAS',
+        ret: 'RET 3.1 (Daily Field Utility)',
+        seamSpec: 'DOUBLE CHAINSTITCH',
+        weaveColor: '#4A4742', // Peat Basalt
+        summary: '420gsm organic dry-waxed canvas workshirt with bellowed chest map pockets and horn buttons.',
+        layer1: { name: '420gsm Dry-Waxed Panama Canvas', pitch: '2x2 Basketweave', func: 'Ember, Wind & Workshop Abrasion Shield' },
+        layer2: { name: 'Natural Paraffin & Carnauba Infusion', pitch: 'Fiber-Core Impregnated', func: 'Dry-Touch Rain Beading' },
+        layer3: { name: 'Brushed Flannel Shoulder Yoke', pitch: '3.0 mm Twill Weave', func: 'Collar & Shoulder Carrying Comfort' }
+      }
+    ];
+
+    // State
+    let activeGarment = GARMENTS[0];
+    let currentDepthVal = 0; // 0 to 100
+    let loupePos = { x: 260, y: 200 };
+    let packHarnessVisible = true;
+    let currentFitProfile = 'standard';
+    let currentSize = 'L';
+    let bagItems = [{ ...GARMENTS[0], size: 'L', fit: 'Articulated', qty: 1 }];
+
+    // =====================================================================
+    // 01. HERO FABRIC LENS & DYNAMIC DEPTH LAYER CUTAWAY RENDERER
+    // =====================================================================
+    const mainCanvas = document.getElementById('fabricMainCanvas');
+    const mainCtx = mainCanvas.getContext('2d');
+    const zoomCanvas = document.getElementById('fabricZoomCanvas');
+    const zoomCtx = zoomCanvas.getContext('2d');
+
+    function resizeLensCanvas() {
+      const rect = mainCanvas.parentElement.getBoundingClientRect();
+      mainCanvas.width = rect.width;
+      mainCanvas.height = rect.height;
+      drawFabricLensScene();
+    }
+
+    function setDepthPreset(val) {
+      document.getElementById('depthSlider').value = val;
+      updateDepthLayer(val);
+    }
+
+    function updateDepthLayer(val) {
+      currentDepthVal = parseInt(val, 10);
+      const readout = document.getElementById('depthPctReadout');
+      const title = document.getElementById('lensOverlayTitle');
+      const sName = document.getElementById('layerSpecName');
+      const sPitch = document.getElementById('layerSpecPitch');
+      const sFunc = document.getElementById('layerSpecFunction');
+
+      // Highlight active button
+      [1, 2, 3].forEach(i => {
+        document.getElementById(`depthBtn-${i}`).className =
+          'py-2 px-2 bg-woolWarm text-basalt hover:bg-basalt/10 uppercase text-left border border-basalt/20 transition';
+      });
+
+      if (currentDepthVal < 34) {
+        readout.textContent = `LAYER 01 // SURFACE RIPSTOP (${currentDepthVal}%)`;
+        title.textContent = `LAYER 01: ${activeGarment.layer1.name.toUpperCase()}`;
+        sName.textContent = activeGarment.layer1.name;
+        sPitch.textContent = activeGarment.layer1.pitch;
+        sFunc.textContent = activeGarment.layer1.func;
+        document.getElementById('depthBtn-1').className =
+          'py-2 px-2 bg-moss text-wool font-semibold uppercase text-left border border-basalt/20 transition';
+      } else if (currentDepthVal < 67) {
+        readout.textContent = `LAYER 02 // HYDRO-MEMBRANE (${currentDepthVal}%)`;
+        title.textContent = `LAYER 02: ${activeGarment.layer2.name.toUpperCase()}`;
+        sName.textContent = activeGarment.layer2.name;
+        sPitch.textContent = activeGarment.layer2.pitch;
+        sFunc.textContent = activeGarment.layer2.func;
+        document.getElementById('depthBtn-2').className =
+          'py-2 px-2 bg-moss text-wool font-semibold uppercase text-left border border-basalt/20 transition';
+      } else {
+        readout.textContent = `LAYER 03 // WAFFLE GRID CORE (${currentDepthVal}%)`;
+        title.textContent = `LAYER 03: ${activeGarment.layer3.name.toUpperCase()}`;
+        sName.textContent = activeGarment.layer3.name;
+        sPitch.textContent = activeGarment.layer3.pitch;
+        sFunc.textContent = activeGarment.layer3.func;
+        document.getElementById('depthBtn-3').className =
+          'py-2 px-2 bg-moss text-wool font-semibold uppercase text-left border border-basalt/20 transition';
+      }
+
+      drawFabricLensScene();
+    }
+
+    // Draw the 3 physical layers peeling back on mainCanvas, plus 12x magnified weave in zoomCanvas
+    function drawFabricLensScene() {
+      const w = mainCanvas.width;
+      const h = mainCanvas.height;
+      if (!w || !h) return;
+
+      mainCtx.clearRect(0, 0, w, h);
+
+      // Calculate peel-back boundaries based on currentDepthVal (0 to 100)
+      // At 0%: 100% of screen is Layer 1 (Ripstop).
+      // As slider increases, Layer 1 peels left, revealing Layer 2 (Membrane) and Layer 3 (Waffle Grid).
+      const peel1X = w * (1 - Math.min(1, currentDepthVal / 55));
+      const peel2X = w * (1 - Math.max(0, (currentDepthVal - 35) / 65));
+
+      // 1. Draw Layer 3 (Bottom-most: Thermal Waffle Grid Fleece) across full canvas
+      drawLayer3Waffle(mainCtx, w, h, 1);
+
+      // 2. Draw Layer 2 (Middle: Hydrophobic Membrane) clipped from 0 to peel2X
+      if (peel2X > 0) {
+        mainCtx.save();
+        mainCtx.beginPath();
+        mainCtx.rect(0, 0, peel2X, h);
+        mainCtx.clip();
+        drawLayer2Membrane(mainCtx, w, h, 1);
+        mainCtx.restore();
+
+        // Cutaway shadow edge for Layer 2
+        mainCtx.fillStyle = 'rgba(0,0,0,0.45)';
+        mainCtx.fillRect(peel2X - 4, 0, 8, h);
+        mainCtx.strokeStyle = '#E6E4DD';
+        mainCtx.lineWidth = 1.5;
+        mainCtx.beginPath();
+        mainCtx.moveTo(peel2X, 0);
+        mainCtx.lineTo(peel2X, h);
+        mainCtx.stroke();
+      }
+
+      // 3. Draw Layer 1 (Top: Surface Ripstop Weave) clipped from 0 to peel1X
+      if (peel1X > 0) {
+        mainCtx.save();
+        mainCtx.beginPath();
+        mainCtx.rect(0, 0, peel1X, h);
+        mainCtx.clip();
+        drawLayer1Ripstop(mainCtx, w, h, 1, activeGarment.weaveColor);
+        mainCtx.restore();
+
+        // Cutaway shadow edge for Layer 1
+        mainCtx.fillStyle = 'rgba(0,0,0,0.55)';
+        mainCtx.fillRect(peel1X - 5, 0, 10, h);
+        mainCtx.strokeStyle = '#E6E4DD';
+        mainCtx.lineWidth = 2;
+        mainCtx.beginPath();
+        mainCtx.moveTo(peel1X, 0);
+        mainCtx.lineTo(peel1X, h);
+        mainCtx.stroke();
+      }
+
+      // Update 12x Zoom Loupe Canvas based on active layer at loupe position
+      drawMagnifiedLoupe(peel1X, peel2X);
+    }
+
+    function drawLayer1Ripstop(ctx, w, h, scale, baseColor) {
+      ctx.fillStyle = baseColor || '#3A4434';
+      ctx.fillRect(0, 0, w, h);
+
+      const step = 6 * scale;
+      const ripStep = 24 * scale;
+
+      // Fine filament threads
+      ctx.strokeStyle = 'rgba(255, 255, 255, 0.07)';
+      ctx.lineWidth = 1 * scale;
+      for (let x = 0; x < w; x += step) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += step) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+
+      // Heavy Ripstop reinforced crosshatch interlock threads
+      ctx.strokeStyle = 'rgba(230, 228, 221, 0.24)';
+      ctx.lineWidth = 2 * scale;
+      for (let x = 0; x < w; x += ripStep) {
+        ctx.beginPath();
+        ctx.moveTo(x, 0);
+        ctx.lineTo(x, h);
+        ctx.stroke();
+      }
+      for (let y = 0; y < h; y += ripStep) {
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(w, y);
+        ctx.stroke();
+      }
+    }
+
+    function drawLayer2Membrane(ctx, w, h, scale) {
+      ctx.fillStyle = '#6C7373';
+      ctx.fillRect(0, 0, w, h);
+
+      const spacing = 14 * scale;
+      ctx.strokeStyle = 'rgba(230, 228, 221, 0.25)';
+      ctx.lineWidth = 1 * scale;
+
+      for (let y = 0; y < h + spacing; y += spacing) {
+        for (let x = 0; x < w + spacing; x += spacing) {
+          ctx.beginPath();
+          ctx.arc(x + ((y / spacing) % 2) * (spacing / 2), y, 3.2 * scale, 0, Math.PI * 2);
+          ctx.stroke();
+        }
+      }
+    }
+
+    function drawLayer3Waffle(ctx, w, h, scale) {
+      ctx.fillStyle = '#262422';
+      ctx.fillRect(0, 0, w, h);
+
+      const cell = 22 * scale;
+      const pad = 4 * scale;
+      ctx.fillStyle = '#C9C5B8';
+      for (let y = pad; y < h; y += cell) {
+        for (let x = pad; x < w; x += cell) {
+          ctx.fillRect(x, y, cell - pad * 1.6, cell - pad * 1.6);
+        }
+      }
+    }
+
+    function drawMagnifiedLoupe(peel1X, peel2X) {
+      const zw = zoomCanvas.width;
+      const zh = zoomCanvas.height;
+      zoomCtx.clearRect(0, 0, zw, zh);
+
+      // Determine which layer is directly underneath the loupe center
+      if (loupePos.x < peel1X) {
+        drawLayer1Ripstop(zoomCtx, zw, zh, 2.6, activeGarment.weaveColor);
+      } else if (loupePos.x < peel2X) {
+        drawLayer2Membrane(zoomCtx, zw, zh, 2.4);
+      } else {
+        drawLayer3Waffle(zoomCtx, zw, zh, 2.2);
+      }
+    }
+
+    function moveFabricLoupe(e) {
+      const rect = e.currentTarget.getBoundingClientRect();
+      loupePos.x = Math.max(40, Math.min(rect.width - 40, e.clientX - rect.left));
+      loupePos.y = Math.max(40, Math.min(rect.height - 40, e.clientY - rect.top));
+
+      const loupe = document.getElementById('fabricLoupe');
+      loupe.style.left = `${loupePos.x}px`;
+      loupe.style.top = `${loupePos.y}px`;
+
+      document.getElementById('loupeCoordReadout').textContent =
+        `X: ${Math.round(loupePos.x)} • Y: ${Math.round(loupePos.y)}`;
+
+      drawFabricLensScene();
+    }
+
+    function moveFabricLoupeTouch(e) {
+      if (!e.touches || !e.touches[0]) return;
+      const rect = e.currentTarget.getBoundingClientRect();
+      loupePos.x = Math.max(40, Math.min(rect.width - 40, e.touches[0].clientX - rect.left));
+      loupePos.y = Math.max(40, Math.min(rect.height - 40, e.touches[0].clientY - rect.top));
+      const loupe = document.getElementById('fabricLoupe');
+      loupe.style.left = `${loupePos.x}px`;
+      loupe.style.top = `${loupePos.y}px`;
+      drawFabricLensScene();
+    }
+
+    // =====================================================================
+    // 02. FABRIC STRESS & FLEX PLAYGROUND (ELASTIC MESH + DWR DROPLETS)
+    // =====================================================================
+    const playCanvas = document.getElementById('playgroundCanvas');
+    const playCtx = playCanvas.getContext('2d');
+    let playgroundMode = 'stretch'; // 'stretch' | 'dwr'
+    let meshNodes = [];
+    let draggedNode = null;
+    let dwrDrops = [];
+    let mousePlayPos = { x: -200, y: -200 };
+
+    function initPlayground() {
+      const rect = playCanvas.getBoundingClientRect();
+      playCanvas.width = rect.width || 800;
+      playCanvas.height = rect.height || 290;
+
+      // Build 13x7 spring mesh for 4-Way Stretch test
+      meshNodes = [];
+      const cols = 13;
+      const rows = 7;
+      const padX = 50;
+      const padY = 35;
+      const spacingX = (playCanvas.width - padX * 2) / (cols - 1);
+      const spacingY = (playCanvas.height - padY * 2) / (rows - 1);
+
+      for (let r = 0; r < rows; r++) {
+        for (let c = 0; c < cols; c++) {
+          const ox = padX + c * spacingX;
+          const oy = padY + r * spacingY;
+          meshNodes.push({
+            r, c,
+            ox, oy,
+            x: ox, y: oy,
+            vx: 0, vy: 0,
+            pinned: r === 0 || r === rows - 1 || c === 0 || c === cols - 1
+          });
+        }
+      }
+
+      // Build initial water droplets for DWR mode
+      dwrDrops = [];
+      spawnWaterBurst();
+    }
+
+    function spawnWaterBurst() {
+      for (let i = 0; i < 42; i++) {
+        dwrDrops.push({
+          x: 40 + Math.random() * ((playCanvas.width || 700) - 80),
+          y: -10 - Math.random() * 140,
+          vx: (Math.random() - 0.5) * 1.5,
+          vy: 2 + Math.random() * 2.5,
+          r: 4 + Math.random() * 5.5
+        });
+      }
+    }
+
+    function setPlaygroundMode(mode) {
+      playgroundMode = mode;
+      const btnStretch = document.getElementById('playBtn-stretch');
+      const btnDwr = document.getElementById('playBtn-dwr');
+      const pourBtn = document.getElementById('pourWaterBtn');
+
+      if (mode === 'stretch') {
+        btnStretch.className = 'px-4 py-2 bg-basalt text-wool font-semibold uppercase transition';
+        btnDwr.className = 'px-4 py-2 bg-woolWarm text-basalt hover:bg-basalt/10 font-semibold uppercase border swiss-border transition';
+        pourBtn.classList.add('hidden');
+        document.getElementById('playgroundModeTitle').textContent = 'MODE A // 4-WAY MECHANICAL ELASTICITY MESH';
+        document.getElementById('playgroundInstruction').textContent = 'Click and drag any intersection node to stress-test warp & weft recovery.';
+      } else {
+        btnDwr.className = 'px-4 py-2 bg-basalt text-wool font-semibold uppercase transition';
+        btnStretch.className = 'px-4 py-2 bg-woolWarm text-basalt hover:bg-basalt/10 font-semibold uppercase border swiss-border transition';
+        pourBtn.classList.remove('hidden');
+        document.getElementById('playgroundModeTitle').textContent = 'MODE B // DWR 144° SUPER-HYDROPHOBIC DROPLET ROLL-OFF';
+        document.getElementById('playgroundInstruction').textContent = 'Move cursor to agitate water beads; watch zero-absorption roll-off.';
+        spawnWaterBurst();
+      }
+    }
+
+    // Mouse / Touch Interaction for Playground Canvas
+    playCanvas.addEventListener('mousedown', e => {
+      const rect = playCanvas.getBoundingClientRect();
+      const mx = e.clientX - rect.left;
+      const my = e.clientY - rect.top;
+      if (playgroundMode === 'stretch') {
+        let closest = null;
+        let minDist = 45;
+        meshNodes.forEach(n => {
+          if (!n.pinned) {
+            const d = Math.hypot(n.x - mx, n.y - my);
+            if (d < minDist) {
+              minDist = d;
+              closest = n;
+            }
+          }
+        });
+        draggedNode = closest;
+      }
+    });
+
+    window.addEventListener('mousemove', e => {
+      const rect = playCanvas.getBoundingClientRect();
+      mousePlayPos.x = e.clientX - rect.left;
+      mousePlayPos.y = e.clientY - rect.top;
+      if (draggedNode && playgroundMode === 'stretch') {
+        draggedNode.x = Math.max(20, Math.min(playCanvas.width - 20, mousePlayPos.x));
+        draggedNode.y = Math.max(20, Math.min(playCanvas.height - 20, mousePlayPos.y));
+      }
+    });
+
+    window.addEventListener('mouseup', () => {
+      draggedNode = null;
+    });
+
+    function animatePlayground() {
+      const w = playCanvas.width;
+      const h = playCanvas.height;
+      playCtx.clearRect(0, 0, w, h);
+
+      if (playgroundMode === 'stretch') {
+        // Spring physics recovery toward original woven coordinates
+        let maxDisplacement = 0;
+        meshNodes.forEach(n => {
+          if (n !== draggedNode && !n.pinned) {
+            const dx = n.ox - n.x;
+            const dy = n.oy - n.y;
+            n.vx = (n.vx + dx * 0.14) * 0.82;
+            n.vy = (n.vy + dy * 0.14) * 0.82;
+            n.x += n.vx;
+            n.y += n.vy;
+          }
+          const disp = Math.hypot(n.x - n.ox, n.y - n.oy);
+          if (disp > maxDisplacement) maxDisplacement = disp;
+        });
+
+        // Draw woven warp & weft lines
+        const cols = 13;
+        const rows = 7;
+        playCtx.strokeStyle = '#8FA876';
+        playCtx.lineWidth = 1.6;
+
+        for (let r = 0; r < rows; r++) {
+          playCtx.beginPath();
+          for (let c = 0; c < cols; c++) {
+            const n = meshNodes[r * cols + c];
+            if (c === 0) playCtx.moveTo(n.x, n.y);
+            else playCtx.lineTo(n.x, n.y);
+          }
+          playCtx.stroke();
+        }
+
+        for (let c = 0; c < cols; c++) {
+          playCtx.beginPath();
+          for (let r = 0; r < rows; r++) {
+            const n = meshNodes[r * cols + c];
+            if (r === 0) playCtx.moveTo(n.x, n.y);
+            else playCtx.lineTo(n.x, n.y);
+          }
+          playCtx.stroke();
+        }
+
+        // Draw intersection nodes
+        meshNodes.forEach(n => {
+          playCtx.beginPath();
+          playCtx.fillStyle = n === draggedNode ? '#E6E4DD' : (n.pinned ? '#5D6363' : '#A8B899');
+          playCtx.arc(n.x, n.y, n === draggedNode ? 6 : 3.5, 0, Math.PI * 2);
+          playCtx.fill();
+        });
+
+        // Update live tension telemetry
+        const forceN = (maxDisplacement * 1.45).toFixed(1);
+        const elongPct = Math.min(128, Math.round(100 + maxDisplacement * 0.25));
+        document.getElementById('playgroundMetric1').innerHTML = `PEAK TENSION FORCE: <strong class="text-wool">${forceN} N</strong>`;
+        document.getElementById('playgroundMetric2').innerHTML = `ELONGATION RATIO: <strong class="text-[#A8B899]">${elongPct}%</strong>`;
+      } else {
+        // MODE B: DWR Water Droplet Beading & Roll-Off Simulation
+        // Draw inclined hydrophobic fabric surface ridges
+        playCtx.strokeStyle = 'rgba(230, 228, 221, 0.14)';
+        playCtx.lineWidth = 2;
+        for (let y = 30; y < h; y += 22) {
+          playCtx.beginPath();
+          playCtx.moveTo(0, y);
+          playCtx.lineTo(w, y + 18);
+          playCtx.stroke();
+        }
+
+        // Update & draw spherical water beads
+        dwrDrops.forEach(d => {
+          d.vy += 0.12; // gravity
+          d.vx += 0.03; // slight incline roll
+
+          // Repel from cursor
+          const distMouse = Math.hypot(d.x - mousePlayPos.x, d.y - mousePlayPos.y);
+          if (distMouse < 65) {
+            const angle = Math.atan2(d.y - mousePlayPos.y, d.x - mousePlayPos.x);
+            d.vx += Math.cos(angle) * 2.2;
+            d.vy += Math.sin(angle) * 2.2;
+          }
+
+          // Bounce & bead on fabric ridges
+          if (d.y > h - 28) {
+            d.y = h - 28;
+            d.vy = -Math.abs(d.vy) * 0.55;
+            d.vx += 0.35;
+          }
+
+          d.x += d.vx;
+          d.y += d.vy;
+
+          if (d.x > w + 20) {
+            d.x = 20 + Math.random() * 120;
+            d.y = -10;
+            d.vx = 0.5;
+            d.vy = 2;
+          }
+
+          // Draw high-contact-angle water droplet with specular highlight
+          playCtx.beginPath();
+          playCtx.fillStyle = 'rgba(210, 230, 240, 0.78)';
+          playCtx.arc(d.x, d.y, d.r, 0, Math.PI * 2);
+          playCtx.fill();
+
+          playCtx.beginPath();
+          playCtx.fillStyle = '#FFFFFF';
+          playCtx.arc(d.x - d.r * 0.3, d.y - d.r * 0.3, d.r * 0.28, 0, Math.PI * 2);
+          playCtx.fill();
+        });
+
+        document.getElementById('playgroundMetric1').innerHTML = `CONTACT ANGLE: <strong class="text-wool">144.2° (SUPER-HYDROPHOBIC)</strong>`;
+        document.getElementById('playgroundMetric2').innerHTML = `FABRIC ABSORPTION: <strong class="text-[#A8B899]">0.0% MOISTURE RETENTION</strong>`;
+      }
+
+      requestAnimationFrame(animatePlayground);
+    }
+
+    // =====================================================================
+    // 03 & 04. SPECIMEN CATALOG & GARMENT ANATOMY UPDATER
+    // =====================================================================
+    function renderCatalog() {
+      const grid = document.getElementById('catalogGrid');
+      grid.innerHTML = GARMENTS.map(g => {
+        const isSelected = activeGarment.id === g.id;
+        return `
+          <article
+            onclick="selectGarment('${g.id}')"
+            class="p-5 border transition cursor-pointer flex flex-col justify-between ${
+              isSelected
+                ? 'bg-basalt text-wool border-basalt shadow-lg'
+                : 'bg-wool text-basalt swiss-border hover:border-basalt'
+            }"
+          >
+            <div>
+              <div class="flex items-center justify-between font-mono text-[11px] pb-3 mb-3 border-b ${isSelected ? 'border-wool/20' : 'swiss-border'}">
+                <span class="font-bold ${isSelected ? 'text-[#A8B899]' : 'text-moss'}">${g.id} // ${g.category}</span>
+                <span>${g.weightG}g</span>
+              </div>
+
+              <!-- Tactile Weave Swatch Preview Bar -->
+              <div class="h-16 w-full mb-4 border ${isSelected ? 'border-wool/25' : 'swiss-border'} flex items-center justify-between px-3 font-mono text-[10px] text-wool" style="background-color: ${g.weaveColor};">
+                <span class="bg-basalt/75 px-2 py-0.5 uppercase">${g.layer1.name}</span>
+                <span class="bg-basalt/75 px-2 py-0.5">${g.cfm.split('•')[0]}</span>
+              </div>
+
+              <div class="flex justify-between items-start gap-2">
+                <h3 class="text-lg font-bold leading-snug">${g.name}</h3>
+                <span class="font-mono text-sm font-bold whitespace-nowrap">${g.priceISK.toLocaleString('de-DE')} ISK</span>
+              </div>
+
+              <p class="text-xs mt-2 leading-relaxed ${isSelected ? 'text-wool/80' : 'text-basalt/75'}">
+                ${g.summary}
+              </p>
+            </div>
+
+            <div class="mt-5 pt-3 border-t ${isSelected ? 'border-wool/20' : 'swiss-border'} flex items-center justify-between font-mono text-[11px]">
+              <span class="${isSelected ? 'text-[#A8B899] font-semibold' : 'text-moss'}">
+                ${isSelected ? '● LOADED IN LENS & ANATOMY' : 'INSPECT WEAVE & ANATOMY [↗]'}
+              </span>
+              <button
+                onclick="event.stopPropagation(); quickAddGarment('${g.id}')"
+                class="px-3 py-1.5 ${isSelected ? 'bg-wool text-basalt' : 'bg-basalt text-wool'} font-semibold uppercase text-[10px]"
+              >
+                + ADD TO BAG
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function selectGarment(garmentId) {
+      const found = GARMENTS.find(g => g.id === garmentId);
+      if (!found) return;
+      activeGarment = found;
+
+      // Update Hero Lens & Anatomy Inspector
+      document.getElementById('activeSpecimenCodeHero').textContent = `${found.id} • ${found.name.toUpperCase()}`;
+      document.getElementById('anatomyGarmentTitle').textContent = `Anatomy: ${found.name} (${found.id})`;
+      document.getElementById('anatomySeamCode').textContent = found.seamSpec;
+      document.getElementById('anatomyCfmBadge').textContent = found.cfm;
+      document.getElementById('anatomyRetValue').textContent = found.ret;
+
+      updateDepthLayer(currentDepthVal);
+      renderCatalog();
+    }
+
+    function togglePackOverlay() {
+      packHarnessVisible = !packHarnessVisible;
+      const grp = document.getElementById('svgPackHarnessGroup');
+      const btn = document.getElementById('packOverlayToggleBtn');
+      if (packHarnessVisible) {
+        grp.style.display = 'block';
+        btn.textContent = '[PACK HARNESS: ON]';
+        btn.className = 'px-2 py-0.5 bg-moss text-wool text-[10px] font-bold uppercase';
+      } else {
+        grp.style.display = 'none';
+        btn.textContent = '[PACK HARNESS: OFF]';
+        btn.className = 'px-2 py-0.5 bg-woolWarm text-basalt text-[10px] font-bold uppercase border swiss-border';
+      }
+    }
+
+    // =====================================================================
+    // 05. DIRECT-TO-BAG DRAWER & BODY MOVEMENT FIT CALIBRATOR
+    // =====================================================================
+    function selectFitProfile(profile) {
+      currentFitProfile = profile;
+      const profiles = {
+        trim: {
+          label: 'ACTIVE TRIM FIT',
+          desc: '<strong>Active Trim Fit:</strong> +4cm chest allowance. Streamlined next-to-body profile minimizing wind drag during technical ice climbs over a single base layer.'
+        },
+        standard: {
+          label: 'ARTICULATED FIELD FIT',
+          desc: '<strong>Articulated Field Fit:</strong> +8cm chest gusset allowance. Engineered for full overhead reach with a 200gsm Merino base and 320gsm Waffle Grid fleece underneath.'
+        },
+        expedition: {
+          label: 'EXPEDITION LAYERING ROOM',
+          desc: '<strong>Expedition Layering Fit:</strong> +13cm storm allowance. Accommodates double heavy mid-layers or a high-loft down belay jacket underneath without compressing thermal loft.'
+        }
+      };
+
+      ['trim', 'standard', 'expedition'].forEach(k => {
+        document.getElementById(`fitBtn-${k}`).className =
+          k === profile
+            ? 'p-2.5 border swiss-border bg-moss text-wool text-left transition'
+            : 'p-2.5 border swiss-border bg-wool text-basalt text-left transition';
+      });
+
+      document.getElementById('fitProfileRecommendation').innerHTML = profiles[profile].desc;
+      document.getElementById('headerFitModeLabel').textContent = profiles[profile].label;
+    }
+
+    function selectGarmentSize(sz) {
+      currentSize = sz;
+      document.querySelectorAll('.size-pill').forEach(btn => {
+        if (btn.getAttribute('data-size') === sz) {
+          btn.className = 'size-pill w-9 h-8 border swiss-border bg-basalt text-wool font-bold';
+        } else {
+          btn.className = 'size-pill w-9 h-8 border swiss-border bg-wool text-basalt hover:bg-basalt hover:text-wool';
+        }
+      });
+    }
+
+    function addActiveGarmentToBag() {
+      quickAddGarment(activeGarment.id);
+    }
+
+    function quickAddGarment(garmentId) {
+      const g = GARMENTS.find(item => item.id === garmentId);
+      if (!g) return;
+      const fitLabel = currentFitProfile.charAt(0).toUpperCase() + currentFitProfile.slice(1);
+      const existing = bagItems.find(i => i.id === g.id && i.size === currentSize && i.fit === fitLabel);
+      if (existing) {
+        existing.qty += 1;
+      } else {
+        bagItems.push({ ...g, size: currentSize, fit: fitLabel, qty: 1 });
+      }
+      renderBag();
+      toggleBagDrawer(true);
+    }
+
+    function updateBagItemQty(idx, delta) {
+      if (!bagItems[idx]) return;
+      bagItems[idx].qty += delta;
+      if (bagItems[idx].qty <= 0) bagItems.splice(idx, 1);
+      renderBag();
+    }
+
+    function renderBag() {
+      const totalCount = bagItems.reduce((s, i) => s + i.qty, 0);
+      const totalISK = bagItems.reduce((s, i) => s + i.priceISK * i.qty, 0);
+
+      document.getElementById('bagCountPill').textContent = totalCount;
+      document.getElementById('bagTotalISK').textContent = `${totalISK.toLocaleString('de-DE')} ISK`;
+
+      const list = document.getElementById('bagItemsList');
+      if (bagItems.length === 0) {
+        list.innerHTML = `<div class="p-6 border border-dashed swiss-border text-center font-mono text-xs text-basalt/60">Your Field Bag is empty. Select a Raw Weave specimen to add.</div>`;
+        return;
+      }
+
+      list.innerHTML = bagItems.map((item, idx) => `
+        <div class="p-3.5 bg-woolLight border swiss-border flex items-center justify-between gap-3">
+          <div>
+            <div class="font-mono text-[10px] text-moss font-semibold uppercase">
+              ${item.id} • SIZE ${item.size} • ${item.fit.toUpperCase()} FIT
+            </div>
+            <div class="font-bold text-sm text-basalt">${item.name}</div>
+            <div class="font-mono text-xs text-basalt/70">${item.priceISK.toLocaleString('de-DE')} ISK × ${item.qty}</div>
+          </div>
+          <div class="flex items-center gap-1.5 font-mono text-xs">
+            <button onclick="updateBagItemQty(${idx}, -1)" class="w-7 h-7 bg-wool border swiss-border text-basalt hover:bg-basalt hover:text-wool">-</button>
+            <span class="px-1.5 font-bold">${item.qty}</span>
+            <button onclick="updateBagItemQty(${idx}, 1)" class="w-7 h-7 bg-wool border swiss-border text-basalt hover:bg-basalt hover:text-wool">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleBagDrawer(open) {
+      const overlay = document.getElementById('bagOverlay');
+      const drawer = document.getElementById('bagDrawer');
+      if (open) {
+        overlay.classList.remove('hidden');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        overlay.classList.add('hidden');
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function completeBagOrder() {
+      if (bagItems.length === 0) return;
+      const total = document.getElementById('bagTotalISK').textContent;
+      alert(`TACTILE LAB // RAW WEAVE DISPATCH CONFIRMED\n\nSpecimens: ${bagItems.reduce((s,i)=>s+i.qty,0)}\nMovement Calibration: ${currentFitProfile.toUpperCase()} FIT\nTotal Authorized: ${total}\n\nPrepared at Skeifan 10, Reykjavík for Dropp.is delivery.`);
+      toggleBagDrawer(false);
+    }
+
+    window.addEventListener('resize', () => {
+      resizeLensCanvas();
+    });
+
+    window.addEventListener('DOMContentLoaded', () => {
+      resizeLensCanvas();
+      initPlayground();
+      renderCatalog();
+      renderBag();
+      requestAnimationFrame(animatePlayground);
+    });
+  </script>
+</body>
+</html>
