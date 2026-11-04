@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FIELD TESTED // THE 1000-DAY TIMELINE — Icelandic Heritage & Tactical Archive</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Inter (Swiss) + IBM Plex Mono (Field Log) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,400;0,500;0,600;0,700;1,400&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            lava: '#181715',
+            lavaMid: '#22201D',
+            lavaCard: '#282622',
+            lichen: '#54634C',
+            lichenBright: '#7C9070',
+            lichenPale: '#A3B598',
+            kraft: '#D8C9AE',
+            kraftLight: '#E8DEC8',
+            kraftDark: '#BFA984',
+            rustStamp: '#B84A27',
+          },
+          fontFamily: {
+            sans: ['"Inter"', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --lava: #181715;
+      --lichen: #54634C;
+      --kraft: #D8C9AE;
+      --kraft-light: #E8DEC8;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #181715;
+      color: #E8DEC8;
+      font-family: 'Inter', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Kraft Paper Field Sticker Styling */
+    .kraft-sticker {
+      background: #D8C9AE;
+      color: #181715;
+      border: 1px solid #9E8B6B;
+      box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.55);
+      position: relative;
+      transition: all 0.18s ease;
+    }
+    .kraft-sticker:hover {
+      background: #E8DEC8;
+      transform: translateY(-2px);
+      box-shadow: 5px 5px 0 rgba(0, 0, 0, 0.7);
+    }
+    .kraft-sticker.active-sticker {
+      background: #E8DEC8;
+      outline: 2px solid #7C9070;
+      box-shadow: 5px 5px 0 #54634C;
+    }
+
+    /* Timeline Slider */
+    input[type="range"].timeline-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 10px;
+      background: #282622;
+      border: 1px solid #54634C;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].timeline-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 28px;
+      height: 28px;
+      background: #D8C9AE;
+      border: 3px solid #181715;
+      box-shadow: 0 0 0 2px #7C9070, 0 4px 10px rgba(0,0,0,0.7);
+      cursor: grab;
+      transition: transform 0.12s ease;
+    }
+    input[type="range"].timeline-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.1);
+    }
+
+    /* Subtle Ledger Lines */
+    .journal-grid {
+      background-size: 100% 28px;
+      background-image: linear-gradient(to bottom, rgba(216, 201, 174, 0.05) 1px, transparent 1px);
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #181715;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #54634C;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #D8C9AE;
+    }
+  </style>
+</head>
+<body class="journal-grid min-h-screen flex flex-col justify-between selection:bg-kraft selection:text-lava">
+
+  <!-- =====================================================================
+       TOP EXPEDITION ARCHIVE HEADER
+       ===================================================================== -->
+  <header class="border-b border-kraft/20 bg-lava/95 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-[1580px] mx-auto px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <!-- Brand & Field Journal Stamp -->
+      <div class="flex items-center gap-3.5">
+        <div class="bg-kraft text-lava font-mono font-bold text-xs px-2.5 py-2 border border-kraftDark leading-none text-center">
+          <div>1000</div>
+          <div class="text-[8px] tracking-widest mt-0.5">DAYS</div>
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="font-extrabold text-lg md:text-xl tracking-tight uppercase text-kraftLight">
+              FIELD TESTED <span class="text-lichenBright font-normal">//</span> THE 1000-DAY TIMELINE
+            </h1>
+            <span class="hidden sm:inline-block font-mono text-[10px] bg-lichen/40 border border-lichenBright/50 text-kraftLight px-2 py-0.5">
+              ARCHIVE LOG #IS-1000
+            </span>
+          </div>
+          <p class="font-mono text-[10px] text-kraft/65 uppercase tracking-wider">
+            LONG-DURATION ICELANDIC FIELD ENDURANCE • PATINA, CORDURA ARMOR & LIFETIME REPAIR
+          </p>
+        </div>
+      </div>
+
+      <!-- Navigation & Requisition Logbook Trigger -->
+      <div class="flex items-center gap-4">
+        <nav class="hidden xl:flex items-center gap-5 font-mono text-xs uppercase text-kraft/80">
+          <a href="#heroTimeline" class="hover:text-kraftLight">01. 1000-Day Slider</a>
+          <a href="#fieldNotesSection" class="hover:text-kraftLight">02. Field Log Stickers</a>
+          <a href="#repairSection" class="hover:text-kraftLight">03. Repair & Re-Wax</a>
+          <a href="#catalogSection" class="hover:text-kraftLight">04. Telemetry Catalog</a>
+        </nav>
+
+        <button
+          onclick="toggleLogbookDrawer(true)"
+          class="bg-kraft hover:bg-kraftLight text-lava font-mono font-bold text-xs uppercase px-4 py-2.5 flex items-center gap-2 transition shadow-[3px_3px_0_#54634C]"
+        >
+          <span>FIELD LOGBOOK CART</span>
+          <span id="cartCountBadge" class="bg-lava text-kraft px-2 py-0.5 text-[10px]">1</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       01. HERO EXPERIENCE: THE "AGE & DURABILITY SLIDER" (DAY 1 -> DAY 1000)
+       ===================================================================== -->
+  <section id="heroTimeline" class="border-b border-kraft/20 bg-lavaMid">
+    <div class="max-w-[1580px] mx-auto grid grid-cols-1 lg:grid-cols-12">
+
+      <!-- LEFT 5 COLS: TIMELINE CONTROLS, FIELD JOURNAL ENTRY & CUMULATIVE STATS -->
+      <div class="lg:col-span-5 p-6 md:p-8 border-b lg:border-b-0 lg:border-r border-kraft/20 flex flex-col justify-between bg-lava">
+        <div>
+          <div class="flex items-center justify-between font-mono text-[11px] text-kraft/60 border-b border-kraft/15 pb-2.5 mb-5">
+            <span>CHRONOLOGICAL ENDURANCE TEST</span>
+            <span class="text-lichenPale font-bold">CORDURA® 500D + WAXED RIPSTOP</span>
+          </div>
+
+          <!-- Switch Hero Specimen: Jacket vs Cargo Pants -->
+          <div class="flex items-center gap-2 mb-4 font-mono text-[11px]">
+            <span class="text-kraft/60 uppercase">SPECIMEN ON RIG:</span>
+            <button
+              id="heroSpecBtn-jacket"
+              onclick="setHeroSpecimen('jacket')"
+              class="px-2.5 py-1 bg-lichen text-kraftLight font-bold uppercase border border-lichenBright"
+            >
+              [A] Laugavegur Smock
+            </button>
+            <button
+              id="heroSpecBtn-pants"
+              onclick="setHeroSpecimen('pants')"
+              class="px-2.5 py-1 bg-lavaCard text-kraft/70 hover:text-kraftLight uppercase border border-kraft/20"
+            >
+              [B] Basalt 600D Cargo Pants
+            </button>
+          </div>
+
+          <h2 class="text-2xl md:text-3xl font-extrabold text-kraftLight tracking-tight leading-tight">
+            Cheap Gear Dies in One Season. True Equipment Earns a Patina.
+          </h2>
+
+          <!-- THE AGE & DURABILITY TIMELINE SLIDER -->
+          <div class="mt-6 bg-lavaCard border border-kraft/25 p-5">
+            <div class="flex justify-between items-baseline mb-2">
+              <label for="daySlider" class="font-mono text-xs font-bold uppercase text-lichenPale">
+                DRAG TIMELINE: FIELD EXPOSURE AGE
+              </label>
+              <span id="dayReadoutBadge" class="font-mono text-xl font-extrabold text-kraftLight bg-lichen/50 px-2.5 py-0.5 border border-lichenBright">
+                DAY 180
+              </span>
+            </div>
+
+            <input
+              id="daySlider"
+              type="range"
+              min="1"
+              max="1000"
+              value="180"
+              class="timeline-slider my-3"
+              oninput="updateTimelineAge(this.value)"
+            />
+
+            <!-- Quick Milestone Jump Buttons -->
+            <div class="grid grid-cols-3 gap-2 mt-2 font-mono text-[10px]">
+              <button onclick="setDayMilestone(1)" id="mileBtn-1" class="p-2 bg-lava border border-kraft/20 text-left hover:border-kraft transition">
+                <div class="font-bold text-kraftLight">DAY 001</div>
+                <div class="text-kraft/60 truncate">Fresh from Box</div>
+              </button>
+              <button onclick="setDayMilestone(180)" id="mileBtn-180" class="p-2 bg-lichen/40 border border-lichenBright text-left transition">
+                <div class="font-bold text-kraftLight">DAY 180</div>
+                <div class="text-kraft/80 truncate">Sleet & Gales</div>
+              </button>
+              <button onclick="setDayMilestone(1000)" id="mileBtn-1000" class="p-2 bg-lava border border-kraft/20 text-left hover:border-kraft transition">
+                <div class="font-bold text-kraftLight">DAY 1000</div>
+                <div class="text-kraft/60 truncate">Basalt Indestructible</div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Kraft Paper Field Journal Entry Card (Updates with Slider) -->
+          <div class="mt-5 kraft-sticker p-4">
+            <div class="flex justify-between items-center font-mono text-[10px] border-b border-lava/20 pb-1.5 mb-2">
+              <span id="logEntryDate" class="font-bold uppercase">FIELD LOG // DAY 180 • AUTUMN EQUINOX</span>
+              <span id="logEntryCoords" class="bg-lava text-kraft px-1.5 py-0.5">63°59'N 19°03'W</span>
+            </div>
+            <h3 id="logEntryTitle" class="font-bold text-sm uppercase text-lava">
+              Six Months of Horizontal Sleet & Highland Wind
+            </h3>
+            <p id="logEntryBody" class="font-mono text-xs text-lava/85 mt-1 leading-relaxed">
+              "Sleeve elbows have molded to the wearer's arm articulation. Factory wax has developed a dry-chalk patina along high-friction pack strap zones. Zero seam slippage; water still beads at 138°."
+            </p>
+          </div>
+        </div>
+
+        <!-- 4 Cumulative Telemetry Counters -->
+        <div class="mt-6 grid grid-cols-4 gap-2 pt-4 border-t border-kraft/15 font-mono text-center">
+          <div class="bg-lavaCard p-2.5 border border-kraft/15">
+            <div id="statKmTrekked" class="text-base font-bold text-kraftLight">860 km</div>
+            <div class="text-[9px] text-kraft/60 uppercase">DISTANCE</div>
+          </div>
+          <div class="bg-lavaCard p-2.5 border border-kraft/15">
+            <div id="statStorms" class="text-base font-bold text-kraftLight">14</div>
+            <div class="text-[9px] text-kraft/60 uppercase">GALES (&gt;25m/s)</div>
+          </div>
+          <div class="bg-lavaCard p-2.5 border border-kraft/15">
+            <div id="statRewaxCount" class="text-base font-bold text-lichenPale">1×</div>
+            <div class="text-[9px] text-kraft/60 uppercase">REPROOFED</div>
+          </div>
+          <div class="bg-lavaCard p-2.5 border border-kraft/15">
+            <div id="statIntegrity" class="text-base font-bold text-[#A3B598]">100%</div>
+            <div class="text-[9px] text-kraft/60 uppercase">SEAM INTACT</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- RIGHT 7 COLS: DYNAMIC GARMENT PATINA, CREASING & CORDURA REINFORCEMENT CANVAS -->
+      <div class="lg:col-span-7 relative min-h-[480px] lg:min-h-[580px] bg-[#131210] flex flex-col justify-between p-5 overflow-hidden">
+        <!-- Top Canvas Status Bar -->
+        <div class="relative z-10 flex flex-wrap items-center justify-between gap-3">
+          <div class="bg-lava/90 border border-kraft/25 px-3.5 py-2">
+            <div class="font-mono text-[10px] text-lichenPale uppercase">
+              // LIVE SURFACE PATINA & REINFORCEMENT VISUALIZER
+            </div>
+            <div id="canvasStateHeadline" class="font-bold text-sm text-kraftLight uppercase">
+              DAY 180: NATURAL ARTICULATION CREASING • ZERO TEAR PROPAGATION
+            </div>
+          </div>
+
+          <div class="flex items-center gap-2 font-mono text-xs">
+            <button
+              onclick="toggleCorduraHighlight()"
+              id="corduraToggleBtn"
+              class="px-3 py-1.5 bg-lichen text-kraftLight border border-lichenBright font-bold uppercase text-[11px]"
+            >
+              [CORDURA® 500D ARMOR ZONES: VISIBLE]
+            </button>
+          </div>
+        </div>
+
+        <!-- Central Interactive HTML5 Garment Aging Canvas -->
+        <div class="relative flex-1 flex items-center justify-center my-2">
+          <canvas id="patinaCanvas" width="680" height="430" class="w-full max-w-[680px] h-auto border border-kraft/15 bg-[#171614]"></canvas>
+        </div>
+
+        <!-- Bottom Canvas Legend -->
+        <div class="relative z-10 flex flex-wrap items-center justify-between gap-3 pt-3 border-t border-kraft/15 font-mono text-[11px] text-kraft/75">
+          <div class="flex flex-wrap items-center gap-4">
+            <span class="flex items-center gap-1.5">
+              <span class="w-3 h-3 bg-[#54634C] inline-block border border-kraft/40"></span>
+              <span>Waxed Ripstop Chassis</span>
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-3 h-3 bg-[#B84A27] inline-block border border-kraft/40"></span>
+              <span>Cordura® 500D Elbows / Knees / Seat</span>
+            </span>
+            <span class="flex items-center gap-1.5">
+              <span class="w-3 h-3 bg-[#D8C9AE] inline-block"></span>
+              <span>Wax Patina & Basalt Deflection Marks</span>
+            </span>
+          </div>
+          <span id="costPerWearBadge" class="text-kraftLight font-bold">
+            DAY 1000 COST: 38.9 ISK / DAY
+          </span>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       02. FIELD NOTES & TEAR-RESISTANCE BADGES (EXPEDITION LOG STICKERS)
+       ===================================================================== -->
+  <section id="fieldNotesSection" class="border-b border-kraft/20 py-10 px-5 bg-lava">
+    <div class="max-w-[1580px] mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-kraft/20 pb-4 mb-6 gap-4">
+        <div>
+          <span class="font-mono text-xs text-lichenPale uppercase tracking-widest">
+            // SECTION 02 • ARCHIVAL FIELD OBSERVATIONS
+          </span>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-kraftLight tracking-tight mt-0.5">
+            Field Log Stickers & Tear-Resistance Telemetry
+          </h2>
+        </div>
+        <p class="font-mono text-xs text-kraft/70">
+          CLICK ANY FIELD STICKER TO INSPECT THE RAW TELEMETRY & STRUCTURAL SOLUTION
+        </p>
+      </div>
+
+      <!-- 4 Kraft Paper Field Log Stickers -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+        <!-- Sticker 1 -->
+        <div onclick="selectFieldNote(0)" id="sticker-0" class="kraft-sticker active-sticker p-4 cursor-pointer">
+          <div class="flex justify-between font-mono text-[10px] border-b border-lava/20 pb-1 mb-2">
+            <span class="font-bold">STICKER #01 // WIND</span>
+            <span>63°59'N 19°03'W</span>
+          </div>
+          <h3 class="font-extrabold text-base uppercase text-lava leading-snug">
+            Surviving Laugavegur Gales
+          </h3>
+          <p class="font-mono text-xs text-lava/80 mt-1.5">
+            Tested in sustained 34 m/s katabatic gusts at Hrafntinnusker obsidian ridge.
+          </p>
+          <div class="mt-3 pt-2 border-t border-lava/20 flex justify-between font-mono text-[10px] font-bold text-rustStamp">
+            <span>BURST RATING: 420 kPa</span>
+            <span>[INSPECT ➔]</span>
+          </div>
+        </div>
+
+        <!-- Sticker 2 -->
+        <div onclick="selectFieldNote(1)" id="sticker-1" class="kraft-sticker p-4 cursor-pointer">
+          <div class="flex justify-between font-mono text-[10px] border-b border-lava/20 pb-1 mb-2">
+            <span class="font-bold">STICKER #02 // ABRASION</span>
+            <span>64°52'N 16°45'W</span>
+          </div>
+          <h3 class="font-extrabold text-base uppercase text-lava leading-snug">
+            Thorn & Volcanic Glass Proof
+          </h3>
+          <p class="font-mono text-xs text-lava/80 mt-1.5">
+            Double-thread 500D Ripstop arrests sharp rhyolite and basalt edges immediately.
+          </p>
+          <div class="mt-3 pt-2 border-t border-lava/20 flex justify-between font-mono text-[10px] font-bold text-rustStamp">
+            <span>TEAR STRENGTH: 245 N</span>
+            <span>[INSPECT ➔]</span>
+          </div>
+        </div>
+
+        <!-- Sticker 3 -->
+        <div onclick="selectFieldNote(2)" id="sticker-2" class="kraft-sticker p-4 cursor-pointer">
+          <div class="flex justify-between font-mono text-[10px] border-b border-lava/20 pb-1 mb-2">
+            <span class="font-bold">STICKER #03 // ERGONOMICS</span>
+            <span>64°08'N 21°56'W</span>
+          </div>
+          <h3 class="font-extrabold text-base uppercase text-lava leading-snug">
+            Deep Cargo Pocket Anatomy
+          </h3>
+          <p class="font-mono text-xs text-lava/80 mt-1.5">
+            Engineered with oversized 45mm storm flaps and slotted buttons for heavy winter gloves.
+          </p>
+          <div class="mt-3 pt-2 border-t border-lava/20 flex justify-between font-mono text-[10px] font-bold text-rustStamp">
+            <span>GLOVE ACCESS: -20°C</span>
+            <span>[INSPECT ➔]</span>
+          </div>
+        </div>
+
+        <!-- Sticker 4 -->
+        <div onclick="selectFieldNote(3)" id="sticker-3" class="kraft-sticker p-4 cursor-pointer">
+          <div class="flex justify-between font-mono text-[10px] border-b border-lava/20 pb-1 mb-2">
+            <span class="font-bold">STICKER #04 // REINFORCEMENT</span>
+            <span>63°31'N 19°00'W</span>
+          </div>
+          <h3 class="font-extrabold text-base uppercase text-lava leading-snug">
+            Cordura® 500D Seat & Knees
+          </h3>
+          <p class="font-mono text-xs text-lava/80 mt-1.5">
+            Zero wear-through after 1,000 days of kneeling on wet black basalt sand and gravel.
+          </p>
+          <div class="mt-3 pt-2 border-t border-lava/20 flex justify-between font-mono text-[10px] font-bold text-rustStamp">
+            <span>MARTINDALE: 150,000+</span>
+            <span>[INSPECT ➔]</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Detailed Field Note Inspection Drawer Box -->
+      <div id="fieldNoteDetailBox" class="bg-lavaCard border border-kraft/30 p-6 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+        <!-- Populated dynamically by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       03. "REPAIR & CARE" ARCHITECTURE (INTERACTIVE RE-WAXING WORKBENCH)
+       ===================================================================== -->
+  <section id="repairSection" class="border-b border-kraft/20 py-10 px-5 bg-lavaMid">
+    <div class="max-w-[1580px] mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-kraft/20 pb-4 mb-6 gap-4">
+        <div>
+          <span class="font-mono text-xs text-lichenPale uppercase tracking-widest">
+            // SECTION 03 • SELF-RELIANCE & FIELD MAINTENANCE
+          </span>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-kraftLight tracking-tight mt-0.5">
+            "Repair & Care" Architecture — Built to Be Maintained, Never Replaced
+          </h2>
+        </div>
+
+        <!-- 3 Maintenance Protocol Tabs -->
+        <div class="flex flex-wrap gap-2 font-mono text-xs">
+          <button onclick="setRepairTab('wax')" id="repTab-wax" class="px-4 py-2 bg-kraft text-lava font-bold uppercase">
+            [01] Interactive Re-Waxing Guide
+          </button>
+          <button onclick="setRepairTab('patch')" id="repTab-patch" class="px-4 py-2 bg-lava border border-kraft/25 text-kraft hover:border-kraft uppercase">
+            [02] Tenacious Cordura® Patch Kit
+          </button>
+          <button onclick="setRepairTab('zipper')" id="repTab-zipper" class="px-4 py-2 bg-lava border border-kraft/25 text-kraft hover:border-kraft uppercase">
+            [03] Modular Zipper Pulls & Sliders
+          </button>
+        </div>
+      </div>
+
+      <!-- Interactive Repair Workbench Content -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        <!-- Left 7 Cols: Interactive Canvas / Visual Demonstrator -->
+        <div class="lg:col-span-7 bg-lava border border-kraft/25 p-5 flex flex-col justify-between">
+          <div class="flex flex-wrap items-center justify-between gap-2 pb-3 mb-3 border-b border-kraft/15 font-mono text-xs">
+            <span id="repairCanvasHeader" class="text-lichenPale font-bold uppercase">
+              INTERACTIVE RE-WAXING SWATCH // RUB CURSOR OR CLICK "APPLY BEESWAX"
+            </span>
+            <span id="waxCoverageReadout" class="bg-lichen/40 text-kraftLight px-2.5 py-0.5 border border-lichenBright font-bold">
+              HYDROPHOBIC SEAL: 45% (WEATHERED)
+            </span>
+          </div>
+
+          <canvas
+            id="repairCanvas"
+            width="640"
+            height="240"
+            onmousemove="rubWaxOnCanvas(event)"
+            onclick="applyFullWaxRestore()"
+            class="w-full h-56 bg-[#1F1E1B] border border-kraft/20 cursor-crosshair block"
+          ></canvas>
+
+          <div class="mt-3 pt-3 border-t border-kraft/15 flex flex-wrap items-center justify-between gap-3 font-mono text-xs">
+            <span class="text-kraft/70">Every garment ships with a 90g bar of Icelandic Beeswax + Pine Rosin compound.</span>
+            <button
+              onclick="applyFullWaxRestore()"
+              class="px-4 py-1.5 bg-kraft hover:bg-kraftLight text-lava font-bold uppercase text-[11px]"
+            >
+              APPLY WAX & HEAT-CURE TO 100% ➔
+            </button>
+          </div>
+        </div>
+
+        <!-- Right 5 Cols: Step-by-Step Field Maintenance Manual -->
+        <div id="repairManualBox" class="lg:col-span-5 bg-lavaCard border border-kraft/25 p-6 flex flex-col justify-between">
+          <!-- Populated by JS based on active Repair Tab -->
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       04. STREAMLINED CATALOG FEED (REAL-WORLD TELEMETRY & 1000-DAY VALUE)
+       ===================================================================== -->
+  <section id="catalogSection" class="py-10 px-5 bg-lava">
+    <div class="max-w-[1580px] mx-auto">
+      <div class="flex flex-col md:flex-row md:items-end justify-between border-b border-kraft/20 pb-4 mb-6 gap-4">
+        <div>
+          <span class="font-mono text-xs text-lichenPale uppercase tracking-widest">
+            // SECTION 04 • CERTIFIED 1000-DAY SPECIMENS
+          </span>
+          <h2 class="text-2xl md:text-3xl font-extrabold text-kraftLight tracking-tight mt-0.5">
+            Field-Tested Heavy-Duty Catalog
+          </h2>
+        </div>
+
+        <div class="flex gap-2 font-mono text-xs">
+          <button onclick="filterCatalog('ALL')" data-cat="ALL" class="cat-pill px-3 py-1.5 bg-kraft text-lava font-bold uppercase">ALL [6]</button>
+          <button onclick="filterCatalog('SHELLS')" data-cat="SHELLS" class="cat-pill px-3 py-1.5 bg-lavaCard border border-kraft/25 text-kraft uppercase">WEATHERPROOF SHELLS</button>
+          <button onclick="filterCatalog('PANTS')" data-cat="PANTS" class="cat-pill px-3 py-1.5 bg-lavaCard border border-kraft/25 text-kraft uppercase">HEAVY-DUTY PANTS</button>
+          <button onclick="filterCatalog('HOODIES')" data-cat="HOODIES" class="cat-pill px-3 py-1.5 bg-lavaCard border border-kraft/25 text-kraft uppercase">TACTICAL HOODIES</button>
+        </div>
+      </div>
+
+      <!-- 6 Telemetry Product Cards -->
+      <div id="telemetryCatalogGrid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       FIELD LOGBOOK REQUISITION DRAWER (CART)
+       ===================================================================== -->
+  <div id="logbookOverlay" onclick="toggleLogbookDrawer(false)" class="fixed inset-0 bg-black/75 backdrop-blur-xs z-50 hidden"></div>
+  <aside
+    id="logbookDrawer"
+    class="fixed top-0 right-0 h-full w-full max-w-md bg-lavaMid border-l border-kraft/30 z-50 translate-x-full transition-transform duration-300 flex flex-col justify-between shadow-2xl"
+  >
+    <div class="p-5 border-b border-kraft/20 bg-lava flex items-start justify-between">
+      <div>
+        <span class="font-mono text-[10px] text-lichenPale uppercase">// SKEIFAN-10 DEPOT REQUISITION</span>
+        <h3 class="text-xl font-extrabold text-kraftLight uppercase mt-0.5">Expedition Logbook Cart</h3>
+      </div>
+      <button onclick="toggleLogbookDrawer(false)" class="font-mono text-xs px-3 py-1 bg-lavaCard border border-kraft/25 text-kraft hover:bg-kraft hover:text-lava">
+        [CLOSE ✕]
+      </button>
+    </div>
+
+    <div class="p-5 overflow-y-auto flex-1 space-y-4">
+      <div class="kraft-sticker p-3 font-mono text-xs">
+        <strong>✔ LIFETIME FIELD PROMISE INCLUDED:</strong> Free 90g Icelandic Beeswax Bar + Cordura® Tenacious Patch Kit included with every requisition.
+      </div>
+      <div id="logbookCartItems" class="space-y-3">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <div class="p-5 border-t border-kraft/20 bg-lava">
+      <div class="flex justify-between font-mono text-xs text-kraft/70 mb-1">
+        <span>1000-DAY DAILY AMORTIZED COST:</span>
+        <span id="cartCostPerDay" class="text-lichenPale font-bold">38.9 ISK / DAY</span>
+      </div>
+      <div class="flex justify-between items-baseline font-mono mb-4">
+        <span class="text-xs uppercase text-kraft">TOTAL (INCL. 24% VSK):</span>
+        <span id="cartTotalISK" class="text-2xl font-extrabold text-kraftLight">38.900 ISK</span>
+      </div>
+      <button
+        onclick="dispatchLogbookOrder()"
+        class="w-full py-3.5 bg-kraft hover:bg-kraftLight text-lava font-mono font-extrabold text-xs uppercase tracking-wider transition shadow-[3px_3px_0_#54634C]"
+      >
+        STAMP & DISPATCH REQUISITION ➔
+      </button>
+    </div>
+  </aside>
+
+  <!-- =====================================================================
+       JAVASCRIPT ENGINE: 1000-DAY PATINA CANVAS, FIELD NOTES & CATALOG
+       ===================================================================== -->
+  <script>
+    // Catalog Database with Real-World Test Telemetry
+    const CATALOG_ITEMS = [
+      {
+        id: 'FT-01',
+        name: 'Laugavegur Waxed 500D Highland Smock',
+        cat: 'SHELLS',
+        priceISK: 44900,
+        weightG: 680,
+        tearNewtons: 245,
+        repelCycles: '45 Storms / Re-Wax',
+        armorZones: 'Cordura® 500D Elbows, Shoulders & Hem',
+        notes: 'Tested across 1,000 consecutive days on the Laugavegur and Fimmvörðuháls trails. Zero seam leaks.'
+      },
+      {
+        id: 'FT-02',
+        name: 'Hekla 600D Basalt-Proof Cargo Pants',
+        cat: 'PANTS',
+        priceISK: 32900,
+        weightG: 695,
+        tearNewtons: 280,
+        repelCycles: '60 Abrasion Washes',
+        armorZones: 'Double 600D Cordura® Knees, Seat & Instep',
+        notes: 'Articulated knee pockets accept closed-cell foam pads. Slotted horn buttons operable in arctic mittens.'
+      },
+      {
+        id: 'FT-03',
+        name: 'Askja Kevlar-Fleece Tactical Hoody',
+        cat: 'HOODIES',
+        priceISK: 28500,
+        weightG: 540,
+        tearNewtons: 195,
+        repelCycles: 'Permanent Hydrophobic Yarn',
+        armorZones: 'Ceramic-Aramid Forearm & Shoulder Overlays',
+        notes: '390gsm high-density thermal fleece reinforced with abrasion shields where backpack straps ride.'
+      },
+      {
+        id: 'FT-04',
+        name: 'Surtur 3-Layer Expedition Storm Parka',
+        cat: 'SHELLS',
+        priceISK: 62900,
+        weightG: 790,
+        tearNewtons: 260,
+        repelCycles: '100+ Wet Blizzard Cycles',
+        armorZones: '500D Ballistic Cuffs & Storm Skirt',
+        notes: '28,000mm membrane paired with field-serviceable #10 YKK® brass two-way storm zipper.'
+      },
+      {
+        id: 'FT-05',
+        name: 'Reykjanes Heavy Ripstop Work Trousers',
+        cat: 'PANTS',
+        priceISK: 26900,
+        weightG: 630,
+        tearNewtons: 230,
+        repelCycles: '50 Wax-Wash Cycles',
+        armorZones: 'Triple-Stitched Gusset & Tool-Clip Rims',
+        notes: 'Built for SAR operators and geothermal field engineers kneeling on sharp volcanic scoria.'
+      },
+      {
+        id: 'FT-06',
+        name: 'Vatna Wool-Pile Windblock Anorak Hoody',
+        cat: 'HOODIES',
+        priceISK: 31500,
+        weightG: 590,
+        tearNewtons: 185,
+        repelCycles: 'Natural Lanolin + Wax Yoke',
+        armorZones: 'Waxed Ripstop Chest & Elbow Baffles',
+        notes: 'Combines an unbleached Icelandic wool-pile core with a windproof waxed yoke over the shoulders.'
+      }
+    ];
+
+    // Field Note Sticker Details Database
+    const FIELD_NOTES = [
+      {
+        badge: 'STICKER #01 // WIND & STORM TELEMETRY',
+        title: 'Surviving Laugavegur Gales (34 m/s Sustained)',
+        coords: '63°59\'N 19°03\'W • ELEVATION 1,050M',
+        body: 'During winter SAR training near Hrafntinnusker, wind velocities reached 122 km/h (34 m/s) carrying fine obsidian grit. Standard ultralight shells suffered zipper separation and hood collapse. Our 3-point brass-wired storm tunnel hood and double storm-placket maintained a calm +14°C microclimate pocket around the face.',
+        metricLabel: 'FABRIC BURST RESISTANCE (ISO 13938)',
+        metricVal: '420 kPa (Zero Delamination after 1,000 Days)'
+      },
+      {
+        badge: 'STICKER #02 // VOLCANIC SUBSTRATE ABRASION',
+        title: 'Thorn & Volcanic Glass Abrasion Proof (245 Newtons)',
+        coords: '64°52\'N 16°45\'W • HOLUHRAUN LAVA FIELD',
+        body: 'Fresh Icelandic basalt crust acts like broken glass. Our crosshatch Ripstop weaves a double-twisted 500D high-tenacity nylon cable every 4.5mm. Even when intentionally punctured with an ice-axe pick during field testing, the tear locked at 3.8mm and refused to propagate.',
+        metricLabel: 'TRAPEZOIDAL TEAR STRENGTH (ISO 13937)',
+        metricVal: '245 Newtons Warp / 230 Newtons Weft'
+      },
+      {
+        badge: 'STICKER #03 // SUB-ZERO ARCTIC ERGONOMICS',
+        title: 'Deep Cargo Pocket Anatomy (Designed for Heavy Gloves)',
+        coords: '64°08\'N 21°56\'W • SKEIFAN-10 COLD CHAMBER',
+        body: 'Tiny zipper pulls and narrow pocket mouths are useless when your hands are inside thick sub-zero mittens. All cargo bellows feature 45mm angled storm mouths, 30mm slotted Canadian tape buttons (which never pop off like rivets), and 550-paracord T-bar pulls.',
+        metricLabel: 'GLOVE EXTRACTION SPEED TEST (-20°C)',
+        metricVal: '1.8 Seconds One-Handed Access'
+      },
+      {
+        badge: 'STICKER #04 // HIGH-FRICTION ARMOR ZONES',
+        title: 'Cordura® 500D Elbows, Knees & Seat Reinforcement',
+        coords: '63°31\'N 19°00\'W • SÓLHEIMajökull SNOUT',
+        body: 'Over 1,000 days of use, 84% of garment failures occur at three points: elbows, knees, and seat. We overlay these zones with solution-dyed 500D/600D Cordura® patches featuring internal neoprene pad sleeves—turning high-wear points into indestructible armor.',
+        metricLabel: 'MARTINDALE ABRASION CYCLES',
+        metricVal: '150,000+ Cycles (Zero Thread Breakthrough)'
+      }
+    ];
+
+    // State
+    let currentDay = 180;
+    let heroSpecimen = 'jacket'; // 'jacket' | 'pants'
+    let showCorduraHighlight = true;
+    let activeRepairTab = 'wax';
+    let waxIntegrityPct = 45;
+    let currentCatalogFilter = 'ALL';
+    let logbookCart = [{ ...CATALOG_ITEMS[0], qty: 1 }];
+
+    // =====================================================================
+    // 01. HERO 1000-DAY TIMELINE & PROCEDURAL PATINA CANVAS
+    // =====================================================================
+    const patinaCanvas = document.getElementById('patinaCanvas');
+    const pCtx = patinaCanvas.getContext('2d');
+
+    function setHeroSpecimen(type) {
+      heroSpecimen = type;
+      document.getElementById('heroSpecBtn-jacket').className =
+        type === 'jacket'
+          ? 'px-2.5 py-1 bg-lichen text-kraftLight font-bold uppercase border border-lichenBright'
+          : 'px-2.5 py-1 bg-lavaCard text-kraft/70 hover:text-kraftLight uppercase border border-kraft/20';
+      document.getElementById('heroSpecBtn-pants').className =
+        type === 'pants'
+          ? 'px-2.5 py-1 bg-lichen text-kraftLight font-bold uppercase border border-lichenBright'
+          : 'px-2.5 py-1 bg-lavaCard text-kraft/70 hover:text-kraftLight uppercase border border-kraft/20';
+      drawPatinaCanvas();
+    }
+
+    function toggleCorduraHighlight() {
+      showCorduraHighlight = !showCorduraHighlight;
+      const btn = document.getElementById('corduraToggleBtn');
+      btn.textContent = showCorduraHighlight
+        ? '[CORDURA® 500D ARMOR ZONES: VISIBLE]'
+        : '[CORDURA® 500D ARMOR ZONES: SUBDUED]';
+      drawPatinaCanvas();
+    }
+
+    function setDayMilestone(day) {
+      document.getElementById('daySlider').value = day;
+      updateTimelineAge(day);
+    }
+
+    function updateTimelineAge(val) {
+      currentDay = parseInt(val, 10);
+      document.getElementById('dayReadoutBadge').textContent = `DAY ${currentDay}`;
+
+      // Highlight milestone buttons
+      [1, 180, 1000].forEach(m => {
+        const el = document.getElementById(`mileBtn-${m}`);
+        if (Math.abs(currentDay - m) < 35) {
+          el.className = 'p-2 bg-lichen/40 border border-lichenBright text-left transition';
+        } else {
+          el.className = 'p-2 bg-lava border border-kraft/20 text-left hover:border-kraft transition';
+        }
+      });
+
+      // Update Cumulative Telemetry Counters
+      const km = Math.round((currentDay - 1) * 4.82);
+      const storms = Math.floor((currentDay - 1) * 0.065);
+      const rewax = Math.floor(currentDay / 180);
+      const integrity = (100 - (currentDay / 1000) * 0.2).toFixed(1);
+
+      document.getElementById('statKmTrekked').textContent = `${km.toLocaleString('en-US')} km`;
+      document.getElementById('statStorms').textContent = `${storms}`;
+      document.getElementById('statRewaxCount').textContent = `${rewax}×`;
+      document.getElementById('statIntegrity').textContent = `${integrity}%`;
+
+      const costPerDay = (44900 / Math.max(1, currentDay)).toFixed(1);
+      document.getElementById('costPerWearBadge').textContent =
+        `DAY ${currentDay} AMORTIZED COST: ${costPerDay} ISK / DAY`;
+
+      // Update Journal Log Entry based on Day range
+      const logDate = document.getElementById('logEntryDate');
+      const logCoords = document.getElementById('logEntryCoords');
+      const logTitle = document.getElementById('logEntryTitle');
+      const logBody = document.getElementById('logEntryBody');
+      const canvasHeadline = document.getElementById('canvasStateHeadline');
+
+      if (currentDay < 60) {
+        logDate.textContent = `FIELD LOG // DAY ${currentDay} • INITIAL DEPLOYMENT`;
+        logCoords.textContent = '64°08\'N 21°56\'W';
+        logTitle.textContent = 'Fresh from the Box — Stiff Factory Beeswax Finish';
+        logBody.textContent = '"Unpacked at Skeifan-10 depot. The 500D waxed ripstop stands almost on its own. Zero creasing yet; 144° factory DWR water contact angle."';
+        canvasHeadline.textContent = `DAY ${currentDay}: FACTORY FRESH WEAVE • PRISTINE WAX FINISH`;
+      } else if (currentDay < 500) {
+        logDate.textContent = `FIELD LOG // DAY ${currentDay} • HIGHLAND SEASON`;
+        logCoords.textContent = '63°59\'N 19°03\'W';
+        logTitle.textContent = 'Sleet & Highland Winds — Broken-In Articulation';
+        logBody.textContent = '"Sleeve elbows and knee gussets have molded to the body. Golden wax patina lines trace the flex creases. Re-proofed once with hot beeswax."';
+        canvasHeadline.textContent = `DAY ${currentDay}: NATURAL ARTICULATION CREASING • ZERO TEAR PROPAGATION`;
+      } else {
+        logDate.textContent = `FIELD LOG // DAY ${currentDay} • VETERAN ARCHIVE`;
+        logCoords.textContent = '64°24\'N 17°20\'W';
+        logTitle.textContent = 'Scratched on Basalt, Reproofed 5×, Indestructible';
+        logBody.textContent = '"Survived 4,800+ km of volcanic scoria, crampon brushes, and North Atlantic gales. Surface shows rich character patina, while the 500D Cordura armor zones remain 100% unbreached."';
+        canvasHeadline.textContent = `DAY ${currentDay}: DEEP EXPEDITION PATINA • CORDURA® ARMOR 100% INTACT`;
+      }
+
+      drawPatinaCanvas();
+    }
+
+    function drawPatinaCanvas() {
+      const w = patinaCanvas.width;
+      const h = patinaCanvas.height;
+      pCtx.clearRect(0, 0, w, h);
+
+      const ageFactor = (currentDay - 1) / 999; // 0.0 to 1.0
+
+      // Subtle background grid
+      pCtx.strokeStyle = 'rgba(216, 201, 174, 0.06)';
+      pCtx.lineWidth = 1;
+      for (let x = 0; x < w; x += 34) {
+        pCtx.beginPath(); pCtx.moveTo(x, 0); pCtx.lineTo(x, h); pCtx.stroke();
+      }
+      for (let y = 0; y < h; y += 34) {
+        pCtx.beginPath(); pCtx.moveTo(0, y); pCtx.lineTo(w, y); pCtx.stroke();
+      }
+
+      if (heroSpecimen === 'jacket') {
+        // Draw Highland Smock Jacket Silhouette
+        pCtx.save();
+        pCtx.beginPath();
+        // Hood + Shoulders + Sleeves + Torso
+        pCtx.moveTo(295, 25);
+        pCtx.lineTo(385, 25);
+        pCtx.lineTo(395, 70);
+        pCtx.lineTo(475, 95);
+        pCtx.lineTo(545, 285);
+        pCtx.lineTo(490, 305);
+        pCtx.lineTo(445, 165);
+        pCtx.lineTo(445, 390);
+        pCtx.lineTo(235, 390);
+        pCtx.lineTo(235, 165);
+        pCtx.lineTo(190, 305);
+        pCtx.lineTo(135, 285);
+        pCtx.lineTo(205, 95);
+        pCtx.lineTo(285, 70);
+        pCtx.closePath();
+
+        pCtx.fillStyle = '#43503C';
+        pCtx.fill();
+        pCtx.strokeStyle = '#D8C9AE';
+        pCtx.lineWidth = 2;
+        pCtx.stroke();
+
+        // Clip inside jacket for patina, creases & Cordura overlays
+        pCtx.clip();
+
+        // Wax Patina Wear Gradient (intensifies with ageFactor)
+        if (ageFactor > 0.05) {
+          const grad = pCtx.createRadialGradient(340, 210, 20, 340, 210, 220);
+          grad.addColorStop(0, `rgba(216, 201, 174, ${ageFactor * 0.28})`);
+          grad.addColorStop(1, 'rgba(24, 23, 21, 0)');
+          pCtx.fillStyle = grad;
+          pCtx.fillRect(100, 20, 480, 380);
+        }
+
+        // Cordura 500D Reinforcement Zones: Shoulders, Elbows, Hem
+        const armorFill = showCorduraHighlight ? 'rgba(184, 74, 39, 0.72)' : 'rgba(42, 48, 38, 0.85)';
+        const armorStroke = showCorduraHighlight ? '#E8DEC8' : '#7C9070';
+
+        // Shoulder Yoke Armor
+        pCtx.fillStyle = armorFill;
+        pCtx.strokeStyle = armorStroke;
+        pCtx.lineWidth = 1.5;
+        pCtx.fillRect(200, 70, 280, 44);
+        pCtx.strokeRect(200, 70, 280, 44);
+
+        // Left & Right Elbow Cordura Patches
+        pCtx.fillRect(145, 185, 65, 75);
+        pCtx.strokeRect(145, 185, 65, 75);
+        pCtx.fillRect(470, 185, 65, 75);
+        pCtx.strokeRect(470, 185, 65, 75);
+
+        // Bottom Storm Hem Guard
+        pCtx.fillRect(235, 355, 210, 35);
+        pCtx.strokeRect(235, 355, 210, 35);
+
+        // Natural Creasing & Wax Chalk Lines (emerge from Day 30 -> Day 1000)
+        const creaseCount = Math.floor(ageFactor * 26);
+        pCtx.strokeStyle = `rgba(232, 222, 200, ${0.15 + ageFactor * 0.45})`;
+        pCtx.lineWidth = 1.2;
+        for (let i = 0; i < creaseCount; i++) {
+          pCtx.beginPath();
+          const cy = 140 + (i * 9) % 190;
+          const cx = i % 2 === 0 ? 175 + (i * 7) % 120 : 360 + (i * 11) % 130;
+          pCtx.moveTo(cx, cy);
+          pCtx.quadraticCurveTo(cx + 18, cy - 6, cx + 36, cy + 4);
+          pCtx.stroke();
+        }
+
+        // Basalt Scratches Deflected by Cordura Armor (Day 300 -> Day 1000)
+        if (ageFactor > 0.25) {
+          const scratchCount = Math.floor((ageFactor - 0.25) * 18);
+          pCtx.strokeStyle = 'rgba(255, 235, 200, 0.65)';
+          pCtx.lineWidth = 1.4;
+          for (let s = 0; s < scratchCount; s++) {
+            const sx = s % 2 === 0 ? 158 + (s * 5) % 40 : 480 + (s * 5) % 40;
+            const sy = 195 + (s * 9) % 55;
+            pCtx.beginPath();
+            pCtx.moveTo(sx, sy);
+            pCtx.lineTo(sx + 16, sy + 11);
+            pCtx.stroke();
+          }
+        }
+
+        pCtx.restore();
+      } else {
+        // Draw Basalt 600D Cargo Trousers Silhouette
+        pCtx.save();
+        pCtx.beginPath();
+        pCtx.moveTo(235, 30);
+        pCtx.lineTo(445, 30);
+        pCtx.lineTo(465, 210);
+        pCtx.lineTo(450, 395);
+        pCtx.lineTo(365, 395);
+        pCtx.lineTo(340, 165);
+        pCtx.lineTo(315, 395);
+        pCtx.lineTo(230, 395);
+        pCtx.lineTo(215, 210);
+        pCtx.closePath();
+
+        pCtx.fillStyle = '#33392E';
+        pCtx.fill();
+        pCtx.strokeStyle = '#D8C9AE';
+        pCtx.lineWidth = 2;
+        pCtx.stroke();
+        pCtx.clip();
+
+        const armorFill = showCorduraHighlight ? 'rgba(184, 74, 39, 0.75)' : 'rgba(65, 75, 58, 0.85)';
+        pCtx.fillStyle = armorFill;
+        pCtx.strokeStyle = '#E8DEC8';
+        pCtx.lineWidth = 1.5;
+
+        // Reinforced Seat & Waistband
+        pCtx.fillRect(230, 30, 220, 48);
+        pCtx.strokeRect(230, 30, 220, 48);
+
+        // Articulated 600D Knee Armor Patches
+        pCtx.fillRect(220, 215, 95, 88);
+        pCtx.strokeRect(220, 215, 95, 88);
+        pCtx.fillRect(365, 215, 95, 88);
+        pCtx.strokeRect(365, 215, 95, 88);
+
+        // Crampon Instep Cuff Guards
+        pCtx.fillRect(220, 355, 100, 40);
+        pCtx.fillRect(360, 355, 100, 40);
+
+        // Creases & Basalt Scuffs
+        const creaseCount = Math.floor(ageFactor * 24);
+        pCtx.strokeStyle = `rgba(232, 222, 200, ${0.2 + ageFactor * 0.5})`;
+        for (let i = 0; i < creaseCount; i++) {
+          pCtx.beginPath();
+          const cx = i % 2 === 0 ? 235 + (i * 4) % 60 : 375 + (i * 4) % 60;
+          const cy = 115 + (i * 11) % 230;
+          pCtx.moveTo(cx, cy);
+          pCtx.lineTo(cx + 28, cy + 5);
+          pCtx.stroke();
+        }
+        pCtx.restore();
+      }
+
+      // Callout Labels on Canvas
+      pCtx.fillStyle = '#E8DEC8';
+      pCtx.font = '600 11px "IBM Plex Mono"';
+      pCtx.fillText('← CORDURA® 500D REINFORCEMENT (0% WEAR-THROUGH)', 20, 45);
+      pCtx.fillStyle = '#A3B598';
+      pCtx.fillText(`FIELD EXPOSURE: DAY ${currentDay} / 1000`, 20, 412);
+    }
+
+    // =====================================================================
+    // 02. FIELD NOTE STICKER INSPECTOR
+    // =====================================================================
+    function selectFieldNote(idx) {
+      [0, 1, 2, 3].forEach(i => {
+        const el = document.getElementById(`sticker-${i}`);
+        el.classList.toggle('active-sticker', i === idx);
+      });
+
+      const n = FIELD_NOTES[idx];
+      document.getElementById('fieldNoteDetailBox').innerHTML = `
+        <div class="lg:col-span-8">
+          <div class="flex flex-wrap items-center justify-between gap-2 font-mono text-xs text-lichenPale mb-2">
+            <span>${n.badge}</span>
+            <span class="bg-lava px-2.5 py-0.5 border border-kraft/20 text-kraft">${n.coords}</span>
+          </div>
+          <h3 class="text-xl md:text-2xl font-extrabold text-kraftLight uppercase">${n.title}</h3>
+          <p class="text-sm text-kraft/85 mt-2 leading-relaxed">${n.body}</p>
+        </div>
+        <div class="lg:col-span-4 bg-lava p-5 border border-kraft/25 font-mono">
+          <div class="text-[10px] text-kraft/60 uppercase">${n.metricLabel}</div>
+          <div class="text-lg font-extrabold text-lichenPale mt-1">${n.metricVal}</div>
+          <div class="mt-3 pt-3 border-t border-kraft/15 text-[11px] text-kraft/80">
+            ✔ Certified by Skeifan-10 Materials Lab across 1,000 simulated subarctic cycles.
+          </div>
+        </div>
+      `;
+    }
+
+    // =====================================================================
+    // 03. REPAIR & CARE WORKBENCH (INTERACTIVE WAXING CANVAS)
+    // =====================================================================
+    const repairCanvas = document.getElementById('repairCanvas');
+    const rCtx = repairCanvas.getContext('2d');
+
+    function setRepairTab(tab) {
+      activeRepairTab = tab;
+      ['wax', 'patch', 'zipper'].forEach(t => {
+        document.getElementById(`repTab-${t}`).className =
+          t === tab
+            ? 'px-4 py-2 bg-kraft text-lava font-bold uppercase'
+            : 'px-4 py-2 bg-lava border border-kraft/25 text-kraft hover:border-kraft uppercase';
+      });
+
+      const manual = document.getElementById('repairManualBox');
+      if (tab === 'wax') {
+        manual.innerHTML = `
+          <div>
+            <span class="font-mono text-xs text-lichenPale font-bold uppercase">PROTOCOL 01 // ICELANDIC BEESWAX REPROOFING</span>
+            <h3 class="text-xl font-bold text-kraftLight mt-1">Restore 100% Factory Water-Beading in 10 Minutes</h3>
+            <ol class="mt-4 space-y-3 text-xs text-kraft/85 font-mono list-decimal list-inside">
+              <li>Brush off dried volcanic dust and glacial silt with a stiff bristle brush.</li>
+              <li>Rub the solid Icelandic Beeswax & Pine Rosin bar across shoulders, hood, and knees (try rubbing the canvas on the left!).</li>
+              <li>Warm with a hairdryer or camp stove radiant heat to melt the wax deep into the 500D filament core.</li>
+            </ol>
+          </div>
+          <div class="mt-4 p-3 bg-lava border border-kraft/20 font-mono text-[11px] text-lichenPale">
+            RESULT: Zero synthetic fluorocarbons needed; lasts 180+ highland days per waxing.
+          </div>
+        `;
+      } else if (tab === 'patch') {
+        manual.innerHTML = `
+          <div>
+            <span class="font-mono text-xs text-lichenPale font-bold uppercase">PROTOCOL 02 // TENACIOUS CORDURA® PATCHES</span>
+            <h3 class="text-xl font-bold text-kraftLight mt-1">90-Second Field Puncture Seal</h3>
+            <p class="mt-3 text-xs text-kraft/85 leading-relaxed">
+              Every pair of trousers and smock includes 3 die-cut hexagonal 500D Cordura® pressure-sensitive patches in matching Lichen & Lava tones. Peel backing, press firmly over any crampon nick, and continue your expedition with zero loss of waterproof integrity.
+            </p>
+          </div>
+          <div class="mt-4 p-3 bg-lava border border-kraft/20 font-mono text-[11px] text-lichenPale">
+            PEEL ADHESION STRENGTH: 38 N/25mm (Wash & Storm Permanent)
+          </div>
+        `;
+      } else {
+        manual.innerHTML = `
+          <div>
+            <span class="font-mono text-xs text-lichenPale font-bold uppercase">PROTOCOL 03 // MODULAR HARDWARE</span>
+            <h3 class="text-xl font-bold text-kraftLight mt-1">Field-Swap Zipper Pulls & Slotted Buttons</h3>
+            <p class="mt-3 text-xs text-kraft/85 leading-relaxed">
+              Metal rivets fail in remote terrain and cannot be fixed without a press. We use 30mm slotted webbing-mounted buttons (sewable with dental floss or paracord core in 2 minutes) and replaceable 550-paracord zipper pulls.
+            </p>
+          </div>
+          <div class="mt-4 p-3 bg-lava border border-kraft/20 font-mono text-[11px] text-lichenPale">
+            SPARE HARDWARE POUCH SEWN INSIDE EVERY GARMENT HEM
+          </div>
+        `;
+      }
+      drawRepairSwatch();
+    }
+
+    function drawRepairSwatch() {
+      const w = repairCanvas.width;
+      const h = repairCanvas.height;
+      rCtx.clearRect(0, 0, w, h);
+
+      // Base weave color shifts from dry chalky grey-green to deep rich waxed olive as waxIntegrityPct -> 100
+      const ratio = waxIntegrityPct / 100;
+      rCtx.fillStyle = ratio > 0.8 ? '#2F3B29' : '#3E443B';
+      rCtx.fillRect(0, 0, w, h);
+
+      // Ripstop grid lines
+      rCtx.strokeStyle = 'rgba(232, 222, 200, 0.14)';
+      rCtx.lineWidth = 1;
+      for (let x = 0; x < w; x += 16) {
+        rCtx.beginPath(); rCtx.moveTo(x, 0); rCtx.lineTo(x, h); rCtx.stroke();
+      }
+      for (let y = 0; y < h; y += 16) {
+        rCtx.beginPath(); rCtx.moveTo(0, y); rCtx.lineTo(w, y); rCtx.stroke();
+      }
+
+      // Draw beaded water droplets proportional to waxIntegrityPct
+      const dropCount = Math.floor(ratio * 28);
+      for (let i = 0; i < dropCount; i++) {
+        const dx = 45 + ((i * 73) % (w - 90));
+        const dy = 35 + ((i * 47) % (h - 70));
+        rCtx.beginPath();
+        rCtx.fillStyle = 'rgba(216, 236, 248, 0.78)';
+        rCtx.arc(dx, dy, 6 + (i % 4), 0, Math.PI * 2);
+        rCtx.fill();
+      }
+
+      rCtx.fillStyle = '#E8DEC8';
+      rCtx.font = '600 12px "IBM Plex Mono"';
+      rCtx.fillText(`BEESWAX SATURATION: ${waxIntegrityPct}% • WATER BEADING ACTIVE`, 18, h - 16);
+    }
+
+    function rubWaxOnCanvas(e) {
+      const rect = repairCanvas.getBoundingClientRect();
+      const x = (e.clientX - rect.left) * (repairCanvas.width / rect.width);
+      const y = (e.clientY - rect.top) * (repairCanvas.height / rect.height);
+
+      if (waxIntegrityPct < 100) {
+        waxIntegrityPct = Math.min(100, waxIntegrityPct + 1);
+        document.getElementById('waxCoverageReadout').textContent =
+          `HYDROPHOBIC SEAL: ${waxIntegrityPct}% (${waxIntegrityPct === 100 ? 'FULLY REPROOFED' : 'CURING...'})`;
+      }
+
+      rCtx.beginPath();
+      rCtx.fillStyle = 'rgba(216, 201, 174, 0.25)';
+      rCtx.arc(x, y, 22, 0, Math.PI * 2);
+      rCtx.fill();
+    }
+
+    function applyFullWaxRestore() {
+      waxIntegrityPct = 100;
+      document.getElementById('waxCoverageReadout').textContent = 'HYDROPHOBIC SEAL: 100% (FACTORY RESTORED)';
+      drawRepairSwatch();
+    }
+
+    // =====================================================================
+    // 04. STREAMLINED TELEMETRY CATALOG & LOGBOOK CART
+    // =====================================================================
+    function filterCatalog(cat) {
+      currentCatalogFilter = cat;
+      document.querySelectorAll('.cat-pill').forEach(btn => {
+        if (btn.getAttribute('data-cat') === cat) {
+          btn.className = 'cat-pill px-3 py-1.5 bg-kraft text-lava font-bold uppercase';
+        } else {
+          btn.className = 'cat-pill px-3 py-1.5 bg-lavaCard border border-kraft/25 text-kraft uppercase';
+        }
+      });
+      renderTelemetryCatalog();
+    }
+
+    function renderTelemetryCatalog() {
+      const grid = document.getElementById('telemetryCatalogGrid');
+      const filtered = currentCatalogFilter === 'ALL'
+        ? CATALOG_ITEMS
+        : CATALOG_ITEMS.filter(i => i.cat === currentCatalogFilter);
+
+      grid.innerHTML = filtered.map(item => {
+        const dailyISK = (item.priceISK / 1000).toFixed(1);
+        return `
+          <article class="bg-lavaCard border border-kraft/25 p-5 flex flex-col justify-between hover:border-kraft transition">
+            <div>
+              <div class="flex justify-between items-center font-mono text-[11px] pb-3 mb-3 border-b border-kraft/15">
+                <span class="bg-lichen/40 text-kraftLight px-2 py-0.5 border border-lichenBright font-bold">${item.id} // ${item.cat}</span>
+                <span class="text-lichenPale font-bold">${dailyISK} ISK / DAY (1000D)</span>
+              </div>
+
+              <div class="flex justify-between items-start gap-2">
+                <h3 class="text-lg font-extrabold text-kraftLight leading-snug">${item.name}</h3>
+                <span class="font-mono text-sm font-extrabold text-kraft whitespace-nowrap">${item.priceISK.toLocaleString('de-DE')} ISK</span>
+              </div>
+
+              <p class="text-xs text-kraft/75 mt-2 leading-relaxed">${item.notes}</p>
+
+              <!-- Real-World Test Telemetry Table -->
+              <div class="mt-4 bg-lava p-3 border border-kraft/15 font-mono text-[11px] space-y-1.5">
+                <div class="flex justify-between">
+                  <span class="text-kraft/60">MASS:</span>
+                  <span class="text-kraftLight font-bold">${item.weightG} g</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-kraft/60">TEAR STRENGTH (ISO):</span>
+                  <span class="text-lichenPale font-bold">${item.tearNewtons} Newtons</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-kraft/60">REPELLENCY CYCLES:</span>
+                  <span class="text-kraftLight font-bold">${item.repelCycles}</span>
+                </div>
+                <div class="flex justify-between">
+                  <span class="text-kraft/60">ARMOR ZONES:</span>
+                  <span class="text-kraft text-right">${item.armorZones}</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="mt-5 pt-3 border-t border-kraft/15 flex items-center justify-between font-mono text-xs">
+              <span class="text-[10px] text-kraft/60">+ INCLUDES 90G BEESWAX BAR</span>
+              <button
+                onclick="addToLogbook('${item.id}')"
+                class="px-4 py-2 bg-kraft hover:bg-kraftLight text-lava font-extrabold uppercase text-[11px] transition"
+              >
+                LOG REQUISITION +
+              </button>
+            </div>
+          </article>
+        `;
+      }).join('');
+    }
+
+    function addToLogbook(itemId) {
+      const item = CATALOG_ITEMS.find(i => i.id === itemId);
+      if (!item) return;
+      const existing = logbookCart.find(c => c.id === itemId);
+      if (existing) existing.qty += 1;
+      else logbookCart.push({ ...item, qty: 1 });
+      renderLogbookCart();
+      toggleLogbookDrawer(true);
+    }
+
+    function changeLogbookQty(idx, delta) {
+      if (!logbookCart[idx]) return;
+      logbookCart[idx].qty += delta;
+      if (logbookCart[idx].qty <= 0) logbookCart.splice(idx, 1);
+      renderLogbookCart();
+    }
+
+    function renderLogbookCart() {
+      const count = logbookCart.reduce((s, i) => s + i.qty, 0);
+      const total = logbookCart.reduce((s, i) => s + i.priceISK * i.qty, 0);
+
+      document.getElementById('cartCountBadge').textContent = count;
+      document.getElementById('cartTotalISK').textContent = `${total.toLocaleString('de-DE')} ISK`;
+      document.getElementById('cartCostPerDay').textContent = `${(total / 1000).toFixed(1)} ISK / DAY`;
+
+      const container = document.getElementById('logbookCartItems');
+      if (logbookCart.length === 0) {
+        container.innerHTML = `<div class="p-6 border border-dashed border-kraft/25 text-center font-mono text-xs text-kraft/60">Logbook is empty. Select a 1000-Day specimen to add.</div>`;
+        return;
+      }
+
+      container.innerHTML = logbookCart.map((item, idx) => `
+        <div class="p-3 bg-lava border border-kraft/20 flex items-center justify-between gap-3">
+          <div>
+            <div class="font-mono text-[10px] text-lichenPale font-bold">${item.id} • ${item.tearNewtons}N TEAR</div>
+            <div class="font-bold text-sm text-kraftLight">${item.name}</div>
+            <div class="font-mono text-xs text-kraft/70">${item.priceISK.toLocaleString('de-DE')} ISK × ${item.qty}</div>
+          </div>
+          <div class="flex items-center gap-1.5 font-mono text-xs">
+            <button onclick="changeLogbookQty(${idx}, -1)" class="w-7 h-7 bg-lavaCard border border-kraft/25 text-kraft">-</button>
+            <span class="px-1 font-bold">${item.qty}</span>
+            <button onclick="changeLogbookQty(${idx}, 1)" class="w-7 h-7 bg-lavaCard border border-kraft/25 text-kraft">+</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function toggleLogbookDrawer(open) {
+      const overlay = document.getElementById('logbookOverlay');
+      const drawer = document.getElementById('logbookDrawer');
+      if (open) {
+        overlay.classList.remove('hidden');
+        drawer.classList.remove('translate-x-full');
+      } else {
+        overlay.classList.add('hidden');
+        drawer.classList.add('translate-x-full');
+      }
+    }
+
+    function dispatchLogbookOrder() {
+      if (logbookCart.length === 0) return;
+      const total = document.getElementById('cartTotalISK').textContent;
+      alert(`FIELD TESTED // 1000-DAY ARCHIVE DISPATCH\n\nUnits Logged: ${logbookCart.reduce((s,i)=>s+i.qty,0)}\nMaintenance Kit: Free 90g Beeswax Bar + Cordura Patch Kit Included\nTotal Authorized: ${total}\n\nStamped for same-day Dropp.is delivery from Skeifan 10, Reykjavík.`);
+      toggleLogbookDrawer(false);
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      updateTimelineAge(180);
+      selectFieldNote(0);
+      setRepairTab('wax');
+      renderTelemetryCatalog();
+      renderLogbookCart();
+    });
+  </script>
+</body>
+</html>
