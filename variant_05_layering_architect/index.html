@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>THE LAYERING ARCHITECT // Mountaineering Microclimate & System Configurator</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts: Plus Jakarta Sans + IBM Plex Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            granite: '#1A1D1F',
+            graniteMid: '#23282B',
+            graniteLight: '#2E3538',
+            pine: '#2D3E33',
+            pineMid: '#3E5446',
+            pineSoft: '#74907D',
+            bone: '#F4F2EC',
+            boneWarm: '#E7E3D8',
+            boneDark: '#D5D0C3',
+            rescue: '#EA580C',
+            rescueBright: '#FF5A1F'
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"IBM Plex Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    :root {
+      --granite: #1A1D1F;
+      --pine: #2D3E33;
+      --bone: #F4F2EC;
+      --rescue: #EA580C;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #1A1D1F;
+      color: #F4F2EC;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* Architectural Blueprint Grid Background */
+    .arch-grid {
+      background-size: 40px 40px;
+      background-image:
+        linear-gradient(to right, rgba(244, 242, 236, 0.04) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(244, 242, 236, 0.04) 1px, transparent 1px);
+    }
+
+    /* Ambient Temp Range Slider */
+    input[type="range"].temp-slider {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 100%;
+      height: 8px;
+      background: linear-gradient(90deg, #38BDF8 0%, #74907D 50%, #EA580C 100%);
+      border-radius: 2px;
+      outline: none;
+      cursor: pointer;
+    }
+    input[type="range"].temp-slider::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      appearance: none;
+      width: 24px;
+      height: 24px;
+      background: #F4F2EC;
+      border: 3px solid #1A1D1F;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+      border-radius: 50%;
+      cursor: grab;
+      transition: transform 0.12s ease;
+    }
+    input[type="range"].temp-slider::-webkit-slider-thumb:hover {
+      transform: scale(1.12);
+    }
+
+    /* Ventilation Hotspot Pulse */
+    @keyframes rescuePulse {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(255, 90, 31, 0.7); }
+      50% { box-shadow: 0 0 0 10px rgba(255, 90, 31, 0); }
+    }
+    .hotspot-pulse {
+      animation: rescuePulse 2s infinite;
+    }
+
+    /* Convective Airflow Arrow Animation when Vent is Open */
+    @keyframes airflowUp {
+      0% { transform: translateY(10px); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-14px); opacity: 0; }
+    }
+    .airflow-particle {
+      animation: airflowUp 1.6s infinite ease-in-out;
+    }
+
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    ::-webkit-scrollbar-track {
+      background: #1A1D1F;
+    }
+    ::-webkit-scrollbar-thumb {
+      background: #3E5446;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: #FF5A1F;
+    }
+  </style>
+</head>
+<body class="arch-grid min-h-screen flex flex-col justify-between selection:bg-rescueBright selection:text-bone">
+
+  <!-- =====================================================================
+       TOP ARCHITECTURAL NAVIGATION & SYSTEM STATUS BAR
+       ===================================================================== -->
+  <header class="border-b border-bone/15 bg-granite/95 backdrop-blur-md sticky top-0 z-40">
+    <div class="max-w-[1600px] mx-auto px-5 py-3.5 flex flex-wrap items-center justify-between gap-4">
+      <!-- Brand Identity -->
+      <div class="flex items-center gap-3.5">
+        <div class="w-10 h-10 bg-pine border border-pineSoft/50 flex flex-col items-center justify-center font-mono text-xs font-bold text-bone">
+          <span>LA</span>
+          <span class="text-[8px] text-rescueBright">SYS.05</span>
+        </div>
+        <div>
+          <div class="flex items-center gap-2.5">
+            <h1 class="font-extrabold text-lg md:text-xl tracking-tight uppercase text-bone">
+              THE LAYERING ARCHITECT
+            </h1>
+            <span class="hidden sm:inline-block font-mono text-[10px] bg-rescueBright text-bone font-bold px-2 py-0.5 uppercase">
+              THERMOREGULATION ENGINE
+            </span>
+          </div>
+          <p class="font-mono text-[10px] text-bone/60 uppercase tracking-wider">
+            ICELANDIC MOUNTAINEERING MICROCLIMATE & 4-PART SYSTEM CONFIGURATOR
+          </p>
+        </div>
+      </div>
+
+      <!-- Quick Microclimate Status Pill & System Pack Drawer Trigger -->
+      <div class="flex items-center gap-3">
+        <div class="hidden md:flex items-center gap-2.5 bg-graniteMid border border-bone/15 px-3.5 py-1.5 font-mono text-xs">
+          <span class="text-bone/60">MICROCLIMATE:</span>
+          <span id="headerClimateStatus" class="font-bold text-[#88B394]">OPTIMAL EQUILIBRIUM</span>
+        </div>
+
+        <button
+          onclick="openSystemModal()"
+          class="bg-rescueBright hover:bg-rescue text-bone font-mono font-bold text-xs uppercase px-4 py-2.5 flex items-center gap-2 transition shadow-lg"
+        >
+          <span>SYSTEM PACK</span>
+          <span id="headerPieceCount" class="bg-granite text-bone px-2 py-0.5 text-[10px]">4 PCS</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- =====================================================================
+       01. METABOLIC ACTIVITY & CLIMATE INPUTS (TOP CONTROL DECK)
+       ===================================================================== -->
+  <section class="border-b border-bone/15 bg-graniteMid/90">
+    <div class="max-w-[1600px] mx-auto px-5 py-5 grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+
+      <!-- LEFT 7 COLS: METABOLIC ACTIVITY LEVEL SELECTOR (STATIC | DYNAMIC | HIGH OUTPUT) -->
+      <div class="lg:col-span-7">
+        <div class="flex items-center justify-between font-mono text-[11px] text-bone/70 mb-2">
+          <span class="uppercase font-semibold text-pineSoft">01 // SELECT METABOLIC ACTIVITY OUTPUT</span>
+          <span id="metabolicWattReadout" class="text-bone font-bold">4.5 MET • 340 WATTS HEAT GENERATION</span>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+          <!-- Static -->
+          <button
+            onclick="setActivity('static')"
+            id="actBtn-static"
+            class="p-3.5 border border-bone/15 bg-granite text-left transition hover:border-bone/40"
+          >
+            <div class="flex justify-between items-center font-mono text-[10px] text-bone/60">
+              <span>STAGE 01 // 1.5 MET</span>
+              <span>110W</span>
+            </div>
+            <div class="font-bold text-sm uppercase text-bone mt-1">Static</div>
+            <div class="text-xs text-bone/65 mt-0.5">Camp Setup & Observation</div>
+          </button>
+
+          <!-- Dynamic (Default) -->
+          <button
+            onclick="setActivity('dynamic')"
+            id="actBtn-dynamic"
+            class="p-3.5 border-2 border-rescueBright bg-pine text-left transition shadow-md"
+          >
+            <div class="flex justify-between items-center font-mono text-[10px] text-rescueBright font-bold">
+              <span>STAGE 02 // 4.5 MET</span>
+              <span>340W</span>
+            </div>
+            <div class="font-bold text-sm uppercase text-bone mt-1">Dynamic</div>
+            <div class="text-xs text-bone/80 mt-0.5">Highland Ridge Hiking</div>
+          </button>
+
+          <!-- High Output -->
+          <button
+            onclick="setActivity('high')"
+            id="actBtn-high"
+            class="p-3.5 border border-bone/15 bg-granite text-left transition hover:border-bone/40"
+          >
+            <div class="flex justify-between items-center font-mono text-[10px] text-bone/60">
+              <span>STAGE 03 // 8.0 MET</span>
+              <span>620W</span>
+            </div>
+            <div class="font-bold text-sm uppercase text-bone mt-1">High Output</div>
+            <div class="text-xs text-bone/65 mt-0.5">Steep Scree & Trail Ascent</div>
+          </button>
+        </div>
+      </div>
+
+      <!-- RIGHT 5 COLS: AMBIENT TEMPERATURE DIAL & SLIDER (-10°C to +15°C) -->
+      <div class="lg:col-span-5 bg-granite border border-bone/15 p-4 flex items-center gap-5">
+        <!-- Rotary Dial Gauge SVG -->
+        <div class="w-20 h-20 shrink-0 relative flex items-center justify-center bg-graniteMid rounded-full border border-bone/20">
+          <svg viewBox="0 0 80 80" class="w-full h-full">
+            <circle cx="40" cy="40" r="34" fill="none" stroke="rgba(244,242,236,0.12)" stroke-width="5" stroke-dasharray="160 60" stroke-dashoffset="-25" />
+            <g id="tempDialNeedle" style="transform-origin: 40px 40px; transform: rotate(-18deg); transition: transform 0.2s ease;">
+              <line x1="40" y1="40" x2="40" y2="10" stroke="#FF5A1F" stroke-width="2.5" stroke-linecap="round" />
+              <circle cx="40" cy="40" r="4" fill="#F4F2EC" />
+            </g>
+          </svg>
+          <span id="dialCenterTemp" class="absolute bottom-2 font-mono text-[10px] font-bold text-rescueBright">+2°C</span>
+        </div>
+
+        <!-- Ambient Temp Slider Control -->
+        <div class="flex-1">
+          <div class="flex justify-between items-baseline mb-1.5">
+            <label for="ambientTempSlider" class="font-mono text-[11px] font-semibold uppercase text-pineSoft">
+              02 // AMBIENT TEMPERATURE
+            </label>
+            <span id="ambientTempReadout" class="font-mono text-2xl font-extrabold text-bone">+2°C</span>
+          </div>
+          <input
+            id="ambientTempSlider"
+            type="range"
+            min="-10"
+            max="15"
+            value="2"
+            class="temp-slider my-1.5"
+            oninput="updateAmbientTemp(this.value)"
+          />
+          <div class="flex justify-between font-mono text-[10px] text-bone/60 mt-1">
+            <span>-10°C GLACIER</span>
+            <span>0°C FREEZE</span>
+            <span>+15°C MILD TRAIL</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- =====================================================================
+       MAIN 3-COLUMN ARCHITECTURAL STAGE:
+       [LEFT: THE STACK BUILDER] | [CENTER: VENTILATION HOTSPOTS] | [RIGHT: MICROCLIMATE & BUNDLE]
+       ===================================================================== -->
+  <main class="max-w-[1600px] w-full mx-auto px-5 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+    <!-- ===================================================================
+         LEFT COLUMN (4 COLS): THE VERTICAL ARCHITECTURAL STACK BUILDER
+         =================================================================== -->
+    <section class="lg:col-span-4 space-y-3.5">
+      <div class="flex items-center justify-between border-b border-bone/15 pb-2.5">
+        <div>
+          <span class="font-mono text-[10px] text-rescueBright font-bold uppercase tracking-widest">
+            // VERTICAL CORE ARCHITECTURE
+          </span>
+          <h2 class="text-lg font-extrabold uppercase text-bone">
+            THE 4-STAGE STACK BUILDER
+          </h2>
+        </div>
+        <span class="font-mono text-[11px] text-bone/60">TOGGLE OR SWAP TIERS</span>
+      </div>
+
+      <div id="stackCardsContainer" class="space-y-3">
+        <!-- Populated dynamically by JS for Layer 1, Layer 2, Layer 3, and Bottoms -->
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         CENTER COLUMN (4 COLS): INTERACTIVE GARMENT & VENTILATION HOTSPOTS
+         =================================================================== -->
+    <section class="lg:col-span-4 bg-graniteMid border border-bone/15 p-5 flex flex-col justify-between min-h-[680px] relative">
+      <!-- Top Header -->
+      <div class="border-b border-bone/15 pb-3 flex items-start justify-between">
+        <div>
+          <span class="font-mono text-[10px] text-rescueBright font-bold uppercase tracking-widest">
+            // MECHANICAL THERMOREGULATION
+          </span>
+          <h2 class="text-lg font-extrabold uppercase text-bone mt-0.5">
+            VENTILATION INTERACTIVE HOTSPOTS
+          </h2>
+          <p class="text-xs text-bone/70 mt-0.5">
+            Click orange zipper nodes on the schematic to open Pit-Zips & Thigh Vents and dump excess heat.
+          </p>
+        </div>
+        <button
+          onclick="toggleAllVents()"
+          id="toggleAllVentsBtn"
+          class="shrink-0 font-mono text-[10px] bg-granite border border-rescueBright/60 hover:bg-rescueBright text-bone px-2.5 py-1.5 uppercase font-bold transition"
+        >
+          OPEN ALL VENTS
+        </button>
+      </div>
+
+      <!-- Central Architectural Garment Schematic + Clickable Zippers -->
+      <div class="relative flex-1 flex items-center justify-center my-3 py-2 bg-granite border border-bone/10 overflow-hidden">
+        <!-- SVG Technical Mountaineering Silhouette -->
+        <svg viewBox="0 0 320 460" class="w-full max-w-[295px] h-[410px] overflow-visible">
+          <!-- Reference Grid Axis -->
+          <line x1="160" y1="10" x2="160" y2="450" stroke="rgba(244,242,236,0.1)" stroke-width="1" stroke-dasharray="4 4" />
+
+          <!-- LAYER 3 OUTER SHELL SILHOUETTE -->
+          <g id="svgLayer3Shell" opacity="1">
+            <!-- Storm Hood & Collar -->
+            <path d="M 134,20 L 186,20 L 194,55 L 182,78 L 138,78 L 126,55 Z" fill="#2D3E33" stroke="#F4F2EC" stroke-width="1.5" />
+            <!-- Jacket Torso & Articulated Arms -->
+            <path d="M 104,80 L 216,80 L 246,125 L 234,225 L 212,225 L 204,148 L 198,228 L 122,228 L 116,148 L 108,225 L 86,225 L 74,125 Z" fill="#2D3E33" stroke="#F4F2EC" stroke-width="1.5" />
+          </g>
+
+          <!-- LAYER 2 GRID FLEECE INNER CORE INDICATOR -->
+          <g id="svgLayer2Fleece" opacity="1">
+            <rect x="128" y="92" width="64" height="122" rx="3" fill="rgba(234, 88, 12, 0.16)" stroke="#FF5A1F" stroke-width="1.2" stroke-dasharray="5 3" />
+          </g>
+
+          <!-- LAYER 1 WAFFLE BASE CORE -->
+          <g id="svgLayer1Base" opacity="1">
+            <rect x="138" y="104" width="44" height="98" rx="2" fill="rgba(244, 242, 236, 0.12)" stroke="#F4F2EC" stroke-width="1" />
+          </g>
+
+          <!-- BOTTOMS: ARTICULATED RIPSTOP CARGO PANTS WITH STRETCH GUSSETS -->
+          <g id="svgLayerBottoms" opacity="1">
+            <path d="M 122,234 L 198,234 L 208,330 L 202,438 L 168,438 L 160,305 L 152,438 L 118,438 L 112,330 Z" fill="#23282B" stroke="#F4F2EC" stroke-width="1.5" />
+            <!-- Diamond Crotch Stretch Gusset -->
+            <polygon points="160,275 172,292 160,308 148,292" fill="#3E5446" stroke="#88B394" stroke-width="1" />
+            <!-- Articulated Knee Panels -->
+            <rect x="120" y="340" width="28" height="24" rx="2" fill="#2D3E33" stroke="#74907D" stroke-width="1.2" />
+            <rect x="172" y="340" width="28" height="24" rx="2" fill="#2D3E33" stroke="#74907D" stroke-width="1.2" />
+          </g>
+
+          <!-- Visual Open Vent Baffles & Convective Airflow Arrows -->
+          <g id="ventVisual-pitLeft" class="hidden">
+            <rect x="108" y="124" width="10" height="44" rx="3" fill="#FF5A1F" />
+            <path d="M 96,155 L 96,120" stroke="#FF5A1F" stroke-width="2" class="airflow-particle" />
+          </g>
+          <g id="ventVisual-pitRight" class="hidden">
+            <rect x="202" y="124" width="10" height="44" rx="3" fill="#FF5A1F" />
+            <path d="M 224,155 L 224,120" stroke="#FF5A1F" stroke-width="2" class="airflow-particle" />
+          </g>
+          <g id="ventVisual-chest" class="hidden">
+            <rect x="155" y="88" width="10" height="48" rx="3" fill="#FF5A1F" />
+            <path d="M 160,95 L 160,55" stroke="#FF5A1F" stroke-width="2" class="airflow-particle" />
+          </g>
+          <g id="ventVisual-thighs" class="hidden">
+            <rect x="110" y="275" width="8" height="46" rx="2" fill="#FF5A1F" />
+            <rect x="202" y="275" width="8" height="46" rx="2" fill="#FF5A1F" />
+            <path d="M 98,310 L 98,270" stroke="#FF5A1F" stroke-width="2" class="airflow-particle" />
+            <path d="M 222,310 L 222,270" stroke="#FF5A1F" stroke-width="2" class="airflow-particle" />
+          </g>
+        </svg>
+
+        <!-- 4 Clickable HTML Button Hotspots Overlayed on Garment -->
+        <!-- 1. Left Pit-Zip -->
+        <button
+          onclick="toggleVent('pitLeft')"
+          id="hotspotBtn-pitLeft"
+          style="left: 24%; top: 31%;"
+          class="hotspot-pulse absolute -translate-x-1/2 -translate-y-1/2 px-2 py-1 rounded-sm bg-granite/95 border border-rescueBright text-[10px] font-mono font-bold text-bone hover:bg-rescueBright transition flex items-center gap-1"
+        >
+          <span class="w-2 h-2 rounded-full bg-rescueBright"></span>
+          <span>L PIT-ZIP</span>
+        </button>
+
+        <!-- 2. Right Pit-Zip -->
+        <button
+          onclick="toggleVent('pitRight')"
+          id="hotspotBtn-pitRight"
+          style="left: 76%; top: 31%;"
+          class="hotspot-pulse absolute -translate-x-1/2 -translate-y-1/2 px-2 py-1 rounded-sm bg-granite/95 border border-rescueBright text-[10px] font-mono font-bold text-bone hover:bg-rescueBright transition flex items-center gap-1"
+        >
+          <span class="w-2 h-2 rounded-full bg-rescueBright"></span>
+          <span>R PIT-ZIP</span>
+        </button>
+
+        <!-- 3. Chest Chimney Zip -->
+        <button
+          onclick="toggleVent('chest')"
+          id="hotspotBtn-chest"
+          style="left: 50%; top: 22%;"
+          class="hotspot-pulse absolute -translate-x-1/2 -translate-y-1/2 px-2 py-1 rounded-sm bg-granite/95 border border-rescueBright text-[10px] font-mono font-bold text-bone hover:bg-rescueBright transition flex items-center gap-1"
+        >
+          <span class="w-2 h-2 rounded-full bg-rescueBright"></span>
+          <span>STERNUM VENT</span>
+        </button>
+
+        <!-- 4. Thigh Cargo Vents -->
+        <button
+          onclick="toggleVent('thighs')"
+          id="hotspotBtn-thighs"
+          style="left: 50%; top: 64%;"
+          class="hotspot-pulse absolute -translate-x-1/2 -translate-y-1/2 px-2.5 py-1 rounded-sm bg-granite/95 border border-rescueBright text-[10px] font-mono font-bold text-bone hover:bg-rescueBright transition flex items-center gap-1"
+        >
+          <span class="w-2 h-2 rounded-full bg-rescueBright"></span>
+          <span>THIGH VENTS (×2)</span>
+        </button>
+      </div>
+
+      <!-- Active Ventilation Utility Explanation Box -->
+      <div class="bg-granite border border-bone/15 p-3.5 font-mono text-xs">
+        <div class="flex items-center justify-between text-[10px] text-rescueBright font-bold uppercase mb-1">
+          <span id="ventUtilityHeader">VENTILATION STATUS: ALL ZIPS SEALED (0 / 4 OPEN)</span>
+          <span id="ventCoolingDelta">COOLING DELTA: 0.0°C</span>
+        </div>
+        <p id="ventUtilityDescription" class="text-[11px] text-bone/80 leading-relaxed font-sans">
+          Click any orange zipper hotspot above to open mechanical ventilation ports and observe real-time chimney-effect cooling inside your microclimate.
+        </p>
+      </div>
+    </section>
+
+    <!-- ===================================================================
+         RIGHT COLUMN (4 COLS): LIVE MICROCLIMATE INDICATOR & COMPLETE SYSTEM CTA
+         =================================================================== -->
+    <section class="lg:col-span-4 flex flex-col gap-5">
+
+      <!-- Live Microclimate Telemetry Card -->
+      <div class="bg-graniteMid border border-bone/15 p-5">
+        <div class="flex items-center justify-between border-b border-bone/15 pb-3 mb-4">
+          <div>
+            <span class="font-mono text-[10px] text-pineSoft font-bold uppercase tracking-widest">
+              // REAL-TIME PHYSIOLOGICAL BALANCE
+            </span>
+            <h2 class="text-lg font-extrabold uppercase text-bone mt-0.5">
+              LIVE MICROCLIMATE INDICATOR
+            </h2>
+          </div>
+          <span id="climateStatusBadge" class="font-mono text-[10px] bg-pine text-[#A5D6B2] border border-[#74907D] px-2.5 py-1 font-bold uppercase">
+            OPTIMAL
+          </span>
+        </div>
+
+        <!-- Core Microclimate Diagnosis Banner -->
+        <div id="climateDiagnosisBox" class="p-3.5 bg-pine/60 border border-pineSoft/50 mb-4">
+          <div id="climateHeadline" class="font-bold text-sm text-bone">
+            Optimal: Prevents sweat buildup during uphill hiking
+          </div>
+          <p id="climateSubtext" class="text-xs text-bone/80 mt-1 leading-relaxed">
+            Your active 4-piece stack balances 340W of metabolic trail output against +2°C ambient highland air with zero moisture condensation.
+          </p>
+        </div>
+
+        <!-- 3 Quantitative Microclimate Gauges -->
+        <div class="space-y-3.5 font-mono text-xs">
+          <!-- 1. Internal Skin Microclimate Temp -->
+          <div class="bg-granite p-3 border border-bone/10">
+            <div class="flex justify-between mb-1">
+              <span class="text-bone/60">INTERNAL MICROCLIMATE TEMP:</span>
+              <span id="statInternalTemp" class="font-bold text-bone">32.4°C (IDEAL SKIN ZONE)</span>
+            </div>
+            <div class="w-full h-2 bg-graniteMid overflow-hidden relative">
+              <!-- Ideal zone marker in center -->
+              <div class="absolute left-[40%] width-[20%] top-0 bottom-0 bg-pineSoft/30"></div>
+              <div id="barThermalBalance" class="h-full bg-[#88B394] transition-all duration-300" style="width: 52%;"></div>
+            </div>
+            <div class="flex justify-between text-[9px] text-bone/50 mt-1">
+              <span>CHILL (&lt;28°C)</span>
+              <span>OPTIMAL (31–33°C)</span>
+              <span>SWEAT SPIKE (&gt;35°C)</span>
+            </div>
+          </div>
+
+          <!-- 2. Breathability vs Warmth Ratio -->
+          <div class="bg-granite p-3 border border-bone/10">
+            <div class="flex justify-between mb-1">
+              <span class="text-bone/60">VAPOR RELEASE (CFM) vs INSULATION (CLO):</span>
+              <span id="statCloCfm" class="font-bold text-rescueBright">2.4 CLO / 34 CFM</span>
+            </div>
+            <div class="grid grid-cols-2 gap-2 mt-1.5">
+              <div>
+                <div class="text-[9px] text-bone/50 mb-0.5">WARMTH RETENTION</div>
+                <div class="w-full h-1.5 bg-graniteMid">
+                  <div id="barWarmth" class="h-full bg-rescueBright transition-all duration-300" style="width: 68%;"></div>
+                </div>
+              </div>
+              <div>
+                <div class="text-[9px] text-bone/50 mb-0.5">VAPOR BREATHABILITY</div>
+                <div class="w-full h-1.5 bg-graniteMid">
+                  <div id="barBreathability" class="h-full bg-[#88B394] transition-all duration-300" style="width: 74%;"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- 3. Total System Mass -->
+          <div class="bg-granite p-3 border border-bone/10 flex justify-between items-center">
+            <span class="text-bone/60">ACTIVE SYSTEM WEIGHT:</span>
+            <span id="statSystemWeight" class="font-bold text-bone text-sm">1,740 g (1.74 kg)</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- "PACK AS A COMPLETE SYSTEM" CTA PANEL -->
+      <div class="bg-bone text-granite p-5 border-2 border-rescueBright shadow-xl">
+        <div class="flex items-center justify-between font-mono text-[10px] border-b border-granite/15 pb-2 mb-3">
+          <span class="bg-rescueBright text-bone font-bold px-2 py-0.5 uppercase">
+            ★ COMPLETE SYSTEM PERK: 15% BUNDLE DISCOUNT
+          </span>
+          <span class="font-bold text-pine">+ FREE 10L DRY-BAG</span>
+        </div>
+
+        <div class="flex items-baseline justify-between mb-1">
+          <span class="font-mono text-xs uppercase text-granite/70">INDIVIDUAL RETAIL SUM:</span>
+          <span id="bundleRetailStrike" class="font-mono text-xs line-through text-granite/50">118.700 ISK</span>
+        </div>
+
+        <div class="flex items-baseline justify-between mb-4">
+          <div>
+            <span class="font-mono text-xs font-bold uppercase text-granite block">COMPLETE SYSTEM PRICE:</span>
+            <span class="font-mono text-[10px] text-pine font-semibold">Includes 24% VSK & Dropp.is Express</span>
+          </div>
+          <span id="bundleFinalPriceISK" class="font-mono text-2xl font-extrabold text-granite">
+            100.895 ISK
+          </span>
+        </div>
+
+        <button
+          onclick="openSystemModal()"
+          class="w-full py-3.5 px-5 bg-rescueBright hover:bg-rescue text-bone font-extrabold text-sm uppercase tracking-wider flex items-center justify-between transition shadow-md"
+        >
+          <span>PACK AS A COMPLETE SYSTEM</span>
+          <span class="font-mono text-xs bg-granite/25 px-2 py-0.5">CONFIGURE SIZES ➔</span>
+        </button>
+      </div>
+
+    </section>
+  </main>
+
+  <!-- =====================================================================
+       COMPLETE SYSTEM CHECKOUT & INDIVIDUAL SIZE CUSTOMIZER MODAL
+       ===================================================================== -->
+  <div id="systemModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm hidden items-center justify-center p-4">
+    <div class="bg-bone text-granite max-w-2xl w-full border-2 border-rescueBright shadow-2xl overflow-hidden flex flex-col max-h-[90vh]">
+      <!-- Modal Header -->
+      <div class="p-5 bg-granite text-bone flex items-start justify-between border-b border-bone/15">
+        <div>
+          <span class="font-mono text-[10px] text-rescueBright font-bold uppercase tracking-widest">
+            // SYNCHRONIZED MOUNTAINEERING KIT REQUISITION
+          </span>
+          <h3 class="text-xl font-extrabold uppercase mt-0.5">
+            Complete System Size & Perk Manifest
+          </h3>
+        </div>
+        <button onclick="closeSystemModal()" class="font-mono text-xs px-3 py-1 bg-graniteMid border border-bone/20 hover:border-rescueBright text-bone">
+          [CLOSE ✕]
+        </button>
+      </div>
+
+      <!-- Modal Body: Individual Size Selectors per Active Layer -->
+      <div class="p-5 overflow-y-auto flex-1 space-y-4">
+        <div class="p-3 bg-pine text-bone font-mono text-xs flex items-center justify-between">
+          <span>✔ <strong>SYSTEM PERK UNLOCKED:</strong> 15% Multi-Layer Architectural Bundle + Complimentary 20D Sil-Nylon Dry Bag (Value 3.900 ISK)</span>
+        </div>
+
+        <div class="font-mono text-xs font-bold uppercase text-granite/70">
+          CUSTOMIZE INDIVIDUAL GARMENT SIZES BELOW:
+        </div>
+
+        <div id="modalItemsList" class="space-y-2.5">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="p-5 bg-boneWarm border-t border-granite/15 flex flex-wrap items-center justify-between gap-4">
+        <div>
+          <div class="font-mono text-[10px] text-granite/70 uppercase">TOTAL SYSTEM BUNDLE (INCL. 15% PERK)</div>
+          <div id="modalTotalISK" class="font-mono text-2xl font-extrabold text-granite">100.895 ISK</div>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button onclick="closeSystemModal()" class="font-mono text-xs px-4 py-3 bg-bone border border-granite/30 text-granite font-bold uppercase">
+            BACK TO ARCHITECT
+          </button>
+          <button onclick="confirmCompleteSystemOrder()" class="font-mono text-xs px-6 py-3 bg-rescueBright hover:bg-rescue text-bone font-extrabold uppercase tracking-wider">
+            CONFIRM & DISPATCH SYSTEM ➔
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- =====================================================================
+       JAVASCRIPT ENGINE: METABOLIC THERMOREGULATION, STACK & HOTSPOTS
+       ===================================================================== -->
+  <script>
+    // 4-Tier Architectural Stack Catalog (Each tier has 2 swappable engineering options)
+    const STACK_TIERS = [
+      {
+        tierKey: 'layer1',
+        tierLabel: 'LAYER 01 // NEXT-TO-SKIN BASE',
+        svgGroupId: 'svgLayer1Base',
+        enabled: true,
+        selectedOptionIdx: 0,
+        size: 'L',
+        options: [
+          {
+            id: 'L1-WAFFLE',
+            name: 'Askja Merino-Waffle Base Crew',
+            spec: '200gsm 17.5µm Merino Capillary Grid',
+            clo: 0.45,
+            cfm: 45,
+            weightG: 210,
+            priceISK: 16900
+          },
+          {
+            id: 'L1-MESH',
+            name: 'Laugavegur Ultralight Vapor Mesh Tee',
+            spec: '130gsm Hydrophobic Polypropylene Mesh',
+            clo: 0.25,
+            cfm: 65,
+            weightG: 135,
+            priceISK: 13500
+          }
+        ]
+      },
+      {
+        tierKey: 'layer2',
+        tierLabel: 'LAYER 02 // THERMAL INSULATION',
+        svgGroupId: 'svgLayer2Fleece',
+        enabled: true,
+        selectedOptionIdx: 0,
+        size: 'L',
+        options: [
+          {
+            id: 'L2-GRID',
+            name: 'Polartec® 320g Grid Fleece Pullover',
+            spec: 'Geometric Loft Channels + Scuba Hood',
+            clo: 1.15,
+            cfm: 32,
+            weightG: 390,
+            priceISK: 24900
+          },
+          {
+            id: 'L2-PILE',
+            name: 'Vatna High-Loft Shearling Pile Jacket',
+            spec: '420gsm Sub-Zero Thermal Retention Pile',
+            clo: 1.65,
+            cfm: 22,
+            weightG: 540,
+            priceISK: 29900
+          }
+        ]
+      },
+      {
+        tierKey: 'layer3',
+        tierLabel: 'LAYER 03 // PROTECTIVE SHELL',
+        svgGroupId: 'svgLayer3Shell',
+        enabled: true,
+        selectedOptionIdx: 0,
+        size: 'L',
+        options: [
+          {
+            id: 'L3-RIPSTOP',
+            name: 'Surtur 3L DWR Ripstop Wind/Rain Shell',
+            spec: '28,000mm H2O + Dual 32cm Pit-Zips',
+            clo: 0.55,
+            cfm: 14,
+            weightG: 520,
+            priceISK: 48900
+          },
+          {
+            id: 'L3-SOFTSHELL',
+            name: 'Vindur Hybrid Storm-Tex Softshell',
+            spec: '10,000mm DWR + 4-Way Mechanical Stretch',
+            clo: 0.45,
+            cfm: 24,
+            weightG: 480,
+            priceISK: 37900
+          }
+        ]
+      },
+      {
+        tierKey: 'bottoms',
+        tierLabel: 'BOTTOMS // ARTICULATED LOWER CHASSIS',
+        svgGroupId: 'svgLayerBottoms',
+        enabled: true,
+        selectedOptionIdx: 0,
+        size: '34/32',
+        options: [
+          {
+            id: 'BTM-CARGO',
+            name: 'Hekla Articulated Ripstop Cargo Pants',
+            spec: '500D Cordura Knees + Stretch Diamond Gusset',
+            clo: 0.45,
+            cfm: 26,
+            weightG: 620,
+            priceISK: 28000
+          },
+          {
+            id: 'BTM-STORM',
+            name: 'Katla 3L Waterproof Expedition Trousers',
+            spec: '24,000mm Membrane + Full Thigh Vents',
+            clo: 0.70,
+            cfm: 16,
+            weightG: 690,
+            priceISK: 39500
+          }
+        ]
+      }
+    ];
+
+    // Ventilation Hotspots State
+    const VENTS = {
+      pitLeft: {
+        open: false,
+        name: 'Left Axillary Pit-Zip (32cm)',
+        tempDrop: -1.4,
+        cfmBoost: 12,
+        note: 'Left 32cm underarm pit-zip opened: dumps rising axillary core heat directly from Layer 1 & 2 without exposing chest to headwind.'
+      },
+      pitRight: {
+        open: false,
+        name: 'Right Axillary Pit-Zip (32cm)',
+        tempDrop: -1.4,
+        cfmBoost: 12,
+        note: 'Right 32cm underarm pit-zip opened: establishes cross-torso convective draft, cutting skin relative humidity by 18%.'
+      },
+      chest: {
+        open: false,
+        name: 'Sternum Chimney Draft Zip',
+        tempDrop: -1.8,
+        cfmBoost: 16,
+        note: 'Sternum two-way vent opened: creates a vertical chimney effect that rapidly expels warm moisture vapor during steep trail ascents.'
+      },
+      thighs: {
+        open: false,
+        name: 'Bilateral Femoral Thigh Vents (×2)',
+        tempDrop: -1.6,
+        cfmBoost: 15,
+        note: 'Dual 28cm mesh-backed thigh vents opened on the Ripstop Cargo Pants: cools quadriceps major muscle group during high-output climbs.'
+      }
+    };
+
+    // Metabolic Activity Profiles
+    const ACTIVITIES = {
+      static: { label: 'Static (Camp / Observation)', met: '1.5 MET • 110 WATTS HEAT GENERATION', heatIndex: 0 },
+      dynamic: { label: 'Dynamic (Highland Hiking)', met: '4.5 MET • 340 WATTS HEAT GENERATION', heatIndex: 5.5 },
+      high: { label: 'High Output (Trail Ascent)', met: '8.0 MET • 620 WATTS HEAT GENERATION', heatIndex: 11.0 }
+    };
+
+    let currentActivity = 'dynamic';
+    let ambientTempC = 2; // -10 to +15
+
+    // Activity Selector Handler
+    function setActivity(actKey) {
+      currentActivity = actKey;
+      ['static', 'dynamic', 'high'].forEach(k => {
+        const btn = document.getElementById(`actBtn-${k}`);
+        if (k === actKey) {
+          btn.className = 'p-3.5 border-2 border-rescueBright bg-pine text-left transition shadow-md';
+        } else {
+          btn.className = 'p-3.5 border border-bone/15 bg-granite text-left transition hover:border-bone/40';
+        }
+      });
+      document.getElementById('metabolicWattReadout').textContent = ACTIVITIES[actKey].met;
+      recalculateArchitect();
+    }
+
+    // Ambient Temp Slider Handler
+    function updateAmbientTemp(val) {
+      ambientTempC = parseInt(val, 10);
+      const formatted = ambientTempC > 0 ? `+${ambientTempC}°C` : `${ambientTempC}°C`;
+      document.getElementById('ambientTempReadout').textContent = formatted;
+      document.getElementById('dialCenterTemp').textContent = formatted;
+
+      // Rotate dial needle (-10°C = -110deg, +15°C = +110deg)
+      const deg = -110 + ((ambientTempC + 10) / 25) * 220;
+      document.getElementById('tempDialNeedle').style.transform = `rotate(${deg}deg)`;
+
+      recalculateArchitect();
+    }
+
+    // Toggle a Stack Layer On/Off
+    function toggleStackTier(tierKey) {
+      const tier = STACK_TIERS.find(t => t.tierKey === tierKey);
+      if (!tier) return;
+      tier.enabled = !tier.enabled;
+      recalculateArchitect();
+    }
+
+    // Swap Option within a Stack Tier
+    function selectTierOption(tierKey, optIdx) {
+      const tier = STACK_TIERS.find(t => t.tierKey === tierKey);
+      if (!tier) return;
+      tier.selectedOptionIdx = optIdx;
+      tier.enabled = true;
+      recalculateArchitect();
+    }
+
+    // Toggle Individual Ventilation Hotspot
+    function toggleVent(ventKey, lastClickedNote = true) {
+      const v = VENTS[ventKey];
+      if (!v) return;
+      v.open = !v.open;
+
+      // Update SVG visual & button state
+      const svgVis = document.getElementById(`ventVisual-${ventKey}`);
+      const btn = document.getElementById(`hotspotBtn-${ventKey}`);
+      if (v.open) {
+        svgVis.classList.remove('hidden');
+        btn.className = ' absolute -translate-x-1/2 -translate-y-1/2 px-2 py-1 rounded-sm bg-rescueBright border border-bone text-[10px] font-mono font-bold text-bone transition flex items-center gap-1 shadow-lg';
+      } else {
+        svgVis.classList.add('hidden');
+        btn.className = 'hotspot-pulse absolute -translate-x-1/2 -translate-y-1/2 px-2 py-1 rounded-sm bg-granite/95 border border-rescueBright text-[10px] font-mono font-bold text-bone hover:bg-rescueBright transition flex items-center gap-1';
+      }
+
+      if (lastClickedNote) {
+        document.getElementById('ventUtilityDescription').textContent = v.open
+          ? `✔ ${v.note}`
+          : `Closed ${v.name}: heat and moisture vapor are now retained inside the garment shell.`;
+      }
+
+      recalculateArchitect();
+    }
+
+    function toggleAllVents() {
+      const anyClosed = Object.values(VENTS).some(v => !v.open);
+      Object.keys(VENTS).forEach(k => {
+        if (VENTS[k].open !== anyClosed) {
+          toggleVent(k, false);
+        }
+      });
+      document.getElementById('ventUtilityDescription').textContent = anyClosed
+        ? '✔ Maximum Mechanical Dumping Active: All 4 pit-zip, sternum, and thigh ventilation channels are open (-6.2°C internal cooling delta).'
+        : 'All ventilation zippers sealed for maximum wind and storm protection.';
+    }
+
+    // Render Left Column Stack Cards
+    function renderStackCards() {
+      const container = document.getElementById('stackCardsContainer');
+      container.innerHTML = STACK_TIERS.map(tier => {
+        const activeOpt = tier.options[tier.selectedOptionIdx];
+        return `
+          <div class="p-4 border transition ${
+            tier.enabled
+              ? 'bg-graniteMid border-pineSoft/60'
+              : 'bg-granite/50 border-bone/10 opacity-60'
+          }">
+            <div class="flex items-center justify-between font-mono text-[10px] pb-2 mb-2 border-b border-bone/10">
+              <span class="font-bold ${tier.enabled ? 'text-pineSoft' : 'text-bone/40'}">${tier.tierLabel}</span>
+              <button
+                onclick="toggleStackTier('${tier.tierKey}')"
+                class="px-2 py-0.5 font-bold uppercase ${
+                  tier.enabled
+                    ? 'bg-pine text-bone border border-pineSoft/50'
+                    : 'bg-graniteLight text-bone/60'
+                }"
+              >
+                ${tier.enabled ? '[EQUIPPED ●]' : '[SHED LAYER ○]'}
+              </button>
+            </div>
+
+            <div class="flex justify-between items-start gap-2">
+              <div>
+                <h3 class="font-bold text-sm text-bone leading-snug">${activeOpt.name}</h3>
+                <p class="font-mono text-[11px] text-bone/65 mt-0.5">${activeOpt.spec}</p>
+              </div>
+              <span class="font-mono text-xs font-bold text-bone whitespace-nowrap">
+                ${activeOpt.priceISK.toLocaleString('de-DE')} ISK
+              </span>
+            </div>
+
+            <!-- Swappable Variant Pills within Tier -->
+            <div class="grid grid-cols-2 gap-1.5 mt-3 font-mono text-[10px]">
+              ${tier.options.map((opt, idx) => `
+                <button
+                  onclick="selectTierOption('${tier.tierKey}', ${idx})"
+                  class="py-1.5 px-2 text-left truncate border transition ${
+                    tier.selectedOptionIdx === idx && tier.enabled
+                      ? 'bg-bone text-granite border-bone font-bold'
+                      : 'bg-granite text-bone/70 border-bone/15 hover:border-bone/40'
+                  }"
+                >
+                  ${idx === 0 ? 'A: ' : 'B: '}${opt.name.split(' ').slice(0, 3).join(' ')}
+                </button>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // Master Thermoregulation & Bundle Recalculation Engine
+    function recalculateArchitect() {
+      renderStackCards();
+
+      // Update SVG Silhouette Layer Opacities
+      STACK_TIERS.forEach(tier => {
+        const svgEl = document.getElementById(tier.svgGroupId);
+        if (svgEl) {
+          svgEl.style.opacity = tier.enabled ? '1' : '0.15';
+        }
+      });
+
+      // Aggregate Clo, CFM, Weight, Price
+      let totalClo = 0;
+      let baseCfm = 0;
+      let activeCount = 0;
+      let totalWeight = 0;
+      let retailSumISK = 0;
+
+      STACK_TIERS.forEach(tier => {
+        if (tier.enabled) {
+          const opt = tier.options[tier.selectedOptionIdx];
+          totalClo += opt.clo;
+          baseCfm += opt.cfm;
+          totalWeight += opt.weightG;
+          retailSumISK += opt.priceISK;
+          activeCount++;
+        }
+      });
+
+      const avgCfm = activeCount > 0 ? Math.round(baseCfm / activeCount) : 60;
+
+      // Ventilation Modifiers
+      let openVentCount = 0;
+      let ventTempDelta = 0;
+      let ventCfmBoost = 0;
+      Object.values(VENTS).forEach(v => {
+        if (v.open) {
+          openVentCount++;
+          ventTempDelta += v.tempDrop;
+          ventCfmBoost += v.cfmBoost;
+        }
+      });
+
+      document.getElementById('ventUtilityHeader').textContent =
+        `VENTILATION STATUS: ${openVentCount} / 4 ZIPS OPEN`;
+      document.getElementById('ventCoolingDelta').textContent =
+        `COOLING DELTA: ${ventTempDelta.toFixed(1)}°C (+${ventCfmBoost} CFM)`;
+      document.getElementById('toggleAllVentsBtn').textContent =
+        openVentCount === 4 ? 'SEAL ALL VENTS' : 'OPEN ALL VENTS';
+
+      // Calculate Internal Skin Microclimate Temperature (Ideal target: 31.0°C to 33.8°C)
+      // Base skin temp at 0°C static with 2.6 Clo is ~31.5°C
+      const actHeat = ACTIVITIES[currentActivity].heatIndex; // 0, 5.5, or 11.0
+      const internalSkinTemp = +(
+        24.5 +
+        (ambientTempC * 0.28) +
+        (totalClo * 2.8) +
+        (actHeat * 0.52) +
+        ventTempDelta
+      ).toFixed(1);
+
+      const finalCfm = avgCfm + ventCfmBoost;
+
+      // Update Right Column Gauges
+      document.getElementById('statInternalTemp').textContent = `${internalSkinTemp}°C`;
+      const tempBarPct = Math.max(8, Math.min(96, ((internalSkinTemp - 25) / 14) * 100));
+      document.getElementById('barThermalBalance').style.width = `${tempBarPct}%`;
+
+      document.getElementById('statCloCfm').textContent = `${totalClo.toFixed(2)} CLO / ${finalCfm} CFM`;
+      document.getElementById('barWarmth').style.width = `${Math.min(100, (totalClo / 3.2) * 100)}%`;
+      document.getElementById('barBreathability').style.width = `${Math.min(100, (finalCfm / 85) * 100)}%`;
+      document.getElementById('statSystemWeight').textContent = `${totalWeight.toLocaleString('en-US')} g (${(totalWeight / 1000).toFixed(2)} kg)`;
+
+      // Evaluate Microclimate Status (Optimal vs Cold vs Overheating/Sweat Spike)
+      const badge = document.getElementById('climateStatusBadge');
+      const box = document.getElementById('climateDiagnosisBox');
+      const headline = document.getElementById('climateHeadline');
+      const subtext = document.getElementById('climateSubtext');
+      const headerStatus = document.getElementById('headerClimateStatus');
+
+      if (internalSkinTemp > 34.2) {
+        badge.textContent = 'SWEAT SPIKE RISK';
+        badge.className = 'font-mono text-[10px] bg-rescueBright text-bone px-2.5 py-1 font-bold uppercase';
+        box.className = 'p-3.5 bg-rescueBright/20 border border-rescueBright mb-4';
+        headline.textContent = 'Overheating Alert: Excess thermal retention for current output';
+        subtext.textContent = 'Recommendation: Click the orange Pit-Zip & Thigh Vent hotspots on the schematic to dump heat, or shed Layer 02 Insulation.';
+        headerStatus.textContent = 'OVERHEAT // OPEN VENTS';
+        headerStatus.className = 'font-bold text-rescueBright';
+      } else if (internalSkinTemp < 29.8) {
+        badge.textContent = 'CHILL DEFICIT';
+        badge.className = 'font-mono text-[10px] bg-sky-900 text-sky-200 border border-sky-400 px-2.5 py-1 font-bold uppercase';
+        box.className = 'p-3.5 bg-sky-950/60 border border-sky-400/60 mb-4';
+        headline.textContent = 'Thermal Deficit: Core heat loss exceeds metabolic generation';
+        subtext.textContent = 'Recommendation: Equip all 4 layers, switch Layer 02 to the 420gsm Shearling Pile, and seal open ventilation zippers.';
+        headerStatus.textContent = 'CHILL ALERT // ADD INSULATION';
+        headerStatus.className = 'font-bold text-sky-300';
+      } else {
+        badge.textContent = 'OPTIMAL EQUILIBRIUM';
+        badge.className = 'font-mono text-[10px] bg-pine text-[#A5D6B2] border border-[#74907D] px-2.5 py-1 font-bold uppercase';
+        box.className = 'p-3.5 bg-pine/60 border border-pineSoft/50 mb-4';
+        headline.textContent = 'Optimal: Prevents sweat buildup while blocking subarctic windchill';
+        subtext.textContent = `Balanced microclimate (${internalSkinTemp}°C skin zone) for ${ACTIVITIES[currentActivity].label} at ${ambientTempC > 0 ? '+'+ambientTempC : ambientTempC}°C.`;
+        headerStatus.textContent = 'OPTIMAL EQUILIBRIUM';
+        headerStatus.className = 'font-bold text-[#88B394]';
+      }
+
+      // Bundle Pricing (15% Complete System Perk when 3+ pieces active)
+      const hasPerk = activeCount >= 3;
+      const finalISK = hasPerk ? Math.round(retailSumISK * 0.85) : retailSumISK;
+
+      document.getElementById('headerPieceCount').textContent = `${activeCount} PCS`;
+      document.getElementById('bundleRetailStrike').textContent = `${retailSumISK.toLocaleString('de-DE')} ISK`;
+      document.getElementById('bundleFinalPriceISK').textContent = `${finalISK.toLocaleString('de-DE')} ISK`;
+      document.getElementById('modalTotalISK').textContent = `${finalISK.toLocaleString('de-DE')} ISK`;
+    }
+
+    // Complete System Modal & Individual Size Customizer
+    function openSystemModal() {
+      const list = document.getElementById('modalItemsList');
+      const activeTiers = STACK_TIERS.filter(t => t.enabled);
+
+      if (activeTiers.length === 0) {
+        list.innerHTML = `<div class="p-6 text-center font-mono text-xs">Equip at least one layer in the Stack Builder first.</div>`;
+      } else {
+        list.innerHTML = activeTiers.map(tier => {
+          const opt = tier.options[tier.selectedOptionIdx];
+          const sizes = tier.tierKey === 'bottoms'
+            ? ['30/32', '32/32', '34/32', '34/34', '36/34']
+            : ['S', 'M', 'L', 'XL', 'XXL'];
+
+          return `
+            <div class="p-3.5 bg-boneWarm border border-granite/15 flex flex-wrap items-center justify-between gap-3">
+              <div>
+                <div class="font-mono text-[10px] text-pine font-bold uppercase">${tier.tierLabel}</div>
+                <div class="font-bold text-sm text-granite">${opt.name}</div>
+                <div class="font-mono text-xs text-granite/70">${opt.priceISK.toLocaleString('de-DE')} ISK</div>
+              </div>
+              <div class="flex items-center gap-1 font-mono text-xs">
+                <span class="text-[10px] text-granite/60 mr-1">SIZE:</span>
+                ${sizes.map(sz => `
+                  <button
+                    onclick="setTierSize('${tier.tierKey}', '${sz}')"
+                    class="px-2 py-1 border ${
+                      tier.size === sz
+                        ? 'bg-granite text-bone border-granite font-bold'
+                        : 'bg-bone text-granite border-granite/25 hover:border-granite'
+                    }"
+                  >${sz}</button>
+                `).join('')}
+              </div>
+            </div>
+          `;
+        }).join('');
+      }
+
+      const modal = document.getElementById('systemModal');
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function setTierSize(tierKey, sz) {
+      const tier = STACK_TIERS.find(t => t.tierKey === tierKey);
+      if (tier) {
+        tier.size = sz;
+        openSystemModal();
+      }
+    }
+
+    function closeSystemModal() {
+      const modal = document.getElementById('systemModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function confirmCompleteSystemOrder() {
+      const activeTiers = STACK_TIERS.filter(t => t.enabled);
+      const total = document.getElementById('modalTotalISK').textContent;
+      const summary = activeTiers.map(t => `• ${t.options[t.selectedOptionIdx].name} [Size: ${t.size}]`).join('\n');
+      alert(`THE LAYERING ARCHITECT // COMPLETE SYSTEM DISPATCHED\n\n${summary}\n• Free Bonus: 10L Sil-Nylon Dry Bag\n\nTotal Authorized (with 15% System Perk): ${total}\nDispatching via Dropp.is from Skeifan 10, Reykjavík.`);
+      closeSystemModal();
+    }
+
+    // Initialize
+    window.addEventListener('DOMContentLoaded', () => {
+      recalculateArchitect();
+    });
+  </script>
+</body>
+</html>
